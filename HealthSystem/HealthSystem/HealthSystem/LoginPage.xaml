@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HealthSystem.ViewModels.Authentication"
+             x:Class="HealthSystem.LoginPage"
+             Shell.NavBarIsVisible="False">
+
+    <Grid BackgroundColor="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="220"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Path Data="m0.15501,-200.275l528.00004,0l0,322.48219c-264.00002,0 -264.00002,122.87163 -528.00004,53.05821l0,-375.5404z" Stroke="#fff" Fill="#d4ffaa"/>
+
+        <StackLayout>
+            <Frame BackgroundColor="Green" HeightRequest="60" WidthRequest="60" CornerRadius="30" Padding="0" Margin="0,100,0,0">
+                <Image Source="https://www.iconpacks.net/icons/2/free-user-icon-3297-thumb.png" Aspect="AspectFill" Margin="0"></Image>
+            </Frame>
+        </StackLayout>
+
+        <Grid RowSpacing="5" Grid.Row="1" Margin="20,20,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="1" Text="Добре дошли!" HorizontalOptions="Center" FontSize="Title" FontAttributes="Bold" Padding="0" Margin="0"></Label>
+            <Label Grid.Row="2" Text="Вписване" HorizontalOptions="Center" FontSize="Subtitle" FontAttributes="Bold"></Label>
+
+            <StackLayout Grid.Row="3" Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                <Frame BackgroundColor="Transparent" BorderColor="LightBlue" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <StackLayout Orientation="Horizontal">
+                        <Frame BackgroundColor="LightGreen" HeightRequest="40" WidthRequest="40" CornerRadius="30" Padding="0" Margin="5">
+                            <Image Source="https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg" Aspect="AspectFill" Margin="0"></Image>
+                        </Frame>
+                        <Entry Text="{Binding UserName}" Placeholder="Имейл" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Margin="0,0,20,0"></Entry>
+                    </StackLayout>
+                </Frame>
+                <Frame BackgroundColor="Transparent" Margin="0,15,0,0" BorderColor="LightBlue" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="30">
+                    <StackLayout Orientation="Horizontal">
+                        <Frame BackgroundColor="LightGreen" HeightRequest="40" WidthRequest="40" CornerRadius="30" Padding="0" Margin="5">
+                            <Image Source="https://e7.pngegg.com/pngimages/851/981/png-clipart-password-manager-computer-icons-password-miscellaneous-text.png" Aspect="AspectFill" Margin="0"></Image>
+                        </Frame>
+                        <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Парола" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Margin="0,0,20,0"></Entry>
+                    </StackLayout>
+                </Frame>
+
+                <StackLayout Orientation="Horizontal" Margin="0,10,0,0" Padding="0">
+                    <CheckBox IsChecked="False"></CheckBox>
+                    <Label Text="Запомни ме?" TextColor="DarkGray" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="                     Забравена парола?" TextColor="DarkGray" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                </StackLayout>
+
+                <Button Text="Вписване"
+                        Background="LightGreen"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="30"
+                        WidthRequest="200"
+                        Margin="0,15,0,0"
+                        Command="{Binding LoginCommand}" /> 
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="0,60,0,0" Padding="0">
+                    <Label Text="Нямаш регистрация?" TextColor="DarkGray" FontSize="Small"></Label>
+                    <Label Text="   Регистрирай се" TextColor="#1D8348" FontAttributes="Bold" FontSize="Small"></Label>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>
