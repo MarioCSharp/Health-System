@@ -6,32 +6,32 @@ using System.Windows.Input;
 
 namespace HealthProject.ViewModels
 {
-    public partial class RegisterPageViewModel : ObservableObject
+    public partial class LoginPageViewModel : ObservableObject
     {
         [ObservableProperty]
-        private RegisterModel registerModel;
+        private LoginModel loginModel;
 
-        public ICommand RegisterCommand { get; }
         public ICommand LoginCommand { get; }
+        public ICommand RegisterCommand { get; }
         private IAuthenticationService authenticationService;
-        public RegisterPageViewModel(IAuthenticationService authenticationService)
+        public LoginPageViewModel(IAuthenticationService authenticationService)
         {
-            RegisterCommand = new AsyncRelayCommand(RegisterAsync);
             LoginCommand = new AsyncRelayCommand(LoginAsync);
+            RegisterCommand = new AsyncRelayCommand(RegisterAsync);
             this.authenticationService = authenticationService;
-            this.registerModel = new RegisterModel();
-        }
-
-        public async Task RegisterAsync()
-        {
-            await authenticationService.Register(registerModel);
-
-            await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+            this.loginModel = new LoginModel();
         }
 
         public async Task LoginAsync()
         {
-            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            await authenticationService.Login(loginModel);
+
+            await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+        }
+
+        public async Task RegisterAsync()
+        {
+            await Shell.Current.GoToAsync($"//{nameof(RegisterPage)}");
         }
     }
 }

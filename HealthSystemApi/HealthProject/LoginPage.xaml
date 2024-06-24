@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             x:Class="HealthProject.RegisterPage"
-             Title="RegisterPage"
+             x:Class="HealthProject.LoginPage"
+             Title="LoginPage"
              Shell.NavBarIsVisible="False">
-
+    
     <ContentPage.Resources>
         <Style TargetType="Entry">
             <Setter Property="Margin" Value="10,5" />
@@ -35,28 +34,24 @@
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="25" VerticalOptions="CenterAndExpand">
-            <Label Text="Регистрация" FontSize="30" HorizontalOptions="Center" TextColor="#007AFF" />
+            <Label Text="Вписване" FontSize="30" HorizontalOptions="Center" TextColor="#007AFF" />
 
             <!-- Add an image -->
             <Image Source="logo.png" HeightRequest="100" HorizontalOptions="Center" Margin="0,20" />
 
-            <Label Text="Име" />
-            <Entry Placeholder="Въведете името си" Text="{Binding RegisterModel.FullName}" />
-
             <Label Text="Имейл" />
-            <Entry Placeholder="Въведете имейла си" Text="{Binding RegisterModel.Email}" Keyboard="Email" />
+            <Entry Placeholder="Въведете имейла си" Text="{Binding LoginModel.Email}" Keyboard="Email" />
 
             <Label Text="Парола" />
-            <Entry Placeholder="Въведете паролата си" Text="{Binding RegisterModel.Password}" IsPassword="True" />
+            <Entry Placeholder="Въведете паролата си" Text="{Binding LoginModel.Password}" IsPassword="True" />
 
-            <Button Text="Регистрация" Command="{Binding RegisterCommand}" />
+            <Button Text="Вписване" Command="{Binding LoginCommand}" />
 
             <!-- Add "Имаш регистрация?" label and "Вписване" button -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,20,0,0">
-                <Label Text="Имаш регистрация?" VerticalOptions="Center" TextColor="#8E8E93" />
-                <Button Text="Вписване" Command="{Binding LoginCommand}" Margin="10,0" BackgroundColor="Transparent" TextColor="#007AFF" />
+                <Label Text="Нямаш регистрация?" VerticalOptions="Center" TextColor="#8E8E93" />
+                <Button Text="Регистриране" Command="{Binding RegisterCommand}" Margin="10,0" BackgroundColor="Transparent" TextColor="#007AFF" />
             </StackLayout>
         </StackLayout>
     </ScrollView>
-
 </ContentPage>

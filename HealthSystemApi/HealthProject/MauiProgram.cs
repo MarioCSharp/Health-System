@@ -18,8 +18,9 @@ namespace HealthProject
                 });
 
             builder.Services.AddTransient<RegisterPage>();
+            builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<RegisterPageViewModel>();
-            builder.Services.AddTransient<RegisterPageViewModel>();
+            builder.Services.AddTransient<LoginPageViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
 
 #if DEBUG
