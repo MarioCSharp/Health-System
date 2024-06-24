@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             x:Class="HealthProject.RegisterPage"
+             Title="RegisterPage">
+    
+    <ContentPage.Resources>
+        <Style TargetType="Entry">
+            <Setter Property="Margin" Value="10,5" />
+            <Setter Property="PlaceholderColor" Value="Gray" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10,20" />
+            <Setter Property="BackgroundColor" Value="#4CAF50" />
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="DarkGreen" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Margin" Value="10,0" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            <Label Text="Регистрация" FontSize="24" HorizontalOptions="Center" />
+
+            <Label Text="Име" />
+            <Entry Placeholder="Въведете името си" Text="{Binding RegisterModel.FullName}" />
+
+            <Label Text="Имейл" />
+            <Entry Placeholder="Въведете имейла си" Text="{Binding RegisterModel.Email}" Keyboard="Email" />
+
+            <Label Text="Парола" />
+            <Entry Placeholder="Въведете паролата си" Text="{Binding RegisterModel.Password}" IsPassword="True" />
+
+            <Button Text="Регистрация" Command="{Binding RegisterCommand}" />
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>
