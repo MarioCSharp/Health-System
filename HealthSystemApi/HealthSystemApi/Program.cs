@@ -1,6 +1,8 @@
 using HealthSystemApi.Data;
 using HealthSystemApi.Data.Models;
 using HealthSystemApi.Extensions;
+using HealthSystemApi.Services.HospitalService;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -24,6 +26,10 @@ namespace HealthSystemApi
             builder.Services.AddAuthentication();
             builder.Services.AddIdentityApiEndpoints<User>().AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>().AddRoles<IdentityRole>();
+
+            builder.Services.AddTransient<IHospitalService, HospitalService>();
+            builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddAuthorization();
 
             builder.Services.AddSwaggerGen(options =>
             {

@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
-using HealthProject.Services;
+using HealthProject.Services.AuthenticationService;
 using System.Windows.Input;
 
 namespace HealthProject.ViewModels

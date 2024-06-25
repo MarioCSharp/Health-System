@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace HealthProject
+namespace HealthProject.Platforms.MacCatalyst
 {
     public class Program
     {

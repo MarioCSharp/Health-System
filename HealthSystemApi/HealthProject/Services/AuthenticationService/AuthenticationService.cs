@@ -1,10 +1,10 @@
 ﻿using HealthProject.Models;
 using System.Diagnostics;
 using System.Net;
-using System.Text;
+using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace HealthProject.Services
+namespace HealthProject.Services.AuthenticationService
 {
     public class AuthenticationService : IAuthenticationService
     {
@@ -25,6 +25,31 @@ namespace HealthProject.Services
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
+        }
+
+        public async Task<AuthenticationModel> IsAuthenticated()
+        {
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                Debug.WriteLine("--- No internet access");
+                return new AuthenticationModel() { IsAuthenticated = false };
+            }
+
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<AuthenticationModel>($"{_url}/Authentication/IsAuthenticated", _jsonSerializerOptions);
+                return response;
+            }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine($"Request error: {ex.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Unexpected error: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task Login(LoginModel loginModel)
@@ -99,7 +124,7 @@ namespace HealthProject.Services
             }
         }
 
-        
+
         private string ToQueryString(RegisterModel registerModel)
         {
             var properties = from p in registerModel.GetType().GetProperties()

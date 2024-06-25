@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HealthProject.AddHospitalPage"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             Title="AddHospitalPage">
+    
+    <ContentPage.Resources>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="TextColor" Value="#007ACC" />
+        </Style>
+        <Style x:Key="EntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="BackgroundColor" Value="#E0F7FA" />
+            <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="PlaceholderColor" Value="#B0BEC5" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#007ACC" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="0,15,0,0" />
+        </Style>
+    </ContentPage.Resources>
+
+    <!-- Main Content -->
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+
+            <!-- Hospital Name -->
+            <Label Text="Име на болницата:" Style="{StaticResource LabelStyle}" />
+            <Entry x:Name="HospitalNameEntry" Placeholder="Enter hospital name" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.HospitalName}"/>
+
+            <!-- Location -->
+            <Label Text="Локация:" Style="{StaticResource LabelStyle}" />
+            <Entry x:Name="LocationEntry" Placeholder="Enter location" Style="{StaticResource EntryStyle}"  Text="{Binding HospitalModel.Location}"/>
+
+            <!-- Contact Number -->
+            <Label Text="Номер за връзка:" Style="{StaticResource LabelStyle}" />
+            <Entry x:Name="ContactNumberEntry" Placeholder="Enter contact number" Keyboard="Telephone" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.ContactNumber}"/>
+
+            <!-- Owner ID -->
+            <Label Text="ИД на управител на болницата:" Style="{StaticResource LabelStyle}" />
+            <Entry x:Name="OwnerIdEntry" Placeholder="Enter owner ID" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.OwnerId}"/>
+
+            <!-- Submit Button -->
+            <Button Text="Submit" Style="{StaticResource ButtonStyle}" Command="{Binding AddHospitalCommand}" />
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

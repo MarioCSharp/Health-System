@@ -3,6 +3,7 @@ using HealthSystemApi.Models.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HealthSystemApi.Controllers
 {
@@ -66,6 +67,19 @@ namespace HealthSystemApi.Controllers
             await signInManager.SignOutAsync();
 
             return Ok();
+        }
+
+        [HttpGet("IsAuthenticated")]
+        public async Task<IActionResult> IsAuthenticated()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Ok(new { IsAuthenticated = true, UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) });
+            }
+            else
+            {
+                return Ok(new { IsAuthenticated = false });
+            }
         }
     }
 }

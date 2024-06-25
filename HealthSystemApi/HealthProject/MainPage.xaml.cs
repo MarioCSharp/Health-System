@@ -1,17 +1,14 @@
-﻿namespace HealthProject
+﻿using HealthProject.Services;
+using HealthProject.ViewModels;
+
+namespace HealthProject
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
-        public MainPage()
+        public MainPage(MainPageViewModel mainPageViewModel)
         {
             InitializeComponent();
-        }
-
-        private async void OnRegisterClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"//{nameof(RegisterPage)}");
+            BindingContext = mainPageViewModel;
         }
     }
 }

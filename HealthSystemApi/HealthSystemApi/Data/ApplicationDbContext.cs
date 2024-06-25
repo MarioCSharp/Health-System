@@ -9,5 +9,6 @@ namespace HealthSystemApi.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+        public DbSet<Hospital> Hospitals { get; set; }
     }
 }

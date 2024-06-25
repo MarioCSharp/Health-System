@@ -19,4 +19,12 @@
     <ShellContent Title="LoginPage"
                   Route="LoginPage"
                   ContentTemplate="{DataTemplate local:LoginPage}"/>
+
+    <ShellContent Title="HomePage"
+              Route="HomePage"
+              ContentTemplate="{DataTemplate local:HomePage}"/>
+
+    <ShellContent Title="AddHospitalPage"
+          Route="AddHospitalPage"
+          ContentTemplate="{DataTemplate local:AddHospitalPage}"/>
 </Shell>
