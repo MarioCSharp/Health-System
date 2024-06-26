@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.AddHospitalPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             Title="AddHospitalPage">
+             Title="AddHospitalPage"
+             Shell.NavBarIsVisible="False">
     
     <ContentPage.Resources>
         <Style x:Key="LabelStyle" TargetType="Label">
@@ -27,28 +28,22 @@
         </Style>
     </ContentPage.Resources>
 
-    <!-- Main Content -->
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
 
-            <!-- Hospital Name -->
             <Label Text="Име на болницата:" Style="{StaticResource LabelStyle}" />
-            <Entry x:Name="HospitalNameEntry" Placeholder="Enter hospital name" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.HospitalName}"/>
+            <Entry x:Name="HospitalNameEntry" Placeholder="Въведате името на болницата" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.HospitalName}"/>
 
-            <!-- Location -->
             <Label Text="Локация:" Style="{StaticResource LabelStyle}" />
-            <Entry x:Name="LocationEntry" Placeholder="Enter location" Style="{StaticResource EntryStyle}"  Text="{Binding HospitalModel.Location}"/>
+            <Entry x:Name="LocationEntry" Placeholder="Адрес на болницата" Style="{StaticResource EntryStyle}"  Text="{Binding HospitalModel.Location}"/>
 
-            <!-- Contact Number -->
             <Label Text="Номер за връзка:" Style="{StaticResource LabelStyle}" />
-            <Entry x:Name="ContactNumberEntry" Placeholder="Enter contact number" Keyboard="Telephone" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.ContactNumber}"/>
+            <Entry x:Name="ContactNumberEntry" Placeholder="Телефонен номер" Keyboard="Telephone" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.ContactNumber}"/>
 
-            <!-- Owner ID -->
             <Label Text="ИД на управител на болницата:" Style="{StaticResource LabelStyle}" />
-            <Entry x:Name="OwnerIdEntry" Placeholder="Enter owner ID" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.OwnerId}"/>
+            <Entry x:Name="OwnerIdEntry" Placeholder="Идентификатор на управител" Style="{StaticResource EntryStyle}" Text="{Binding HospitalModel.OwnerId}"/>
 
-            <!-- Submit Button -->
-            <Button Text="Submit" Style="{StaticResource ButtonStyle}" Command="{Binding AddHospitalCommand}" />
+            <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" Command="{Binding AddHospitalCommand}" />
 
         </StackLayout>
     </ScrollView>

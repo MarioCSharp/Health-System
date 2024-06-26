@@ -32,6 +32,13 @@ namespace HealthSystemApi.Services.HospitalService
             return await context.Hospitals.ContainsAsync(hospital);
         }
 
+        public async Task<List<HospitalModel>> AllAsync()
+        =>  await context.Hospitals.Select(x => new HospitalModel()
+            {
+                Id = x.Id,
+                HospitalName = x.Name,
+            }).ToListAsync();
+
         public async Task<bool> RemoveAsync(int id)
         {
             var hospital = await context.Hospitals.FindAsync(id);

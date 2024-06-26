@@ -39,5 +39,13 @@ namespace HealthSystemApi.Controllers
 
             return BadRequest();
         }
+
+        [HttpGet("All")]
+        public async Task<IActionResult> All()
+        {
+            var hospitals = await hospitalService.AllAsync();
+
+            return Ok(hospitals);
+        }
     }
 }

@@ -49,7 +49,7 @@
 
             <!-- Add "Имаш регистрация?" label and "Вписване" button -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,20,0,0">
-                <Label Text="Нямаш регистрация?" VerticalOptions="Center" TextColor="#8E8E93" />
+                <Label Text="Нямате регистрация?" VerticalOptions="Center" TextColor="#8E8E93" />
                 <Button Text="Регистриране" Command="{Binding RegisterCommand}" Margin="10,0" BackgroundColor="Transparent" TextColor="#007AFF" />
             </StackLayout>
         </StackLayout>

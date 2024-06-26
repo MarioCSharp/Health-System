@@ -3,6 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.HomePage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             Title="HomePage">
-    <Button Text="Добави болница" Clicked="Button_Clicked"></Button>
+             Title="HomePage"
+             x:Name="RootPage"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="Добави болница" 
+                    Clicked="Button_Clicked"
+                    HorizontalOptions="End"
+                    Margin="10"
+                    BackgroundColor="#007ACC"/>
+
+            <CollectionView ItemsSource="{Binding Hospitals}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Delete" 
+                                               BackgroundColor="Red" 
+                                               Command="{Binding BindingContext.DeleteHospitalCommand, Source={x:Reference RootPage}}"
+                                               CommandParameter="{Binding Id}">
+                                    </SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame CornerRadius="10" BorderColor="#007ACC" Margin="10" Padding="10" HasShadow="True" BackgroundColor="White">
+                                <StackLayout>
+                                    <Label Text="{Binding HospitalName}" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           TextColor="Black"/>
+                                </StackLayout>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>
