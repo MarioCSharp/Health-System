@@ -47,5 +47,13 @@ namespace HealthSystemApi.Controllers
 
             return Ok(hospitals);
         }
+
+        [HttpGet("Details")]
+        public async Task<IActionResult> Details([FromQuery] int id)
+        {
+            var result = await hospitalService.HospitalDetails(id);
+
+            return Ok(result);
+        }
     }
 }

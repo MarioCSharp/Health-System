@@ -1,5 +1,7 @@
 ﻿using HealthProject.Services.AuthenticationService;
+using HealthProject.Services.DoctorService;
 using HealthProject.Services.HospitalService;
+using HealthProject.Services.NavigationService;
 using HealthProject.ViewModels;
 using Microsoft.Extensions.Logging;
 
@@ -23,13 +25,17 @@ namespace HealthProject
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<AddHospitalPage>();
+            builder.Services.AddTransient<AddDoctorPage>();
             builder.Services.AddTransient<RegisterPageViewModel>();
             builder.Services.AddTransient<LoginPageViewModel>();
             builder.Services.AddTransient<HomePageViewModel>();
             builder.Services.AddTransient<MainPageViewModel>();
             builder.Services.AddTransient<AddHospitalViewModel>();
+            builder.Services.AddTransient<AddDoctorPageViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
+            builder.Services.AddHttpClient<IDoctorService, DoctorService>();
+            builder.Services.AddTransient<INavigationService, NavigationService>();
 
 #if DEBUG
             builder.Logging.AddDebug();

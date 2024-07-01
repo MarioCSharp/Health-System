@@ -7,5 +7,6 @@ namespace HealthProject.Services.HospitalService
         Task Add(AddHospitalModel model);
         Task<List<HospitalModel>> All();
         Task Delete(int id);
+        Task<HospitalDetailsModel> Details(int id);
     }
 }

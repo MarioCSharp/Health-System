@@ -33,25 +33,38 @@ namespace HealthSystemApi.Services.HospitalService
         }
 
         public async Task<List<HospitalModel>> AllAsync()
-        =>  await context.Hospitals.Select(x => new HospitalModel()
-            {
-                Id = x.Id,
-                HospitalName = x.Name,
-            }).ToListAsync();
+        => await context.Hospitals.Select(x => new HospitalModel()
+        {
+            Id = x.Id,
+            HospitalName = x.Name,
+        }).ToListAsync();
 
-        public async Task<bool> RemoveAsync(int id)
+        public async Task<HospitalDetailsModel> HospitalDetails(int id)
         {
             var hospital = await context.Hospitals.FindAsync(id);
 
-            if (hospital == null)
+            return new HospitalDetailsModel
             {
-                return false;
+                Id = id,
+                HospitalName = hospital.Name,
+                ContactNumber = hospital.ContactNumber,
+                Location = hospital.Location,
+            };
+        }
+
+        public async Task<bool> RemoveAsync(int id)
+            {
+                var hospital = await context.Hospitals.FindAsync(id);
+
+                if (hospital == null)
+                {
+                    return false;
+                }
+
+                context.Hospitals.Remove(hospital);
+                await context.SaveChangesAsync();
+
+                return !await context.Hospitals.ContainsAsync(hospital);
             }
-
-            context.Hospitals.Remove(hospital);
-            await context.SaveChangesAsync();
-
-            return !await context.Hospitals.ContainsAsync(hospital);
         }
     }
-}

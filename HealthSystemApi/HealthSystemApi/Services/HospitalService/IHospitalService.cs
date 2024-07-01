@@ -7,5 +7,6 @@ namespace HealthSystemApi.Services.HospitalService
         Task<bool> AddAsync(HospitalAddModel model);
         Task<bool> RemoveAsync(int id);
         Task<List<HospitalModel>> AllAsync();
+        Task<HospitalDetailsModel> HospitalDetails(int id);
     }
 }

@@ -27,4 +27,10 @@
     <ShellContent Title="AddHospitalPage"
           Route="AddHospitalPage"
           ContentTemplate="{DataTemplate local:AddHospitalPage}"/>
+
+    <ShellContent Route="HospitalDetailsPage" ContentTemplate="{DataTemplate local:HospitalDetailsPage}" />
+
+    <ShellContent Title="AddDoctorPage"
+      Route="AddDoctorPage"
+      ContentTemplate="{DataTemplate local:AddDoctorPage}"/>
 </Shell>

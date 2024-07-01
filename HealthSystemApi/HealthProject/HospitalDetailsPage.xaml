@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HealthProject.HospitalDetailsPage"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             Title="HospitalDetailsPage"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <!-- Define styles for reuse -->
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#2c3e50" />
+            <Setter Property="Margin" Value="0,5,0,5" />
+        </Style>
+        <Style x:Key="SubHeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="#7f8c8d" />
+            <Setter Property="Margin" Value="0,2,0,2" />
+        </Style>
+        <Style x:Key="CardFrameStyle" TargetType="Frame">
+            <Setter Property="CornerRadius" Value="15" />
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="Margin" Value="0,0,0,20" />
+            <Setter Property="BackgroundColor">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#ecf0f1" Offset="0.0" />
+                        <GradientStop Color="#bdc3c7" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ContentPaddingStyle" TargetType="StackLayout">
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Spacing" Value="20" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#3498db" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="25" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="End" />
+            <Setter Property="Margin" Value="20" />
+        </Style>
+    </ContentPage.Resources>
+    <Grid>
+        <ScrollView>
+            <StackLayout Style="{StaticResource ContentPaddingStyle}">
+
+                <!-- Hospital Information Section -->
+                <Frame Style="{StaticResource CardFrameStyle}">
+                    <StackLayout>
+                        <Label Text="{Binding Hospital.HospitalName}" Style="{StaticResource HeaderLabelStyle}" />
+                        <Label Text="{Binding Hospital.Location}" Style="{StaticResource SubHeaderLabelStyle}" />
+                        <Label Text="{Binding Hospital.ContactNumber}" Style="{StaticResource SubHeaderLabelStyle}" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Doctors Section -->
+                <Label Text="Doctors and Specializations" Style="{StaticResource HeaderLabelStyle}" />
+
+                <CollectionView x:Name="DoctorsCollectionView" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="15" VerticalItemSpacing="15"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource CardFrameStyle}">
+                                <StackLayout>
+                                    <Label Text="{Binding Name}" Style="{StaticResource SubHeaderLabelStyle}" FontAttributes="Bold" />
+                                    <Label Text="{Binding Specialization}" Style="{StaticResource SubHeaderLabelStyle}" />
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Add Doctor Button -->
+        <Button Text="Add Doctor" Style="{StaticResource ButtonStyle}" Clicked="OnAddDoctorClicked"/>
+    </Grid>
+</ContentPage>

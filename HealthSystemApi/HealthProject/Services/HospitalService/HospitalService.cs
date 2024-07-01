@@ -134,5 +134,44 @@ namespace HealthProject.Services.HospitalService
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }
+
+        public async Task<HospitalDetailsModel> Details(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                string queryString = $"?id={id}";
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Details{queryString}");
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var hospital = JsonSerializer.Deserialize<HospitalDetailsModel>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return hospital;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return null;
+        }
     }
 }

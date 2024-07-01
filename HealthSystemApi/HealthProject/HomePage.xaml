@@ -28,13 +28,22 @@
                                     </SwipeItem>
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <Frame CornerRadius="10" BorderColor="#007ACC" Margin="10" Padding="10" HasShadow="True" BackgroundColor="White">
+                            <Frame CornerRadius="10" 
+                               BorderColor="#007ACC" 
+                               Margin="10" 
+                               Padding="10" 
+                               HasShadow="True" 
+                               BackgroundColor="White"> 
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.NavigateToHospitalDetailCommand, Source={x:Reference RootPage}}"
+                                              CommandParameter="{Binding Id}" />
+                                </Frame.GestureRecognizers>
                                 <StackLayout>
                                     <Label Text="{Binding HospitalName}" 
-                                           FontSize="20" 
-                                           FontAttributes="Bold"
-                                           VerticalOptions="Center"
-                                           TextColor="Black"/>
+                               FontSize="20" 
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"
+                               TextColor="Black"/>
                                 </StackLayout>
                             </Frame>
                         </SwipeView>
