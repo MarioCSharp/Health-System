@@ -1,4 +1,5 @@
 using HealthProject.Models;
+using HealthProject.Services.DoctorService;
 using HealthProject.ViewModels;
 using Newtonsoft.Json;
 namespace HealthProject;
@@ -7,6 +8,7 @@ namespace HealthProject;
 public partial class HospitalDetailsPage : ContentPage
 {
     private string hospitalJson;
+    private readonly IDoctorService doctorService;
     public string HospitalJson
     {
         get => hospitalJson;
@@ -14,13 +16,14 @@ public partial class HospitalDetailsPage : ContentPage
         {
             hospitalJson = value;
             var hospital = JsonConvert.DeserializeObject<HospitalDetailsModel>(Uri.UnescapeDataString(value));
-            BindingContext = new HospitalDetailsViewModel(hospital);
+            BindingContext = new HospitalDetailsViewModel(hospital, doctorService);
         }
     }
-    public HospitalDetailsPage()
+    public HospitalDetailsPage(IDoctorService doctorService)
 	{
 		InitializeComponent();
-	}
+        this.doctorService = doctorService;
+    }
 
     private async void OnAddDoctorClicked(object sender, EventArgs e)
     {

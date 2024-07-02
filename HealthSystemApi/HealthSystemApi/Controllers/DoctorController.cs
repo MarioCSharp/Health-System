@@ -36,5 +36,19 @@ namespace HealthSystemApi.Controllers
 
             return result ? Ok() : BadRequest();
         }
+
+        [HttpGet("All")]
+        public async Task<IActionResult> All([FromQuery] int id)
+        {
+            var result = await doctorService.GetAllAsync(id);
+
+            return Ok(result);
+        }
+
+        [HttpGet("Details")]
+        public async Task<IActionResult> Details([FromQuery] int id)
+        {
+            return Ok(await doctorService.GetDetailsAsync(id));
+        }
     }
 }

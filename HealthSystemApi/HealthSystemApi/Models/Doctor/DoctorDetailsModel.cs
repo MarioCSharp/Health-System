@@ -1,4 +1,4 @@
-﻿namespace HealthProject.Models
+﻿namespace HealthSystemApi.Models.Doctor
 {
     public class DoctorDetailsModel
     {

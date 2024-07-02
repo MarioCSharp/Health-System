@@ -36,6 +36,8 @@ namespace HealthProject
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<INavigationService, NavigationService>();
+            builder.Services.AddTransient<IDoctorService, DoctorService>();
+            builder.Services.AddTransient<HospitalDetailsPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

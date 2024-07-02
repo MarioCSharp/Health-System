@@ -28,6 +28,32 @@ namespace HealthSystemApi.Services.DoctorService
             return await context.Doctors.ContainsAsync(doctor);
         }
 
+        public async Task<List<DoctorModel>> GetAllAsync(int id)
+        {
+            return await context.Doctors.Where(x => x.HospitalId == id)
+                .Select(x => new DoctorModel
+                {
+                    Id = x.Id,
+                    FullName = x.User.FullName,
+                    Specialization = x.Specialization
+                }).ToListAsync();
+        }
+
+        public async Task<DoctorDetailsModel> GetDetailsAsync(int id)
+        {
+            var info = await context.DoctorsInfo.FindAsync(id);
+
+            return new DoctorDetailsModel
+            {
+                Id = info.Id,
+                FullName = info.FullName,
+                Specialization = info.Specialization,
+                ContactNumber = info.ContactNumber,
+                Email = info.Email,
+                About = info.About
+            };
+        }
+
         public async Task<bool> RemoveAsync(int id)
         {
             var doctor = await context.Doctors.FindAsync(id);

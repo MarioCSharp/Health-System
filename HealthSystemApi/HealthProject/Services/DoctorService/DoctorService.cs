@@ -63,9 +63,82 @@ namespace HealthProject.Services.DoctorService
             return false;
         }
 
-        public Task<bool> DetailsAsync(AddDoctorModel doctorModel)
+        public async Task<List<DoctorModel>> AllAsync(int id)
         {
-            throw new NotImplementedException();
+            CheckInternetConnection();
+
+            try
+            {
+                string queryString = $"?id={id}";
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/All{queryString}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var doctors = JsonSerializer.Deserialize<List<DoctorModel>>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return doctors;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                    return new List<DoctorModel>();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new List<DoctorModel>();
+        }
+
+        public async Task<DoctorDetailsModel> DetailsAsync(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                string queryString = $"?id={id}";
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/Details{queryString}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var doctor = JsonSerializer.Deserialize<DoctorDetailsModel>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return doctor;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                    return new DoctorDetailsModel();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new DoctorDetailsModel();
         }
 
         private void CheckInternetConnection()

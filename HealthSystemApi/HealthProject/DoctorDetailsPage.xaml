@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HealthProject.HospitalDetailsPage"
-             xmlns:local="clr-namespace:HealthProject.ViewModels"
-             Title="HospitalDetailsPage"
-             x:Name="RootPage"
-             Shell.NavBarIsVisible="False">
+             x:Class="HealthProject.DoctorDetailsPage"
+             Title="DoctorDetailsPage">
     <ContentPage.Resources>
         <!-- Define styles for reuse -->
         <Style x:Key="HeaderLabelStyle" TargetType="Label">
@@ -55,39 +52,20 @@
                 <!-- Hospital Information Section -->
                 <Frame Style="{StaticResource CardFrameStyle}">
                     <StackLayout>
-                        <Label Text="{Binding Hospital.HospitalName}" Style="{StaticResource HeaderLabelStyle}" />
-                        <Label Text="{Binding Hospital.Location}" Style="{StaticResource SubHeaderLabelStyle}" />
-                        <Label Text="{Binding Hospital.ContactNumber}" Style="{StaticResource SubHeaderLabelStyle}" />
+                        <Label Text="{Binding Doctor.FullName}" Style="{StaticResource HeaderLabelStyle}" />
+                        <Label Text="{Binding Doctor.Specialization}" Style="{StaticResource SubHeaderLabelStyle}" />
+                        <Label Text="{Binding Doctor.ContactNumber}" Style="{StaticResource SubHeaderLabelStyle}" />
+                        <Label Text="{Binding Doctor.Email}" Style="{StaticResource SubHeaderLabelStyle}" />
                     </StackLayout>
                 </Frame>
 
                 <!-- Doctors Section -->
-                <Label Text="Специалисти" Style="{StaticResource HeaderLabelStyle}" />
-
-                <CollectionView ItemsSource="{Binding Doctors}" x:Name="DoctorsCollectionView" SelectionMode="None">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="15" VerticalItemSpacing="15"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame Style="{StaticResource CardFrameStyle}">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.NavigateToDoctorDetailCommand, Source={x:Reference RootPage}}"
-                                          CommandParameter="{Binding Id}" />
-                                </Frame.GestureRecognizers>
-                                <StackLayout>
-                                    <Label Text="{Binding FullName}" Style="{StaticResource SubHeaderLabelStyle}" FontAttributes="Bold" />
-                                    <Label Text="{Binding Specialization}" Style="{StaticResource SubHeaderLabelStyle}" />
-                                </StackLayout>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                <Label Text="About" Style="{StaticResource HeaderLabelStyle}" />
+                <Label Text="{Binding Doctor.About}" Style="{StaticResource HeaderLabelStyle}" />
 
             </StackLayout>
         </ScrollView>
 
-        <!-- Add Doctor Button -->
-        <Button Text="Add Doctor" Style="{StaticResource ButtonStyle}" Clicked="OnAddDoctorClicked"/>
+        <Button Text="Edit Doctor" Style="{StaticResource ButtonStyle}"/>
     </Grid>
 </ContentPage>
