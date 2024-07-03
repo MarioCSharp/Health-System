@@ -28,6 +28,18 @@ namespace HealthSystemApi.Services.DoctorService
             return await context.Doctors.ContainsAsync(doctor);
         }
 
+        public async Task Edit(DoctorDetailsModel model)
+        {
+            var doc = await context.DoctorsInfo.FirstOrDefaultAsync(x => x.DoctorId == model.Id);
+
+            doc.Email = model.Email;
+            doc.About = model.About;
+            doc.ContactNumber = model.ContactNumber;
+            doc.FullName = model.FullName;
+            doc.Specialization = model.Specialization;
+            await context.SaveChangesAsync();
+        }
+
         public async Task<List<DoctorModel>> GetAllAsync(int id)
         {
             return await context.Doctors.Where(x => x.HospitalId == id)
@@ -51,6 +63,18 @@ namespace HealthSystemApi.Services.DoctorService
                 ContactNumber = info.ContactNumber,
                 Email = info.Email,
                 About = info.About
+            };
+        }
+
+        public async Task<DoctorAddModel> GetDoctor(int id)
+        {
+            var info = await context.Doctors.FindAsync(id);
+
+            return new DoctorAddModel()
+            {
+                HospitalId = info.HospitalId,
+                Specialization = info.Specialization,
+                UserId = info.UserId
             };
         }
 

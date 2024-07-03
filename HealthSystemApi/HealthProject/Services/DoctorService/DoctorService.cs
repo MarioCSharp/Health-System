@@ -141,6 +141,77 @@ namespace HealthProject.Services.DoctorService
             return new DoctorDetailsModel();
         }
 
+        public async Task Edit(DoctorDetailsModel model)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                string queryString = ToQueryString(model);
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/Edit{queryString}");
+                response.EnsureSuccessStatusCode();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+        }
+
+        public async Task<AddDoctorModel> GetDoctor(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                string queryString = $"?id={id}";
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/GetDoctor{queryString}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var doctor = JsonSerializer.Deserialize<AddDoctorModel>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return doctor;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                    return new AddDoctorModel();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new AddDoctorModel();
+        }
+
         private void CheckInternetConnection()
         {
             if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
@@ -150,6 +221,15 @@ namespace HealthProject.Services.DoctorService
         }
 
         private string ToQueryString(AddDoctorModel model)
+        {
+            var properties = from p in model.GetType().GetProperties()
+                             where p.GetValue(model, null) != null
+                             select p.Name + "=" + WebUtility.UrlEncode(p.GetValue(model, null).ToString());
+
+            return "?" + string.Join("&", properties.ToArray());
+        }
+
+        private string ToQueryString(DoctorDetailsModel model)
         {
             var properties = from p in model.GetType().GetProperties()
                              where p.GetValue(model, null) != null

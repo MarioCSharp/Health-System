@@ -1,9 +1,7 @@
 ﻿using HealthSystemApi.Data;
-using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Doctor;
 using HealthSystemApi.Services.DoctorService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystemApi.Controllers
 {
@@ -49,6 +47,20 @@ namespace HealthSystemApi.Controllers
         public async Task<IActionResult> Details([FromQuery] int id)
         {
             return Ok(await doctorService.GetDetailsAsync(id));
+        }
+
+        [HttpGet("GetDoctor")]
+        public async Task<IActionResult> GetDoctor([FromQuery] int id)
+        {
+            return Ok(await doctorService.GetDoctor(id));
+        }
+
+        [HttpGet("Edit")]
+        public async Task<IActionResult> Edit([FromQuery] DoctorDetailsModel model)
+        {
+            await doctorService.Edit(model);
+
+            return Ok();
         }
     }
 }
