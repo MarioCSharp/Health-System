@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.AddDoctorPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             Title="AddDoctorPage"
+             Title="Add Doctor"
              Shell.NavBarIsVisible="False">
+
     <ContentPage.Resources>
         <Style x:Key="LabelStyle" TargetType="Label">
             <Setter Property="FontSize" Value="Medium" />
             <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="Margin" Value="0,0,0,5" />
         </Style>
         <Style x:Key="EntryStyle" TargetType="Entry">
             <Setter Property="FontSize" Value="Medium" />
@@ -25,21 +27,57 @@
             <Setter Property="HeightRequest" Value="50" />
             <Setter Property="Margin" Value="0,15,0,0" />
         </Style>
+        <Style x:Key="BackButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
     </ContentPage.Resources>
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
 
-            <Label Text="Специализация на доктора" Style="{StaticResource LabelStyle}" />
-            <Entry Placeholder="Въведате специализацията" Style="{StaticResource EntryStyle}" Text="{Binding DoctorModel.Specialization}"/>
+            <Button Text="Назад" Style="{StaticResource BackButtonStyle}" 
+                    Command="{Binding NavigateBackCommand}" 
+                    AutomationProperties.IsInAccessibleTree="True" 
+                    AutomationProperties.Name="Go Back Button" />
 
-            <Label Text="Идентификатор на потребителя:" Style="{StaticResource LabelStyle}" />
-            <Entry Placeholder="Въведате идентификатора" Style="{StaticResource EntryStyle}"  Text="{Binding DoctorModel.UserId}"/>
+            <Frame BackgroundColor="#FFFFFF" CornerRadius="10" Padding="20" HasShadow="True">
+                <StackLayout Spacing="20">
 
-            <Label Text="Идентификатор на болницата:" Style="{StaticResource LabelStyle}" />
-            <Entry Placeholder="Въведате идентификатора на болницата" Keyboard="Telephone" Style="{StaticResource EntryStyle}" Text="{Binding DoctorModel.HospitalId}"/>
+                    <Label Text="Специализация на доктора" Style="{StaticResource LabelStyle}" 
+                           AutomationProperties.IsInAccessibleTree="True" 
+                           AutomationProperties.Name="Doctor Specialization" />
+                    <Entry Placeholder="Въведате специализацията" Style="{StaticResource EntryStyle}" 
+                           Text="{Binding DoctorModel.Specialization}" 
+                           AutomationProperties.IsInAccessibleTree="True" 
+                           AutomationProperties.Name="Specialization Entry" />
 
-            <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" Command="{Binding AddDoctorCommand}" />
+                    <Label Text="Идентификатор на потребителя:" Style="{StaticResource LabelStyle}" 
+                           AutomationProperties.IsInAccessibleTree="True" 
+                           AutomationProperties.Name="User ID" />
+                    <Entry Placeholder="Въведате идентификатора" Style="{StaticResource EntryStyle}"  
+                           Text="{Binding DoctorModel.UserId}" 
+                           AutomationProperties.IsInAccessibleTree="True" 
+                           AutomationProperties.Name="User ID Entry" />
+
+                    <Label Text="Идентификатор на болницата:" Style="{StaticResource LabelStyle}" 
+                           AutomationProperties.IsInAccessibleTree="True" 
+                           AutomationProperties.Name="Hospital ID" />
+                    <Entry Placeholder="Въведате идентификатора на болницата" Keyboard="Telephone" 
+                           Style="{StaticResource EntryStyle}" 
+                           Text="{Binding DoctorModel.HospitalId}" 
+                           AutomationProperties.IsInAccessibleTree="True" 
+                           AutomationProperties.Name="Hospital ID Entry" />
+
+                    <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" 
+                            Command="{Binding AddDoctorCommand}" 
+                            AutomationProperties.IsInAccessibleTree="True" 
+                            AutomationProperties.Name="Add Doctor Button" />
+                </StackLayout>
+            </Frame>
         </StackLayout>
     </ScrollView>
 </ContentPage>

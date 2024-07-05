@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HealthProject.EditDoctorInfoPage"
+             x:Class="HealthProject.EditDoctorInfo"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="Edit Doctor Info"
              Shell.NavBarIsVisible="False">

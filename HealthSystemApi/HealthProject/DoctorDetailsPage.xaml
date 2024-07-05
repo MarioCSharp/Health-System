@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:Microsoft.Maui.Controls.Compatibility;assembly=Microsoft.Maui.Controls"
              x:Class="HealthProject.DoctorDetailsPage"
-             Title="DoctorDetailsPage">
+             Title="Doctor Details"
+             Shell.NavBarIsVisible="False">
     <ContentPage.Resources>
         <!-- Define styles for reuse -->
         <Style x:Key="HeaderLabelStyle" TargetType="Label">
@@ -21,14 +23,6 @@
             <Setter Property="HasShadow" Value="True" />
             <Setter Property="Padding" Value="15" />
             <Setter Property="Margin" Value="0,0,0,20" />
-            <Setter Property="BackgroundColor">
-                <Setter.Value>
-                    <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#ecf0f1" Offset="0.0" />
-                        <GradientStop Color="#bdc3c7" Offset="1.0" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
         </Style>
         <Style x:Key="ContentPaddingStyle" TargetType="StackLayout">
             <Setter Property="Padding" Value="20" />
@@ -44,28 +38,52 @@
             <Setter Property="VerticalOptions" Value="End" />
             <Setter Property="Margin" Value="20" />
         </Style>
+        <Style x:Key="ContactInfoStyle" TargetType="StackLayout">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="Spacing" Value="10" />
+            <Setter Property="Margin" Value="0,5,0,5" />
+        </Style>
+        <Style x:Key="IconLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="#3498db" />
+        </Style>
     </ContentPage.Resources>
+
     <Grid>
         <ScrollView>
             <StackLayout Style="{StaticResource ContentPaddingStyle}">
-
-                <!-- Hospital Information Section -->
+                <!-- Doctor Information Section -->
                 <Frame Style="{StaticResource CardFrameStyle}">
                     <StackLayout>
+                        <Image Source="{Binding Doctor.ImageUrl}" HeightRequest="100" WidthRequest="100" Aspect="AspectFill" />
                         <Label Text="{Binding Doctor.FullName}" Style="{StaticResource HeaderLabelStyle}" />
                         <Label Text="{Binding Doctor.Specialization}" Style="{StaticResource SubHeaderLabelStyle}" />
-                        <Label Text="{Binding Doctor.ContactNumber}" Style="{StaticResource SubHeaderLabelStyle}" />
-                        <Label Text="{Binding Doctor.Email}" Style="{StaticResource SubHeaderLabelStyle}" />
                     </StackLayout>
                 </Frame>
 
-                <!-- Doctors Section -->
-                <Label Text="About" Style="{StaticResource HeaderLabelStyle}" />
-                <Label Text="{Binding Doctor.About}" Style="{StaticResource HeaderLabelStyle}" />
-
+                <!-- Tab View for Main and About Sections -->
+                <mct:TabView>
+                    <mct:TabViewItem Text="Main">
+                        <StackLayout>
+                            <!-- Contact Information Section -->
+                            <Label Text="Contacts" Style="{StaticResource HeaderLabelStyle}" />
+                            <StackLayout Style="{StaticResource ContactInfoStyle}">
+                                <Image Source="phone_icon.png" HeightRequest="24" WidthRequest="24" />
+                                <Label Text="{Binding Doctor.ContactNumber}" Style="{StaticResource IconLabelStyle}" />
+                            </StackLayout>
+                            <StackLayout Style="{StaticResource ContactInfoStyle}">
+                                <Image Source="email_icon.png" HeightRequest="24" WidthRequest="24" />
+                                <Label Text="{Binding Doctor.Email}" Style="{StaticResource IconLabelStyle}" />
+                            </StackLayout>
+                        </StackLayout>
+                    </mct:TabViewItem>
+                    <mct:TabViewItem Text="About">
+                        <Label Text="{Binding Doctor.About}" Style="{StaticResource SubHeaderLabelStyle}" />
+                    </mct:TabViewItem>
+                </mct:TabView>
             </StackLayout>
         </ScrollView>
 
-        <Button Text="Edit Doctor" Style="{StaticResource ButtonStyle}"/>
+        <Button Text="Edit Doctor" Style="{StaticResource ButtonStyle}" Command="{Binding EditDoctorInfoRedirect}" CommandParameter="{Binding Doctor.Id}" />
     </Grid>
 </ContentPage>

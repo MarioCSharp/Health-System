@@ -31,7 +31,10 @@ namespace HealthSystemApi.Services.DoctorService
         public async Task Edit(DoctorDetailsModel model)
         {
             var doc = await context.DoctorsInfo.FirstOrDefaultAsync(x => x.DoctorId == model.Id);
+            var doctor = await context.Doctors.FindAsync(model.Id);
 
+            doctor.Specialization = model.Specialization;
+            await context.SaveChangesAsync();
             doc.Email = model.Email;
             doc.About = model.About;
             doc.ContactNumber = model.ContactNumber;

@@ -14,6 +14,8 @@ namespace HealthProject.ViewModels
         private AddDoctorModel doctorModel;
 
         public ICommand AddDoctorCommand { get; }
+        public ICommand NavigateBackCommand { get; }
+
         private IDoctorService doctorService;
         private IHospitalService hospitalService;
         public AddDoctorPageViewModel(IDoctorService doctorService,
@@ -21,6 +23,7 @@ namespace HealthProject.ViewModels
         {
             doctorModel = new AddDoctorModel();
             AddDoctorCommand = new AsyncRelayCommand(AddDoctorAsync);
+            NavigateBackCommand = new Command(OnNavigateBack);
             this.doctorService = doctorService;
             this.hospitalService = hospitalService;
         }
@@ -38,6 +41,11 @@ namespace HealthProject.ViewModels
             var hospitalJson = JsonConvert.SerializeObject(hospital);
             var encodedHospitalJson = Uri.EscapeDataString(hospitalJson);
             await Shell.Current.GoToAsync($"///HospitalDetailsPage?hospitalJson={encodedHospitalJson}");
+        }
+
+        private async void OnNavigateBack()
+        {
+            await Shell.Current.GoToAsync("..");
         }
     }
 }

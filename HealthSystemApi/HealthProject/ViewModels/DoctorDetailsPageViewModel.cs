@@ -12,11 +12,13 @@ namespace HealthProject.ViewModels
         private DoctorDetailsModel doctor;
 
         public ICommand EditDoctorInfoRedirect { get; }
+        public ICommand NavigateBackCommand { get; }
 
         public DoctorDetailsPageViewModel(DoctorDetailsModel doctor)
         {
             Doctor = doctor;
             this.EditDoctorInfoRedirect = new AsyncRelayCommand<object>(RedirectToEditInfo);
+            NavigateBackCommand = new Command(OnNavigateBack);
         }
 
         public async Task RedirectToEditInfo(object parameter)
@@ -27,6 +29,11 @@ namespace HealthProject.ViewModels
                 var encodedDoctorJson = Uri.EscapeDataString(doctorJson);
                 await Shell.Current.GoToAsync($"///EditDoctorInfo?hospitalJson={encodedDoctorJson}");
             }
+        }
+
+        private async void OnNavigateBack()
+        {
+            await Shell.Current.GoToAsync("..");
         }
     }
 }
