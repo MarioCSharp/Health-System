@@ -12,5 +12,6 @@ namespace HealthSystemApi.Data
         public DbSet<Hospital> Hospitals { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<DoctorInfo> DoctorsInfo { get; set; }
+        public DbSet<Service> Services { get; set; }
     }
 }

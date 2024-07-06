@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HealthProject.AddServicePage"
+             Title="AddServicePage"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="Margin" Value="0,0,0,5" />
+        </Style>
+        <Style x:Key="EntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="BackgroundColor" Value="#E0F7FA" />
+            <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="PlaceholderColor" Value="#B0BEC5" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#007ACC" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="0,15,0,0" />
+        </Style>
+        <Style x:Key="BackButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+
+            <Button Text="Назад" Style="{StaticResource BackButtonStyle}" 
+                Command="{Binding NavigateBackCommand}" 
+                AutomationProperties.IsInAccessibleTree="True" 
+                AutomationProperties.Name="Go Back Button" />
+
+            <Frame BackgroundColor="#FFFFFF" CornerRadius="10" Padding="20" HasShadow="True">
+                <StackLayout Spacing="20">
+
+                    <Label Text="Име на услугата:" Style="{StaticResource LabelStyle}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Doctor Specialization" />
+                    <Entry Placeholder="Въведете името на услугата" Style="{StaticResource EntryStyle}" 
+                       Text="{Binding Service.Name}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Specialization Entry" />
+
+                    <Label Text="Цена на услугата:" Style="{StaticResource LabelStyle}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="User ID" />
+                    <Entry Placeholder="Въведете цената на услугата" Style="{StaticResource EntryStyle}"  
+                       Text="{Binding Service.Price}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="User ID Entry"
+                       Keyboard="Numeric"/>
+
+                    <Label Text="Локация:" Style="{StaticResource LabelStyle}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Hospital ID" />
+                    <Entry Placeholder="Въведате локацията на услугата"
+                       Style="{StaticResource EntryStyle}" 
+                       Text="{Binding Service.Location}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Hospital ID Entry" />
+
+                    <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" 
+                        Command="{Binding AddServiceAsync}" 
+                        AutomationProperties.IsInAccessibleTree="True" 
+                        AutomationProperties.Name="Add Doctor Button" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

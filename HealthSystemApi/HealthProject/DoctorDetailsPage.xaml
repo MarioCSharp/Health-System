@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mct="clr-namespace:Microsoft.Maui.Controls.Compatibility;assembly=Microsoft.Maui.Controls"
              x:Class="HealthProject.DoctorDetailsPage"
              Title="Doctor Details"
              Shell.NavBarIsVisible="False">
@@ -61,29 +60,46 @@
                     </StackLayout>
                 </Frame>
 
-                <!-- Tab View for Main and About Sections -->
-                <mct:TabView>
-                    <mct:TabViewItem Text="Main">
-                        <StackLayout>
-                            <!-- Contact Information Section -->
-                            <Label Text="Contacts" Style="{StaticResource HeaderLabelStyle}" />
-                            <StackLayout Style="{StaticResource ContactInfoStyle}">
-                                <Image Source="phone_icon.png" HeightRequest="24" WidthRequest="24" />
-                                <Label Text="{Binding Doctor.ContactNumber}" Style="{StaticResource IconLabelStyle}" />
-                            </StackLayout>
-                            <StackLayout Style="{StaticResource ContactInfoStyle}">
-                                <Image Source="email_icon.png" HeightRequest="24" WidthRequest="24" />
-                                <Label Text="{Binding Doctor.Email}" Style="{StaticResource IconLabelStyle}" />
-                            </StackLayout>
-                        </StackLayout>
-                    </mct:TabViewItem>
-                    <mct:TabViewItem Text="About">
-                        <Label Text="{Binding Doctor.About}" Style="{StaticResource SubHeaderLabelStyle}" />
-                    </mct:TabViewItem>
-                </mct:TabView>
+                <!-- Main Section -->
+                <StackLayout>
+                    <!-- Contact Information Section -->
+                    <Label Text="Contacts" Style="{StaticResource HeaderLabelStyle}" />
+                    <StackLayout Style="{StaticResource ContactInfoStyle}">
+                        <Image Source="phone_icon.png" HeightRequest="24" WidthRequest="24" />
+                        <Label Text="{Binding Doctor.ContactNumber}" Style="{StaticResource IconLabelStyle}" />
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource ContactInfoStyle}">
+                        <Image Source="email_icon.png" HeightRequest="24" WidthRequest="24" />
+                        <Label Text="{Binding Doctor.Email}" Style="{StaticResource IconLabelStyle}" />
+                    </StackLayout>
+
+                    <!-- Services Section -->
+                    <Label Text="Services" Style="{StaticResource HeaderLabelStyle}" />
+                    <CollectionView ItemsSource="{Binding Services}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Style="{StaticResource CardFrameStyle}">
+                                    <StackLayout>
+                                        <Label Text="{Binding Name}" Style="{StaticResource SubHeaderLabelStyle}" />
+                                        <Label Text="{Binding Price, StringFormat='Price: {0:C}'}" Style="{StaticResource SubHeaderLabelStyle}" />
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <!-- About Section -->
+                <StackLayout>
+                    <Label Text="About" Style="{StaticResource HeaderLabelStyle}" />
+                    <Label Text="{Binding Doctor.About}" Style="{StaticResource SubHeaderLabelStyle}" />
+                </StackLayout>
             </StackLayout>
         </ScrollView>
 
-        <Button Text="Edit Doctor" Style="{StaticResource ButtonStyle}" Command="{Binding EditDoctorInfoRedirect}" CommandParameter="{Binding Doctor.Id}" />
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="End" Spacing="20">
+            <Button Text="Редактирай" Style="{StaticResource ButtonStyle}" Command="{Binding EditDoctorInfoRedirect}" CommandParameter="{Binding Doctor.Id}" />
+            <Button Text="Добави услуга" Style="{StaticResource ButtonStyle}" Command="{Binding AddServiceRedirect}" CommandParameter="{Binding Doctor.Id}" />
+        </StackLayout>
     </Grid>
 </ContentPage>
