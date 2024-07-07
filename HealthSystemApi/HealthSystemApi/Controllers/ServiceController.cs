@@ -27,5 +27,11 @@ namespace HealthSystemApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("AllById")]
+        public async Task<IActionResult> AllById([FromQuery] int id)
+        {
+            return Ok(await serviceService.AllByIdAsync(id));
+        }
     }
 }

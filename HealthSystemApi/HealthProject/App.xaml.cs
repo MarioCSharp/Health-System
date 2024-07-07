@@ -1,4 +1,5 @@
 ﻿using HealthProject.Services.DoctorService;
+using HealthProject.Services.ServiceService;
 
 namespace HealthProject
 {
@@ -19,7 +20,9 @@ namespace HealthProject
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IDoctorService, DoctorService>();
+            services.AddTransient<IServiceService, ServiceService>();
             services.AddTransient<HospitalDetailsPage>();
+            services.AddTransient<DoctorDetailsPage>();
         }
     }
 }

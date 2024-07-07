@@ -29,5 +29,15 @@ namespace HealthSystemApi.Services.ServiceService
 
             return await context.Services.ContainsAsync(service);
         }
+
+        public async Task<List<ServiceModel>> AllByIdAsync(int id)
+        {
+            return await context.Services.Where(x => x.DoctorId == id)
+                .Select(x => new ServiceModel()
+                {
+                    Name = x.Name,
+                    Price = x.Price
+                }).ToListAsync();
+        }
     }
 }

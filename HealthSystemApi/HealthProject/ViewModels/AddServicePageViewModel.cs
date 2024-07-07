@@ -27,6 +27,7 @@ namespace HealthProject.ViewModels
             DoctorPass = doctorPass;
             AddServiceCommand = new AsyncRelayCommand(AddServiceAsync);
             this.serviceService = serviceService;
+            this.doctorService = doctorService;
             service = new ServiceAddModel() { DoctorId = doctorPass.Id };
         }
 

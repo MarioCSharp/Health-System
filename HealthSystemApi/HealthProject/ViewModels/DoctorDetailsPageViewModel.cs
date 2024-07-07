@@ -28,6 +28,7 @@ namespace HealthProject.ViewModels
             this.EditDoctorInfoRedirect = new AsyncRelayCommand<object>(RedirectToEditInfo);
             NavigateBackCommand = new AsyncRelayCommand(OnNavigateBack);
             AddServiceRedirect = new AsyncRelayCommand<object>(RedirectToAddService);
+            this.serviceService = serviceService;
             LoadServices();
         }
 

@@ -72,7 +72,7 @@
                        AutomationProperties.Name="Hospital ID Entry" />
 
                     <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" 
-                        Command="{Binding AddServiceAsync}" 
+                        Command="{Binding AddServiceCommand}" 
                         AutomationProperties.IsInAccessibleTree="True" 
                         AutomationProperties.Name="Add Doctor Button" />
                 </StackLayout>

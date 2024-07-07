@@ -20,6 +20,7 @@ public partial class DoctorDetailsPage : ContentPage
             BindingContext = new DoctorDetailsPageViewModel(hospital, serviceService);
         }
     }
+
     public DoctorDetailsPage(IServiceService serviceService)
 	{
 		InitializeComponent();

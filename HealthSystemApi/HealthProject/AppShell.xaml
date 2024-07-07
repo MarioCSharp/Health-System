@@ -41,4 +41,8 @@
     <ShellContent Title="EditDoctorInfo"
       Route="EditDoctorInfo"
       ContentTemplate="{DataTemplate local:EditDoctorInfo}"/>
+
+    <ShellContent Title="AddServicePage"
+      Route="AddServicePage"
+      ContentTemplate="{DataTemplate local:AddServicePage}"/>
 </Shell>
