@@ -16,6 +16,7 @@ namespace HealthProject.ViewModels
         public ICommand EditDoctorInfoRedirect { get; }
         public ICommand NavigateBackCommand { get; }
         public ICommand AddServiceRedirect { get; }
+        public ICommand ServiceDetailsCommand { get; }
         private IServiceService serviceService;
 
         [ObservableProperty]
@@ -25,9 +26,10 @@ namespace HealthProject.ViewModels
                                           IServiceService serviceService)
         {
             Doctor = doctor;
-            this.EditDoctorInfoRedirect = new AsyncRelayCommand<object>(RedirectToEditInfo);
+            EditDoctorInfoRedirect = new AsyncRelayCommand<object>(RedirectToEditInfo);
             NavigateBackCommand = new AsyncRelayCommand(OnNavigateBack);
             AddServiceRedirect = new AsyncRelayCommand<object>(RedirectToAddService);
+            ServiceDetailsCommand = new AsyncRelayCommand<object>(ServiceDetailsAsync);
             this.serviceService = serviceService;
             LoadServices();
         }
@@ -60,6 +62,17 @@ namespace HealthProject.ViewModels
                 var doctorJson = JsonConvert.SerializeObject(new DoctorPassModel { Id = id });
                 var encodedDoctorJson = Uri.EscapeDataString(doctorJson);
                 await Shell.Current.GoToAsync($"///AddServicePage?doctorJson={encodedDoctorJson}");
+            }
+        }
+
+        private async Task ServiceDetailsAsync(object parameter)
+        {
+            if (parameter is int id)
+            {
+                var service = await serviceService.DetailsAsync(id);
+                var serviceJson = JsonConvert.SerializeObject(service);
+                var encodedServiceJson = Uri.EscapeDataString(serviceJson);
+                await Shell.Current.GoToAsync($"///ServiceDetailsPage?serviceJson={encodedServiceJson}");
             }
         }
     }

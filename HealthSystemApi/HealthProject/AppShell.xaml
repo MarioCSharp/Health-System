@@ -45,4 +45,8 @@
     <ShellContent Title="AddServicePage"
       Route="AddServicePage"
       ContentTemplate="{DataTemplate local:AddServicePage}"/>
+
+    <ShellContent Title="ServiceDetailsPage"
+      Route="ServiceDetailsPage"
+      ContentTemplate="{DataTemplate local:ServiceDetailsPage}"/>
 </Shell>

@@ -3,22 +3,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HealthSystemApi.Data.Models
 {
-    public class Service
+    public class Booking
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public string? Name { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
-        public decimal Price { get; set; }
+        public string? UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public User? User { get; set; }
 
         [Required]
-        public string? Location { get; set; }
-
-        [Required]
-        public string? Description { get; set; }
+        public int ServiceId { get; set; }
+        [ForeignKey(nameof(ServiceId))]
+        public Service? Service { get; set; }
 
         [Required]
         public int DoctorId { get; set; }

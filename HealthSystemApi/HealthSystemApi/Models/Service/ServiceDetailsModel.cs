@@ -1,22 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace HealthSystemApi.Models.Service
+﻿namespace HealthSystemApi.Models.Service
 {
-    public class ServiceAddModel
+    public class ServiceDetailsModel
     {
-        [Required]
+        public int Id { get; set; }
+
         public string? Name { get; set; }
 
-        [Required]
         public decimal Price { get; set; }
 
-        [Required]
         public string? Location { get; set; }
 
-        [Required]
         public string? Description { get; set; }
 
-        [Required]
         public int DoctorId { get; set; }
     }
 }

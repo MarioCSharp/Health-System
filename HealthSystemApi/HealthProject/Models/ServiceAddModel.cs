@@ -14,6 +14,9 @@ namespace HealthProject.Models
         public string? Location { get; set; }
 
         [Required]
+        public string? Description { get; set; }
+
+        [Required]
         public int DoctorId { get; set; }
     }
 }

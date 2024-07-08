@@ -33,5 +33,24 @@ namespace HealthSystemApi.Controllers
         {
             return Ok(await serviceService.AllByIdAsync(id));
         }
+
+        [HttpGet("Details")]
+        public async Task<IActionResult> Details([FromQuery] int id)
+        {
+            return Ok(await serviceService.DetailsAsync(id));
+        }
+
+        [HttpGet("Book")]
+        public async Task<IActionResult> Book([FromQuery] BookingModel model)
+        {
+            var isAvailable = await serviceService.BookAsync(model);
+
+            if (!isAvailable)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
     }
 }

@@ -6,5 +6,6 @@ namespace HealthProject.Services.ServiceService
     {
         Task AddAsync(ServiceAddModel model);
         Task<List<ServiceModel>> AllByIdAsync(int id);
+        Task<ServiceDetailsModel> DetailsAsync(int id);
     }
 }

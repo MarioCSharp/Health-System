@@ -113,5 +113,44 @@ namespace HealthProject.Services.ServiceService
 
             return new List<ServiceModel>();
         }
+
+        public async Task<ServiceDetailsModel> DetailsAsync(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                string queryString = $"?id={id}";
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/Details{queryString}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var service = JsonSerializer.Deserialize<ServiceDetailsModel>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return service;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                    return new ServiceDetailsModel();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new ServiceDetailsModel();
+        }
     }
 }

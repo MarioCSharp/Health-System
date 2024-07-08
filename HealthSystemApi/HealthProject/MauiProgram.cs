@@ -47,6 +47,7 @@ namespace HealthProject
             builder.Services.AddTransient<EditDoctorInfo>();
             builder.Services.AddTransient<DoctorDetailsPage>();
             builder.Services.AddTransient<AddServicePage>();
+            builder.Services.AddTransient<ServiceDetailsPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

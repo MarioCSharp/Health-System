@@ -71,6 +71,15 @@
                        AutomationProperties.IsInAccessibleTree="True" 
                        AutomationProperties.Name="Hospital ID Entry" />
 
+                    <Label Text="Описание:" Style="{StaticResource LabelStyle}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Hospital ID" />
+                    <Entry Placeholder="Въведате описание на услугата"
+                       Style="{StaticResource EntryStyle}" 
+                       Text="{Binding Service.Description}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Hospital ID Entry" />
+
                     <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" 
                         Command="{Binding AddServiceCommand}" 
                         AutomationProperties.IsInAccessibleTree="True" 
