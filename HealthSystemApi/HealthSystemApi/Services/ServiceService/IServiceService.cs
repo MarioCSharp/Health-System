@@ -8,5 +8,6 @@ namespace HealthSystemApi.Services.ServiceService
         Task<List<ServiceModel>> AllByIdAsync(int id);
         Task<ServiceDetailsModel> DetailsAsync(int id);
         Task<bool> BookAsync(BookingModel model);
+        Task<List<string>> AvailableHoursAsync(DateTime date, int serviceId);
     }
 }

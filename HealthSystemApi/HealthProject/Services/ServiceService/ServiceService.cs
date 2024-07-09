@@ -152,5 +152,45 @@ namespace HealthProject.Services.ServiceService
 
             return new ServiceDetailsModel();
         }
+
+        public async Task<List<string>> AvailableHoursAsync(DateTime date, int serviceId)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                string formattedDate = date.ToString("yyyy-MM-dd");
+                string queryString = $"?date={formattedDate}&serviceId={serviceId}";
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/AvailableHours{queryString}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var service = JsonSerializer.Deserialize<List<string>>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return service;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                    return new List<string>();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new List<string>();
+        }
     }
 }

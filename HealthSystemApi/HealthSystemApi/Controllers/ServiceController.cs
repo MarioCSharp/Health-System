@@ -52,5 +52,17 @@ namespace HealthSystemApi.Controllers
 
             return Ok();
         }
+
+        [HttpGet("AvailableHours")]
+        public async Task<IActionResult> AvailableHours([FromQuery] string date, [FromQuery] int serviceId)
+        {
+            if (!DateTime.TryParseExact(date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+            {
+                return BadRequest("Invalid date format. Please use yyyy-MM-dd.");
+            }
+
+            var doctorBookings = await serviceService.AvailableHoursAsync(parsedDate, serviceId);
+            return Ok(doctorBookings);
+        }
     }
 }

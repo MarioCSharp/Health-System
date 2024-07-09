@@ -48,6 +48,8 @@ namespace HealthProject
             builder.Services.AddTransient<DoctorDetailsPage>();
             builder.Services.AddTransient<AddServicePage>();
             builder.Services.AddTransient<ServiceDetailsPage>();
+            builder.Services.AddTransient<BookingPage>();
+            builder.Services.AddTransient<BookingViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

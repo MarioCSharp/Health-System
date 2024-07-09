@@ -42,19 +42,41 @@ namespace HealthSystemApi.Services.ServiceService
                 }).ToListAsync();
         }
 
+        public async Task<List<string>> AvailableHoursAsync(DateTime date, int serviceId)
+        {
+            var service = await context.Services.FindAsync(serviceId);
+
+            var doctorId = service.DoctorId;
+
+            var targetDate = date.Date;
+
+            var doctorBookings = await context.Bookings
+                .Where(x => x.DoctorId == doctorId && x.Date.Date == targetDate)
+                .ToListAsync();
+
+            var allHours = new List<string>()
+            {
+                "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00",
+                "14:30", "15:00", "15:30", "16:00", "16:30"
+            };
+
+            foreach (var booking in doctorBookings)
+            {
+                var timeToString = booking.Date.TimeOfDay.ToString("hh\\:mm");
+
+                allHours.Remove(timeToString);
+            }
+
+            return allHours;
+        }
+
         public async Task<bool> BookAsync(BookingModel model)
         {
-            var valid = await context.Bookings
-                .AnyAsync(x => $"{x.Date.Hour}:{x.Date.Minute}" == model.Time &&
-                               x.Date.Day == model.Day &&
-                               x.Date.Month == model.Month &&
-                               x.Date.Year == model.Year &&
-                               x.DoctorId == model.DoctorId);
-
-            if (valid)
-            {
-                return false;
-            }
+            var bookings = await context.Bookings
+                .Where(x => x.Date.Day == model.Day &&
+                            x.Date.Month == model.Month &&
+                            x.Date.Year == model.Year &&
+                            x.DoctorId == model.DoctorId).ToListAsync();
 
             var hour = 0;
             var minute = 0;
@@ -75,6 +97,14 @@ namespace HealthSystemApi.Services.ServiceService
             else
             {
                 minute = int.Parse(model.Time[3].ToString() + model.Time[4].ToString());
+            }
+
+            foreach (var item in bookings) 
+            {
+                if (item.Date.Hour == hour && item.Date.Minute == minute)
+                {
+                    return false;
+                }
             }
 
             var dateTime = new DateTime(model.Year, model.Month, model.Day, hour, minute, 0);
