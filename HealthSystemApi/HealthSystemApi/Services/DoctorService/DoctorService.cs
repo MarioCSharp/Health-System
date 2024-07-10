@@ -25,21 +25,45 @@ namespace HealthSystemApi.Services.DoctorService
             await context.Doctors.AddAsync(doctor);
             await context.SaveChangesAsync();
 
+            var doctorInfo = new DoctorInfo()
+            {
+                Specialization = model.Specialization,
+                DoctorId = doctor.Id
+            };
+
+            await context.DoctorsInfo.AddAsync(doctorInfo);
+            await context.SaveChangesAsync();
+
             return await context.Doctors.ContainsAsync(doctor);
         }
 
         public async Task Edit(DoctorDetailsModel model)
         {
             var doc = await context.DoctorsInfo.FirstOrDefaultAsync(x => x.DoctorId == model.Id);
+
+            var wasNull = false;
+
+            if (doc == null)
+            {
+                wasNull = true;
+                doc = new DoctorInfo();
+            }
+
             var doctor = await context.Doctors.FindAsync(model.Id);
 
             doctor.Specialization = model.Specialization;
-            await context.SaveChangesAsync();
             doc.Email = model.Email;
             doc.About = model.About;
             doc.ContactNumber = model.ContactNumber;
             doc.FullName = model.FullName;
             doc.Specialization = model.Specialization;
+            doc.DoctorId = model.Id;
+
+            if (wasNull)
+            {
+                await context.DoctorsInfo.AddAsync(doc);
+            }
+
             await context.SaveChangesAsync();
         }
 
