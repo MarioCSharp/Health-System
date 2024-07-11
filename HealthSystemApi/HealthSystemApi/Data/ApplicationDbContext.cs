@@ -14,5 +14,28 @@ namespace HealthSystemApi.Data
         public DbSet<DoctorInfo> DoctorsInfo { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<HealthIssue> HealthIssues { get; set; }
+        public DbSet<Problem> Problems { get; set; }
+        public DbSet<Symptom> Symptoms { get; set; }
+        public DbSet<SymptomCategory> SymptomCategories { get; set; }
+        public DbSet<SymptomSubCategory> SymptomSubCategories { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Problem>()
+                   .HasMany(p => p.Symptoms)
+                   .WithMany(s => s.Problems)
+                   .UsingEntity<Dictionary<string, object>>(
+                       "ProblemSymptom",
+                       r => r.HasOne<Symptom>().WithMany().HasForeignKey("SymptomId"),
+                       l => l.HasOne<Problem>().WithMany().HasForeignKey("ProblemId"),
+                       je =>
+                       {
+                           je.HasKey("ProblemId", "SymptomId");
+                           je.ToTable("ProblemSymptoms");
+                       });
+
+            base.OnModelCreating(builder);
+        }
     }
 }
