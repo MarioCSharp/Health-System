@@ -4,7 +4,7 @@
              x:Class="HealthProject.BookingPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="BookingPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="True">
     
     <StackLayout Padding="20">
         <Label Text="Select Date:" FontSize="Medium" />

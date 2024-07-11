@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="HomePage"
              x:Name="RootPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="True">
 
     <ContentPage.Content>
         <StackLayout>
