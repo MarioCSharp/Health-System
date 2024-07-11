@@ -3,7 +3,7 @@
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              x:Class="HealthProject.LoginPage"
              Title="LoginPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="True">
     
     <ContentPage.Resources>
         <Style TargetType="Entry">

@@ -8,10 +8,11 @@ public partial class HomePage : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = homePageViewModel;
+		Title = "Клиники";
     }
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-		await Shell.Current.GoToAsync($"//{nameof(AddHospitalPage)}");
+		await Shell.Current.GoToAsync($"{nameof(AddHospitalPage)}");
     }
 }

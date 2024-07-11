@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.DoctorDetailsPage"
              Title="Doctor Details"
-             Shell.NavBarIsVisible="False"
+             Shell.NavBarIsVisible="True"
              x:Name="RootPage">
     <ContentPage.Resources>
         <!-- Define styles for reuse -->

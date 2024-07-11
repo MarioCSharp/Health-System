@@ -4,7 +4,7 @@
              x:Class="HealthProject.AddHospitalPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="Add Hospital"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="True">
 
     <ContentPage.Resources>
         <Style x:Key="LabelStyle" TargetType="Label">
