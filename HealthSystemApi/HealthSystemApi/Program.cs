@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using HealthSystemApi.Services.HealthIssueService;
+using HealthSystemApi.Services.ProblemService;
 
 namespace HealthSystemApi
 {
@@ -35,6 +36,7 @@ namespace HealthSystemApi
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
             builder.Services.AddTransient<IHealthIssueService, HealthIssueService>();
+            builder.Services.AddTransient<IProblemService, ProblemService>();
 
             builder.Services.AddAuthorization();
 
