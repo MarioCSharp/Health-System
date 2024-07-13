@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using HealthSystemApi.Services.HealthIssueService;
 using HealthSystemApi.Services.ProblemService;
+using HealthSystemApi.Services.DocumentService;
 
 namespace HealthSystemApi
 {
@@ -37,6 +38,7 @@ namespace HealthSystemApi
             builder.Services.AddTransient<IServiceService, ServiceService>();
             builder.Services.AddTransient<IHealthIssueService, HealthIssueService>();
             builder.Services.AddTransient<IProblemService, ProblemService>();
+            builder.Services.AddTransient<IDocumentService, DocumentService>();
 
             builder.Services.AddAuthorization();
 

@@ -19,6 +19,7 @@ namespace HealthSystemApi.Data
         public DbSet<Symptom> Symptoms { get; set; }
         public DbSet<SymptomCategory> SymptomCategories { get; set; }
         public DbSet<SymptomSubCategory> SymptomSubCategories { get; set; }
+        public DbSet<Document> Documents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

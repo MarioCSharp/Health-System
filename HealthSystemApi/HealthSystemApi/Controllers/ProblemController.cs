@@ -20,6 +20,11 @@ namespace HealthSystemApi.Controllers
         [HttpGet("Add")]
         public async Task<IActionResult> Add([FromQuery] ProblemAddModel problemAddModel, [FromQuery] SymptomAddModel symptoms)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await problemService.AddAsync(problemAddModel, symptoms.SymptomIds, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if (!result)
