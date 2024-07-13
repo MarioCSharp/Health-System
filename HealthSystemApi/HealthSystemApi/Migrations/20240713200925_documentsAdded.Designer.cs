@@ -4,6 +4,7 @@ using HealthSystemApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthSystemApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240713200925_documentsAdded")]
+    partial class documentsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +123,6 @@ namespace HealthSystemApi.Migrations
                     b.ToTable("DoctorsInfo");
                 });
 
-<<<<<<< Updated upstream
-=======
             modelBuilder.Entity("HealthSystemApi.Data.Models.Document", b =>
                 {
                     b.Property<int>("Id")
@@ -196,7 +197,6 @@ namespace HealthSystemApi.Migrations
                     b.ToTable("HealthIssues");
                 });
 
->>>>>>> Stashed changes
             modelBuilder.Entity("HealthSystemApi.Data.Models.Hospital", b =>
                 {
                     b.Property<int>("Id")
@@ -226,6 +226,36 @@ namespace HealthSystemApi.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Hospitals");
+                });
+
+            modelBuilder.Entity("HealthSystemApi.Data.Models.Problem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HealthIssueId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HealthIssueId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Problems");
                 });
 
             modelBuilder.Entity("HealthSystemApi.Data.Models.Service", b =>
@@ -259,6 +289,67 @@ namespace HealthSystemApi.Migrations
                     b.HasIndex("DoctorId");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("HealthSystemApi.Data.Models.Symptom", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Symptoms");
+                });
+
+            modelBuilder.Entity("HealthSystemApi.Data.Models.SymptomCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SymptomCategories");
+                });
+
+            modelBuilder.Entity("HealthSystemApi.Data.Models.SymptomSubCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SymptomSubCategories");
                 });
 
             modelBuilder.Entity("HealthSystemApi.Data.Models.User", b =>
@@ -463,6 +554,21 @@ namespace HealthSystemApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ProblemSymptom", b =>
+                {
+                    b.Property<int>("ProblemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SymptomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProblemId", "SymptomId");
+
+                    b.HasIndex("SymptomId");
+
+                    b.ToTable("ProblemSymptoms", (string)null);
+                });
+
             modelBuilder.Entity("HealthSystemApi.Data.Models.Booking", b =>
                 {
                     b.HasOne("HealthSystemApi.Data.Models.Doctor", "Doctor")
@@ -520,8 +626,6 @@ namespace HealthSystemApi.Migrations
                     b.Navigation("Doctor");
                 });
 
-<<<<<<< Updated upstream
-=======
             modelBuilder.Entity("HealthSystemApi.Data.Models.Document", b =>
                 {
                     b.HasOne("HealthSystemApi.Data.Models.HealthIssue", "HealthIssue")
@@ -552,7 +656,6 @@ namespace HealthSystemApi.Migrations
                     b.Navigation("User");
                 });
 
->>>>>>> Stashed changes
             modelBuilder.Entity("HealthSystemApi.Data.Models.Hospital", b =>
                 {
                     b.HasOne("HealthSystemApi.Data.Models.User", "Owner")
@@ -564,6 +667,25 @@ namespace HealthSystemApi.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("HealthSystemApi.Data.Models.Problem", b =>
+                {
+                    b.HasOne("HealthSystemApi.Data.Models.HealthIssue", "HealthIssue")
+                        .WithMany()
+                        .HasForeignKey("HealthIssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealthSystemApi.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HealthIssue");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HealthSystemApi.Data.Models.Service", b =>
                 {
                     b.HasOne("HealthSystemApi.Data.Models.Doctor", "Doctor")
@@ -573,6 +695,28 @@ namespace HealthSystemApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
+                });
+
+            modelBuilder.Entity("HealthSystemApi.Data.Models.Symptom", b =>
+                {
+                    b.HasOne("HealthSystemApi.Data.Models.SymptomSubCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("HealthSystemApi.Data.Models.SymptomSubCategory", b =>
+                {
+                    b.HasOne("HealthSystemApi.Data.Models.SymptomCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -622,6 +766,21 @@ namespace HealthSystemApi.Migrations
                     b.HasOne("HealthSystemApi.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProblemSymptom", b =>
+                {
+                    b.HasOne("HealthSystemApi.Data.Models.Problem", null)
+                        .WithMany()
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealthSystemApi.Data.Models.Symptom", null)
+                        .WithMany()
+                        .HasForeignKey("SymptomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

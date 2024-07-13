@@ -1,5 +1,14 @@
+<<<<<<< Updated upstream
 ﻿using HealthSystemApi.Data.Models;
 using Microsoft.AspNetCore.Identity;
+=======
+﻿using HealthSystemApi.Data;
+using HealthSystemApi.Data.Models;
+using HealthSystemApi.Services.ProblemService;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+>>>>>>> Stashed changes
 
 namespace HealthSystemApi.Extensions
 {
@@ -11,6 +20,15 @@ namespace HealthSystemApi.Extensions
             var services = serviceScope.ServiceProvider;
 
             SeedAdministrator(services);
+<<<<<<< Updated upstream
+=======
+            SeedSymptoms(services.GetRequiredService<IProblemService>());
+        }
+
+        private async static Task SeedSymptoms(IProblemService problemService)
+        {
+            problemService.AddSymptomsAsync();
+>>>>>>> Stashed changes
         }
 
         public static void SeedAdministrator(IServiceProvider services)
