@@ -71,5 +71,14 @@ namespace HealthSystemApi.Controllers
 
             return Ok(result);
         }
+        
+        [HttpGet("AddSymptoms")]
+        public async Task<IActionResult> AddSymptoms()
+        {
+            await problemService.AddSymptomsAsync();
+
+            return Ok();
+        }
+
     }
 }
