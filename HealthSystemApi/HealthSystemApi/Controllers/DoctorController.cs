@@ -22,6 +22,11 @@ namespace HealthSystemApi.Controllers
         [HttpGet("Add")]
         public async Task<IActionResult> Add([FromQuery] DoctorAddModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await doctorService.AddAsync(model);
 
             return result ? Ok() : BadRequest();

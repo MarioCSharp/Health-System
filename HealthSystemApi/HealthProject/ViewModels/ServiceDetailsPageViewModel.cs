@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using Newtonsoft.Json;
 using System.Windows.Input;
 
@@ -11,9 +12,12 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private ServiceDetailsModel service;
 
-        public ServiceDetailsPageViewModel(ServiceDetailsModel service)
+        private IAuthenticationService authenticationService;
+        public ServiceDetailsPageViewModel(ServiceDetailsModel service,
+                                           IAuthenticationService authenticationService)
         {
             Service = service;
+            this.authenticationService = authenticationService;
             MakeBookingCommand = new AsyncRelayCommand<object>(OnMakeBooking);
         }
 
@@ -21,6 +25,13 @@ namespace HealthProject.ViewModels
 
         private async Task OnMakeBooking(object parameter)
         {
+            var auth = await authenticationService.IsAuthenticated();
+            if (auth.IsAuthenticated == false)
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
+            }
+
             if (parameter is int id)
             {
                 var model = new ServiceModel()

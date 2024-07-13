@@ -4,7 +4,7 @@
              x:Class="HealthProject.ServiceDetailsPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="Service Details"
-             Shell.NavBarIsVisible="False"
+             Shell.NavBarIsVisible="True"
              x:DataType="local:ServiceDetailsPageViewModel">
     <ContentPage.Resources>
         <Style x:Key="HeaderLabelStyle" TargetType="Label">

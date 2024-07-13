@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ServiceService;
 using System.Collections.ObjectModel;
 
@@ -17,7 +18,6 @@ namespace HealthProject.ViewModels
         private ServiceModel service;
 
         private IServiceService serviceService;
-
         public BookingViewModel(ServiceModel service,
                                 IServiceService serviceService)
         {

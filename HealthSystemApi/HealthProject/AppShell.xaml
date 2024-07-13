@@ -4,53 +4,87 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:HealthProject"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="HealthProject">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!-- Home Section -->
+    <FlyoutItem Title="Начало">
+        <ShellContent
+            Title="Начало"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+    </FlyoutItem>
 
-    <ShellContent Title="RegisterPage"
-                      Route="RegisterPage"
-                      ContentTemplate="{DataTemplate local:RegisterPage}"/>
+    <FlyoutItem Title="Клиники">
+        <ShellContent
+            Title="Начало"
+            ContentTemplate="{DataTemplate local:HomePage}"
+            Route="HomePage"/>
+    </FlyoutItem>
 
-    <ShellContent Title="LoginPage"
-                  Route="LoginPage"
-                  ContentTemplate="{DataTemplate local:LoginPage}"/>
+    <FlyoutItem Title="Автентикация">
+        <Tab>
+            <ShellContent
+                Title="Регистрация"
+                ContentTemplate="{DataTemplate local:RegisterPage}"
+                Route="RegisterPage"/>
+            <ShellContent
+                Title="Вписване"
+                ContentTemplate="{DataTemplate local:LoginPage}"
+                Route="LoginPage"/>
+        </Tab>
+    </FlyoutItem>
 
-    <ShellContent Title="HomePage"
-              Route="HomePage"
-              ContentTemplate="{DataTemplate local:HomePage}"/>
+    <!-- Uncomment or remove these sections if you need them visible again -->
+    <!--
+    <FlyoutItem Title="Hospitals">
+        <Tab>
+            <ShellContent
+                Title="Add Hospital"
+                ContentTemplate="{DataTemplate local:AddHospitalPage}"
+                Route="AddHospitalPage"/>
+            <ShellContent
+                Title="Hospital Details"
+                ContentTemplate="{DataTemplate local:HospitalDetailsPage}"
+                Route="HospitalDetailsPage"/>
+        </Tab>
+    </FlyoutItem>
 
-    <ShellContent Title="AddHospitalPage"
-          Route="AddHospitalPage"
-          ContentTemplate="{DataTemplate local:AddHospitalPage}"/>
+    <FlyoutItem Title="Doctors">
+        <Tab>
+            <ShellContent
+                Title="Add Doctor"
+                ContentTemplate="{DataTemplate local:AddDoctorPage}"
+                Route="AddDoctorPage"/>
+            <ShellContent
+                Title="Doctor Details"
+                ContentTemplate="{DataTemplate local:DoctorDetailsPage}"
+                Route="DoctorDetailsPage"/>
+            <ShellContent
+                Title="Edit Doctor Info"
+                ContentTemplate="{DataTemplate local:EditDoctorInfo}"
+                Route="EditDoctorInfo"/>
+        </Tab>
+    </FlyoutItem>
 
-    <ShellContent Route="HospitalDetailsPage" ContentTemplate="{DataTemplate local:HospitalDetailsPage}" />
+    <FlyoutItem Title="Services">
+        <Tab>
+            <ShellContent
+                Title="Add Service"
+                ContentTemplate="{DataTemplate local:AddServicePage}"
+                Route="AddServicePage"/>
+            <ShellContent
+                Title="Service Details"
+                ContentTemplate="{DataTemplate local:ServiceDetailsPage}"
+                Route="ServiceDetailsPage"/>
+        </Tab>
+    </FlyoutItem>
 
-    <ShellContent Title="AddDoctorPage"
-      Route="AddDoctorPage"
-      ContentTemplate="{DataTemplate local:AddDoctorPage}"/>
-
-    <ShellContent Title="DoctorDetailsPage"
-      Route="DoctorDetailsPage"
-      ContentTemplate="{DataTemplate local:DoctorDetailsPage}"/>
-
-    <ShellContent Title="EditDoctorInfo"
-      Route="EditDoctorInfo"
-      ContentTemplate="{DataTemplate local:EditDoctorInfo}"/>
-
-    <ShellContent Title="AddServicePage"
-      Route="AddServicePage"
-      ContentTemplate="{DataTemplate local:AddServicePage}"/>
-
-    <ShellContent Title="ServiceDetailsPage"
-      Route="ServiceDetailsPage"
-      ContentTemplate="{DataTemplate local:ServiceDetailsPage}"/>
-
-    <ShellContent Title="BookingPage"
-      Route="BookingPage"
-      ContentTemplate="{DataTemplate local:BookingPage}"/>
+    <FlyoutItem Title="Bookings">
+        <ShellContent
+            Title="Booking"
+            ContentTemplate="{DataTemplate local:BookingPage}"
+            Route="BookingPage"/>
+    </FlyoutItem>
+    -->
 </Shell>

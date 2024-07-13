@@ -8,5 +8,6 @@ public partial class RegisterPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = registerPageViewModel;
+        Title = "Регистрация";
     }
 }

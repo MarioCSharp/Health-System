@@ -1,4 +1,5 @@
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ServiceService;
 using HealthProject.ViewModels;
 using Newtonsoft.Json;
@@ -22,7 +23,7 @@ public partial class BookingPage : ContentPage
     }
     public BookingPage(IServiceService serviceService)
 	{
-		InitializeComponent();
+        InitializeComponent();
         this.serviceService = serviceService;
 	}
 }

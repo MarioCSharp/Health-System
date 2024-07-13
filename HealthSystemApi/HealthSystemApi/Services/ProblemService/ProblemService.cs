@@ -40,7 +40,7 @@ namespace HealthSystemApi.Services.ProblemService
 
             return await context.Problems.ContainsAsync(problem);
         }
-
+        
         public async Task AddSymptomsAsync()
         {
             if (await context.SymptomCategories.AnyAsync())
@@ -890,7 +890,6 @@ namespace HealthSystemApi.Services.ProblemService
 
             await context.SaveChangesAsync();
         }
-
         public async Task<ProblemDetailsModel> DetailsAsync(int id)
         {
             var problem = await context.Problems

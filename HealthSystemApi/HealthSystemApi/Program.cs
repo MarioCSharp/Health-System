@@ -4,11 +4,14 @@ using HealthSystemApi.Extensions;
 using HealthSystemApi.Services.DoctorService;
 using HealthSystemApi.Services.HospitalService;
 using HealthSystemApi.Services.ServiceService;
-using Microsoft.AspNetCore.Authentication;
+using HealthSystemApi.Services.AuthenticationService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using HealthSystemApi.Services.HealthIssueService;
+using HealthSystemApi.Services.ProblemService;
+using HealthSystemApi.Services.DocumentService;
 
 namespace HealthSystemApi
 {
@@ -33,6 +36,10 @@ namespace HealthSystemApi
             builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
+            builder.Services.AddTransient<IHealthIssueService, HealthIssueService>();
+            builder.Services.AddTransient<IProblemService, ProblemService>();
+            builder.Services.AddTransient<IDocumentService, DocumentService>();
+
             builder.Services.AddAuthorization();
 
             builder.Services.AddSwaggerGen(options =>

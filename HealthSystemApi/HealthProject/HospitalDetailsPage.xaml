@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="HospitalDetailsPage"
              x:Name="RootPage"
-             Shell.NavBarIsVisible="False">
+             Shell.NavBarIsVisible="True">
     <ContentPage.Resources>
         <!-- Define styles for reuse -->
         <Style x:Key="HeaderLabelStyle" TargetType="Label">
