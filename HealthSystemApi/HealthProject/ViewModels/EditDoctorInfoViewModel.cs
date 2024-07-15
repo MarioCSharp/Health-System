@@ -33,7 +33,7 @@ namespace HealthProject.ViewModels
             var hospital = await hospitalService.Details(doc.HospitalId);
             var hospitalJson = JsonConvert.SerializeObject(hospital);
             var encodedHospitalJson = Uri.EscapeDataString(hospitalJson);
-            await Shell.Current.GoToAsync($"///HospitalDetailsPage?hospitalJson={encodedHospitalJson}");
+            await Shell.Current.GoToAsync($"HospitalDetailsPage?hospitalJson={encodedHospitalJson}");
         }
     }
 }

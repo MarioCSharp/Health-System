@@ -28,7 +28,7 @@ namespace HealthProject.ViewModels
             var auth = await authenticationService.IsAuthenticated();
             if (auth.IsAuthenticated == false)
             {
-                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace HealthProject.ViewModels
 
                 var serviceJson = JsonConvert.SerializeObject(model);
                 var encodedServiceJson = Uri.EscapeDataString(serviceJson);
-                await Shell.Current.GoToAsync($"///BookingPage?serviceJson={encodedServiceJson}");
+                await Shell.Current.GoToAsync($"BookingPage?serviceJson={encodedServiceJson}");
             }
         }
     }

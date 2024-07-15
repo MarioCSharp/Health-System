@@ -1,7 +1,4 @@
-﻿using HealthProject.Models;
-using System.Collections.ObjectModel;
-
-namespace HealthProject
+﻿namespace HealthProject
 {
     public partial class AppShell : Shell
     {
@@ -18,6 +15,9 @@ namespace HealthProject
             Routing.RegisterRoute(nameof(AddServicePage), typeof(AddServicePage));
             Routing.RegisterRoute(nameof(ServiceDetailsPage), typeof(ServiceDetailsPage));
             Routing.RegisterRoute(nameof(BookingPage), typeof(BookingPage));
+            Routing.RegisterRoute(nameof(HealthIssueAddPage), typeof(HealthIssueAddPage));
+            Routing.RegisterRoute(nameof(HealthIssuesPage), typeof(HealthIssuesPage));
+            Routing.RegisterRoute(nameof(HealtIssueDetailsPage), typeof(HealtIssueDetailsPage));
         }
     }
 }

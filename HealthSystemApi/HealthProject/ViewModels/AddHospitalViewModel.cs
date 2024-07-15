@@ -25,7 +25,7 @@ namespace HealthProject.ViewModels
         {
             await hospitalService.Add(hospitalModel);
 
-            await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
+            await Shell.Current.GoToAsync($"{nameof(HomePage)}");
         }
 
         private async void OnNavigateBack()

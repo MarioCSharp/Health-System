@@ -43,7 +43,7 @@ namespace HealthProject.ViewModels
                 var doctorJson = JsonConvert.SerializeObject(doctor);
                 var encodedDoctorJson = Uri.EscapeDataString(doctorJson);
 
-                await Shell.Current.GoToAsync($"///DoctorDetailsPage?doctorJson={encodedDoctorJson}");
+                await Shell.Current.GoToAsync($"DoctorDetailsPage?doctorJson={encodedDoctorJson}");
             }
         }
     }

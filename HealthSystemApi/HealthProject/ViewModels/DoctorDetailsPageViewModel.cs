@@ -46,7 +46,7 @@ namespace HealthProject.ViewModels
             {
                 var doctorJson = JsonConvert.SerializeObject(doctor);
                 var encodedDoctorJson = Uri.EscapeDataString(doctorJson);
-                await Shell.Current.GoToAsync($"///EditDoctorInfo?hospitalJson={encodedDoctorJson}");
+                await Shell.Current.GoToAsync($"EditDoctorInfo?hospitalJson={encodedDoctorJson}");
             }
         }
 
@@ -61,7 +61,7 @@ namespace HealthProject.ViewModels
             {
                 var doctorJson = JsonConvert.SerializeObject(new DoctorPassModel { Id = id });
                 var encodedDoctorJson = Uri.EscapeDataString(doctorJson);
-                await Shell.Current.GoToAsync($"///AddServicePage?doctorJson={encodedDoctorJson}");
+                await Shell.Current.GoToAsync($"AddServicePage?doctorJson={encodedDoctorJson}");
             }
         }
 
@@ -72,7 +72,7 @@ namespace HealthProject.ViewModels
                 var service = await serviceService.DetailsAsync(id);
                 var serviceJson = JsonConvert.SerializeObject(service);
                 var encodedServiceJson = Uri.EscapeDataString(serviceJson);
-                await Shell.Current.GoToAsync($"///ServiceDetailsPage?serviceJson={encodedServiceJson}");
+                await Shell.Current.GoToAsync($"ServiceDetailsPage?serviceJson={encodedServiceJson}");
             }
         }
     }

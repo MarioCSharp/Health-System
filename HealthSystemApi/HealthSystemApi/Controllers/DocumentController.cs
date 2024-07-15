@@ -6,7 +6,7 @@ using System.Security.Claims;
 namespace HealthSystemApi.Controllers
 {
     [ApiController]
-    [Route("api/[contoller]")]
+    [Route("api/[controller]")]
     public class DocumentController : ControllerBase
     {
         private IDocumentService documentService;

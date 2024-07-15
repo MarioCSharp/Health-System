@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HealthProject.HealthIssuesPage"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             Title="HealthIssuesPage">
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="Добави здравен проблем" 
+                Command="{Binding AddHealthIssueCommand}"
+                HorizontalOptions="End"
+                Margin="10"
+                BackgroundColor="#007ACC"/>
+
+            <CollectionView ItemsSource="{Binding HealthIssues}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Delete" 
+                                           BackgroundColor="Red" 
+                                           Command="{Binding BindingContext.DeleteHealthIssueCommand, Source={x:Reference RootPage}}"
+                                           CommandParameter="{Binding Id}">
+                                    </SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame CornerRadius="10" 
+                                   BorderColor="#007ACC" 
+                                   Margin="10" 
+                                   Padding="10" 
+                                   HasShadow="True" 
+                                   BackgroundColor="White">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.NavigateToHealthIssueDetailsCommand, Source={x:Reference RootPage}}"
+                                          CommandParameter="{Binding Id}" />
+                                </Frame.GestureRecognizers>
+                                <StackLayout>
+                                    <Label Text="{Binding Name}" 
+                                       FontSize="20" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                </StackLayout>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

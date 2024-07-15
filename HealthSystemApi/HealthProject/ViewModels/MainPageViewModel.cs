@@ -21,11 +21,11 @@ namespace HealthProject.ViewModels
 
             if (authToken.IsAuthenticated)
             {
-                await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
+                await Shell.Current.GoToAsync($"{nameof(HomePage)}");
             }
             else
             {
-                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
             }
         }
     }

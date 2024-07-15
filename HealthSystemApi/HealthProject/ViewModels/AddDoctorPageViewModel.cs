@@ -34,13 +34,13 @@ namespace HealthProject.ViewModels
 
             if (!result)
             {
-                await Shell.Current.GoToAsync($"//{nameof(AddDoctorPage)}");
+                await Shell.Current.GoToAsync($"{nameof(AddDoctorPage)}");
             }
 
             var hospital = await hospitalService.Details(doctorModel.HospitalId);
             var hospitalJson = JsonConvert.SerializeObject(hospital);
             var encodedHospitalJson = Uri.EscapeDataString(hospitalJson);
-            await Shell.Current.GoToAsync($"///HospitalDetailsPage?hospitalJson={encodedHospitalJson}");
+            await Shell.Current.GoToAsync($"HospitalDetailsPage?hospitalJson={encodedHospitalJson}");
         }
 
         private async void OnNavigateBack()
