@@ -40,7 +40,7 @@ namespace HealthSystemApi.Services.ProblemService
 
             return await context.Problems.ContainsAsync(problem);
         }
-
+        
         public async Task AddSymptomsAsync()
         {
             if (await context.SymptomCategories.AnyAsync())
@@ -48,6 +48,16 @@ namespace HealthSystemApi.Services.ProblemService
                 return;
             }
 
+<<<<<<< HEAD
+        public async Task AddSymptomsAsync()
+        {
+            if (await context.SymptomCategories.AnyAsync())
+            {
+                return;
+            }
+
+=======
+>>>>>>> d3b19353e6d99ce4c1cfeda84dde7cb69b10790a
 
             await context.SymptomCategories.AddRangeAsync(new List<SymptomCategory>()
                 {
