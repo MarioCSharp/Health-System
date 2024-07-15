@@ -3,7 +3,7 @@ using HealthProject.Models;
 using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ServiceService;
 using System.Collections.ObjectModel;
-
+using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class BookingViewModel : ObservableObject

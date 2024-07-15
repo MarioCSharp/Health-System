@@ -9,5 +9,8 @@
         public DateTime IssueStartDate { get; set; }
 
         public DateTime IssueEndDate { get; set; }
+
+        public string? StartDate { get; set; }
+        public string? EndDate { get; set; }
     }
 }

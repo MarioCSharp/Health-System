@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HealthProject.Models;
 using HealthProject.Services.HealthIssueService;
-
+using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class HealtIssueDetailsViewModel : ObservableObject

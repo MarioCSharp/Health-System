@@ -9,10 +9,8 @@ namespace HealthSystemApi.Models.HealthIssue
 
         public string? Description { get; set; }
 
-        [Required]
         public DateTime IssueStartDate { get; set; }
 
-        [Required]
         public DateTime IssueEndDate { get; set; }
     }
 }

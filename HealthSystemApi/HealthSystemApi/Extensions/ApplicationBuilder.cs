@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-
-﻿using HealthSystemApi.Data;
 using HealthSystemApi.Data.Models;
 using HealthSystemApi.Services.ProblemService;
-=======
-﻿using HealthSystemApi.Data.Models;
->>>>>>> d3b19353e6d99ce4c1cfeda84dde7cb69b10790a
 using Microsoft.AspNetCore.Identity;
-using HealthSystemApi.Services.ProblemService;
+
 namespace HealthSystemApi.Extensions
 {
     public static class ApplicationBuilder

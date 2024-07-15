@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
 using HealthProject.Services.HospitalService;
+using HealthProject.Views;
 using System.Windows.Input;
 
 namespace HealthProject.ViewModels

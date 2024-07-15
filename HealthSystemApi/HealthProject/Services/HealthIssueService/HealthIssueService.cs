@@ -32,7 +32,13 @@ namespace HealthProject.Services.HealthIssueService
 
             try
             {
-                string queryString = ToQueryString(model);
+                model.StartDate = model.IssueStartDate.ToString("yyyy-MM-dd");
+                model.EndDate = model.IssueEndDate.ToString("yyyy-MM-dd");
+                var name = model.Name;
+                var description = model.Description;
+
+                string queryString = $"?startDate={model.StartDate}&endDate={model.EndDate}&name={Uri.EscapeDataString(name)}&description={Uri.EscapeDataString(description)}";
+
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/Add{queryString}");
                 response.EnsureSuccessStatusCode();

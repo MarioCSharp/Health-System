@@ -16,14 +16,27 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("Add")]
-        public async Task<IActionResult> Add([FromQuery] HealthIssueAddModel healthIssueAddModel)
+        public async Task<IActionResult> Add([FromQuery] string startDate, [FromQuery] string endDate, [FromQuery] string name, [FromQuery] string description)
         {
-            if (!ModelState.IsValid)
+            if (!DateTime.TryParseExact(startDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedStartDate))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Invalid start date format. Please use yyyy-MM-dd.");
             }
 
-            var result = await healthIssueService.AddAsync(healthIssueAddModel, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (!DateTime.TryParseExact(endDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedEndDate))
+            {
+                return BadRequest("Invalid end date format. Please use yyyy-MM-dd.");
+            }
+
+            var model = new HealthIssueAddModel()
+            {
+                Name = name,
+                Description = description,
+                IssueStartDate = parsedStartDate,
+                IssueEndDate = parsedEndDate
+            };
+
+            var result = await healthIssueService.AddAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if (!result)
             {
@@ -32,6 +45,7 @@ namespace HealthSystemApi.Controllers
 
             return Ok(result);
         }
+
 
         [HttpGet("Remove")]
         public async Task<IActionResult> Remove([FromQuery] int id)

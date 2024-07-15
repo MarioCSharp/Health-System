@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Services.AuthenticationService;
 using System.Windows.Input;
-
+using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject
@@ -21,11 +21,11 @@ namespace HealthProject.ViewModels
 
             if (authToken.IsAuthenticated)
             {
-                await Shell.Current.GoToAsync($"{nameof(HomePage)}");
+                await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
             }
             else
             {
-                await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
             }
         }
     }

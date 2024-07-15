@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
 using HealthProject.Services.AuthenticationService;
 using System.Windows.Input;
-
+using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class RegisterPageViewModel : ObservableObject

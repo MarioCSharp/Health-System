@@ -7,7 +7,7 @@ using HealthProject.Services.NavigationService;
 using HealthProject.Services.ServiceService;
 using HealthProject.ViewModels;
 using Microsoft.Extensions.Logging;
-
+using HealthProject.Views;
 namespace HealthProject
 {
     public static class MauiProgram

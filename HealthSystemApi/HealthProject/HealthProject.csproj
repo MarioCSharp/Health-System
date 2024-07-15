@@ -65,45 +65,45 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
-	  <MauiXaml Update="AddDoctorPage.xaml">
+	  <MauiXaml Update="Views\AddDoctorPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="AddHospitalPage.xaml">
+	  <MauiXaml Update="Views\AddHospitalPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="AddServicePage.xaml">
+	  <MauiXaml Update="Views\AddServicePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="BookingPage.xaml">
+	  <MauiXaml Update="Views\BookingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="DoctorDetailsPage.xaml">
+	  <MauiXaml Update="Views\DoctorDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="EditDoctorInfo.xaml">
+	  <MauiXaml Update="Views\EditDoctorInfo.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="HealthIssueAddPage.xaml">
+	  <MauiXaml Update="Views\HealthIssueAddPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="HealthIssuesPage.xaml">
+	  <MauiXaml Update="Views\HealthIssuesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="HealtIssueDetailsPage.xaml">
+	  <MauiXaml Update="Views\HealtIssueDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="HomePage.xaml">
+	  <MauiXaml Update="Views\HomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="HospitalDetailsPage.xaml">
+	  <MauiXaml Update="Views\HospitalDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="RegisterPage.xaml">
+	  <MauiXaml Update="Views\RegisterPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ServiceDetailsPage.xaml">
+	  <MauiXaml Update="Views\ServiceDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

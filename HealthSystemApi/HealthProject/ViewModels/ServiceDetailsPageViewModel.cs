@@ -4,7 +4,7 @@ using HealthProject.Models;
 using HealthProject.Services.AuthenticationService;
 using Newtonsoft.Json;
 using System.Windows.Input;
-
+using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class ServiceDetailsPageViewModel : ObservableObject
