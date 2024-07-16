@@ -1,7 +1,4 @@
-﻿using HealthSystemApi.Models.Symptom;
-using System.ComponentModel.DataAnnotations;
-
-namespace HealthSystemApi.Models.Problem
+﻿namespace HealthProject.Models
 {
     public class ProblemDetailsModel
     {

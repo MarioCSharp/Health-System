@@ -1,0 +1,12 @@
+﻿using HealthProject.Models;
+
+namespace HealthProject.Services.ProblemService
+{
+    public interface IProblemService
+    {
+        Task<List<ProblemDisplayModel>> GetUserProblems();
+        Task<bool> AddAsync(ProblemAddModel model, List<int> symptomsIds);
+        Task DeleteAsync(int id);
+        Task<ProblemDetailsModel> DetailsAsync(int id);
+    }
+}

@@ -893,6 +893,7 @@ namespace HealthSystemApi.Services.ProblemService
         {
             var problem = await context.Problems
                 .Include(p => p.Symptoms)
+                .Include(p => p.HealthIssue)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (problem == null)
@@ -904,11 +905,12 @@ namespace HealthSystemApi.Services.ProblemService
             {
                 Date = problem.Date,
                 Notes = problem.Notes,
-                HealthIssueId = problem.HealthIssueId,
+                HealthIssueName = problem.HealthIssue.Name,
                 Symptoms = problem.Symptoms.Select(s => new SymptomModel
                 {
                     Id = s.Id,
-                    Name = s.Name
+                    Name = s.Name,
+                    CategoryName = context.SymptomSubCategories.FindAsync(s.CategoryId).Result.Name
                 }).ToList()
             };
         }
@@ -949,17 +951,13 @@ namespace HealthSystemApi.Services.ProblemService
 
         public async Task<List<ProblemDisplayModel>> UserProblemsAsync(string? userId)
         {
-            var problems = await context.Problems.Where(x => x.UserId == userId).Include(x => x.Symptoms).ToListAsync();
+            var problems = await context.Problems.Where(x => x.UserId == userId).ToListAsync();
 
             return problems.Select(x => new ProblemDisplayModel
             {
+                Id = x.Id,
                 Notes = x.Notes,
-                Date = x.Date,
-                Symptoms = x.Symptoms.Select(y => new SymptomModel()
-                {
-                    Id = y.Id,
-                    Name = y.Name
-                }).ToList()
+                Date = x.Date
             }).ToList();
         }
     }

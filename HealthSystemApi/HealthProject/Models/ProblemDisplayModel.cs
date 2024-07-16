@@ -1,6 +1,4 @@
-﻿using HealthSystemApi.Models.Symptom;
-
-namespace HealthSystemApi.Models.Problem
+﻿namespace HealthProject.Models
 {
     public class ProblemDisplayModel
     {
