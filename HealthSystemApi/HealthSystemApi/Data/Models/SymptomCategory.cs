@@ -9,5 +9,7 @@ namespace HealthSystemApi.Data.Models
 
         [Required]
         public string? Name { get; set; }
+
+        public ICollection<SymptomSubCategory> SubCategories { get; set; } = new List<SymptomSubCategory>();
     }
 }

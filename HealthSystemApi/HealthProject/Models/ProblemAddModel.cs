@@ -10,5 +10,7 @@ namespace HealthProject.Models
         public DateTime Date { get; set; }
 
         public int HealthIssueId { get; set; }
+
+        public List<int> SelectedSymptoms { get; set; } = new List<int>();
     }
 }

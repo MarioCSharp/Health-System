@@ -18,6 +18,9 @@
             Routing.RegisterRoute(nameof(HealthIssueAddPage), typeof(HealthIssueAddPage));
             Routing.RegisterRoute(nameof(HealthIssuesPage), typeof(HealthIssuesPage));
             Routing.RegisterRoute(nameof(HealtIssueDetailsPage), typeof(HealtIssueDetailsPage));
+            Routing.RegisterRoute(nameof(ProblemAddPage), typeof(ProblemAddPage));
+            Routing.RegisterRoute(nameof(ProblemDetailsPage), typeof(ProblemDetailsPage));
+            Routing.RegisterRoute(nameof(ProblemsViewPage), typeof(ProblemsViewPage));
         }
     }
 }

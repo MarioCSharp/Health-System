@@ -8,5 +8,7 @@ namespace HealthProject.Services.ProblemService
         Task<bool> AddAsync(ProblemAddModel model, List<int> symptomsIds);
         Task DeleteAsync(int id);
         Task<ProblemDetailsModel> DetailsAsync(int id);
+        Task<List<SymptomCategoryDisplayModel>> GetSymptomsCategories();
+        Task<List<SymptomSubCategoryDisplayModel>> GetSymptomsSubCategories();
     }
 }

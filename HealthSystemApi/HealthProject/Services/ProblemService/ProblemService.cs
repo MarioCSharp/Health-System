@@ -203,5 +203,77 @@ namespace HealthProject.Services.ProblemService
 
             return "?" + problemQueryString + "&" + symptomQueryString;
         }
+
+        public async Task<List<SymptomCategoryDisplayModel>> GetSymptomsCategories()
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/GetSymptomCategories");
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var categories = JsonSerializer.Deserialize<List<SymptomCategoryDisplayModel>>(responseBody, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return categories;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new List<SymptomCategoryDisplayModel>();
+        }
+
+        public async Task<List<SymptomSubCategoryDisplayModel>> GetSymptomsSubCategories()
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/GetSymptomSubCategories");
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var subCategories = JsonSerializer.Deserialize<List<SymptomSubCategoryDisplayModel>>(responseBody, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return subCategories;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new List<SymptomSubCategoryDisplayModel>();
+        }
     }
 }

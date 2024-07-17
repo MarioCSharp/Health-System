@@ -1,4 +1,5 @@
 ﻿using HealthSystemApi.Models.Problem;
+using HealthSystemApi.Models.Symptom;
 
 namespace HealthSystemApi.Services.ProblemService
 {
@@ -10,5 +11,7 @@ namespace HealthSystemApi.Services.ProblemService
         Task<bool> EditAsync(ProblemEditModel healthIssueEditModel, List<int> symptoms);
         Task<bool> RemoveAsync(int id);
         Task<List<ProblemDisplayModel>> UserProblemsAsync(string? userId);
+        Task<List<SymptomCategoryDisplayModel>> LoadCategoriesForMAUI();
+        Task<List<SymptomSubCategoryDisplayModel>> LoadSubCategoriesForMAUI();
     }
 }

@@ -15,5 +15,7 @@ namespace HealthSystemApi.Data.Models
         public int CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
         public SymptomCategory? Category { get; set; }
+
+        public ICollection<Symptom> Symptoms { get; set; } = new List<Symptom>();
     }
 }

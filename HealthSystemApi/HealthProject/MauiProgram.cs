@@ -8,6 +8,7 @@ using HealthProject.Services.ServiceService;
 using HealthProject.ViewModels;
 using Microsoft.Extensions.Logging;
 using HealthProject.Views;
+using HealthProject.Services.ProblemService;
 namespace HealthProject
 {
     public static class MauiProgram
@@ -39,16 +40,21 @@ namespace HealthProject
             builder.Services.AddTransient<HealthIssueAddViewModel>();
             builder.Services.AddTransient<HealthIssuePageViewModel>();
             builder.Services.AddTransient<HealtIssueDetailsViewModel>();
+            builder.Services.AddTransient<ProblemAddViewModel>();
+            builder.Services.AddTransient<ProblemDetailsViewModel>();
+            builder.Services.AddTransient<ProblemsViewPageViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IServiceService, ServiceService>();
             builder.Services.AddHttpClient<IDoctorService, DoctorService>();
             builder.Services.AddHttpClient<IHealthIssueService, HealthIssueService>();
+            builder.Services.AddHttpClient<IProblemService, ProblemService>();
             builder.Services.AddTransient<INavigationService, NavigationService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
             builder.Services.AddTransient<IHealthIssueService, HealthIssueService>();
+            builder.Services.AddTransient<IProblemService, ProblemService>();
             builder.Services.AddTransient<HospitalDetailsPage>();
             builder.Services.AddTransient<EditDoctorInfo>();
             builder.Services.AddTransient<DoctorDetailsPage>();
@@ -59,6 +65,9 @@ namespace HealthProject
             builder.Services.AddTransient<HealthIssueAddPage>();
             builder.Services.AddTransient<HealthIssuesPage>();
             builder.Services.AddTransient<HealtIssueDetailsPage>();
+            builder.Services.AddTransient<ProblemAddPage>();
+            builder.Services.AddTransient<ProblemDetailsPage>();
+            builder.Services.AddTransient<ProblemsViewPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

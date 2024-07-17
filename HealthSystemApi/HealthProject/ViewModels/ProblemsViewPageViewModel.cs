@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
 using HealthProject.Services.ProblemService;
 using Newtonsoft.Json;
@@ -22,6 +23,10 @@ namespace HealthProject.ViewModels
         {
             this.problemService = problemService;
 
+            AddProblemCommand = new AsyncRelayCommand(RedirectToAddProblemAsync);
+            DeleteProblemCommand = new AsyncRelayCommand<object>(DeleteAsync);
+            NavigateToProblemDetailsCommand = new AsyncRelayCommand<object>(DetailsAsync);
+
             LoadProblems();
         }
 
@@ -34,7 +39,7 @@ namespace HealthProject.ViewModels
 
         private async Task RedirectToAddProblemAsync()
         {
-            await Shell.Current.GoToAsync("ProblemsAddPage");
+            await Shell.Current.GoToAsync("ProblemAddPage");
         }
 
         private async Task DeleteAsync(object parameter)

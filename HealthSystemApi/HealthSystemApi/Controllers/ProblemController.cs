@@ -80,5 +80,16 @@ namespace HealthSystemApi.Controllers
             return Ok();
         }
 
+        [HttpGet("GetSymptomCategories")]
+        public async Task<IActionResult> GetSymptomCategories()
+        {
+            return Ok(await problemService.LoadCategoriesForMAUI());
+        }
+
+        [HttpGet("GetSymptomSubCategories")]
+        public async Task<IActionResult> GetSymptomSubCategories()
+        {
+            return Ok(await problemService.LoadSubCategoriesForMAUI());
+        }
     }
 }

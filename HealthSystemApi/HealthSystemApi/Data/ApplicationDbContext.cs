@@ -1,6 +1,7 @@
 ﻿using HealthSystemApi.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace HealthSystemApi.Data
 {
@@ -35,6 +36,16 @@ namespace HealthSystemApi.Data
                            je.HasKey("ProblemId", "SymptomId");
                            je.ToTable("ProblemSymptoms");
                        });
+
+            builder.Entity<SymptomCategory>()
+            .HasMany(c => c.SubCategories)
+            .WithOne(sc => sc.Category)
+            .HasForeignKey(sc => sc.CategoryId);
+
+            builder.Entity<SymptomSubCategory>()
+                .HasMany(sc => sc.Symptoms)
+                .WithOne(s => s.Category)
+                .HasForeignKey(s => s.CategoryId);
 
             base.OnModelCreating(builder);
         }

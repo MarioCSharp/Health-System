@@ -937,6 +937,52 @@ namespace HealthSystemApi.Services.ProblemService
             return true;
         }
 
+        public async Task<List<SymptomCategoryDisplayModel>> LoadCategoriesForMAUI()
+        {
+            var categories = await context.SymptomCategories
+                    .Include(c => c.SubCategories)
+                        .ThenInclude(sc => sc.Symptoms)
+                    .ToListAsync();
+
+            var result = categories.Select(category => new SymptomCategoryDisplayModel
+            {
+                Id = category.Id,
+                Name = category.Name,
+                SubCategories = category.SubCategories.Select(subCategory => new SymptomSubCategoryDisplayModel
+                {
+                    Id = subCategory.Id,
+                    Name = subCategory.Name,
+                    Symptoms = subCategory.Symptoms.Select(symptom => new SymptomDisplayModel
+                    {
+                        Id = symptom.Id,
+                        Name = symptom.Name
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+
+            return result;
+        }
+
+        public async Task<List<SymptomSubCategoryDisplayModel>> LoadSubCategoriesForMAUI()
+        {
+            var subCategories = await context.SymptomSubCategories
+                    .Include(c => c.Symptoms)
+                    .ToListAsync();
+
+            var result = subCategories.Select(subCategory => new SymptomSubCategoryDisplayModel
+            {
+                Id = subCategory.Id,
+                Name = subCategory.Name,
+                Symptoms = subCategory.Symptoms.Select(symptom => new SymptomDisplayModel
+                {
+                    Id = symptom.Id,
+                    Name = symptom.Name
+                }).ToList()
+            }).ToList();
+
+            return result;
+        }
+
         public async Task<bool> RemoveAsync(int id)
         {
             var problem = await context.Problems.FindAsync(id);

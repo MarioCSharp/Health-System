@@ -28,6 +28,13 @@
             ContentTemplate="{DataTemplate local:HealthIssuesPage}"
             Route="HealthIssuesPage"/>
     </FlyoutItem>
+    
+    <FlyoutItem Title="Симптоми">
+        <ShellContent
+            Title="Здравни проблеми"
+            ContentTemplate="{DataTemplate local:ProblemsViewPage}"
+            Route="ProblemsViewPage"/>
+    </FlyoutItem>
 
     <FlyoutItem Title="Автентикация">
         <Tab>
