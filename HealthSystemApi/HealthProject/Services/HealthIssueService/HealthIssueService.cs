@@ -26,7 +26,7 @@ namespace HealthProject.Services.HealthIssueService
             };
         }
 
-        public async Task<bool> AddAsync(HealthIssueAddModel model)
+        public async Task<bool> AddAsync(HealthIssueAddModel model, string userId)
         {
             CheckInternetConnection();
 
@@ -37,7 +37,7 @@ namespace HealthProject.Services.HealthIssueService
                 var name = model.Name;
                 var description = model.Description;
 
-                string queryString = $"?startDate={model.StartDate}&endDate={model.EndDate}&name={Uri.EscapeDataString(name)}&description={Uri.EscapeDataString(description)}";
+                string queryString = $"?startDate={model.StartDate}&endDate={model.EndDate}&name={Uri.EscapeDataString(name)}&description={Uri.EscapeDataString(description)}&userId={Uri.EscapeDataString(userId)}";
 
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/Add{queryString}");
@@ -67,13 +67,13 @@ namespace HealthProject.Services.HealthIssueService
             return false;
         }
 
-        public async Task<List<HealthIssueDisplayModel>> AllByUser()
+        public async Task<List<HealthIssueDisplayModel>> AllByUser(string userId)
         {
             CheckInternetConnection();
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/UserIssues");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/UserIssues?userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();

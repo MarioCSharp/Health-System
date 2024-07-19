@@ -4,9 +4,17 @@ namespace HealthProject.Views;
 
 public partial class HealthIssuesPage : ContentPage
 {
-	public HealthIssuesPage(HealthIssuePageViewModel viewModel)
+    private HealthIssuePageViewModel viewModel;
+
+    public HealthIssuesPage(HealthIssuePageViewModel model)
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
+		BindingContext = viewModel = model;
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        viewModel.LoadHealthIssues(); 
+    }
 }

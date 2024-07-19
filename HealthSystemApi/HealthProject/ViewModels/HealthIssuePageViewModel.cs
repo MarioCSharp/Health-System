@@ -42,7 +42,9 @@ namespace HealthProject.ViewModels
                 return;
             }
 
-            await Shell.Current.GoToAsync($"{nameof(HealthIssueAddPage)}");
+            var userId = auth.UserId;
+
+            await Shell.Current.GoToAsync($"{nameof(HealthIssueAddPage)}?userId={userId}");
         }
 
         public async Task DeleteHealthIssueAsync(object parameter)
@@ -67,9 +69,16 @@ namespace HealthProject.ViewModels
             }
         }
 
-        private async void LoadHealthIssues()
+        public async void LoadHealthIssues()
         {
-            var healthIssues = await healthIssueService.AllByUser();
+            var auth = await authenticationService.IsAuthenticated();
+
+            if (!auth.IsAuthenticated)
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            }
+
+            var healthIssues = await healthIssueService.AllByUser(auth.UserId);
 
             HealthIssues = new ObservableCollection<HealthIssueDisplayModel>(healthIssues);
         }

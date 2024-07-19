@@ -1,5 +1,6 @@
 ﻿using HealthSystemApi.Models.HealthIssue;
 using HealthSystemApi.Services.HealthIssueService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -16,7 +17,7 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("Add")]
-        public async Task<IActionResult> Add([FromQuery] string startDate, [FromQuery] string endDate, [FromQuery] string name, [FromQuery] string description)
+        public async Task<IActionResult> Add([FromQuery] string startDate, [FromQuery] string endDate, [FromQuery] string name, [FromQuery] string description, [FromQuery] string userId)
         {
             if (!DateTime.TryParseExact(startDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedStartDate))
             {
@@ -36,7 +37,7 @@ namespace HealthSystemApi.Controllers
                 IssueEndDate = parsedEndDate
             };
 
-            var result = await healthIssueService.AddAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await healthIssueService.AddAsync(model, userId);
 
             if (!result)
             {
@@ -77,9 +78,9 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("UserIssues")]
-        public async Task<IActionResult> UserIssues()
+        public async Task<IActionResult> UserIssues(string userId)
         {
-            var result = await healthIssueService.UserIssuesAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await healthIssueService.UserIssuesAsync(userId);
 
             return Ok(result);
         }
