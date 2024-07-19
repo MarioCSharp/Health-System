@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ProblemService;
+using HealthProject.Views;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -14,14 +16,17 @@ namespace HealthProject.ViewModels
         private ObservableCollection<ProblemDisplayModel> problems;
 
         private IProblemService problemService;
+        private IAuthenticationService authenticationService;
 
         public ICommand AddProblemCommand { get; }
         public ICommand DeleteProblemCommand { get; }
         public ICommand NavigateToProblemDetailsCommand { get; }
 
-        public ProblemsViewPageViewModel(IProblemService problemService)
+        public ProblemsViewPageViewModel(IProblemService problemService,
+                                         IAuthenticationService authenticationService)
         {
             this.problemService = problemService;
+            this.authenticationService = authenticationService;
 
             AddProblemCommand = new AsyncRelayCommand(RedirectToAddProblemAsync);
             DeleteProblemCommand = new AsyncRelayCommand<object>(DeleteAsync);
@@ -32,7 +37,14 @@ namespace HealthProject.ViewModels
 
         private async void LoadProblems()
         {
-            var problems = await problemService.GetUserProblems();
+            var auth = await authenticationService.IsAuthenticated();
+
+            if (!auth.IsAuthenticated)
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            }
+
+            var problems = await problemService.GetUserProblems(auth.UserId);
 
             Problems = new ObservableCollection<ProblemDisplayModel>(problems);
         }

@@ -18,14 +18,14 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("Add")]
-        public async Task<IActionResult> Add([FromQuery] ProblemAddModel problemAddModel, [FromQuery] SymptomAddModel symptoms)
+        public async Task<IActionResult> Add([FromQuery] ProblemAddModel problemAddModel, [FromQuery] SymptomAddModel symptoms, string userId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await problemService.AddAsync(problemAddModel, symptoms.SymptomIds, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await problemService.AddAsync(problemAddModel, symptoms.SymptomIds, userId);
 
             if (!result)
             {
@@ -65,9 +65,9 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("UserIssues")]
-        public async Task<IActionResult> UserIssues()
+        public async Task<IActionResult> UserIssues(string userId)
         {
-            var result = await problemService.UserProblemsAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await problemService.UserProblemsAsync(userId);
 
             return Ok(result);
         }

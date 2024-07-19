@@ -134,13 +134,13 @@ namespace HealthProject.Services.ProblemService
             return new ProblemDetailsModel();
         }
 
-        public async Task<List<ProblemDisplayModel>> GetUserProblems()
+        public async Task<List<ProblemDisplayModel>> GetUserProblems(string? userId)
         {
             CheckInternetConnection();
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/UserIssues");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/UserIssues?userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
