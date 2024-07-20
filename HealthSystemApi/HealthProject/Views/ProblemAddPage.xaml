@@ -3,41 +3,56 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.ProblemAddPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="ProblemAddPage">
     <StackLayout Padding="10">
-        <!-- Text boxes for additional information -->
         <Entry Placeholder="Description" Text="{Binding Problem.Description}" />
         <Entry Placeholder="Notes" Text="{Binding Problem.Notes}" />
         <Entry Placeholder="Other Information" Text="{Binding Problem.OtherInfo}" />
 
-        <!-- Category list -->
         <CollectionView ItemsSource="{Binding Categories}" SelectionMode="Single"
-                                    SelectionChanged="OnCategorySelected">
+                        SelectionChanged="OnCategorySelected">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" />
+                    <StackLayout>
+                        <toolkit:Expander>
+                            <toolkit:Expander.Header>
+                                <Label Text="{Binding Name}" />
+                            </toolkit:Expander.Header>
+                            <toolkit:Expander.Content>
+                                <CollectionView ItemsSource="{Binding SubCategories}" SelectionMode="Single"
+                                                SelectionChanged="OnSubCategorySelected">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout Padding="20,0,0,0">
+                                                <toolkit:Expander>
+                                                    <toolkit:Expander.Header>
+                                                        <Label Text="{Binding Name}" />
+                                                    </toolkit:Expander.Header>
+                                                    <toolkit:Expander.Content>
+                                                        <CollectionView ItemsSource="{Binding Symptoms}" SelectionMode="Multiple"
+                                                                        SelectionChanged="OnSymptomSelected">
+                                                            <CollectionView.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <StackLayout Padding="20,0,0,0">
+                                                                        <Label Text="{Binding Name}" />
+                                                                    </StackLayout>
+                                                                </DataTemplate>
+                                                            </CollectionView.ItemTemplate>
+                                                        </CollectionView>
+                                                    </toolkit:Expander.Content>
+                                                </toolkit:Expander>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </toolkit:Expander.Content>
+                        </toolkit:Expander>
+                    </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- SubCategory list -->
-        <CollectionView ItemsSource="{Binding SubCategories}" SelectionMode="Single"
-                                    SelectionChanged="OnSubCategorySelected">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Name}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
-        <!-- Symptoms list -->
-        <CollectionView ItemsSource="{Binding Symptoms}" SelectionMode="Multiple"
-                                    SelectionChanged="OnSymptomSelected">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Name}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        </StackLayout>
+        <Button Text="Add Problem" Command="{Binding ProblemAddCommand}" />
+    </StackLayout>
 </ContentPage>

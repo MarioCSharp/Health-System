@@ -1,7 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ProblemService;
+using HealthProject.Views;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace HealthProject.ViewModels
 {
@@ -20,26 +26,43 @@ namespace HealthProject.ViewModels
         private ProblemAddModel problem;
 
         private IProblemService problemService;
+        private IAuthenticationService authenticationService;
 
-        public ProblemAddViewModel(IProblemService problemService)
+        public ICommand ProblemAddCommand { get; }
+
+        public ProblemAddViewModel(IProblemService problemService,
+                                   IAuthenticationService authenticationService)
         {
             Categories = new ObservableCollection<SymptomCategoryDisplayModel>();
             SubCategories = new ObservableCollection<SymptomSubCategoryDisplayModel>();
             Symptoms = new ObservableCollection<SymptomDisplayModel>();
             Problem = new ProblemAddModel();
 
+            ProblemAddCommand = new AsyncRelayCommand(AddAsync);
+
             this.problemService = problemService;
+            this.authenticationService = authenticationService;
 
             LoadData();
         }
 
-        private async void LoadData()
+        public async Task AddAsync()
+        {
+            var auth = await authenticationService.IsAuthenticated();
+
+            if (!auth.IsAuthenticated)
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
+            }
+
+            var result = await problemService.AddAsync(problem, problem.SelectedSymptoms, auth.UserId);
+        }
+
+        public async void LoadData()
         {
             var categories = await problemService.GetSymptomsCategories();
-            var subCategories = await problemService.GetSymptomsSubCategories();
-
             Categories = new ObservableCollection<SymptomCategoryDisplayModel>(categories);
-            SubCategories = new ObservableCollection<SymptomSubCategoryDisplayModel>(subCategories);
         }
 
         public void OnCategorySelected(SymptomCategoryDisplayModel category)

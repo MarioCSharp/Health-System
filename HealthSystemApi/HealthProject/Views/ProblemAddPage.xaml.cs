@@ -1,4 +1,5 @@
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ProblemService;
 using HealthProject.ViewModels;
 
@@ -8,12 +9,15 @@ public partial class ProblemAddPage : ContentPage
 {
     private ProblemAddViewModel viewModel;
     private IProblemService problemService;
-    public ProblemAddPage(IProblemService problemService)
+    private IAuthenticationService authenticationService;
+    public ProblemAddPage(IProblemService problemService,
+                          IAuthenticationService authenticationService)
 	{
 		InitializeComponent();
 
         this.problemService = problemService;
-        viewModel = new ProblemAddViewModel(problemService);
+        this.authenticationService = authenticationService;
+        viewModel = new ProblemAddViewModel(problemService, authenticationService);
         BindingContext = viewModel;
     }
 

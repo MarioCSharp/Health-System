@@ -35,7 +35,7 @@ namespace HealthProject.ViewModels
             LoadProblems();
         }
 
-        private async void LoadProblems()
+        public async void LoadProblems()
         {
             var auth = await authenticationService.IsAuthenticated();
 

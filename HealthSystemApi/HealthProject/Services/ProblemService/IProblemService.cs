@@ -5,7 +5,7 @@ namespace HealthProject.Services.ProblemService
     public interface IProblemService
     {
         Task<List<ProblemDisplayModel>> GetUserProblems(string? userId);
-        Task<bool> AddAsync(ProblemAddModel model, List<int> symptomsIds);
+        Task<bool> AddAsync(ProblemAddModel model, List<int> symptomsIds, string userId);
         Task DeleteAsync(int id);
         Task<ProblemDetailsModel> DetailsAsync(int id);
         Task<List<SymptomCategoryDisplayModel>> GetSymptomsCategories();

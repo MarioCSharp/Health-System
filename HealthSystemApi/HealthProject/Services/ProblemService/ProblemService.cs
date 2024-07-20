@@ -27,7 +27,7 @@ namespace HealthProject.Services.ProblemService
             };
         }
 
-        public async Task<bool> AddAsync(ProblemAddModel model, List<int> symptomsIds)
+        public async Task<bool> AddAsync(ProblemAddModel model, List<int> symptomsIds, string userId)
         {
             CheckInternetConnection();
 
@@ -37,7 +37,7 @@ namespace HealthProject.Services.ProblemService
 
                 var queryString = ToQueryString(model, sAM);
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Add{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Add{queryString}&userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
