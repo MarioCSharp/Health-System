@@ -43,7 +43,7 @@ public partial class ProblemAddPage : ContentPage
     {
         if (e.CurrentSelection.Count > 0)
         {
-            var selectedSymptom = e.CurrentSelection[0] as SymptomDisplayModel;
+            var selectedSymptom = e.CurrentSelection[e.CurrentSelection.Count - 1] as SymptomDisplayModel;
             viewModel.OnSymptomSelected(selectedSymptom);
         }
     }

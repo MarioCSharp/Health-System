@@ -6,9 +6,9 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="ProblemAddPage">
     <StackLayout Padding="10">
-        <Entry Placeholder="Description" Text="{Binding Problem.Description}" />
         <Entry Placeholder="Notes" Text="{Binding Problem.Notes}" />
-        <Entry Placeholder="Other Information" Text="{Binding Problem.OtherInfo}" />
+        <DatePicker Date="{Binding Problem.Date}" />
+        <Entry Placeholder="HealthIssueId" Keyboard="Numeric" Text="{Binding Problem.HealthIssueId}" />
 
         <CollectionView ItemsSource="{Binding Categories}" SelectionMode="Single"
                         SelectionChanged="OnCategorySelected">

@@ -5,8 +5,6 @@ using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ProblemService;
 using HealthProject.Views;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace HealthProject.ViewModels
@@ -81,6 +79,10 @@ namespace HealthProject.ViewModels
             if (!Problem.SelectedSymptoms.Contains(symptom.Id))
             {
                 Problem.SelectedSymptoms.Add(symptom.Id);
+            }
+            else
+            {
+                Problem.SelectedSymptoms.Remove(symptom.Id);
             }
         }
     }
