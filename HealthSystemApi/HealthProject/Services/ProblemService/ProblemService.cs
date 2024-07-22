@@ -36,6 +36,7 @@ namespace HealthProject.Services.ProblemService
                 var sAM = new SymptomAddModel() { SymptomIds = symptomsIds };
 
                 var queryString = ToQueryString(model, sAM);
+                Console.WriteLine($"Generated Query String: {queryString}");
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Add{queryString}&userId={userId}");
                 response.EnsureSuccessStatusCode();
@@ -178,22 +179,17 @@ namespace HealthProject.Services.ProblemService
             }
         }
 
-        private string ToQueryString(ProblemAddModel model)
+        private string ToQueryString(object model)
         {
             var properties = from p in model.GetType().GetProperties()
-                             where p.GetValue(model, null) != null
-                             select p.Name + "=" + WebUtility.UrlEncode(p.GetValue(model, null).ToString());
+                             let value = p.GetValue(model, null)
+                             where value != null
+                             from param in (value is System.Collections.IEnumerable && !(value is string)
+                                            ? (value as System.Collections.IEnumerable).Cast<object>()
+                                            : new List<object> { value })
+                             select p.Name + "=" + WebUtility.UrlEncode(param.ToString());
 
-            return "?" + string.Join("&", properties.ToArray());
-        }
-
-        private string ToQueryString(SymptomAddModel model)
-        {
-            var properties = from p in model.GetType().GetProperties()
-                             where p.GetValue(model, null) != null
-                             select p.Name + "=" + WebUtility.UrlEncode(p.GetValue(model, null).ToString());
-
-            return "?" + string.Join("&", properties.ToArray());
+            return string.Join("&", properties.ToArray());
         }
 
         public string ToQueryString(ProblemAddModel problemAddModel, SymptomAddModel symptomAddModel)
@@ -201,7 +197,21 @@ namespace HealthProject.Services.ProblemService
             var problemQueryString = ToQueryString(problemAddModel);
             var symptomQueryString = ToQueryString(symptomAddModel);
 
-            return "?" + problemQueryString + "&" + symptomQueryString;
+            // Combine query strings and remove any leading '&' from the second query string
+            var combinedQueryString = problemQueryString;
+            if (!string.IsNullOrEmpty(symptomQueryString))
+            {
+                combinedQueryString += "&" + symptomQueryString;
+            }
+
+            // Prepend '?' to the combined query string if it's not empty
+            if (!string.IsNullOrEmpty(combinedQueryString))
+            {
+                combinedQueryString = "?" + combinedQueryString;
+            }
+
+            Console.WriteLine($"Combined Query String: {combinedQueryString}");
+            return combinedQueryString;
         }
 
         public async Task<List<SymptomCategoryDisplayModel>> GetSymptomsCategories()

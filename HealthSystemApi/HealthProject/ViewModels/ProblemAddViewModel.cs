@@ -55,6 +55,8 @@ namespace HealthProject.ViewModels
             }
 
             var result = await problemService.AddAsync(problem, problem.SelectedSymptoms, auth.UserId);
+
+            await Shell.Current.GoToAsync($"///{nameof(ProblemsViewPage)}");
         }
 
         public async void LoadData()

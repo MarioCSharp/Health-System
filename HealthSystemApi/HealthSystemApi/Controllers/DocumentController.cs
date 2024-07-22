@@ -17,14 +17,14 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("Add")]
-        public async Task<IActionResult> Add([FromQuery] DocumentAddModel model, [FromQuery] IFormFile File)
+        public async Task<IActionResult> Add([FromQuery] DocumentAddModel model, [FromQuery] IFormFile File, [FromQuery] string userId)
         {
             if (!ModelState.IsValid)
             { 
                 return BadRequest(ModelState);
             }
 
-            var result = await documentService.AddAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier), File);
+            var result = await documentService.AddAsync(model, userId, File);
 
             if (!result)
             {
@@ -67,9 +67,9 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("AllByUser")]
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> AllByUser([FromQuery] string userId)
         {
-            return Ok(await documentService.AllByUser(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            return Ok(await documentService.AllByUser(userId));
         }
     }
 }
