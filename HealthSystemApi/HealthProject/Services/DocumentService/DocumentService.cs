@@ -1,0 +1,140 @@
+﻿using HealthProject.Models;
+using System.Diagnostics;
+using System.Text.Json;
+
+namespace HealthProject.Services.DocumentService
+{
+    public class DocumentService : IDocumentService
+    {
+        private readonly HttpClient _httpClient;
+        private readonly string _baseAddress;
+        private readonly string _url;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
+
+        public DocumentService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+
+            _url = $"{_baseAddress}/api";
+
+            _jsonSerializerOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+        }
+
+        public async Task<DocumentDetailsModel> DetailsAsync(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/Details?id={id}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var healthIssues = JsonSerializer.Deserialize<DocumentDetailsModel>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return healthIssues;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                    return new DocumentDetailsModel();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new DocumentDetailsModel();
+        }
+
+        public async Task<List<DocumentViewModel>> GetUserDocuments(string userId)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/AllByUser?userId={userId}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var healthIssues = JsonSerializer.Deserialize<List<DocumentViewModel>>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return healthIssues;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                    return new List<DocumentViewModel>();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new List<DocumentViewModel>();
+        }
+
+        public async Task RemoveAsync(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/Remove?id={id}");
+                response.EnsureSuccessStatusCode();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+        }
+
+        private void CheckInternetConnection()
+        {
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                Debug.WriteLine("--- No internet access");
+            }
+        }
+    }
+}

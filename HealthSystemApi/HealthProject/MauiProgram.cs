@@ -9,6 +9,7 @@ using HealthProject.ViewModels;
 using Microsoft.Extensions.Logging;
 using HealthProject.Views;
 using HealthProject.Services.ProblemService;
+using HealthProject.Services.DocumentService;
 namespace HealthProject
 {
     public static class MauiProgram
@@ -49,12 +50,14 @@ namespace HealthProject
             builder.Services.AddHttpClient<IDoctorService, DoctorService>();
             builder.Services.AddHttpClient<IHealthIssueService, HealthIssueService>();
             builder.Services.AddHttpClient<IProblemService, ProblemService>();
+            builder.Services.AddHttpClient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<INavigationService, NavigationService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
             builder.Services.AddTransient<IHealthIssueService, HealthIssueService>();
             builder.Services.AddTransient<IProblemService, ProblemService>();
+            builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<HospitalDetailsPage>();
             builder.Services.AddTransient<EditDoctorInfo>();
             builder.Services.AddTransient<DoctorDetailsPage>();
