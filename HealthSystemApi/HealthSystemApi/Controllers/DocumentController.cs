@@ -17,14 +17,16 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("Add")]
-        public async Task<IActionResult> Add([FromQuery] DocumentAddModel model, [FromQuery] IFormFile File, [FromQuery] string userId)
+        public async Task<IActionResult> Add([FromQuery] DocumentAddModel model)
         {
             if (!ModelState.IsValid)
             { 
                 return BadRequest(ModelState);
             }
 
-            var result = await documentService.AddAsync(model, userId, File);
+            var file = model.ToFormFile();
+
+            var result = await documentService.AddAsync(model, model.UserId, file);
 
             if (!result)
             {

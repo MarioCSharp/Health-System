@@ -1,5 +1,6 @@
 ﻿using HealthProject.Models;
 using System.Diagnostics;
+using System.Net;
 using System.Text.Json;
 
 namespace HealthProject.Services.DocumentService
@@ -23,6 +24,40 @@ namespace HealthProject.Services.DocumentService
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
+        }
+
+        public async Task<bool> AddAsync(DocumentAddModel model)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                var queryString = ToQueryString(model);
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/Add{queryString}");
+                response.EnsureSuccessStatusCode();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                    return true;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return false;
         }
 
         public async Task<DocumentDetailsModel> DetailsAsync(int id)
@@ -135,6 +170,15 @@ namespace HealthProject.Services.DocumentService
             {
                 Debug.WriteLine("--- No internet access");
             }
+        }
+
+        private string ToQueryString(DocumentAddModel model)
+        {
+            var properties = from p in model.GetType().GetProperties()
+                             where p.GetValue(model, null) != null
+                             select p.Name + "=" + WebUtility.UrlEncode(p.GetValue(model, null).ToString());
+
+            return "?" + string.Join("&", properties.ToArray());
         }
     }
 }

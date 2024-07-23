@@ -1,12 +1,94 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
              x:Class="HealthProject.Views.DocumentAddPage"
              Title="DocumentAddPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.Resources>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="Margin" Value="0,0,0,5" />
+        </Style>
+        <Style x:Key="EntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="BackgroundColor" Value="#E0F7FA" />
+            <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="PlaceholderColor" Value="#B0BEC5" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#007ACC" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="0,15,0,0" />
+        </Style>
+        <Style x:Key="BackButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="#007ACC" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+
+            <Button Text="Назад" Style="{StaticResource BackButtonStyle}" 
+                Command="{Binding NavigateBackCommand}" 
+                AutomationProperties.IsInAccessibleTree="True" 
+                AutomationProperties.Name="Go Back Button" />
+
+            <Frame BackgroundColor="#FFFFFF" CornerRadius="10" Padding="20" HasShadow="True">
+                <StackLayout Spacing="20">
+
+                    <Label Text="Тип на документа:" Style="{StaticResource LabelStyle}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Hospital Name" />
+                    <Entry x:Name="HospitalNameEntry" Placeholder="Въведате типа на документа" Style="{StaticResource EntryStyle}" 
+                       Text="{Binding Document.Type}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Hospital Name Entry" />
+
+                    <Label Text="Наименование:" Style="{StaticResource LabelStyle}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Location" />
+                    <Entry x:Name="LocationEntry" Placeholder="Въведете името на документа" Style="{StaticResource EntryStyle}"  
+                       Text="{Binding Document.Title}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Location Entry" />
+
+                    <Label Text="Бележки:" Style="{StaticResource LabelStyle}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Contact Number" />
+                    <Entry x:Name="ContactNumberEntry" Placeholder="Бележки" Keyboard="Telephone" Style="{StaticResource EntryStyle}" 
+                       Text="{Binding Document.Notes}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Contact Number Entry" />
+
+                    <Label Text="ИД на здравен проблем:" Style="{StaticResource LabelStyle}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Owner ID" />
+                    <Entry x:Name="OwnerIdEntry" Placeholder="Идентификатор на здравен проблем" Style="{StaticResource EntryStyle}" 
+                       Text="{Binding Document.HealthIssueId}" 
+                       AutomationProperties.IsInAccessibleTree="True" 
+                       AutomationProperties.Name="Owner ID Entry" />
+
+                    <Button Text="Изберете файл" 
+                            Style="{StaticResource ButtonStyle}" 
+                            Command="{Binding PickFileCommand}" 
+                            AutomationProperties.IsInAccessibleTree="True" 
+                            AutomationProperties.Name="Pick File Button" />
+
+                    <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" 
+                        Command="{Binding AddDocumentCommand}" 
+                        AutomationProperties.IsInAccessibleTree="True" 
+                        AutomationProperties.Name="Add Hospital Button" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

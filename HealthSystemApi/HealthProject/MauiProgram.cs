@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using HealthProject.Views;
 using HealthProject.Services.ProblemService;
 using HealthProject.Services.DocumentService;
+using HealthProject.Models;
 namespace HealthProject
 {
     public static class MauiProgram
@@ -32,6 +33,9 @@ namespace HealthProject
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<AddHospitalPage>();
             builder.Services.AddTransient<AddDoctorPage>();
+            builder.Services.AddTransient<DocumentAddPage>();
+            builder.Services.AddTransient<DocumentViewPage>();
+            builder.Services.AddTransient<DocumentDetailsPage>();
             builder.Services.AddTransient<RegisterPageViewModel>();
             builder.Services.AddTransient<LoginPageViewModel>();
             builder.Services.AddTransient<HomePageViewModel>();
@@ -41,6 +45,9 @@ namespace HealthProject
             builder.Services.AddTransient<HealthIssueAddViewModel>();
             builder.Services.AddTransient<HealthIssuePageViewModel>();
             builder.Services.AddTransient<HealtIssueDetailsViewModel>();
+            builder.Services.AddTransient<DocumentAddViewModel>();
+            builder.Services.AddTransient<DocumentDetailsViewModel>();
+            builder.Services.AddTransient<DocumetnsViewModel>();
             builder.Services.AddTransient<ProblemAddViewModel>();
             builder.Services.AddTransient<ProblemDetailsViewModel>();
             builder.Services.AddTransient<ProblemsViewPageViewModel>();

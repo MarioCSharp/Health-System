@@ -21,6 +21,9 @@
             Routing.RegisterRoute(nameof(ProblemAddPage), typeof(ProblemAddPage));
             Routing.RegisterRoute(nameof(ProblemDetailsPage), typeof(ProblemDetailsPage));
             Routing.RegisterRoute(nameof(ProblemsViewPage), typeof(ProblemsViewPage));
+            Routing.RegisterRoute(nameof(DocumentAddPage), typeof(DocumentAddPage));
+            Routing.RegisterRoute(nameof(DocumentDetailsPage), typeof(DocumentDetailsPage));
+            Routing.RegisterRoute(nameof(DocumentViewPage), typeof(DocumentViewPage));
         }
     }
 }

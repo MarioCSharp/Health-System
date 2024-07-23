@@ -31,9 +31,16 @@
     
     <FlyoutItem Title="Симптоми">
         <ShellContent
-            Title="Здравни проблеми"
+            Title="Симптоми"
             ContentTemplate="{DataTemplate local:ProblemsViewPage}"
             Route="ProblemsViewPage"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Документи">
+        <ShellContent
+        Title="Документи"
+        ContentTemplate="{DataTemplate local:DocumentViewPage}"
+        Route="DocumentViewPage"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Автентикация">

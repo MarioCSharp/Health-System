@@ -37,7 +37,7 @@ namespace HealthProject.ViewModels
 
         private async Task NavigateToAddPage() 
         {
-            await Shell.Current.GoToAsync($"//{nameof(DocumentAddPage)}");
+            await Shell.Current.GoToAsync($"{nameof(DocumentAddPage)}");
         }
 
         private async Task DeleteAsync(object parameter)
