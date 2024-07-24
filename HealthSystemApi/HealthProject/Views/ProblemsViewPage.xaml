@@ -20,7 +20,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Delete" 
                                        BackgroundColor="Red" 
-                                       Command="{Binding BindingContext.DeleteProblemCommand, Source={x:Reference RootPage}}"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteProblemCommand}"
                                        CommandParameter="{Binding Id}">
                                     </SwipeItem>
                                 </SwipeItems>
@@ -32,7 +32,7 @@
                                HasShadow="True" 
                                BackgroundColor="White">
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.NavigateToProblemDetailsCommand, Source={x:Reference RootPage}}"
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToProblemDetailsCommand}"
                                       CommandParameter="{Binding Id}" />
                                 </Frame.GestureRecognizers>
                                 <StackLayout>
