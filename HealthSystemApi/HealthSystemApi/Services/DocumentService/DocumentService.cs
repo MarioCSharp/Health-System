@@ -22,7 +22,8 @@ namespace HealthSystemApi.Services.DocumentService
                 Notes = model.Notes,
                 Title = model.Title,
                 UserId = model.UserId,
-                Type = model.Type
+                Type = model.Type,
+                FileExtension = model.FileExtension
             };
 
             if (model.HealthIssueId != 0)
@@ -34,8 +35,6 @@ namespace HealthSystemApi.Services.DocumentService
             {
                 await File.CopyToAsync(stream);
                 document.File = stream.ToArray();
-                string fileName = ContentDispositionHeaderValue.Parse(File.ContentDisposition).FileName.Trim('"');
-                document.FileExtension = Path.GetExtension(fileName);
             }
 
             await context.Documents.AddAsync(document); 

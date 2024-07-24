@@ -64,7 +64,7 @@
                     <Label Text="Бележки:" Style="{StaticResource LabelStyle}" 
                        AutomationProperties.IsInAccessibleTree="True" 
                        AutomationProperties.Name="Contact Number" />
-                    <Entry x:Name="ContactNumberEntry" Placeholder="Бележки" Keyboard="Telephone" Style="{StaticResource EntryStyle}" 
+                    <Entry x:Name="ContactNumberEntry" Placeholder="Бележки" Style="{StaticResource EntryStyle}" 
                        Text="{Binding Document.Notes}" 
                        AutomationProperties.IsInAccessibleTree="True" 
                        AutomationProperties.Name="Contact Number Entry" />

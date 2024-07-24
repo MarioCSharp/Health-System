@@ -4,7 +4,6 @@
              x:Class="HealthProject.Views.DocumentDetailsPage"
              Title="DocumentDetailsPage">
     <ContentPage.Resources>
-        <!-- Define styles for reuse -->
         <Style x:Key="HeaderLabelStyle" TargetType="Label">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="FontAttributes" Value="Bold" />
@@ -49,7 +48,6 @@
         <ScrollView>
             <StackLayout Style="{StaticResource ContentPaddingStyle}">
 
-                <!-- Hospital Information Section -->
                 <Frame Style="{StaticResource CardFrameStyle}">
                     <StackLayout>
                         <Label Text="{Binding Document.Type}" Style="{StaticResource HeaderLabelStyle}" />
@@ -60,7 +58,8 @@
                 </Frame>
 
                 <Label Text="Файл" Style="{StaticResource HeaderLabelStyle}" />
-                 
+
+                <Button Text="Download" Style="{StaticResource ButtonStyle}" Clicked="OnDownloadDocument"/>
             </StackLayout>
         </ScrollView>
         <Button Text="Edit" Style="{StaticResource ButtonStyle}"/>

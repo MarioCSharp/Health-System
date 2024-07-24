@@ -4,6 +4,8 @@ using HealthProject.Models;
 using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.DocumentService;
 using HealthProject.Views;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace HealthProject.ViewModels
 {
@@ -43,24 +45,28 @@ namespace HealthProject.ViewModels
                     await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
                 }
 
-
                 var fileBytes = await File.ReadAllBytesAsync(Document.FilePath);
-                var base64File = Convert.ToBase64String(fileBytes);
+                var fileName = Path.GetFileName(Document.FilePath);
                 var fileExtension = Path.GetExtension(Document.FilePath);
 
-                var uploadDocument = new DocumentAddModel
+                using (var stream = new MemoryStream(fileBytes))
                 {
-                    Type = Document.Type,
-                    Title = Document.Title,
-                    Notes = Document.Notes,
-                    HealthIssueId = Document.HealthIssueId,
-                    FileName = Path.GetFileName(Document.FilePath),
-                    FileContent = base64File,
-                    FileExtension = fileExtension,
-                    UserId = auth.UserId    
-                };
+                    IFormFile formFile = new FormFile(stream, 0, fileBytes.Length, fileName, fileName);
 
-                var result = await documentService.AddAsync(uploadDocument);
+                    var uploadDocument = new DocumentAddModel
+                    {
+                        Type = Document.Type,
+                        Title = Document.Title,
+                        Notes = Document.Notes,
+                        HealthIssueId = Document.HealthIssueId,
+                        FileName = fileName,
+                        FileContent = fileBytes,
+                        FileExtension = fileExtension,
+                        UserId = auth.UserId
+                    };
+
+                    var result = await documentService.AddAsync(uploadDocument, formFile);
+                }
             }
             catch (Exception ex)
             {

@@ -53,12 +53,7 @@ namespace HealthProject.ViewModels
         {
             if (parameter is int id)
             {
-                var doc = await documentService.DetailsAsync(id);
-
-                var docJson = JsonConvert.SerializeObject(doc);
-                var encodedDocJson = Uri.EscapeDataString(docJson);
-
-                await Shell.Current.GoToAsync($"DocumentDetailsPage?documentJson={encodedDocJson}");
+                await Shell.Current.GoToAsync($"DocumentDetailsPage?docId={id}");
             }
         }
 

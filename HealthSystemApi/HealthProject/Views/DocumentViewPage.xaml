@@ -19,10 +19,9 @@
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Delete" 
-                                   BackgroundColor="Red" 
-                                   Command="{Binding BindingContext.DeleteDocumentCommand, Source={x:Reference RootPage}}"
-                                   CommandParameter="{Binding Id}">
-                                    </SwipeItem>
+                                               BackgroundColor="Red" 
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteDocumentCommand}"
+                                               CommandParameter="{Binding Id}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
                             <Frame CornerRadius="10" 
@@ -32,15 +31,15 @@
                                    HasShadow="True" 
                                    BackgroundColor="White">
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.NavigateToDocumentDetailsCommand, Source={x:Reference RootPage}}"
-                                  CommandParameter="{Binding Id}" />
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToDocumentDetailsCommand}"
+                                                          CommandParameter="{Binding Id}" />
                                 </Frame.GestureRecognizers>
                                 <StackLayout>
                                     <Label Text="{Binding Title}" 
-                                       FontSize="20" 
-                                       FontAttributes="Bold"
-                                       VerticalOptions="Center"
-                                       TextColor="Black"/>
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           TextColor="Black"/>
                                 </StackLayout>
                             </Frame>
                         </SwipeView>

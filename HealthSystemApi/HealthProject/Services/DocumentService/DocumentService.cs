@@ -1,6 +1,9 @@
 ﻿using HealthProject.Models;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace HealthProject.Services.DocumentService
@@ -26,38 +29,30 @@ namespace HealthProject.Services.DocumentService
             };
         }
 
-        public async Task<bool> AddAsync(DocumentAddModel model)
+        public async Task<bool> AddAsync(DocumentAddModel model, IFormFile file)
         {
             CheckInternetConnection();
+            var form = new MultipartFormDataContent();
 
-            try
-            {
-                var queryString = ToQueryString(model);
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/Add{queryString}");
-                response.EnsureSuccessStatusCode();
+            var fileContent = new StreamContent(file.OpenReadStream());
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            form.Add(fileContent, "file", file.FileName);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return true;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nUnexpected Exception Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
+            form.Add(new StringContent(model.Type), "Type");
+            form.Add(new StringContent(model.Title), "Title");
+            form.Add(new StringContent(model.Notes), "Notes");
+            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
+            form.Add(new StringContent(model.FileName), "FileName");
+            form.Add(new StringContent(model.FileExtension), "FileExtension");
+            form.Add(new StringContent(model.UserId.ToString()), "UserId");
 
-            return false;
+            var response = await _httpClient.PostAsync($"{_url}/Document/Add", form);
+            response.EnsureSuccessStatusCode();
+
+            var resultContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<bool>(resultContent);
+
+            return result;
         }
 
         public async Task<DocumentDetailsModel> DetailsAsync(int id)
@@ -70,7 +65,7 @@ namespace HealthProject.Services.DocumentService
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var healthIssues = JsonSerializer.Deserialize<DocumentDetailsModel>(jsonResponse, _jsonSerializerOptions);
+                var healthIssues = System.Text.Json.JsonSerializer.Deserialize<DocumentDetailsModel>(jsonResponse, _jsonSerializerOptions);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -107,7 +102,7 @@ namespace HealthProject.Services.DocumentService
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var healthIssues = JsonSerializer.Deserialize<List<DocumentViewModel>>(jsonResponse, _jsonSerializerOptions);
+                var healthIssues = System.Text.Json.JsonSerializer.Deserialize<List<DocumentViewModel>>(jsonResponse, _jsonSerializerOptions);
 
                 if (response.IsSuccessStatusCode)
                 {
