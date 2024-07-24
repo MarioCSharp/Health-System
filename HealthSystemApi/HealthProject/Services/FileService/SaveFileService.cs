@@ -34,7 +34,7 @@ namespace HealthProject.Services.FileService
 
             var intent = new Intent(Intent.ActionView);
             intent.SetDataAndType(uri, GetMimeType(filePath));
-            intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+            intent.AddFlags(ActivityFlags.GrantReadUriPermission | ActivityFlags.NewTask); // Added FLAG_ACTIVITY_NEW_TASK
 
             context.StartActivity(intent);
 #elif IOS
@@ -47,6 +47,7 @@ namespace HealthProject.Services.FileService
             documentInteractionController.PresentOpenInMenu(viewController.View.Frame, viewController.View, true);
 #endif
         }
+
 
 #if ANDROID
         private string GetMimeType(string filePath)
