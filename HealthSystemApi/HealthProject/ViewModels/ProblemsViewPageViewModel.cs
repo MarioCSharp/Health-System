@@ -59,6 +59,7 @@ namespace HealthProject.ViewModels
             if (parameter is int id)
             {
                 await problemService.DeleteAsync(id);
+                LoadProblems();
             }
         }
 

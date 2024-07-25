@@ -60,7 +60,7 @@
                 </Frame>
 
                 <!-- Doctors Section -->
-                <Label Text="Специалисти" Style="{StaticResource HeaderLabelStyle}" />
+                <Label Text="Симптоми" Style="{StaticResource HeaderLabelStyle}" />
 
                 <CollectionView ItemsSource="{Binding Symptoms}" x:Name="DoctorsCollectionView" SelectionMode="None">
                     <CollectionView.ItemsLayout>

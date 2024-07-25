@@ -21,7 +21,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItem Text="Delete" 
                                            BackgroundColor="Red" 
-                                           Command="{Binding BindingContext.DeleteHealthIssueCommand, Source={x:Reference RootPage}}"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteHealthIssueCommand}"
                                            CommandParameter="{Binding Id}">
                                     </SwipeItem>
                                 </SwipeItems>
@@ -33,7 +33,7 @@
                                    HasShadow="True" 
                                    BackgroundColor="White">
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.NavigateToHealthIssueDetailsCommand, Source={x:Reference RootPage}}"
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToHealthIssueDetailsCommand}"
                                           CommandParameter="{Binding Id}" />
                                 </Frame.GestureRecognizers>
                                 <StackLayout>

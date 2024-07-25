@@ -53,8 +53,15 @@
                 <Frame Style="{StaticResource CardFrameStyle}">
                     <StackLayout>
                         <Label Text="{Binding HealthIssue.Name}" Style="{StaticResource HeaderLabelStyle}" />
-                        <Label Text="{Binding Hospital.Description}" Style="{StaticResource SubHeaderLabelStyle}" />
-                        <Label Text="{Binding Hospital.IssueStartDate} до {Binding Hospital.IssueEndDate}" Style="{StaticResource SubHeaderLabelStyle}" />
+                        <Label Text="{Binding HealthIssue.Description}" Style="{StaticResource SubHeaderLabelStyle}" />
+                        <Label Style="{StaticResource SubHeaderLabelStyle}">
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}{0} до {1}">
+                                    <Binding Path="HealthIssue.IssueStartDate" />
+                                    <Binding Path="HealthIssue.IssueEndDate" />
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
                     </StackLayout>
                 </Frame>
             </StackLayout>

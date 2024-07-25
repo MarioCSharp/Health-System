@@ -66,6 +66,11 @@ namespace HealthProject.ViewModels
                     };
 
                     var result = await documentService.AddAsync(uploadDocument, formFile);
+
+                    if (result)
+                    {
+                        await Shell.Current.GoToAsync($"//{nameof(DocumentViewPage)}");
+                    }
                 }
             }
             catch (Exception ex)

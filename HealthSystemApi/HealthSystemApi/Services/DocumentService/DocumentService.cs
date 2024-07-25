@@ -2,7 +2,6 @@
 using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Document;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http.Headers;
 
 namespace HealthSystemApi.Services.DocumentService
 {

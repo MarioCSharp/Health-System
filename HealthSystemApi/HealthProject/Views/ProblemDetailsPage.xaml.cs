@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace HealthProject.Views;
 
-[QueryProperty(nameof(ProblemJson), "hospitalJson")]
+[QueryProperty(nameof(ProblemJson), "problemJson")]
 public partial class ProblemDetailsPage : ContentPage
 {
     private string problemJson;
