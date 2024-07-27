@@ -1,5 +1,7 @@
 ﻿using HealthSystemApi.Data;
+using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Medication;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystemApi.Services.MedicationService
 {
@@ -14,17 +16,77 @@ namespace HealthSystemApi.Services.MedicationService
 
         public async Task<bool> AddAsync(MedicationAddModel medicationModel, MedicationScheduleAddModel scheduleModel)
         {
-            throw new NotImplementedException();
+            var medication = new Medication()
+            {
+                Name = medicationModel.Name,
+                Type = medicationModel.Type,
+                EndDate = medicationModel.EndDate,
+                StartDate = medicationModel.StartDate,
+                HealthIssueId = medicationModel.HealthIssueId,
+                Note = medicationModel.Note,
+                Dose = medicationModel.Dose
+            };
+
+            await context.Medications.AddAsync(medication);
+
+            var schedule = new MedicationSchedule()
+            {
+                Days = scheduleModel.Days,
+                MedicationId = medication.Id,
+                Rest = scheduleModel.Rest,
+                SkipCount = scheduleModel.SkipCount,
+                Take = scheduleModel.Take,
+                Times = scheduleModel.Times,
+                UserId = scheduleModel.UserId
+            };
+
+            await context.MedicationSchedules.AddAsync(schedule);
+
+            medication.MedicationScheduleId = schedule.Id;
+
+            await context.SaveChangesAsync();
+
+            return await context.Medications.ContainsAsync(medication) && await context.MedicationSchedules.ContainsAsync(schedule);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var medication = await context.Medications.FindAsync(id);
+
+            if (medication == null)
+            {
+                return false;
+            }
+
+            var schedule = await context.MedicationSchedules.FindAsync(medication.MedicationScheduleId);
+
+            if (schedule == null)
+            {
+                return false;
+            }
+
+            context.Remove(medication);
+            context.Remove(schedule);
+
+            await context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<MedicationDetailsModel> DetailsAsync(int id)
         {
-            throw new NotImplementedException();
+            var med = await context.Medications.FindAsync(id);
+
+            if (med is null)
+            {
+                return new MedicationDetailsModel();    
+            }
+
+            var model = new MedicationDetailsModel();
+
+            //TODO: Continue
+
+            return model;
         }
     }
 }
