@@ -84,7 +84,13 @@ namespace HealthSystemApi.Services.MedicationService
 
             var model = new MedicationDetailsModel();
 
-            //TODO: Continue
+            model.Dose = med.Dose;
+            model.Name = med.Name;
+            model.StartDate = med.StartDate;
+            model.EndDate = med.EndDate;
+            model.Note = med.Note;
+            med.MedicationScheduleId = med.MedicationScheduleId;
+            med.Id = id;
 
             return model;
         }
