@@ -7,5 +7,6 @@ namespace HealthSystemApi.Services.MedicationService
         Task<bool> AddAsync(MedicationAddModel medicationModel, MedicationScheduleAddModel scheduleModel);
         Task<bool> DeleteAsync(int id);
         Task<MedicationDetailsModel> DetailsAsync(int id);
+        Task<List<MedicationDisplayModel>> AllByUser(string userId);
     }
 }

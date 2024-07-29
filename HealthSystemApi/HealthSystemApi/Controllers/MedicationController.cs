@@ -44,5 +44,12 @@ namespace HealthSystemApi.Controllers
         {
             return Ok(await medicationService.DetailsAsync(id));
         }
+
+        [HttpGet("UserMedicaiton")]
+
+        public async Task<IActionResult> UserMedicaiton([FromQuery] string userId)
+        {
+            return Ok(await medicationService.AllByUser(userId));
+        }
     }
 }

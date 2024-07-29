@@ -24,6 +24,9 @@
             Routing.RegisterRoute(nameof(DocumentAddPage), typeof(DocumentAddPage));
             Routing.RegisterRoute(nameof(DocumentDetailsPage), typeof(DocumentDetailsPage));
             Routing.RegisterRoute(nameof(DocumentViewPage), typeof(DocumentViewPage));
+            Routing.RegisterRoute(nameof(MedicationAddPage), typeof(MedicationAddPage));
+            Routing.RegisterRoute(nameof(MedicationDetailsPage), typeof(MedicationDetailsPage));
+            Routing.RegisterRoute(nameof(MedicationViewPage), typeof(MedicationViewPage));
         }
     }
 }

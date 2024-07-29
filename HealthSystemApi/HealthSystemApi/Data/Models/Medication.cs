@@ -29,6 +29,11 @@ namespace HealthSystemApi.Data.Models
         public MedicationSchedule? MedicationSchedule { get; set; }
 
         [Required]
+        public string? UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public User? User { get; set; }
+
+        [Required]
         public DateTime StartDate { get; set; }
 
         [Required]

@@ -24,7 +24,8 @@ namespace HealthSystemApi.Services.MedicationService
                 StartDate = medicationModel.StartDate,
                 HealthIssueId = medicationModel.HealthIssueId,
                 Note = medicationModel.Note,
-                Dose = medicationModel.Dose
+                Dose = medicationModel.Dose,
+                UserId = scheduleModel.UserId
             };
 
             await context.Medications.AddAsync(medication);
@@ -47,6 +48,20 @@ namespace HealthSystemApi.Services.MedicationService
             await context.SaveChangesAsync();
 
             return await context.Medications.ContainsAsync(medication) && await context.MedicationSchedules.ContainsAsync(schedule);
+        }
+
+        public async Task<List<MedicationDisplayModel>> AllByUser(string userId)
+        {
+            return await context.Medications
+                .Where(x => x.UserId == userId)
+                .Select(x => new MedicationDisplayModel()
+                {
+                    Id = x.Id,
+                    Dose = x.Dose,
+                    MedicationScheduleId = x.MedicationScheduleId,
+                    Name = x.Name, 
+                    Type = x.Type
+                }).ToListAsync();
         }
 
         public async Task<bool> DeleteAsync(int id)
