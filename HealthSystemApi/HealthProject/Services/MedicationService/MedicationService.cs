@@ -97,6 +97,36 @@ namespace HealthProject.Services.MedicationService
             return new List<MedicationDisplayModel>();
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Medication/Remove?id={id}");
+                response.EnsureSuccessStatusCode();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Successfully created ToDo");
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+        }
+
         public async Task<MedicationDetailsModel> DetailsAsync(int id)
         {
             CheckInternetConnection();

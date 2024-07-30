@@ -26,14 +26,16 @@ namespace HealthProject.ViewModels
 
             this.RedirectToAddPageCommand = new AsyncRelayCommand(RedirectToAddAsync);
             this.RedirectToDetailsPageCommand = new AsyncRelayCommand<object>(RedirectToDetailsAsync);
+            this.DeleteMedicationCommand = new AsyncRelayCommand<object>(DeleteAsync);
 
             LoadMedications();
         }
 
         public ICommand RedirectToAddPageCommand { get; }
         public ICommand RedirectToDetailsPageCommand { get; }
+        public ICommand DeleteMedicationCommand { get; }
 
-        private async void LoadMedications()
+        public async void LoadMedications()
         {
             var authToken = await authenticationService.IsAuthenticated();
 
@@ -58,7 +60,7 @@ namespace HealthProject.ViewModels
                 return;
             }
 
-            await Shell.Current.GoToAsync($"//{nameof(MedicationAddPage)}");
+            await Shell.Current.GoToAsync($"{nameof(MedicationAddPage)}");
         }
 
         private async Task RedirectToDetailsAsync(object parameter)
@@ -79,6 +81,23 @@ namespace HealthProject.ViewModels
                 var encodedMedicationJson = Uri.EscapeDataString(medJson);
 
                 await Shell.Current.GoToAsync($"//{nameof(MedicationDetailsPage)}?medicationJson={encodedMedicationJson}");
+            }
+        }
+
+        private async Task DeleteAsync(object parameter)
+        {
+            var authToken = await authenticationService.IsAuthenticated();
+
+            if (!authToken.IsAuthenticated)
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
+            }
+
+            if (parameter is int id)
+            {
+                await medicationService.DeleteAsync(id);
+                await Shell.Current.GoToAsync($"//{nameof(MedicationViewPage)}");
             }
         }
     }

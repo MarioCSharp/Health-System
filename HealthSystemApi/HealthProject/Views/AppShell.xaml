@@ -43,6 +43,13 @@
         Route="DocumentViewPage"/>
     </FlyoutItem>
 
+    <FlyoutItem Title="Медикаменти">
+        <ShellContent
+        Title="Медикаменти"
+        ContentTemplate="{DataTemplate local:MedicationViewPage}"
+        Route="MedicationViewPage"/>
+    </FlyoutItem>
+
     <FlyoutItem Title="Автентикация">
         <Tab>
             <ShellContent

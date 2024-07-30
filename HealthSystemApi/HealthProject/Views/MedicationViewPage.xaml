@@ -4,10 +4,59 @@
              x:Class="HealthProject.Views.MedicationViewPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="MedicationViewPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="Добави медикамент" 
+                Command="{Binding RedirectToAddPageCommand}"
+                HorizontalOptions="End"
+                Margin="10"
+                BackgroundColor="#007ACC"/>
+
+            <CollectionView ItemsSource="{Binding Medications}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Delete" 
+                                   BackgroundColor="Red" 
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteMedicationCommand}"
+                                   CommandParameter="{Binding Id}">
+                                    </SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame CornerRadius="10" 
+                           BorderColor="#007ACC" 
+                           Margin="10" 
+                           Padding="10" 
+                           HasShadow="True" 
+                           BackgroundColor="White">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RedirectToDetailsPageCommand}"
+                                  CommandParameter="{Binding Id}" />
+                                </Frame.GestureRecognizers>
+                                <StackLayout>
+                                    <Label Text="{Binding Name}" 
+                                       FontSize="20" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                    <Label Text="{Binding Dose}" 
+                                        FontSize="20" 
+                                        FontAttributes="Bold"
+                                        VerticalOptions="Center"
+                                        TextColor="Black"/>
+                                    <Label Text="{Binding Type}" 
+                                        FontSize="20" 
+                                        FontAttributes="Bold"
+                                        VerticalOptions="Center"
+                                        TextColor="Black"/> 
+                                </StackLayout>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

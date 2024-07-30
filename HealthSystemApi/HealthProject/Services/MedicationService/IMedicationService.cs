@@ -7,5 +7,6 @@ namespace HealthProject.Services.MedicationService
         Task<List<MedicationDisplayModel>> AllByUser(string userId);
         Task<bool> AddAsync(MedicationAddModel model);
         Task<MedicationDetailsModel> DetailsAsync(int id);
+        Task DeleteAsync(int id);
     }
 }
