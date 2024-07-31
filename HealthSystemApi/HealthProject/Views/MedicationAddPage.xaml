@@ -6,7 +6,7 @@
              Title="MedicationAddPage">
     <VerticalStackLayout Padding="10">
 
-        <Label Text="Добавяне на медикамент" 
+        <Label Text="Добавяне на лекарство" 
                FontSize="24"
                HorizontalOptions="Center" 
                VerticalOptions="CenterAndExpand" />
@@ -17,7 +17,7 @@
                VerticalOptions="CenterAndExpand" />
 
         <Picker x:Name="FrequencyPicker" 
-                Title="Select Frequency"
+                Title="Избери график"
                 SelectedIndexChanged="FrequencyPicker_SelectedIndexChanged">
             <Picker.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
@@ -41,7 +41,7 @@
                    VerticalOptions="CenterAndExpand" />
 
             <HorizontalStackLayout>
-                <Label Text="Take" VerticalOptions="Center"/>
+                <Label Text="Взимане" VerticalOptions="Center"/>
                 <Button Text="-" Clicked="DecreaseTimes_Clicked"/>
                 <Label x:Name="TimesLabel" Text="1" VerticalOptions="Center" Padding="10"/>
                 <Button Text="+" Clicked="IncreaseTimes_Clicked"/>
@@ -65,15 +65,15 @@
                    VerticalOptions="CenterAndExpand" />
 
             <HorizontalStackLayout>
-                <Label Text="Take every" VerticalOptions="Center"/>
+                <Label Text="Взимне на всеки" VerticalOptions="Center"/>
                 <Button Text="-" Clicked="DecreaseDaysX_Clicked"/>
                 <Label x:Name="DaysXLabel" Text="1" VerticalOptions="Center" Padding="10"/>
                 <Button Text="+" Clicked="IncreaseDaysX_Clicked"/>
-                <Label Text="day(s)" VerticalOptions="Center"/>
+                <Label Text="дни" VerticalOptions="Center"/>
             </HorizontalStackLayout>
 
             <HorizontalStackLayout>
-                <Label Text="Number of times per intake day" VerticalOptions="Center"/>
+                <Label Text="Брой пъти на взимане в деня на взимане" VerticalOptions="Center"/>
                 <Button Text="-" Clicked="DecreaseTimesPerDay_Clicked"/>
                 <Label x:Name="TimesPerDayLabel" Text="1" VerticalOptions="Center" Padding="10"/>
                 <Button Text="+" Clicked="IncreaseTimesPerDay_Clicked"/>
@@ -86,41 +86,95 @@
             </VerticalStackLayout>
         </VerticalStackLayout>
 
+        <!-- X days intake, Y days rest View -->
+        <VerticalStackLayout x:Name="XYDaysIntakeView" IsVisible="False">
+            <Label Text="Честота на взимане" 
+                   FontSize="14"
+                   HorizontalOptions="Start" 
+                   VerticalOptions="CenterAndExpand" />
+            <Label Text="Х дни взимане, У дни почивка" 
+                   FontSize="16"
+                   HorizontalOptions="Start" 
+                   VerticalOptions="CenterAndExpand" />
+
+            <HorizontalStackLayout>
+                <Label Text="Взимай" VerticalOptions="Center"/>
+                <Button Text="-" Clicked="DecreaseDaysXIntake_Clicked"/>
+                <Label x:Name="DaysXIntakeLabel" Text="1" VerticalOptions="Center" Padding="10"/>
+                <Button Text="+" Clicked="IncreaseDaysXIntake_Clicked"/>
+                <Label Text="дни" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Label Text="След това почивка" VerticalOptions="Center"/>
+                <Button Text="-" Clicked="DecreaseDaysYRest_Clicked"/>
+                <Label x:Name="DaysYRestLabel" Text="1" VerticalOptions="Center" Padding="10"/>
+                <Button Text="+" Clicked="IncreaseDaysYRest_Clicked"/>
+                <Label Text="дни" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Label Text="Брой пъти на взимане в деня на взимане" VerticalOptions="Center"/>
+                <Button Text="-" Clicked="DecreaseTimesPerDayXY_Clicked"/>
+                <Label x:Name="TimesPerDayXYLabel" Text="1" VerticalOptions="Center" Padding="10"/>
+                <Button Text="+" Clicked="IncreaseTimesPerDayXY_Clicked"/>
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout x:Name="TimesPerDayXYStackLayout">
+                <HorizontalStackLayout>
+                    <TimePicker Time="07:00" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
         <!-- Specific Days of Week View -->
         <VerticalStackLayout x:Name="SpecificDaysView" IsVisible="False">
-            <Label Text="Select days of the week" 
+            <Label Text="Избери дни от седмицата" 
                    FontSize="14"
                    HorizontalOptions="Start" 
                    VerticalOptions="CenterAndExpand" />
 
             <HorizontalStackLayout>
                 <CheckBox x:Name="SundayCheckBox" IsChecked="True"/>
-                <Label Text="Sunday" VerticalOptions="Center" />
+                <Label Text="Неделя" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <CheckBox x:Name="MondayCheckBox" IsChecked="True"/>
-                <Label Text="Monday" VerticalOptions="Center" />
+                <Label Text="Понеделник" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <CheckBox x:Name="TuesdayCheckBox" IsChecked="True"/>
-                <Label Text="Tuesday" VerticalOptions="Center" />
+                <Label Text="Вторник" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <CheckBox x:Name="WednesdayCheckBox" IsChecked="True"/>
-                <Label Text="Wednesday" VerticalOptions="Center" />
+                <Label Text="Сряда" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <CheckBox x:Name="ThursdayCheckBox" IsChecked="True"/>
-                <Label Text="Thursday" VerticalOptions="Center" />
+                <Label Text="Четвъртък" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <CheckBox x:Name="FridayCheckBox" IsChecked="True"/>
-                <Label Text="Friday" VerticalOptions="Center" />
+                <Label Text="Петък" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <CheckBox x:Name="SaturdayCheckBox" IsChecked="True"/>
-                <Label Text="Saturday" VerticalOptions="Center" />
+                <Label Text="Събота" VerticalOptions="Center" />
             </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Label Text="Брой пъти на взимане в деня на взимане" VerticalOptions="Center"/>
+                <Button Text="-" Clicked="DecreaseTimesPerDaySpecific_Clicked"/>
+                <Label x:Name="TimesPerDaySpecificLabel" Text="1" VerticalOptions="Center" Padding="10"/>
+                <Button Text="+" Clicked="IncreaseTimesPerDaySpecific_Clicked"/>
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout x:Name="TimesPerDaySpecificStackLayout">
+                <HorizontalStackLayout>
+                    <TimePicker Time="07:00" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
         </VerticalStackLayout>
 
     </VerticalStackLayout>
