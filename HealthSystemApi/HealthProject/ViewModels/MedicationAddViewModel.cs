@@ -18,14 +18,16 @@ namespace HealthProject.ViewModels
         {
             this.medicationService = medicationService;
             this.Medication = new MedicationAddModel();
-
-            this.AddCommand = new AsyncRelayCommand(AddAsync);
         }
 
-        public ICommand AddCommand { get; }
-
-        private async Task AddAsync()
+        public async Task AddAsync(List<TimeSpan> times, int skipCount, List<DayOfWeek> days, int take, int rest)
         {
+            Medication.Times = times;
+            Medication.Days = days;
+            Medication.Take = take;
+            Medication.Rest = rest;
+            Medication.SkipCount = skipCount;
+
             await medicationService.AddAsync(Medication);
 
             await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");

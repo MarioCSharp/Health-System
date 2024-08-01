@@ -1,3 +1,5 @@
+using HealthProject.ViewModels;
+
 namespace HealthProject.Views;
 
 public partial class MedicationAddPage : ContentPage
@@ -10,9 +12,12 @@ public partial class MedicationAddPage : ContentPage
     int timesPerDayXY = 1;
     int timesPerDaySpecific = 1;
 
-    public MedicationAddPage()
+    private MedicationAddViewModel viewModel;
+
+    public MedicationAddPage(MedicationAddViewModel viewModel)
     {
         InitializeComponent();
+        BindingContext = this.viewModel = viewModel;
         FrequencyPicker.SelectedIndex = 0;
     }
 
@@ -180,5 +185,143 @@ public partial class MedicationAddPage : ContentPage
         stackLayout.Children.Add(timePicker);
 
         return stackLayout;
+    }
+
+    private async void Button_Clicked(object sender, EventArgs e)
+    {
+        if (FrequencyPicker.SelectedIndex == 1)
+        {
+            var stackLayout = this.FindByName<VerticalStackLayout>("TimesStackLayout");
+            var times = new List<TimeSpan>();
+
+            foreach (var child in stackLayout.Children)
+            {
+                if (child is HorizontalStackLayout horizontalLayout)
+                {
+                    foreach (var innerChild in horizontalLayout.Children)
+                    {
+                        if (innerChild is TimePicker timePicker)
+                        {
+                            times.Add(timePicker.Time);
+                        }
+                    }
+                }
+            }
+
+            var days = new List<DayOfWeek>();
+            days.Add(DayOfWeek.Monday);
+            days.Add(DayOfWeek.Tuesday);
+            days.Add(DayOfWeek.Wednesday);
+            days.Add(DayOfWeek.Thursday);
+            days.Add(DayOfWeek.Friday);
+            days.Add(DayOfWeek.Saturday);
+            days.Add(DayOfWeek.Sunday);
+
+
+            await viewModel.AddAsync(times, 0, days, 0, 0);
+        }
+        else if (FrequencyPicker.SelectedIndex == 2)
+        {
+            var stackLayout = this.FindByName<VerticalStackLayout>("TimesPerDayStackLayout");
+            var times = new List<TimeSpan>();
+
+            foreach (var child in stackLayout.Children)
+            {
+                if (child is HorizontalStackLayout horizontalLayout)
+                {
+                    foreach (var innerChild in horizontalLayout.Children)
+                    {
+                        if (innerChild is TimePicker timePicker)
+                        {
+                            times.Add(timePicker.Time);
+                        }
+                    }
+                }
+            }
+
+            var skipCount = int.Parse(DaysXLabel.Text);
+
+            await viewModel.AddAsync(times, skipCount, new List<DayOfWeek>(), 0, 0);
+        }
+        else if (FrequencyPicker.SelectedIndex == 3)
+        {
+            var stackLayout = this.FindByName<VerticalStackLayout>("TimesPerDaySpecificStackLayout");
+            var times = new List<TimeSpan>();
+
+            foreach (var child in stackLayout.Children)
+            {
+                if (child is HorizontalStackLayout horizontalLayout)
+                {
+                    foreach (var innerChild in horizontalLayout.Children)
+                    {
+                        if (innerChild is TimePicker timePicker)
+                        {
+                            times.Add(timePicker.Time);
+                        }
+                    }
+                }
+            }
+
+            var days = new List<DayOfWeek>();
+
+            if (MondayCheckBox.IsChecked)
+            {
+                days.Add(DayOfWeek.Monday);
+            }
+            if (TuesdayCheckBox.IsChecked)
+            {
+                days.Add(DayOfWeek.Tuesday);
+            }
+            if (WednesdayCheckBox.IsChecked)
+            {
+                days.Add(DayOfWeek.Wednesday);
+            }
+            if (ThursdayCheckBox.IsChecked)
+            {
+                days.Add(DayOfWeek.Thursday);
+            }
+            if (FridayCheckBox.IsChecked)
+            {
+                days.Add(DayOfWeek.Friday);
+            }
+            if (SaturdayCheckBox.IsChecked)
+            {
+                days.Add(DayOfWeek.Saturday);
+            }
+            if (SundayCheckBox.IsChecked)
+            {
+                days.Add(DayOfWeek.Sunday);
+            }
+
+            await viewModel.AddAsync(times, 0, days, 0, 0);
+        }
+        else if (FrequencyPicker.SelectedIndex == 4)
+        {
+            var stackLayout = this.FindByName<VerticalStackLayout>("TimesPerDayXYStackLayout");
+            var times = new List<TimeSpan>();
+
+            foreach (var child in stackLayout.Children)
+            {
+                if (child is HorizontalStackLayout horizontalLayout)
+                {
+                    foreach (var innerChild in horizontalLayout.Children)
+                    {
+                        if (innerChild is TimePicker timePicker)
+                        {
+                            times.Add(timePicker.Time);
+                        }
+                    }
+                }
+            }
+
+            var take = int.Parse(DaysXIntakeLabel.Text);
+            var rest = int.Parse(DaysYRestLabel.Text);
+
+            await viewModel.AddAsync(times, 0, new List<DayOfWeek>(), take, rest);
+        }
+        else
+        {
+            await viewModel.AddAsync(new List<TimeSpan>(), 0, new List<DayOfWeek>(), 0, 0);
+        }
     }
 }
