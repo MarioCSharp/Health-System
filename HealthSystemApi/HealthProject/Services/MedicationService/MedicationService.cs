@@ -1,4 +1,5 @@
 ﻿using HealthProject.Models;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
@@ -30,35 +31,39 @@ namespace HealthProject.Services.MedicationService
         {
             CheckInternetConnection();
 
-            try
-            {
-                string queryString = ToQueryString(model);
+            var form = new MultipartFormDataContent();
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Medication/Add{queryString}");
-                response.EnsureSuccessStatusCode();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return true;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
-            }
-            catch (HttpRequestException e)
+            for (int i = 0; i < model.Days.Count; i++)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nUnexpected Exception Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
+                var stringContent = new StringContent(model.Days[i].ToString());
+                form.Add(stringContent, $"Days[{i}]");
             }
 
-            return false;
+            for (int i = 0; i < model.Times.Count; i++)
+            {
+                var stringContent = new StringContent(model.Times[i].ToString());
+                form.Add(stringContent, $"Times[{i}]");
+            }
+
+            form.Add(new StringContent(model.Type ?? string.Empty), "Type");
+            form.Add(new StringContent(model.Name ?? string.Empty), "Name");
+            form.Add(new StringContent(model.Dose.ToString()), "Dose");
+            form.Add(new StringContent(model.Note ?? string.Empty), "Note");
+            form.Add(new StringContent(model.StartDate.ToString("o")), "StartDate");
+            form.Add(new StringContent(model.EndDate.ToString("o")), "EndDate");
+            form.Add(new StringContent(model.Take.ToString()), "Take");
+            form.Add(new StringContent(model.SkipCount.ToString()), "SkipCount");
+            form.Add(new StringContent(model.Rest.ToString()), "Rest");
+            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
+            form.Add(new StringContent(model.UserId ?? string.Empty), "UserId");
+
+            var response = await _httpClient.PostAsync($"{_url}/Document/Add", form);
+            response.EnsureSuccessStatusCode();
+
+            var resultContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<bool>(resultContent);
+
+            return result;
         }
 
         public async Task<List<MedicationDisplayModel>> AllByUser(string userId)
@@ -71,7 +76,7 @@ namespace HealthProject.Services.MedicationService
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var medications = JsonSerializer.Deserialize<List<MedicationDisplayModel>>(responseBody, _jsonSerializerOptions);
+                var medications = System.Text.Json.JsonSerializer.Deserialize<List<MedicationDisplayModel>>(responseBody, _jsonSerializerOptions);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -137,7 +142,7 @@ namespace HealthProject.Services.MedicationService
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var medication = JsonSerializer.Deserialize<MedicationDetailsModel>(responseBody, _jsonSerializerOptions);
+                var medication = System.Text.Json.JsonSerializer.Deserialize<MedicationDetailsModel>(responseBody, _jsonSerializerOptions);
 
                 if (response.IsSuccessStatusCode)
                 {

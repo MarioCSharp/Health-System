@@ -15,15 +15,15 @@ namespace HealthSystemApi.Controllers
             this.medicationService = medicationService;
         }
 
-        [HttpGet("Add")]
-        public async Task<IActionResult> Add([FromQuery] MedicationAddModel medicationModel, [FromQuery] MedicationScheduleAddModel scheduleModel)
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add([FromQuery] MedicationAddModel medicationModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await medicationService.AddAsync(medicationModel, scheduleModel);
+            var result = await medicationService.AddAsync(medicationModel);
 
             if (!result)
             {

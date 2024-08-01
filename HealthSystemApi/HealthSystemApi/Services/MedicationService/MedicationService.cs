@@ -14,7 +14,7 @@ namespace HealthSystemApi.Services.MedicationService
             this.context = context;   
         }
 
-        public async Task<bool> AddAsync(MedicationAddModel medicationModel, MedicationScheduleAddModel scheduleModel)
+        public async Task<bool> AddAsync(MedicationAddModel medicationModel)
         {
             var medication = new Medication()
             {
@@ -25,20 +25,20 @@ namespace HealthSystemApi.Services.MedicationService
                 HealthIssueId = medicationModel.HealthIssueId,
                 Note = medicationModel.Note,
                 Dose = medicationModel.Dose,
-                UserId = scheduleModel.UserId
+                UserId = medicationModel.UserId
             };
 
             await context.Medications.AddAsync(medication);
 
             var schedule = new MedicationSchedule()
             {
-                Days = scheduleModel.Days,
+                Days = medicationModel.Days,
                 MedicationId = medication.Id,
-                Rest = scheduleModel.Rest,
-                SkipCount = scheduleModel.SkipCount,
-                Take = scheduleModel.Take,
-                Times = scheduleModel.Times,
-                UserId = scheduleModel.UserId
+                Rest = medicationModel.Rest,
+                SkipCount = medicationModel.SkipCount,
+                Take = medicationModel.Take,
+                Times = medicationModel.Times,
+                UserId = medicationModel.UserId
             };
 
             await context.MedicationSchedules.AddAsync(schedule);
