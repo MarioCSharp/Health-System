@@ -80,7 +80,7 @@ namespace HealthProject.ViewModels
                 var medJson = JsonConvert.SerializeObject(medication);
                 var encodedMedicationJson = Uri.EscapeDataString(medJson);
 
-                await Shell.Current.GoToAsync($"//{nameof(MedicationDetailsPage)}?medicationJson={encodedMedicationJson}");
+                await Shell.Current.GoToAsync($"{nameof(MedicationDetailsPage)}?medicationJson={encodedMedicationJson}");
             }
         }
 

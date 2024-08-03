@@ -16,7 +16,7 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromQuery] MedicationAddModel medicationModel)
+        public async Task<IActionResult> Add([FromForm] MedicationAddModel medicationModel)
         {
             if (!ModelState.IsValid)
             {

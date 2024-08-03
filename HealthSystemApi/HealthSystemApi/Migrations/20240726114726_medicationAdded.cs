@@ -22,9 +22,10 @@ namespace HealthSystemApi.Migrations
                     Dose = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MedicationScheduleId = table.Column<int>(type: "int", nullable: false),
+                    MedicationScheduleId = table.Column<int>(type: "int", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -33,6 +34,12 @@ namespace HealthSystemApi.Migrations
                         name: "FK_Medications_HealthIssues_HealthIssueId",
                         column: x => x.HealthIssueId,
                         principalTable: "HealthIssues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Medications_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -48,8 +55,7 @@ namespace HealthSystemApi.Migrations
                     Days = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Take = table.Column<int>(type: "int", nullable: false),
                     Rest = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MedicationId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,12 +64,6 @@ namespace HealthSystemApi.Migrations
                         name: "FK_MedicationSchedules_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MedicationSchedules_Medications_MedicationId",
-                        column: x => x.MedicationId,
-                        principalTable: "Medications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });

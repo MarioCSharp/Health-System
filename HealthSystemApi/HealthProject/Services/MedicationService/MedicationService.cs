@@ -57,7 +57,7 @@ namespace HealthProject.Services.MedicationService
             form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
             form.Add(new StringContent(model.UserId ?? string.Empty), "UserId");
 
-            var response = await _httpClient.PostAsync($"{_url}/Document/Add", form);
+            var response = await _httpClient.PostAsync($"{_url}/Medication/Add", form);
             response.EnsureSuccessStatusCode();
 
             var resultContent = await response.Content.ReadAsStringAsync();

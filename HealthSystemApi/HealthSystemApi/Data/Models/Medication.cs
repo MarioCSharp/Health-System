@@ -23,7 +23,6 @@ namespace HealthSystemApi.Data.Models
 
         public string? Note { get; set; }
 
-        [Required]
         public int MedicationScheduleId { get; set; }
         [ForeignKey(nameof(MedicationScheduleId))]
         public MedicationSchedule? MedicationSchedule { get; set; }

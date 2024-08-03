@@ -16,6 +16,20 @@ namespace HealthSystemApi.Services.MedicationService
 
         public async Task<bool> AddAsync(MedicationAddModel medicationModel)
         {
+
+            var schedule = new MedicationSchedule()
+            {
+                Days = medicationModel.Days,
+                Rest = medicationModel.Rest,
+                SkipCount = medicationModel.SkipCount,
+                Take = medicationModel.Take,
+                Times = medicationModel.Times,
+                UserId = medicationModel.UserId
+            };
+
+            await context.MedicationSchedules.AddAsync(schedule);
+            await context.SaveChangesAsync();
+
             var medication = new Medication()
             {
                 Name = medicationModel.Name,
@@ -25,26 +39,11 @@ namespace HealthSystemApi.Services.MedicationService
                 HealthIssueId = medicationModel.HealthIssueId,
                 Note = medicationModel.Note,
                 Dose = medicationModel.Dose,
-                UserId = medicationModel.UserId
+                UserId = medicationModel.UserId,
+                MedicationScheduleId = schedule.Id
             };
 
             await context.Medications.AddAsync(medication);
-
-            var schedule = new MedicationSchedule()
-            {
-                Days = medicationModel.Days,
-                MedicationId = medication.Id,
-                Rest = medicationModel.Rest,
-                SkipCount = medicationModel.SkipCount,
-                Take = medicationModel.Take,
-                Times = medicationModel.Times,
-                UserId = medicationModel.UserId
-            };
-
-            await context.MedicationSchedules.AddAsync(schedule);
-
-            medication.MedicationScheduleId = schedule.Id;
-
             await context.SaveChangesAsync();
 
             return await context.Medications.ContainsAsync(medication) && await context.MedicationSchedules.ContainsAsync(schedule);
@@ -53,7 +52,8 @@ namespace HealthSystemApi.Services.MedicationService
         public async Task<List<MedicationDisplayModel>> AllByUser(string userId)
         {
             return await context.Medications
-                .Where(x => x.UserId == userId)
+                .Include(x => x.MedicationSchedule)
+                .Where(x => x.MedicationSchedule.UserId == userId)
                 .Select(x => new MedicationDisplayModel()
                 {
                     Id = x.Id,
