@@ -50,6 +50,13 @@
         Route="MedicationViewPage"/>
     </FlyoutItem>
 
+    <FlyoutItem Title="Записани часове">
+        <ShellContent
+        Title="Записани часове"
+        ContentTemplate="{DataTemplate local:AppointmentHistoryPage}"
+        Route="AppointmentHistoryPage"/>
+    </FlyoutItem>
+
     <FlyoutItem Title="Автентикация">
         <Tab>
             <ShellContent

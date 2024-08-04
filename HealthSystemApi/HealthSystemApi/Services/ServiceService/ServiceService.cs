@@ -42,6 +42,19 @@ namespace HealthSystemApi.Services.ServiceService
                 }).ToListAsync();
         }
 
+        public async Task<List<AppointmentModel>> AllByUserAsync(string userId)
+        {
+            return await context.Bookings
+                .Where(x => x.UserId == userId)
+                .Select(x => new AppointmentModel()
+                {
+                    Id = x.Id,
+                    Date = x.Date.ToString("dd/MM/yyyy HH:mm"),
+                    DoctorName = x.Doctor.User.FullName,
+                    ServiceName = x.Service.Name
+                }).ToListAsync();
+        }
+
         public async Task<List<string>> AvailableHoursAsync(DateTime date, int serviceId)
         {
             var service = await context.Services.FindAsync(serviceId);

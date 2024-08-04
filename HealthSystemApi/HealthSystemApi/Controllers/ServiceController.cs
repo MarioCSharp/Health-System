@@ -69,5 +69,11 @@ namespace HealthSystemApi.Controllers
             var doctorBookings = await serviceService.AvailableHoursAsync(parsedDate, serviceId);
             return Ok(doctorBookings);
         }
+
+        [HttpGet("AllByUser")]
+        public async Task<IActionResult> AllByUser([FromQuery] string userId)
+        {
+            return Ok(await serviceService.AllByUserAsync(userId));
+        }
     }
 }

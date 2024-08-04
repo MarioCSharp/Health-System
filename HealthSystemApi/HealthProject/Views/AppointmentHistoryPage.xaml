@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HealthProject.Views.AppointmentHistoryPage"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             Title="AppointmentHistoryPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <CollectionView ItemsSource="{Binding History}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <Frame CornerRadius="10" 
+                               BorderColor="#007ACC" 
+                               Margin="10" 
+                               Padding="10" 
+                               HasShadow="True" 
+                               BackgroundColor="White">
+                                <StackLayout>
+                                    <Label Text="{Binding ServiceName}" 
+                                       FontSize="20" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                    <Label Text="{Binding DoctorName}" 
+                                       FontSize="20" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                    <Label Text="{Binding Date}" 
+                                       FontSize="20" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                </StackLayout>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
