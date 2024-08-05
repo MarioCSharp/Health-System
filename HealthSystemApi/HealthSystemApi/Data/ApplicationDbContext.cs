@@ -23,6 +23,7 @@ namespace HealthSystemApi.Data
         public DbSet<Document> Documents { get; set; }
         public DbSet<Medication> Medications { get; set; }
         public DbSet<MedicationSchedule> MedicationSchedules { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

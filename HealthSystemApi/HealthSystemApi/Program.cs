@@ -13,6 +13,7 @@ using HealthSystemApi.Services.HealthIssueService;
 using HealthSystemApi.Services.ProblemService;
 using HealthSystemApi.Services.DocumentService;
 using HealthSystemApi.Services.MedicationService;
+using HealthSystemApi.Services.LogbookService;
 
 namespace HealthSystemApi
 {
@@ -41,6 +42,7 @@ namespace HealthSystemApi
             builder.Services.AddTransient<IProblemService, ProblemService>();
             builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<IMedicationService, MedicationService>();
+            builder.Services.AddTransient<ILogbookService, LogbookService>();
 
             builder.Services.AddAuthorization();
 
