@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HealthProject.Views.LogbookViewPage"
+             Title="LogbookViewPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="Добави симптом" 
+                Command="{Binding RedirectToAdd}"
+                HorizontalOptions="End"
+                Margin="10"
+                BackgroundColor="#007ACC"/>
+
+            <CollectionView ItemsSource="{Binding Logbook}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Delete" 
+                                   BackgroundColor="Red" 
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
+                                   CommandParameter="{Binding Id}">
+                                    </SwipeItem>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame CornerRadius="10" 
+                           BorderColor="#007ACC" 
+                           Margin="10" 
+                           Padding="10" 
+                           HasShadow="True" 
+                           BackgroundColor="White">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RedirectToEdit}"
+                                  CommandParameter="{Binding Id}" />
+                                </Frame.GestureRecognizers>
+                                <StackLayout>
+                                    <Label Text="{Binding Type}" 
+                                       FontSize="20" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                    <Label Text="{Binding Date}" 
+                                        FontSize="20" 
+                                        FontAttributes="Bold"
+                                        VerticalOptions="Center"
+                                        TextColor="Black"/>
+
+                                    <CollectionView ItemsSource="{Binding Logbook.Values}">
+                                    </CollectionView>
+                                </StackLayout>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -13,6 +13,7 @@ using HealthProject.Services.DocumentService;
 using HealthProject.Models;
 using HealthProject.Services.MedicationService;
 using HealthProject.Services.AppointmentService;
+using HealthProject.Services.LogbookService;
 namespace HealthProject
 {
     public static class MauiProgram
@@ -66,6 +67,7 @@ namespace HealthProject
             builder.Services.AddHttpClient<IDocumentService, DocumentService>();
             builder.Services.AddHttpClient<IMedicationService, MedicationService>();
             builder.Services.AddHttpClient<IAppointmentService, AppointmentService>();
+            builder.Services.AddHttpClient<ILogbookService, LogbookService>();
             builder.Services.AddTransient<INavigationService, NavigationService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IHospitalService, HospitalService>();
@@ -75,6 +77,7 @@ namespace HealthProject
             builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<IMedicationService, MedicationService>();
             builder.Services.AddTransient<IAppointmentService, AppointmentService>();
+            builder.Services.AddTransient<ILogbookService, LogbookService>();
             builder.Services.AddTransient<HospitalDetailsPage>();
             builder.Services.AddTransient<EditDoctorInfo>();
             builder.Services.AddTransient<DoctorDetailsPage>();
@@ -92,6 +95,9 @@ namespace HealthProject
             builder.Services.AddTransient<MedicationAddPage>();
             builder.Services.AddTransient<MedicationViewPage>();
             builder.Services.AddTransient<AppointmentHistoryPage>();
+            builder.Services.AddTransient<LogbookAddPage>();
+            builder.Services.AddTransient<LogbookEditPage>();
+            builder.Services.AddTransient<LogbookViewPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

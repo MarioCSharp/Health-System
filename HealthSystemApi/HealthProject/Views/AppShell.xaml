@@ -57,6 +57,13 @@
         Route="AppointmentHistoryPage"/>
     </FlyoutItem>
 
+    <FlyoutItem Title="Записи">
+        <ShellContent
+        Title="Записи"
+        ContentTemplate="{DataTemplate local:LogbookViewPage}"
+        Route="LogbookViewPage"/>
+    </FlyoutItem>
+
     <FlyoutItem Title="Автентикация">
         <Tab>
             <ShellContent
