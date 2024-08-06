@@ -5,7 +5,7 @@
              Title="LogbookViewPage">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="Добави симптом" 
+            <Button Text="Добави запис" 
                 Command="{Binding RedirectToAdd}"
                 HorizontalOptions="End"
                 Margin="10"

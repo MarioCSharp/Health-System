@@ -1,35 +1,24 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
 using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.LogbookService;
 using HealthProject.Views;
-using System.Windows.Input;
 
 namespace HealthProject.ViewModels
 {
     public partial class LogbookAddViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private LogAddModel log;
-
         private ILogbookService logbookService;
         private IAuthenticationService authenticationService;
 
         public LogbookAddViewModel(ILogbookService logbookService,
                                    IAuthenticationService authenticationService)
         {
-            Log = new LogAddModel();
-
             this.authenticationService = authenticationService;
             this.logbookService = logbookService;
-
-            AddCommand = new AsyncRelayCommand(AddAsync);
         }
 
-        public ICommand AddCommand { get; }
-
-        public async Task AddAsync()
+        public async Task AddAsync(List<int> values, List<string> factors, string notes, int hId, string type)
         {
             var authToken = await authenticationService.IsAuthenticated();
 
@@ -39,7 +28,18 @@ namespace HealthProject.ViewModels
                 return;
             }
 
-            var result = await logbookService.AddAsync(Log);
+            var log = new LogAddModel()
+            {
+                Values = values,
+                Factors = factors,
+                Note = notes,
+                HealthIssueId = hId,
+                Date = DateTime.Now,
+                Type = type,
+                UserId = authToken.UserId
+            };
+
+            var result = await logbookService.AddAsync(log);
 
             if (result) 
             {

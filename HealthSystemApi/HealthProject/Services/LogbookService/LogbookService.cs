@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using HealthProject.Models;
+using System.Text.Json;
 
 namespace HealthProject.Services.LogbookService
 {
@@ -21,6 +22,31 @@ namespace HealthProject.Services.LogbookService
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
+        }
+
+        public async Task<bool> AddAsync(LogAddModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> EditAsync(LogAddModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<LogDisplayModel>> GetByUser(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<LogAddModel> GetEditAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
