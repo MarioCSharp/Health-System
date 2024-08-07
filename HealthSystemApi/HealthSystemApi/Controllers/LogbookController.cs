@@ -1,5 +1,4 @@
-﻿using HealthSystemApi.Data.Models;
-using HealthSystemApi.Models.Logbook;
+﻿using HealthSystemApi.Models.Logbook;
 using HealthSystemApi.Services.LogbookService;
 using Microsoft.AspNetCore.Mvc;
 namespace HealthSystemApi.Controllers
@@ -37,7 +36,7 @@ namespace HealthSystemApi.Controllers
 
         public async Task<IActionResult> Edit([FromQuery] int id)
         {
-            return Ok(logbookService.GetEditAsync(id));
+            return Ok(await logbookService.GetEditAsync(id));
         }
 
         [HttpPost("Edit")]
@@ -67,7 +66,7 @@ namespace HealthSystemApi.Controllers
         [HttpGet("AllByUser")]
         public async Task<IActionResult> AllByUser([FromQuery] string userId)
         {
-            return Ok(logbookService.AllByUserAsync(userId));
+            return Ok(await logbookService.AllByUserAsync(userId));
         }
     }
 }

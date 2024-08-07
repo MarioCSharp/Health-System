@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
 using HealthProject.Services.LogbookService;
 using HealthProject.Views;
-using System.Windows.Input;
 
 namespace HealthProject.ViewModels
 {
@@ -11,22 +9,27 @@ namespace HealthProject.ViewModels
     {
         [ObservableProperty]
         private LogAddModel log;
-
         private ILogbookService logbookService;
 
         public LogbookEditViewModel(LogAddModel log,
                                     ILogbookService logbookService)
         {
-            Log = log;
             this.logbookService = logbookService;
-
-            EditCommand = new AsyncRelayCommand(EditAsync);
+            Log = log;
         }
 
-        public ICommand EditCommand { get; }
-
-        public async Task EditAsync()
+        public async Task EditAsync(List<int> values, List<string> factors, string notes, int hId, string type)
         {
+            var log = new LogAddModel()
+            {
+                Date = DateTime.Now,
+                Values = values,
+                Factors = factors,
+                Note = notes,
+                HealthIssueId = hId,
+                Type = type
+            };
+
             var res = await logbookService.EditAsync(log);
 
             if (res)

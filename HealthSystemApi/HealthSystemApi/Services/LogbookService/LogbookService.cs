@@ -37,14 +37,14 @@ namespace HealthSystemApi.Services.LogbookService
         public async Task<List<LogDisplayModel>> AllByUserAsync(string userId)
         {
             return await context.Logs
-                .Where(x => x.UserId == userId)
-                .Select(x => new LogDisplayModel
-                {
-                    Id = x.Id,
-                    Date = x.Date.ToString("dd/MM/yyyy mm:HH"),
-                    Type = x.Type,
-                    Values = x.Values
-                }).ToListAsync();    
+                    .Where(x => x.UserId == userId)
+                    .Select(x => new LogDisplayModel
+                    {
+                        Id = x.Id,
+                        Date = x.Date.ToString("dd/MM/yyyy HH:mm"),
+                        Type = x.Type,
+                        Values = x.Values
+                    }).ToListAsync();
         }
 
         public async Task<bool> DeleteAsync(int id)

@@ -7,7 +7,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="10">
             <Label Text="ИД на ЗП:" Style="{StaticResource LabelStyle}" />
-            <Entry x:Name="HealthIssueId" Placeholder="Въведате ИД на ЗП" Style="{StaticResource EntryStyle}" />
+            <Entry x:Name="HealthIssueId" Keyboard="Numeric" Placeholder="Въведате ИД на ЗП" Style="{StaticResource EntryStyle}" />
             
             <Picker x:Name="FrequencyPicker" 
                 Title="Избери запис"
@@ -33,17 +33,17 @@
             </Picker>
             <VerticalStackLayout x:Name="Temperature" IsVisible="False">
                 <Label Text="Температура в C" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="TemperatureInput" Placeholder="Въведате температурата си" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="TemperatureInput" Keyboard="Numeric" Placeholder="Въведате температурата си" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="BloodPressure" IsVisible="False">
                 <Label Text="Систолно" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="SystolicInput" Placeholder="Въведате Систолно" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="SystolicInput" Keyboard="Numeric" Placeholder="Въведате Систолно" Style="{StaticResource EntryStyle}" />
 
                 <Label Text="Диастолно" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="DiastolicInput" Placeholder="Въведате Диастолно" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="DiastolicInput" Keyboard="Numeric" Placeholder="Въведате Диастолно" Style="{StaticResource EntryStyle}" />
 
                 <Label Text="Пулс" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="PulseInput" Placeholder="Въведате пулса си" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="PulseInput" Keyboard="Numeric" Placeholder="Въведате пулса си" Style="{StaticResource EntryStyle}" />
 
                 <Picker x:Name="PositionPicker" 
                     Title="Избери позиция">
@@ -76,35 +76,35 @@
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="BloodSugar" IsVisible="False">
                 <Label Text="Кръвна захар в mmol/l" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="BloodSugarInput" Placeholder="Въведате кръвната си захар" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="BloodSugarInput" Keyboard="Numeric" Placeholder="Въведате кръвната си захар" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="Weight" IsVisible="False">
                 <Label Text="Тегло в кг" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="WeightInput" Placeholder="Въведете теглото си" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="WeightInput" Keyboard="Numeric" Placeholder="Въведете теглото си" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="Height" IsVisible="False">
                 <Label Text="Височина в см" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="HeightInput" Placeholder="Въведете височината си" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="HeightInput" Keyboard="Numeric" Placeholder="Въведете височината си" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="Ketones" IsVisible="False">
                 <Label Text="Кетони в mmol/l" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="KetonesInput" Placeholder="Въведете кетоните си" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="KetonesInput" Keyboard="Numeric" Placeholder="Въведете кетоните си" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="Hydration" IsVisible="False">
                 <Label Text="Хидрация в ml" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="HydrationInput" Placeholder="Въведете хидрацията си" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="HydrationInput" Keyboard="Numeric" Placeholder="Въведете хидрацията си" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="UrinePh" IsVisible="False">
                 <Label Text="pH на урината" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="UrinePhInput" Placeholder="Въведете pH на урината си" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="UrinePhInput" Keyboard="Numeric" Placeholder="Въведете pH на урината си" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="OxygenSaturation" IsVisible="False">
                 <Label Text="Кислородно насищане в %" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="OxygenSaturationInput" Placeholder="Въведете кислородно си насищане" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="OxygenSaturationInput" Keyboard="Numeric" Placeholder="Въведете кислородно си насищане" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="RespiratoryRate" IsVisible="False">
                 <Label Text="Честота на биене в bpm" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="RespiratoryRateInput" Placeholder="Въведете Честота си на биене" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="RespiratoryRateInput" Keyboard="Numeric" Placeholder="Въведете Честота си на биене" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="Menstruation" IsVisible="False">
                 <Picker x:Name="FlowPicker" 
@@ -145,24 +145,24 @@
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="Cholesterol" IsVisible="False">
                 <Label Text="Общ холестерол в mmol/l" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="CholesterolInput" Placeholder="Въведете общия си холестерол" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="CholesterolInput" Keyboard="Numeric" Placeholder="Въведете общия си холестерол" Style="{StaticResource EntryStyle}" />
 
                 <Label Text="HDL" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="HDLInput" Placeholder="Въведете HDL" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="HDLInput" Keyboard="Numeric" Placeholder="Въведете HDL" Style="{StaticResource EntryStyle}" />
 
                 <Label Text="LDL" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="LDLInput" Placeholder="Въведете LDL" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="LDLInput" Keyboard="Numeric" Placeholder="Въведете LDL" Style="{StaticResource EntryStyle}" />
 
                 <Label Text="TRI" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="TRIInput" Placeholder="Въведете TRI" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="TRIInput" Keyboard="Numeric" Placeholder="Въведете TRI" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="HbA1c" IsVisible="False">
                 <Label Text="HbA1c в mmol/mol" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="HbA1cInput" Placeholder="Въведете HbA1c" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="HbA1cInput" Keyboard="Numeric" Placeholder="Въведете HbA1c" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
             <VerticalStackLayout x:Name="PeakFlow" IsVisible="False">
                 <Label Text="Пиков поток в l/min" Style="{StaticResource LabelStyle}" />
-                <Entry x:Name="PeakFlowInput" Placeholder="Въведете пиков поток" Style="{StaticResource EntryStyle}" />
+                <Entry x:Name="PeakFlowInput" Keyboard="Numeric" Placeholder="Въведете пиков поток" Style="{StaticResource EntryStyle}" />
             </VerticalStackLayout>
 
             <Label Text="Бележки:" Style="{StaticResource LabelStyle}" />

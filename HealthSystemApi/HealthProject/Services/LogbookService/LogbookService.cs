@@ -1,4 +1,6 @@
 ﻿using HealthProject.Models;
+using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace HealthProject.Services.LogbookService
@@ -26,27 +28,110 @@ namespace HealthProject.Services.LogbookService
 
         public async Task<bool> AddAsync(LogAddModel model)
         {
-            throw new NotImplementedException();
+            CheckInternetConnection();
+            var form = new MultipartFormDataContent();
+
+            for (int i = 0; i < model.Values.Count; i++)
+            {
+                form.Add(new StringContent(model.Values[i].ToString()), $"Values[{i}]");
+            }
+
+            for (int i = 0; i < model.Factors.Count; i++)
+            {
+                form.Add(new StringContent(model.Factors[i]), $"Factors[{i}]");
+            }
+
+            form.Add(new StringContent(model.Type ?? ""), "Type");
+            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
+            form.Add(new StringContent(model.Note ?? ""), "Note");
+            form.Add(new StringContent(model.UserId ?? ""), "UserId");
+            form.Add(new StringContent(model.Date.ToString("dd/MM/yyyy HH:mm")), "Date");
+
+            var response = await _httpClient.PostAsync($"{_url}/Logbook/Add", form);
+            response.EnsureSuccessStatusCode();
+
+            var resultContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<bool>(resultContent);
+
+            return result;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            CheckInternetConnection();
+
+            var response = await _httpClient.GetAsync($"{_url}/Logbook/Remove?id={id}");
+            response.EnsureSuccessStatusCode();
+
+            var resultContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<bool>(resultContent);
+
+            return result;
         }
 
         public async Task<bool> EditAsync(LogAddModel model)
         {
-            throw new NotImplementedException();
+            CheckInternetConnection();
+            var form = new MultipartFormDataContent();
+
+            for (int i = 0; i < model.Values.Count; i++)
+            {
+                form.Add(new StringContent(model.Values.ToString()), $"Values[{i}]");
+            }
+
+            for (int i = 0; i < model.Factors.Count; i++)
+            {
+                form.Add(new StringContent(model.Factors.ToString()), $"Factors[{i}]");
+            }
+
+            form.Add(new StringContent(model.Type), "Type");
+            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
+            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
+            form.Add(new StringContent(model.Note), "Note");
+            form.Add(new StringContent(model.UserId), "UserId");
+            form.Add(new StringContent(model.Date.ToString("dd/MM/yyyy mm:HH")), "Date");
+
+            var response = await _httpClient.PostAsync($"{_url}/Logbook/Edit", form);
+            response.EnsureSuccessStatusCode();
+
+            var resultContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<bool>(resultContent);
+
+            return result;
         }
 
         public async Task<List<LogDisplayModel>> GetByUser(string userId)
         {
-            throw new NotImplementedException();
+            CheckInternetConnection();
+
+            var response = await _httpClient.GetAsync($"{_url}/Logbook/AllByUser?userId={userId}");
+            response.EnsureSuccessStatusCode();
+
+            var resultContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<LogDisplayModel>>(resultContent);
+
+            return result;
         }
 
         public async Task<LogAddModel> GetEditAsync(int id)
         {
-            throw new NotImplementedException();
+            CheckInternetConnection();
+
+            var response = await _httpClient.GetAsync($"{_url}/Logbook/Edit?id={id}");
+            response.EnsureSuccessStatusCode();
+
+            var resultContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<LogAddModel>(resultContent);
+
+            return result;
+        }
+
+        private void CheckInternetConnection()
+        {
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                Debug.WriteLine("--- No internet access");
+            }
         }
     }
 }

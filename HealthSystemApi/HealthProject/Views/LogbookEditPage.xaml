@@ -3,10 +3,174 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.LogbookEditPage"
              Title="LogbookEditPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="10">
+            <Label Text="ИД на ЗП:" Style="{StaticResource LabelStyle}" />
+            <Entry x:Name="HealthIssueId" Keyboard="Numeric" Placeholder="Въведате ИД на ЗП" Style="{StaticResource EntryStyle}" />
+
+            <Picker x:Name="FrequencyPicker" 
+            Title="Избери запис"
+            SelectedIndexChanged="FrequencyPicker_SelectedIndexChanged">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Температура</x:String>
+                        <x:String>Кръвно налягане</x:String>
+                        <x:String>Кръвна захар</x:String>
+                        <x:String>Тегло</x:String>
+                        <x:String>Височина</x:String>
+                        <x:String>Кетони</x:String>
+                        <x:String>Хидратация</x:String>
+                        <x:String>pH на урина</x:String>
+                        <x:String>Кислородно засищане</x:String>
+                        <x:String>Дихателна честота</x:String>
+                        <x:String>Менструация</x:String>
+                        <x:String>Холестерол</x:String>
+                        <x:String>HbA1c</x:String>
+                        <x:String>Пиков поток</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <VerticalStackLayout x:Name="Temperature" IsVisible="False">
+                <Label Text="Температура в C" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="TemperatureInput" Keyboard="Numeric" Placeholder="Въведате температурата си" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="BloodPressure" IsVisible="False">
+                <Label Text="Систолно" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="SystolicInput" Keyboard="Numeric" Placeholder="Въведате Систолно" Style="{StaticResource EntryStyle}" />
+
+                <Label Text="Диастолно" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="DiastolicInput" Keyboard="Numeric" Placeholder="Въведате Диастолно" Style="{StaticResource EntryStyle}" />
+
+                <Label Text="Пулс" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="PulseInput" Keyboard="Numeric" Placeholder="Въведате пулса си" Style="{StaticResource EntryStyle}" />
+
+                <Picker x:Name="PositionPicker" 
+                Title="Избери позиция">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Седнал</x:String>
+                            <x:String>Легнал</x:String>
+                            <x:String>Прав</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+                <Picker x:Name="SitePicker" 
+                Title="Избери място на премерване">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Лява ръка</x:String>
+                            <x:String>Дясна ръка</x:String>
+                            <x:String>Лява китка</x:String>
+                            <x:String>Дясна китка</x:String>
+                            <x:String>Ляво бедро</x:String>
+                            <x:String>Дясно бедро</x:String>
+                            <x:String>Ляв прасец</x:String>
+                            <x:String>Десен прасец</x:String>
+                            <x:String>Ляв глезен</x:String>
+                            <x:String>Десен глезен</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="BloodSugar" IsVisible="False">
+                <Label Text="Кръвна захар в mmol/l" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="BloodSugarInput" Keyboard="Numeric" Placeholder="Въведате кръвната си захар" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="Weight" IsVisible="False">
+                <Label Text="Тегло в кг" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="WeightInput" Keyboard="Numeric" Placeholder="Въведете теглото си" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="Height" IsVisible="False">
+                <Label Text="Височина в см" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="HeightInput" Keyboard="Numeric" Placeholder="Въведете височината си" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="Ketones" IsVisible="False">
+                <Label Text="Кетони в mmol/l" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="KetonesInput" Keyboard="Numeric" Placeholder="Въведете кетоните си" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="Hydration" IsVisible="False">
+                <Label Text="Хидрация в ml" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="HydrationInput" Keyboard="Numeric" Placeholder="Въведете хидрацията си" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="UrinePh" IsVisible="False">
+                <Label Text="pH на урината" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="UrinePhInput" Keyboard="Numeric" Placeholder="Въведете pH на урината си" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="OxygenSaturation" IsVisible="False">
+                <Label Text="Кислородно насищане в %" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="OxygenSaturationInput" Keyboard="Numeric" Placeholder="Въведете кислородно си насищане" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="RespiratoryRate" IsVisible="False">
+                <Label Text="Честота на биене в bpm" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="RespiratoryRateInput" Keyboard="Numeric" Placeholder="Въведете Честота си на биене" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="Menstruation" IsVisible="False">
+                <Picker x:Name="FlowPicker" 
+                Title="Избери поток">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Лек</x:String>
+                            <x:String>Среден</x:String>
+                            <x:String>Тежък</x:String>
+                            <x:String>Неочакван</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+                <Picker x:Name="ColorPicker" 
+                Title="Цвят">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Черен</x:String>
+                            <x:String>Кафяв</x:String>
+                            <x:String>Тъмно червен</x:String>
+                            <x:String>Светло червен</x:String>
+                            <x:String>Розов</x:String>
+                            <x:String>Оранжев</x:String>
+                            <x:String>Сив</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+                <Picker x:Name="ConsistencyPicker" 
+                Title="Консистенция">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Воднист</x:String>
+                            <x:String>Съсиреци</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="Cholesterol" IsVisible="False">
+                <Label Text="Общ холестерол в mmol/l" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="CholesterolInput" Keyboard="Numeric" Placeholder="Въведете общия си холестерол" Style="{StaticResource EntryStyle}" />
+
+                <Label Text="HDL" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="HDLInput" Keyboard="Numeric" Placeholder="Въведете HDL" Style="{StaticResource EntryStyle}" />
+
+                <Label Text="LDL" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="LDLInput" Keyboard="Numeric" Placeholder="Въведете LDL" Style="{StaticResource EntryStyle}" />
+
+                <Label Text="TRI" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="TRIInput" Keyboard="Numeric" Placeholder="Въведете TRI" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="HbA1c" IsVisible="False">
+                <Label Text="HbA1c в mmol/mol" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="HbA1cInput" Keyboard="Numeric" Placeholder="Въведете HbA1c" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="PeakFlow" IsVisible="False">
+                <Label Text="Пиков поток в l/min" Style="{StaticResource LabelStyle}" />
+                <Entry x:Name="PeakFlowInput" Keyboard="Numeric" Placeholder="Въведете пиков поток" Style="{StaticResource EntryStyle}" />
+            </VerticalStackLayout>
+
+            <Label Text="Бележки:" Style="{StaticResource LabelStyle}" />
+            <Entry x:Name="Notes" Placeholder="Бележки" Style="{StaticResource EntryStyle}" />
+
+            <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" 
+                 Clicked="Button_Clicked"
+                 AutomationProperties.IsInAccessibleTree="True" 
+                 AutomationProperties.Name="Add Hospital Button" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
