@@ -168,6 +168,19 @@ namespace HealthProject.Services.MedicationService
             return new MedicationDetailsModel();
         }
 
+        public async Task<List<MedicationScheduleModel>> SchedulesAsync(string userId)
+        {
+            CheckInternetConnection();
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Medication/UserSchedule?userId={userId}");
+            response.EnsureSuccessStatusCode();
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var medication = System.Text.Json.JsonSerializer.Deserialize<List<MedicationScheduleModel>>(responseBody, _jsonSerializerOptions);
+
+            return medication;
+        }
+
         private void CheckInternetConnection()
         {
             if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)

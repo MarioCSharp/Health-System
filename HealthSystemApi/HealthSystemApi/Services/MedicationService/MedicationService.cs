@@ -109,5 +109,27 @@ namespace HealthSystemApi.Services.MedicationService
 
             return model;
         }
+
+        public async Task<List<MedicationScheduleModel>> GetUserScheduleAsync(string userId)
+        {
+            return await context.Medications
+                .Where(medication => medication.UserId == userId)
+                .Select(medication => new MedicationScheduleModel()
+                {
+                    Id = medication.Id,
+                    Name = medication.Name,
+                    HealthIssueName = medication.HealthIssue.Name ?? string.Empty,
+                    Dose = medication.Dose,
+                    Type = medication.Type,
+                    Note = medication.Note,
+                    StartDate = medication.StartDate,
+                    EndDate = medication.EndDate,
+                    Times = medication.MedicationSchedule.Times,
+                    SkipCount = medication.MedicationSchedule.SkipCount,
+                    Take = medication.MedicationSchedule.Take,
+                    Rest = medication.MedicationSchedule.Rest,
+                    Days = medication.MedicationSchedule.Days
+                }).ToListAsync();
+        }
     }
 }

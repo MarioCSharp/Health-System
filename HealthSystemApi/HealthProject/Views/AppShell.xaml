@@ -50,6 +50,13 @@
         Route="MedicationViewPage"/>
     </FlyoutItem>
 
+    <FlyoutItem Title="График за медикаменти">
+        <ShellContent
+        Title="График за медикаменти"
+        ContentTemplate="{DataTemplate local:MedicationSchedulePage}"
+        Route="MedicationSchedulePage"/>
+    </FlyoutItem>
+
     <FlyoutItem Title="Записани часове">
         <ShellContent
         Title="Записани часове"

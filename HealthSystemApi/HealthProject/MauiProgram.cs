@@ -10,10 +10,11 @@ using Microsoft.Extensions.Logging;
 using HealthProject.Views;
 using HealthProject.Services.ProblemService;
 using HealthProject.Services.DocumentService;
-using HealthProject.Models;
 using HealthProject.Services.MedicationService;
 using HealthProject.Services.AppointmentService;
 using HealthProject.Services.LogbookService;
+using Syncfusion.Maui.Core.Hosting;
+
 namespace HealthProject
 {
     public static class MauiProgram
@@ -61,6 +62,7 @@ namespace HealthProject
             builder.Services.AddTransient<LogbookPageViewModel>();
             builder.Services.AddTransient<LogbookAddViewModel>();
             builder.Services.AddTransient<LogbookEditViewModel>();
+            builder.Services.AddTransient<MedicationScheduleViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IServiceService, ServiceService>();
@@ -101,11 +103,13 @@ namespace HealthProject
             builder.Services.AddTransient<LogbookAddPage>();
             builder.Services.AddTransient<LogbookEditPage>();
             builder.Services.AddTransient<LogbookViewPage>();
+            builder.Services.AddTransient<MedicationSchedulePage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
+            builder.ConfigureSyncfusionCore();
             return builder.Build();
         }
     }
