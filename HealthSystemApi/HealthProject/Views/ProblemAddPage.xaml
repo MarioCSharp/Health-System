@@ -4,55 +4,127 @@
              x:Class="HealthProject.Views.ProblemAddPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="ProblemAddPage">
-    <StackLayout Padding="10">
-        <Entry Placeholder="Notes" Text="{Binding Problem.Notes}" />
-        <DatePicker Date="{Binding Problem.Date}" />
-        <Entry Placeholder="HealthIssueId" Keyboard="Numeric" Text="{Binding Problem.HealthIssueId}" />
+             Title="Add Problem"
+             BackgroundColor="#fff">
 
-        <CollectionView ItemsSource="{Binding Categories}" SelectionMode="Single"
-                        SelectionChanged="OnCategorySelected">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <toolkit:Expander>
-                            <toolkit:Expander.Header>
-                                <Label Text="{Binding Name}" />
-                            </toolkit:Expander.Header>
-                            <toolkit:Expander.Content>
-                                <CollectionView ItemsSource="{Binding SubCategories}" SelectionMode="Single"
-                                                SelectionChanged="OnSubCategorySelected">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackLayout Padding="20,0,0,0">
-                                                <toolkit:Expander>
-                                                    <toolkit:Expander.Header>
-                                                        <Label Text="{Binding Name}" />
-                                                    </toolkit:Expander.Header>
-                                                    <toolkit:Expander.Content>
-                                                        <CollectionView ItemsSource="{Binding Symptoms}" SelectionMode="Multiple"
-                                                                        SelectionChanged="OnSymptomSelected">
-                                                            <CollectionView.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <StackLayout Padding="20,0,0,0">
-                                                                        <Label Text="{Binding Name}" />
-                                                                    </StackLayout>
-                                                                </DataTemplate>
-                                                            </CollectionView.ItemTemplate>
-                                                        </CollectionView>
-                                                    </toolkit:Expander.Content>
-                                                </toolkit:Expander>
-                                            </StackLayout>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
-                            </toolkit:Expander.Content>
-                        </toolkit:Expander>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            <Entry Placeholder="Enter notes here..." 
+                   Text="{Binding Problem.Notes}" 
+                   FontSize="16"
+                   BackgroundColor="White"
+                   TextColor="#333333"
+                   HeightRequest="100"
+                   VerticalOptions="Start"
+                   HorizontalOptions="FillAndExpand"
+                   Margin="0,0,0,10"
+                   />
 
-        <Button Text="Add Problem" Command="{Binding ProblemAddCommand}" />
-    </StackLayout>
+            <DatePicker Date="{Binding Problem.Date}" 
+                        FontSize="16"
+                        TextColor="#333333"
+                        BackgroundColor="White"
+                        HeightRequest="50"
+                        VerticalOptions="Start"
+                        HorizontalOptions="FillAndExpand"
+                        Margin="0,0,0,10"
+                        />
+
+            <Entry Placeholder="Health Issue ID" 
+                   Keyboard="Numeric" 
+                   Text="{Binding Problem.HealthIssueId}" 
+                   FontSize="16"
+                   BackgroundColor="White"
+                   TextColor="#333333"
+                   HeightRequest="50"
+                   VerticalOptions="Start"
+                   HorizontalOptions="FillAndExpand"
+                   Margin="0,0,0,10"
+                   />
+            <CollectionView ItemsSource="{Binding Categories}" 
+                            SelectionMode="Single"
+                            SelectionChanged="OnCategorySelected">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="#007ACC" 
+                               CornerRadius="10" 
+                               Padding="10"
+                               Margin="0,0,0,10"
+                               HasShadow="False"
+                               BackgroundColor="White">
+                            <toolkit:Expander>
+                                <toolkit:Expander.Header>
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold"
+                                           TextColor="#007ACC"/>
+                                </toolkit:Expander.Header>
+                                <toolkit:Expander.Content>
+                                    <CollectionView ItemsSource="{Binding SubCategories}" 
+                                                    SelectionMode="Single"
+                                                    SelectionChanged="OnSubCategorySelected">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Frame BorderColor="#B0B0B0" 
+                                                       CornerRadius="8" 
+                                                       Padding="8"
+                                                       Margin="0,0,0,10"
+                                                       HasShadow="False"
+                                                       BackgroundColor="#F9F9F9">
+                                                    <toolkit:Expander>
+                                                        <toolkit:Expander.Header>
+                                                            <Label Text="{Binding Name}" 
+                                                                   FontSize="16"
+                                                                   TextColor="#333333"/>
+                                                        </toolkit:Expander.Header>
+                                                        <toolkit:Expander.Content>
+                                                            <CollectionView ItemsSource="{Binding Symptoms}" 
+                                                                            SelectionMode="None">
+                                                                <CollectionView.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Frame BorderColor="#D0D0D0" 
+                                                                               CornerRadius="6" 
+                                                                               Padding="8"
+                                                                               Margin="0,0,0,5"
+                                                                               HasShadow="False">
+                                                                            <Frame.BackgroundColor>
+                                                                                <Binding Path="IsSelected" Converter="{StaticResource BoolToColorConverter}" />
+                                                                            </Frame.BackgroundColor>
+                                                                            <Label Text="{Binding Name}" 
+                                                                                   FontSize="14"
+                                                                                   TextColor="#333333"/>
+                                                                            <Frame.GestureRecognizers>
+                                                                                <TapGestureRecognizer Command="{Binding BindingContext.OnSymptomSelectedCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                                                                      CommandParameter="{Binding .}" />
+                                                                            </Frame.GestureRecognizers>
+                                                                        </Frame>
+                                                                    </DataTemplate>
+                                                                </CollectionView.ItemTemplate>
+                                                            </CollectionView>
+                                                        </toolkit:Expander.Content>
+                                                    </toolkit:Expander>
+                                                </Frame>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </toolkit:Expander.Content>
+                            </toolkit:Expander>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Frame Padding="10" Margin="0,10" BackgroundColor="Transparent" HasShadow="False">
+                <Button Text="Add Problem" 
+                        Command="{Binding ProblemAddCommand}" 
+                        BackgroundColor="#007ACC"
+                        TextColor="White"
+                        FontSize="18"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="End"/>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

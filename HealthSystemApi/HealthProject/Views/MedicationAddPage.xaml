@@ -4,6 +4,26 @@
              x:Class="HealthProject.Views.MedicationAddPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="MedicationAddPage">
+    <ContentPage.Resources>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="TextColor" Value="#34495e"/>
+        </Style>
+
+        <Style x:Key="EntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="TextColor" Value="Black"/>
+        </Style>
+
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="BackgroundColor" Value="#007ACC"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="Padding" Value="10, 20"/>
+        </Style>
+
+    </ContentPage.Resources>
     <ScrollView>
         <VerticalStackLayout Padding="10">
 
