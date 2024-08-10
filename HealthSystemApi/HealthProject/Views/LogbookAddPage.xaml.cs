@@ -1,4 +1,5 @@
 using HealthProject.ViewModels;
+using System.Security.Cryptography;
 
 namespace HealthProject.Views;
 
@@ -7,10 +8,10 @@ public partial class LogbookAddPage : ContentPage
     private LogbookAddViewModel viewModel;
 
     public LogbookAddPage(LogbookAddViewModel viewModel)
-	{
-		InitializeComponent();
-		BindingContext =  this.viewModel = viewModel;
-	}
+    {
+        InitializeComponent();
+        BindingContext = this.viewModel = viewModel;
+    }
 
     private void FrequencyPicker_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -32,230 +33,108 @@ public partial class LogbookAddPage : ContentPage
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-        var hId = int.Parse(HealthIssueId.Text);
-        var notes = Notes.Text;
+        if (!int.TryParse(HealthIssueId.Text, out var hId))
+        {
+            await DisplayAlert("Error", "Please enter a valid health issue ID.", "OK");
+            return;
+        }
 
+        var notes = Notes.Text;
         var values = new List<int>();
         var factors = new List<string>();
 
-        if (FrequencyPicker.SelectedIndex == 0)
+        try
         {
-            values.Add(int.Parse(TemperatureInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 1)
-        {
-            values.Add(int.Parse(SystolicInput.Text));
-            values.Add(int.Parse(DiastolicInput.Text));
-            values.Add(int.Parse(PulseInput.Text));
-
-            var posIndex = PositionPicker.SelectedIndex;
-
-            switch (posIndex)
+            switch (FrequencyPicker.SelectedIndex)
             {
                 case 0:
-                    factors.Add("Седнал");
+                    values.Add(int.Parse(TemperatureInput.Text));
                     break;
                 case 1:
-                    factors.Add("Легнал");
+                    values.Add(int.Parse(SystolicInput.Text));
+                    values.Add(int.Parse(DiastolicInput.Text));
+                    values.Add(int.Parse(PulseInput.Text));
+                    factors.Add(GetPickerSelection(PositionPicker));
+                    factors.Add(GetPickerSelection(SitePicker));
                     break;
                 case 2:
-                    factors.Add("Прав");
-                    break;
-            }
-
-            var siteIndex = SitePicker.SelectedIndex;
-
-            switch (siteIndex)
-            {
-                case 0:
-                    factors.Add("Лява ръка");
-                    break;
-                case 1:
-                    factors.Add("Дясна ръка");
-                    break;
-                case 2:
-                    factors.Add("Лява китка");
+                    values.Add(int.Parse(BloodSugarInput.Text));
                     break;
                 case 3:
-                    factors.Add("Дясна китка");
+                    values.Add(int.Parse(WeightInput.Text));
                     break;
                 case 4:
-                    factors.Add("Ляво бедро");
+                    values.Add(int.Parse(HeightInput.Text));
                     break;
                 case 5:
-                    factors.Add("Дясно бедро");
+                    values.Add(int.Parse(KetonesInput.Text));
                     break;
                 case 6:
-                    factors.Add("Ляв прасец");
+                    values.Add(int.Parse(HydrationInput.Text));
                     break;
                 case 7:
-                    factors.Add("Десен прасец");
+                    values.Add(int.Parse(UrinePhInput.Text));
                     break;
                 case 8:
-                    factors.Add("Ляв глезен");
+                    values.Add(int.Parse(OxygenSaturationInput.Text));
                     break;
                 case 9:
-                    factors.Add("Десен глезен");
+                    values.Add(int.Parse(RespiratoryRateInput.Text));
                     break;
-                default:
+                case 10:
+                    factors.Add(GetPickerSelection(FlowPicker));
+                    factors.Add(GetPickerSelection(ColorPicker));
+                    factors.Add(GetPickerSelection(ConsistencyPicker));
                     break;
-            }
-        }
-        else if (FrequencyPicker.SelectedIndex == 2)
-        {
-            values.Add(int.Parse(BloodSugarInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 3)
-        {
-            values.Add(int.Parse(WeightInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 4)
-        {
-            values.Add(int.Parse(HeightInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 5)
-        {
-            values.Add(int.Parse(KetonesInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 6)
-        {
-            values.Add(int.Parse(HydrationInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 7)
-        {
-            values.Add(int.Parse(UrinePhInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 8)
-        {
-            values.Add(int.Parse(OxygenSaturationInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 9) 
-        {
-            var flowIndex = FlowPicker.SelectedIndex;
-
-            switch (flowIndex)
-            {
-                case 0:
-                    factors.Add("Лек");
+                case 11:
+                    values.Add(int.Parse(CholesterolInput.Text));
+                    values.Add(int.Parse(HDLInput.Text));
+                    values.Add(int.Parse(LDLInput.Text));
+                    values.Add(int.Parse(TRIInput.Text));
                     break;
-                case 1:
-                    factors.Add("Среден");
+                case 12:
+                    values.Add(int.Parse(HbA1cInput.Text));
                     break;
-                case 2:
-                    factors.Add("Тежък");
-                    break;
-                case 3:
-                    factors.Add("Неочакван");
-                    break;
-            }
-
-            var colorIndex = ColorPicker.SelectedIndex;
-
-            switch (colorIndex)
-            {
-                case 0:
-                    factors.Add("Черен");
-                    break;
-                case 1:
-                    factors.Add("Кафяв");
-                    break;
-                case 2:
-                    factors.Add("Тъмно червен");
-                    break;
-                case 3:
-                    factors.Add("Светло червен");
-                    break;
-                case 4:
-                    factors.Add("Розов");
-                    break;
-                case 5:
-                    factors.Add("Оранжев");
-                    break;
-                case 6:
-                    factors.Add("Сив");
-                    break;
-            }
-
-            var consistencyIndex = ConsistencyPicker.SelectedIndex;
-
-            switch (flowIndex)
-            {
-                case 0:
-                    factors.Add("Воднист");
-                    break;
-                case 1:
-                    factors.Add("Съсиреци");
+                case 13:
+                    values.Add(int.Parse(PeakFlowInput.Text));
                     break;
             }
         }
-        else if (FrequencyPicker.SelectedIndex == 10)
+        catch (FormatException)
         {
-            values.Add(int.Parse(CholesterolInput.Text));
-            values.Add(int.Parse(HDLInput.Text));
-            values.Add(int.Parse(LDLInput.Text));
-            values.Add(int.Parse(TRIInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 11)
-        {
-            values.Add(int.Parse(HbA1cInput.Text));
-        }
-        else if (FrequencyPicker.SelectedIndex == 12)
-        {
-            values.Add(int.Parse(PeakFlowInput.Text));
+            await DisplayAlert("Error", "Please enter valid numeric values.", "OK");
+            return;
         }
 
-        var typeIndex = FrequencyPicker.SelectedIndex;
-        var type = string.Empty;
-
-        switch (typeIndex)
-        {
-            case 0:
-                type = "Температура";
-                break;
-            case 1:
-                type = "Кръвно налягане";
-                break;
-            case 2:
-                type = "Кръвна захар";
-                break;
-            case 3:
-                type = "Тегло";
-                break;
-            case 4:
-                type = "Височина";
-                break;
-            case 5:
-                type = "Кетони";
-                break;
-            case 6:
-                type = "Хидратация";
-                break;
-            case 7:
-                type = "pH на урина";
-                break;
-            case 8:
-                type = "Кислородно засищане";
-                break;
-            case 9:
-                type = "Дихателна честота";
-                break;
-            case 10:
-                type = "Менструация";
-                break;
-            case 11:
-                type = "Холестерол";
-                break;
-            case 12:
-                type = "HbA1c";
-                break;
-            case 13:
-                type = "Пиков поток";
-                break;
-            default:
-                type = "Unknown";
-                break;
-        }
+        var type = GetMeasurementType(FrequencyPicker.SelectedIndex);
 
         await viewModel.AddAsync(values, factors, notes, hId, type);
+    }
+
+    private string GetPickerSelection(Picker picker)
+    {
+        return picker.SelectedIndex >= 0 ? picker.Items[picker.SelectedIndex] : string.Empty;
+    }
+
+    private string GetMeasurementType(int index)
+    {
+        return index switch
+        {
+            0 => "Температура",
+            1 => "Кръвно налягане",
+            2 => "Кръвна захар",
+            3 => "Тегло",
+            4 => "Височина",
+            5 => "Кетони",
+            6 => "Хидратация",
+            7 => "pH на урина",
+            8 => "Кислородно засищане",
+            9 => "Дихателна честота",
+            10 => "Менструация",
+            11 => "Холестерол",
+            12 => "HbA1c",
+            13 => "Пиков поток",
+            _ => "Unknown",
+        };
     }
 }

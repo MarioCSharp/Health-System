@@ -5,7 +5,6 @@ using HealthProject.Services.DoctorService;
 using HealthProject.Services.ServiceService;
 using Newtonsoft.Json;
 using System.Windows.Input;
-using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class AddServicePageViewModel : ObservableObject

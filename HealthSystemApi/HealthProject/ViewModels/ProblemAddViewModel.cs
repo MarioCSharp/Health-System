@@ -27,6 +27,7 @@ namespace HealthProject.ViewModels
         private IAuthenticationService authenticationService;
 
         public ICommand ProblemAddCommand { get; }
+        public ICommand OnSymptomTappedCommand { get; }
 
         public ProblemAddViewModel(IProblemService problemService,
                                    IAuthenticationService authenticationService)
@@ -37,6 +38,7 @@ namespace HealthProject.ViewModels
             Problem = new ProblemAddModel();
 
             ProblemAddCommand = new AsyncRelayCommand(AddAsync);
+            OnSymptomTappedCommand = new RelayCommand<SymptomDisplayModel>(OnSymptomSelected);
 
             this.problemService = problemService;
             this.authenticationService = authenticationService;
@@ -78,13 +80,20 @@ namespace HealthProject.ViewModels
 
         public void OnSymptomSelected(SymptomDisplayModel symptom)
         {
-            if (!Problem.SelectedSymptoms.Contains(symptom.Id))
+            symptom.IsSelected = !symptom.IsSelected;
+            if (symptom.IsSelected)
             {
-                Problem.SelectedSymptoms.Add(symptom.Id);
+                if (!Problem.SelectedSymptoms.Contains(symptom.Id))
+                {
+                    Problem.SelectedSymptoms.Add(symptom.Id);
+                }
             }
             else
             {
-                Problem.SelectedSymptoms.Remove(symptom.Id);
+                if (Problem.SelectedSymptoms.Contains(symptom.Id))
+                {
+                    Problem.SelectedSymptoms.Remove(symptom.Id);
+                }
             }
         }
     }

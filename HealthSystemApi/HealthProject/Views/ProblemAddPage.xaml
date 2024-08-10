@@ -6,7 +6,6 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="Add Problem"
              BackgroundColor="#fff">
-
     <ScrollView>
         <StackLayout Padding="20" Spacing="15">
             <Entry Placeholder="Enter notes here..." 
@@ -79,25 +78,25 @@
                                                         </toolkit:Expander.Header>
                                                         <toolkit:Expander.Content>
                                                             <CollectionView ItemsSource="{Binding Symptoms}" 
-                                                                            SelectionMode="None">
+                                                                  SelectionMode="None">
                                                                 <CollectionView.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <Frame BorderColor="#D0D0D0" 
-                                                                               CornerRadius="6" 
-                                                                               Padding="8"
-                                                                               Margin="0,0,0,5"
-                                                                               HasShadow="False">
-                                                                            <Frame.BackgroundColor>
-                                                                                <Binding Path="IsSelected" Converter="{StaticResource BoolToColorConverter}" />
-                                                                            </Frame.BackgroundColor>
+                                                                           CornerRadius="6" 
+                                                                           Padding="8"
+                                                                           Margin="0,0,0,5"
+                                                                           HasShadow="False"
+                                                                           BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToColorConverter}}">
                                                                             <Label Text="{Binding Name}" 
-                                                                                   FontSize="14"
-                                                                                   TextColor="#333333"/>
+                                                                           FontSize="14"
+                                                                           TextColor="#333333"/>
                                                                             <Frame.GestureRecognizers>
-                                                                                <TapGestureRecognizer Command="{Binding BindingContext.OnSymptomSelectedCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                                                                                      CommandParameter="{Binding .}" />
+                                                                                <TapGestureRecognizer 
+                                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OnSymptomTappedCommand}"
+                                                                            CommandParameter="{Binding .}" />
                                                                             </Frame.GestureRecognizers>
                                                                         </Frame>
+
                                                                     </DataTemplate>
                                                                 </CollectionView.ItemTemplate>
                                                             </CollectionView>
