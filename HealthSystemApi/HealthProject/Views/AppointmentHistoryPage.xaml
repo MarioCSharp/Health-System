@@ -6,32 +6,40 @@
              Title="AppointmentHistoryPage">
     <ContentPage.Content>
         <StackLayout>
+            <!-- Title Label -->
+            <Label Text="Записани часове"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   TextColor="#007ACC"
+                   Margin="20"/>
+
+            <!-- Appointment History List -->
             <CollectionView ItemsSource="{Binding History}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
                             <Frame CornerRadius="10" 
-                               BorderColor="#007ACC" 
-                               Margin="10" 
-                               Padding="10" 
-                               HasShadow="True" 
-                               BackgroundColor="White">
+                                   BorderColor="#007ACC" 
+                                   Margin="10" 
+                                   Padding="10" 
+                                   HasShadow="True" 
+                                   BackgroundColor="White">
                                 <StackLayout>
                                     <Label Text="{Binding ServiceName}" 
-                                       FontSize="20" 
-                                       FontAttributes="Bold"
-                                       VerticalOptions="Center"
-                                       TextColor="Black"/>
+                                           FontSize="18" 
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           TextColor="Black"/>
                                     <Label Text="{Binding DoctorName}" 
-                                       FontSize="20" 
-                                       FontAttributes="Bold"
-                                       VerticalOptions="Center"
-                                       TextColor="Black"/>
+                                           FontSize="16" 
+                                           VerticalOptions="Center"
+                                           TextColor="Gray"/>
                                     <Label Text="{Binding Date}" 
-                                       FontSize="20" 
-                                       FontAttributes="Bold"
-                                       VerticalOptions="Center"
-                                       TextColor="Black"/>
+                                           FontSize="14" 
+                                           VerticalOptions="Center"
+                                           TextColor="Gray"/>
                                 </StackLayout>
                             </Frame>
                         </SwipeView>
