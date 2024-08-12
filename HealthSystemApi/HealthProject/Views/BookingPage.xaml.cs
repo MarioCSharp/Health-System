@@ -11,6 +11,7 @@ public partial class BookingPage : ContentPage
 {
     private string serviceJson;
     private IServiceService serviceService;
+    private IAuthenticationService authenticationService;
     public string ServiceJson
     {
         get => serviceJson;
@@ -18,12 +19,14 @@ public partial class BookingPage : ContentPage
         {
             serviceJson = value;
             var service = JsonConvert.DeserializeObject<ServiceModel>(Uri.UnescapeDataString(value));
-            BindingContext = new BookingViewModel(service, serviceService);
+            BindingContext = new BookingViewModel(service, serviceService, authenticationService);
         }
     }
-    public BookingPage(IServiceService serviceService)
+    public BookingPage(IServiceService serviceService,
+                       IAuthenticationService authenticationService)
 	{
         InitializeComponent();
         this.serviceService = serviceService;
+        this.authenticationService = authenticationService;
 	}
 }

@@ -85,6 +85,13 @@ namespace HealthSystemApi.Services.ServiceService
 
         public async Task<bool> BookAsync(BookingModel model)
         {
+            if (model.DoctorId == 0)
+            {
+                var d = await context.Services.FindAsync(model.ServiceId);
+
+                model.DoctorId = d.DoctorId;
+            }
+            
             var bookings = await context.Bookings
                 .Where(x => x.Date.Day == model.Day &&
                             x.Date.Month == model.Month &&

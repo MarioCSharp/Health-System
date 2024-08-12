@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HealthProject.Services.ServiceService
 {
@@ -55,23 +56,6 @@ namespace HealthProject.Services.ServiceService
             {
                 Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
-            }
-        }
-
-        private string ToQueryString(ServiceAddModel model)
-        {
-            var properties = from p in model.GetType().GetProperties()
-                             where p.GetValue(model, null) != null
-                             select p.Name + "=" + WebUtility.UrlEncode(p.GetValue(model, null).ToString());
-
-            return "?" + string.Join("&", properties.ToArray());
-        }
-
-        private void CheckInternetConnection()
-        {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-            {
-                Debug.WriteLine("--- No internet access");
             }
         }
 
@@ -191,6 +175,69 @@ namespace HealthProject.Services.ServiceService
             }
 
             return new List<string>();
+        }
+
+        public async Task<bool> BookAsync(MakeBookingModel model)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                var queryString = ToQueryString(model);
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/Book{queryString}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var service = JsonSerializer.Deserialize<bool>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return service;
+                }
+                else
+                {
+                    Debug.WriteLine("---> Non Http 2xx response");
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nUnexpected Exception Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return false;
+        }
+
+        private string ToQueryString(ServiceAddModel model)
+        {
+            var properties = from p in model.GetType().GetProperties()
+                             where p.GetValue(model, null) != null
+                             select p.Name + "=" + WebUtility.UrlEncode(p.GetValue(model, null).ToString());
+
+            return "?" + string.Join("&", properties.ToArray());
+        }
+
+        private string ToQueryString(MakeBookingModel model)
+        {
+            var properties = from p in model.GetType().GetProperties()
+                             where p.GetValue(model, null) != null
+                             select p.Name + "=" + WebUtility.UrlEncode(p.GetValue(model, null).ToString());
+
+            return "?" + string.Join("&", properties.ToArray());
+        }
+
+        private void CheckInternetConnection()
+        {
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                Debug.WriteLine("--- No internet access");
+            }
         }
     }
 }

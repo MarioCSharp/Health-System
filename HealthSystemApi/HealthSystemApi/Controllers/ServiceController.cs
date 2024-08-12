@@ -55,7 +55,7 @@ namespace HealthSystemApi.Controllers
                 return BadRequest();
             }
 
-            return Ok();
+            return Ok(true);
         }
 
         [HttpGet("AvailableHours")]

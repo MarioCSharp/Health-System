@@ -11,6 +11,13 @@
         <DatePicker Date="{Binding SelectedDate}" />
 
         <Label Text="Available Hours:" FontSize="Medium" Margin="0,20,0,0" />
-        <Picker ItemsSource="{Binding AvailableHours}" />
+        <Picker ItemsSource="{Binding AvailableHours}" 
+        SelectedItem="{Binding SelectedHour}" />
+
+        <Button Text="Запази час" 
+                Style="{StaticResource ButtonStyle}" 
+                Command="{Binding MakeBookingCoammand}" 
+                AutomationProperties.IsInAccessibleTree="True" 
+                AutomationProperties.Name="Add Hospital Button" />
     </StackLayout>
 </ContentPage>
