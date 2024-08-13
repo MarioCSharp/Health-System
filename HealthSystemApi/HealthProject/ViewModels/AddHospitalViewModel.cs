@@ -11,8 +11,7 @@ namespace HealthProject.ViewModels
     {
         [ObservableProperty]
         private AddHospitalModel hospitalModel;
-        public ICommand AddHospitalCommand { get; }
-        public ICommand NavigateBackCommand { get; }
+
         private IHospitalService hospitalService;
         public AddHospitalViewModel(IHospitalService hospitalService)
         {
@@ -22,9 +21,12 @@ namespace HealthProject.ViewModels
             NavigateBackCommand = new Command(OnNavigateBack);
         }
 
+        public ICommand AddHospitalCommand { get; }
+        public ICommand NavigateBackCommand { get; }
+
         public async Task AddHospitalCommandAsync()
         {
-            await hospitalService.Add(hospitalModel);
+            await hospitalService.Add(HospitalModel);
 
             await Shell.Current.GoToAsync($"{nameof(HomePage)}");
         }

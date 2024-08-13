@@ -17,6 +17,7 @@ namespace HealthProject.ViewModels
 
         private ILogbookService logbookService;
         private IAuthenticationService authenticationService;
+
         public LogbookPageViewModel(ILogbookService logbookService,
                                     IAuthenticationService authenticationService)
         {
@@ -44,7 +45,7 @@ namespace HealthProject.ViewModels
                 return;
             }
 
-            var logs = await logbookService.GetByUser(authToken.UserId);
+            var logs = await logbookService.GetByUser(authToken.UserId ?? string.Empty);
 
             Logbook = new ObservableCollection<LogDisplayModel>(logs);
         }

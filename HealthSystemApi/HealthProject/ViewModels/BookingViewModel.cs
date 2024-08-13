@@ -47,7 +47,7 @@ namespace HealthProject.ViewModels
 
         private async void LoadAvailableHours(DateTime date)
         {
-            var hours = await serviceService.AvailableHoursAsync(date, service.Id);
+            var hours = await serviceService.AvailableHoursAsync(date, Service.Id);
 
             AvailableHours = new ObservableCollection<string>(hours);
         }
@@ -59,6 +59,7 @@ namespace HealthProject.ViewModels
             if (!authToken.IsAuthenticated)
             {
                 await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
             }
 
             if (!string.IsNullOrEmpty(SelectedHour))

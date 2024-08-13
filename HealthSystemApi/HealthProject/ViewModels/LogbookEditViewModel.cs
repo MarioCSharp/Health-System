@@ -9,6 +9,7 @@ namespace HealthProject.ViewModels
     {
         [ObservableProperty]
         private LogAddModel log;
+
         private ILogbookService logbookService;
 
         public LogbookEditViewModel(LogAddModel log,

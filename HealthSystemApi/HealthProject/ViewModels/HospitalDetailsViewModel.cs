@@ -5,7 +5,6 @@ using HealthProject.Services.DoctorService;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class HospitalDetailsViewModel : ObservableObject
@@ -17,20 +16,21 @@ namespace HealthProject.ViewModels
         private ObservableCollection<DoctorModel> doctors;
 
         private IDoctorService doctorService;
-        public ICommand NavigateToDoctorDetailCommand { get; }
 
         public HospitalDetailsViewModel(HospitalDetailsModel hospital,
                                         IDoctorService doctorService)
         {
             Hospital = hospital;
             this.doctorService = doctorService;
-            this.NavigateToDoctorDetailCommand = new AsyncRelayCommand<object>(DoctorDetailsAsync);
+            NavigateToDoctorDetailCommand = new AsyncRelayCommand<object>(DoctorDetailsAsync);
             LoadDoctors();
         }
 
+        public ICommand NavigateToDoctorDetailCommand { get; }
+
         public async void LoadDoctors()
         {
-            var doctorModels = await doctorService.AllAsync(hospital.Id);
+            var doctorModels = await doctorService.AllAsync(Hospital.Id);
             Doctors = new ObservableCollection<DoctorModel>(doctorModels);
         }
 

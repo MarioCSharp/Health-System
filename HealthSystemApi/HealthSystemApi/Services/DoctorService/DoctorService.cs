@@ -8,6 +8,7 @@ namespace HealthSystemApi.Services.DoctorService
     public class DoctorService : IDoctorService
     {
         private ApplicationDbContext context;
+
         public DoctorService(ApplicationDbContext context)
         {
             this.context = context;

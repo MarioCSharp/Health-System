@@ -11,9 +11,8 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private LoginModel loginModel;
 
-        public ICommand LoginCommand { get; }
-        public ICommand RegisterCommand { get; }
         private IAuthenticationService authenticationService;
+
         public LoginPageViewModel(IAuthenticationService authenticationService)
         {
             LoginCommand = new AsyncRelayCommand(LoginAsync);
@@ -21,6 +20,9 @@ namespace HealthProject.ViewModels
             this.authenticationService = authenticationService;
             this.loginModel = new LoginModel();
         }
+
+        public ICommand LoginCommand { get; }
+        public ICommand RegisterCommand { get; }
 
         public async Task LoginAsync()
         {

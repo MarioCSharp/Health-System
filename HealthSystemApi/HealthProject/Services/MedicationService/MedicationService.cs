@@ -80,22 +80,15 @@ namespace HealthProject.Services.MedicationService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return medications;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
+                    return medications ?? new List<MedicationDisplayModel>();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -110,24 +103,13 @@ namespace HealthProject.Services.MedicationService
             {
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Medication/Remove?id={id}");
                 response.EnsureSuccessStatusCode();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }
@@ -146,22 +128,15 @@ namespace HealthProject.Services.MedicationService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return medication;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
+                    return medication ?? new MedicationDetailsModel();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -178,7 +153,7 @@ namespace HealthProject.Services.MedicationService
             string responseBody = await response.Content.ReadAsStringAsync();
             var medication = System.Text.Json.JsonSerializer.Deserialize<List<MedicationScheduleModel>>(responseBody, _jsonSerializerOptions);
 
-            return medication;
+            return medication ?? new List<MedicationScheduleModel>();
         }
 
         private void CheckInternetConnection()

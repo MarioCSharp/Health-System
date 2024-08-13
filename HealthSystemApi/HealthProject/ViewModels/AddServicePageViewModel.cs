@@ -15,7 +15,6 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private ServiceAddModel service;
 
-        public ICommand AddServiceCommand { get; }
         private IServiceService serviceService;
         private IDoctorService doctorService;
 
@@ -29,12 +28,13 @@ namespace HealthProject.ViewModels
             this.doctorService = doctorService;
             service = new ServiceAddModel() { DoctorId = doctorPass.Id };
         }
+        public ICommand AddServiceCommand { get; }
 
         public async Task AddServiceAsync()
         {
-            await serviceService.AddAsync(service);
+            await serviceService.AddAsync(Service);
 
-            var doctor = await doctorService.DetailsAsync(doctorPass.Id);
+            var doctor = await doctorService.DetailsAsync(DoctorPass.Id);
 
             var doctorJson = JsonConvert.SerializeObject(doctor);
             var encodedDoctorJson = Uri.EscapeDataString(doctorJson);

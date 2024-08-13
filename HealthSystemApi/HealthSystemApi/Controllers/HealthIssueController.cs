@@ -1,8 +1,6 @@
 ﻿using HealthSystemApi.Models.HealthIssue;
 using HealthSystemApi.Services.HealthIssueService;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace HealthSystemApi.Controllers
 {

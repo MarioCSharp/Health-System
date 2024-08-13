@@ -6,10 +6,10 @@ namespace HealthProject.ViewModels
 {
     public partial class DocumentDetailsViewModel : ObservableObject
     {
-        private IDocumentService documentService;
-
         [ObservableProperty]
         private DocumentDetailsModel document;
+
+        private IDocumentService documentService;
 
         public DocumentDetailsViewModel(DocumentDetailsModel model,
                                         IDocumentService documentService)

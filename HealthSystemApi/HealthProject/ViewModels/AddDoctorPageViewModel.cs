@@ -14,11 +14,9 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private AddDoctorModel doctorModel;
 
-        public ICommand AddDoctorCommand { get; }
-        public ICommand NavigateBackCommand { get; }
-
         private IDoctorService doctorService;
         private IHospitalService hospitalService;
+
         public AddDoctorPageViewModel(IDoctorService doctorService,
                                       IHospitalService hospitalService)
         {
@@ -28,6 +26,8 @@ namespace HealthProject.ViewModels
             this.doctorService = doctorService;
             this.hospitalService = hospitalService;
         }
+        public ICommand AddDoctorCommand { get; }
+        public ICommand NavigateBackCommand { get; }
 
         private async Task AddDoctorAsync()
         {

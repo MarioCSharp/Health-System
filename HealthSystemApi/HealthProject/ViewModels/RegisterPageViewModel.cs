@@ -11,8 +11,6 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private RegisterModel registerModel;
 
-        public ICommand RegisterCommand { get; }
-        public ICommand LoginCommand { get; }
         private IAuthenticationService authenticationService;
         public RegisterPageViewModel(IAuthenticationService authenticationService)
         {
@@ -22,9 +20,12 @@ namespace HealthProject.ViewModels
             this.registerModel = new RegisterModel();
         }
 
+        public ICommand RegisterCommand { get; }
+        public ICommand LoginCommand { get; }
+
         public async Task RegisterAsync()
         {
-            await authenticationService.Register(registerModel);
+            await authenticationService.Register(RegisterModel);
 
             await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
         }

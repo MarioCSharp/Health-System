@@ -4,7 +4,6 @@ using HealthProject.Models;
 using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.DocumentService;
 using HealthProject.Views;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -12,15 +11,11 @@ namespace HealthProject.ViewModels
 {
     public partial class DocumetnsViewModel : ObservableObject
     {
-        private IDocumentService documentService;
-        private IAuthenticationService authenticationService;
-
         [ObservableProperty]
         private ObservableCollection<DocumentViewModel> documents;
 
-        public ICommand AddDocumentCommand { get; }
-        public ICommand DeleteDocumentCommand { get; }
-        public ICommand NavigateToDocumentDetailsCommand { get; }
+        private IDocumentService documentService;
+        private IAuthenticationService authenticationService;
 
         public DocumetnsViewModel(IDocumentService documentService,
                                   IAuthenticationService authenticationService)
@@ -34,6 +29,10 @@ namespace HealthProject.ViewModels
 
             LoadUserDocuments();
         }
+
+        public ICommand AddDocumentCommand { get; }
+        public ICommand DeleteDocumentCommand { get; }
+        public ICommand NavigateToDocumentDetailsCommand { get; }
 
         private async Task NavigateToAddPage() 
         {
@@ -64,6 +63,7 @@ namespace HealthProject.ViewModels
             if (!auth.IsAuthenticated)
             {
                 await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
             }
 
             var docs = await documentService.GetUserDocuments(auth.UserId);

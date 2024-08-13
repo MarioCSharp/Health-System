@@ -45,22 +45,15 @@ namespace HealthProject.Services.HealthIssueService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
                     return true;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -81,23 +74,15 @@ namespace HealthProject.Services.HealthIssueService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return healthIssues;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                    return new List<HealthIssueDisplayModel>();
+                    return healthIssues ?? new List<HealthIssueDisplayModel>();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -120,22 +105,15 @@ namespace HealthProject.Services.HealthIssueService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return hI;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
+                    return hI ?? new HealthIssueDetailsModel();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -152,24 +130,13 @@ namespace HealthProject.Services.HealthIssueService
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/Remove{queryString}");
                 response.EnsureSuccessStatusCode();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }

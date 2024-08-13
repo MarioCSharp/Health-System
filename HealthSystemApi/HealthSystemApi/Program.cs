@@ -45,7 +45,7 @@ namespace HealthSystemApi
                     ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
                     ValidAudience = builder.Configuration["JwtSettings:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey
-                    (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!)), // Corrected key name
+                    (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!)),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,

@@ -53,18 +53,18 @@ namespace HealthSystemApi.Services.HospitalService
         }
 
         public async Task<bool> RemoveAsync(int id)
+        {
+            var hospital = await context.Hospitals.FindAsync(id);
+
+            if (hospital == null)
             {
-                var hospital = await context.Hospitals.FindAsync(id);
-
-                if (hospital == null)
-                {
-                    return false;
-                }
-
-                context.Hospitals.Remove(hospital);
-                await context.SaveChangesAsync();
-
-                return !await context.Hospitals.ContainsAsync(hospital);
+                return false;
             }
+
+            context.Hospitals.Remove(hospital);
+            await context.SaveChangesAsync();
+
+            return !await context.Hospitals.ContainsAsync(hospital);
         }
     }
+}

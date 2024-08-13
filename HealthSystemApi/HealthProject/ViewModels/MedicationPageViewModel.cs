@@ -12,11 +12,11 @@ namespace HealthProject.ViewModels
 {
     public partial class MedicationPageViewModel : ObservableObject
     {
-        private IMedicationService medicationService;
-        private IAuthenticationService authenticationService;
-
         [ObservableProperty]
         private ObservableCollection<MedicationDisplayModel> medications;
+
+        private IMedicationService medicationService;
+        private IAuthenticationService authenticationService;
 
         public MedicationPageViewModel(IMedicationService medicationService,
                                        IAuthenticationService authenticationService)
@@ -24,9 +24,9 @@ namespace HealthProject.ViewModels
             this.medicationService = medicationService;
             this.authenticationService = authenticationService;
 
-            this.RedirectToAddPageCommand = new AsyncRelayCommand(RedirectToAddAsync);
-            this.RedirectToDetailsPageCommand = new AsyncRelayCommand<object>(RedirectToDetailsAsync);
-            this.DeleteMedicationCommand = new AsyncRelayCommand<object>(DeleteAsync);
+            RedirectToAddPageCommand = new AsyncRelayCommand(RedirectToAddAsync);
+            RedirectToDetailsPageCommand = new AsyncRelayCommand<object>(RedirectToDetailsAsync);
+            DeleteMedicationCommand = new AsyncRelayCommand<object>(DeleteAsync);
 
             LoadMedications();
         }
@@ -45,7 +45,7 @@ namespace HealthProject.ViewModels
                 return;
             }
 
-            var meds = await medicationService.AllByUser(authToken.UserId);
+            var meds = await medicationService.AllByUser(authToken.UserId ?? string.Empty);
 
             Medications = new ObservableCollection<MedicationDisplayModel>(meds);
         }

@@ -14,21 +14,21 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private string? userId;
 
-        public ICommand AddHealthIssueCommand { get; }
-
         private IHealthIssueService healthIssueService;
+
         public HealthIssueAddViewModel(IHealthIssueService healthIssueService,
-            string? userId)
+                                       string? userId)
         {
             HealthIssue = new HealthIssueAddModel();
             this.healthIssueService = healthIssueService;
             AddHealthIssueCommand = new AsyncRelayCommand(AddHealthIssueAsync);
             this.userId = userId; 
         }
+        public ICommand AddHealthIssueCommand { get; }
 
         public async Task AddHealthIssueAsync()
         {
-            var result = await healthIssueService.AddAsync(healthIssue, userId);
+            var result = await healthIssueService.AddAsync(HealthIssue, UserId ?? string.Empty);
 
             if (!result)
             {

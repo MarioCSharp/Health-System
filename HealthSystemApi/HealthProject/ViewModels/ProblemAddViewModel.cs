@@ -26,9 +26,6 @@ namespace HealthProject.ViewModels
         private IProblemService problemService;
         private IAuthenticationService authenticationService;
 
-        public ICommand ProblemAddCommand { get; }
-        public ICommand OnSymptomTappedCommand { get; }
-
         public ProblemAddViewModel(IProblemService problemService,
                                    IAuthenticationService authenticationService)
         {
@@ -46,6 +43,9 @@ namespace HealthProject.ViewModels
             LoadData();
         }
 
+        public ICommand ProblemAddCommand { get; }
+        public ICommand OnSymptomTappedCommand { get; }
+
         public async Task AddAsync()
         {
             var auth = await authenticationService.IsAuthenticated();
@@ -56,7 +56,7 @@ namespace HealthProject.ViewModels
                 return;
             }
 
-            var result = await problemService.AddAsync(problem, problem.SelectedSymptoms, auth.UserId);
+            var result = await problemService.AddAsync(Problem, Problem.SelectedSymptoms, auth.UserId ?? string.Empty);
 
             await Shell.Current.GoToAsync($"///{nameof(ProblemsViewPage)}");
         }
@@ -64,6 +64,7 @@ namespace HealthProject.ViewModels
         public async void LoadData()
         {
             var categories = await problemService.GetSymptomsCategories();
+
             Categories = new ObservableCollection<SymptomCategoryDisplayModel>(categories);
         }
 
@@ -81,6 +82,7 @@ namespace HealthProject.ViewModels
         public void OnSymptomSelected(SymptomDisplayModel symptom)
         {
             symptom.IsSelected = !symptom.IsSelected;
+
             if (symptom.IsSelected)
             {
                 if (!Problem.SelectedSymptoms.Contains(symptom.Id))

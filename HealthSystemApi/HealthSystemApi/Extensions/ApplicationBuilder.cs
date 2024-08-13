@@ -12,7 +12,7 @@ namespace HealthSystemApi.Extensions
             var services = serviceScope.ServiceProvider;
 
             SeedAdministrator(services);
-            SeedSymptoms(services.GetRequiredService<IProblemService>());
+            await SeedSymptoms(services.GetRequiredService<IProblemService>());
         }
 
         private async static Task SeedSymptoms(IProblemService problemService)

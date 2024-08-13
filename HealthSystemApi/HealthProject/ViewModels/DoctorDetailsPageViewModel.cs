@@ -5,7 +5,6 @@ using HealthProject.Services.ServiceService;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class DoctorDetailsPageViewModel : ObservableObject
@@ -13,10 +12,6 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private DoctorDetailsModel doctor;
 
-        public ICommand EditDoctorInfoRedirect { get; }
-        public ICommand NavigateBackCommand { get; }
-        public ICommand AddServiceRedirect { get; }
-        public ICommand ServiceDetailsCommand { get; }
         private IServiceService serviceService;
 
         [ObservableProperty]
@@ -34,9 +29,14 @@ namespace HealthProject.ViewModels
             LoadServices();
         }
 
+        public ICommand EditDoctorInfoRedirect { get; }
+        public ICommand NavigateBackCommand { get; }
+        public ICommand AddServiceRedirect { get; }
+        public ICommand ServiceDetailsCommand { get; }
+
         private async void LoadServices()
         {
-            var servicesList = await serviceService.AllByIdAsync(doctor.Id);
+            var servicesList = await serviceService.AllByIdAsync(Doctor.Id);
             Services = new ObservableCollection<ServiceModel>(servicesList);
         }
 

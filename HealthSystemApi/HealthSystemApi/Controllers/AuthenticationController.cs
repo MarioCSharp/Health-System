@@ -19,12 +19,14 @@ namespace HealthSystemApi.Controllers
         private string _secretKey = "MedCare?Authentication?Secret?Token";  // You shouldn`t store this here!
         private string _issuer = "http://localhost:5166";
         private string _audience = "http://localhost:5166";
+
         public AuthenticationController(UserManager<User> userManager,
                                         SignInManager<User> signInManager)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
         }
+
         [HttpGet("Register")]
         public async Task<IActionResult> Register([FromQuery] RegisterModel registerModel)
         {
@@ -44,7 +46,7 @@ namespace HealthSystemApi.Controllers
 
                 string token = GenerateToken(user.Id);
 
-                return Ok(new { token });
+                return Ok(new { Token = token });
             }
 
             return BadRequest(result);
@@ -128,8 +130,11 @@ namespace HealthSystemApi.Controllers
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(token);
+
             var tokenExp = jwtSecurityToken.Claims.First(claim => claim.Type.Equals("exp")).Value;
+
             var ticks = long.Parse(tokenExp);
+
             return ticks;
         }
     }

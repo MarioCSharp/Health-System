@@ -13,6 +13,7 @@ namespace HealthProject.ViewModels
         private ServiceDetailsModel service;
 
         private IAuthenticationService authenticationService;
+
         public ServiceDetailsPageViewModel(ServiceDetailsModel service,
                                            IAuthenticationService authenticationService)
         {
@@ -26,6 +27,7 @@ namespace HealthProject.ViewModels
         private async Task OnMakeBooking(object parameter)
         {
             var auth = await authenticationService.IsAuthenticated();
+
             if (auth.IsAuthenticated == false)
             {
                 await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
@@ -36,13 +38,14 @@ namespace HealthProject.ViewModels
             {
                 var model = new ServiceModel()
                 {
-                    Id = service.Id,
-                    Name = service.Name,
-                    Price = service.Price
+                    Id = Service.Id,
+                    Name = Service.Name,
+                    Price = Service.Price
                 };
 
                 var serviceJson = JsonConvert.SerializeObject(model);
                 var encodedServiceJson = Uri.EscapeDataString(serviceJson);
+
                 await Shell.Current.GoToAsync($"BookingPage?serviceJson={encodedServiceJson}");
             }
         }

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HealthProject.Services.ServiceService
 {
@@ -37,24 +36,13 @@ namespace HealthProject.Services.ServiceService
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/Add{queryString}");
                 response.EnsureSuccessStatusCode();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }
@@ -75,23 +63,15 @@ namespace HealthProject.Services.ServiceService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return services;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                    return new List<ServiceModel>();
+                    return services ?? new List<ServiceModel>();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -104,9 +84,7 @@ namespace HealthProject.Services.ServiceService
 
             try
             {
-                string queryString = $"?id={id}";
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/Details{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/Details?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -114,23 +92,15 @@ namespace HealthProject.Services.ServiceService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return service;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                    return new ServiceDetailsModel();
+                    return service ?? new ServiceDetailsModel();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -154,23 +124,15 @@ namespace HealthProject.Services.ServiceService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return service;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                    return new List<string>();
+                    return service ?? new List<string>();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -195,19 +157,13 @@ namespace HealthProject.Services.ServiceService
                 {
                     return service;
                 }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 

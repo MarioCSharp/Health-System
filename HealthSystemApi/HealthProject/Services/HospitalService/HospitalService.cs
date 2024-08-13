@@ -36,25 +36,13 @@ namespace HealthProject.Services.HospitalService
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Add{queryString}");
                 response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }
@@ -76,13 +64,62 @@ namespace HealthProject.Services.HospitalService
             catch (HttpRequestException ex)
             {
                 Console.WriteLine($"Request exception: {ex.Message}");
-                return new List<HospitalModel>();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"General exception: {ex.Message}");
-                return new List<HospitalModel>();
             }
+
+            return new List<HospitalModel>();
+        }
+
+
+        public async Task Delete(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Remove?id={id}");
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+        }
+
+        public async Task<HospitalDetailsModel> Details(int id)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Details?id={id}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var hospital = JsonSerializer.Deserialize<HospitalDetailsModel>(jsonResponse, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return hospital ?? new HospitalDetailsModel();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new HospitalDetailsModel();
         }
 
         private string ToQueryString(AddHospitalModel model)
@@ -100,78 +137,6 @@ namespace HealthProject.Services.HospitalService
             {
                 Debug.WriteLine("--- No internet access");
             }
-        }
-
-        public async Task Delete(int id)
-        {
-            CheckInternetConnection();
-
-            try
-            {
-                string queryString = $"?id={id}";
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Remove{queryString}");
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nUnexpected Exception Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-        }
-
-        public async Task<HospitalDetailsModel> Details(int id)
-        {
-            CheckInternetConnection();
-
-            try
-            {
-                string queryString = $"?id={id}";
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Details{queryString}");
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                var hospital = JsonSerializer.Deserialize<HospitalDetailsModel>(jsonResponse, _jsonSerializerOptions);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return hospital;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nUnexpected Exception Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-
-            return null;
         }
     }
 }

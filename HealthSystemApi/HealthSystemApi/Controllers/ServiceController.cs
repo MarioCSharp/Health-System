@@ -67,6 +67,7 @@ namespace HealthSystemApi.Controllers
             }
 
             var doctorBookings = await serviceService.AvailableHoursAsync(parsedDate, serviceId);
+
             return Ok(doctorBookings);
         }
 

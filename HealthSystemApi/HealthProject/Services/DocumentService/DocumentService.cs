@@ -32,6 +32,7 @@ namespace HealthProject.Services.DocumentService
         public async Task<bool> AddAsync(DocumentAddModel model, IFormFile file)
         {
             CheckInternetConnection();
+
             var form = new MultipartFormDataContent();
 
             var fileContent = new StreamContent(file.OpenReadStream());
@@ -69,23 +70,15 @@ namespace HealthProject.Services.DocumentService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return healthIssues;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                    return new DocumentDetailsModel();
+                    return healthIssues ?? new DocumentDetailsModel();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -106,23 +99,15 @@ namespace HealthProject.Services.DocumentService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return healthIssues;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                    return new List<DocumentViewModel>();
+                    return healthIssues ?? new List<DocumentViewModel>();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -137,24 +122,13 @@ namespace HealthProject.Services.DocumentService
             {
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/Remove?id={id}");
                 response.EnsureSuccessStatusCode();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }

@@ -29,6 +29,7 @@ namespace HealthProject.Services.LogbookService
         public async Task<bool> AddAsync(LogAddModel model)
         {
             CheckInternetConnection();
+
             var form = new MultipartFormDataContent();
 
             for (int i = 0; i < model.Values.Count; i++)
@@ -72,6 +73,7 @@ namespace HealthProject.Services.LogbookService
         public async Task<bool> EditAsync(LogAddModel model)
         {
             CheckInternetConnection();
+
             var form = new MultipartFormDataContent();
 
             for (int i = 0; i < model.Values.Count; i++)
@@ -110,7 +112,7 @@ namespace HealthProject.Services.LogbookService
             var resultContent = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<List<LogDisplayModel>>(resultContent);
 
-            return result;
+            return result ?? new List<LogDisplayModel>();
         }
 
         public async Task<LogAddModel> GetEditAsync(int id)
@@ -123,7 +125,7 @@ namespace HealthProject.Services.LogbookService
             var resultContent = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<LogAddModel>(resultContent);
 
-            return result;
+            return result ?? new LogAddModel();
         }
 
         private void CheckInternetConnection()

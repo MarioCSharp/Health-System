@@ -14,10 +14,6 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private ObservableCollection<HealthIssueDisplayModel> healthIssues;
 
-        public ICommand AddHealthIssueCommand { get; }
-        public ICommand DeleteHealthIssueCommand { get; }
-        public ICommand NavigateToHealthIssueDetailsCommand { get; }
-
         private IHealthIssueService healthIssueService;
         private IAuthenticationService authenticationService;
 
@@ -32,6 +28,10 @@ namespace HealthProject.ViewModels
             LoadHealthIssues();
         }
 
+        public ICommand AddHealthIssueCommand { get; }
+        public ICommand DeleteHealthIssueCommand { get; }
+        public ICommand NavigateToHealthIssueDetailsCommand { get; }
+
         public async Task RedirectToAddHealthIssueAsync()
         {
             var auth = await authenticationService.IsAuthenticated();
@@ -42,9 +42,7 @@ namespace HealthProject.ViewModels
                 return;
             }
 
-            var userId = auth.UserId;
-
-            await Shell.Current.GoToAsync($"{nameof(HealthIssueAddPage)}?userId={userId}");
+            await Shell.Current.GoToAsync($"{nameof(HealthIssueAddPage)}?userId={auth.UserId}");
         }
 
         public async Task DeleteHealthIssueAsync(object parameter)
@@ -76,9 +74,10 @@ namespace HealthProject.ViewModels
             if (!auth.IsAuthenticated)
             {
                 await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
             }
 
-            var healthIssues = await healthIssueService.AllByUser(auth.UserId);
+            var healthIssues = await healthIssueService.AllByUser(auth.UserId ?? string.Empty);
 
             HealthIssues = new ObservableCollection<HealthIssueDisplayModel>(healthIssues);
         }

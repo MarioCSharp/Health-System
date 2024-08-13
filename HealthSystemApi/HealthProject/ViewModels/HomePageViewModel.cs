@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
 using HealthProject.Services.HospitalService;
-using HealthProject.Services.NavigationService;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -15,18 +14,17 @@ namespace HealthProject.ViewModels
         private ObservableCollection<HospitalModel> hospitals;
 
         private IHospitalService hospitalService;
-        private INavigationService navigationService;
-        public ICommand DeleteHospitalCommand { get; }
-        public ICommand NavigateToHospitalDetailCommand { get; }
-        public HomePageViewModel(IHospitalService hospitalService,
-                                 INavigationService navigationService)
+
+        public HomePageViewModel(IHospitalService hospitalService)
         {
             this.hospitalService = hospitalService;
-            this.navigationService = navigationService;
             DeleteHospitalCommand = new AsyncRelayCommand<object>(DeleteAsync);
             NavigateToHospitalDetailCommand = new AsyncRelayCommand<object>(DetailsAsync);
             LoadHospitals();
         }
+
+        public ICommand DeleteHospitalCommand { get; }
+        public ICommand NavigateToHospitalDetailCommand { get; }
 
         public async void LoadHospitals()
         {

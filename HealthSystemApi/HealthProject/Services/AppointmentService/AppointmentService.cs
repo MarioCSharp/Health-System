@@ -37,24 +37,14 @@ namespace HealthProject.Services.AppointmentService
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var appointments = JsonSerializer.Deserialize<List<AppointmentModel>>(responseBody, _jsonSerializerOptions);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return appointments;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
+                return appointments ?? new List<AppointmentModel>();
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 

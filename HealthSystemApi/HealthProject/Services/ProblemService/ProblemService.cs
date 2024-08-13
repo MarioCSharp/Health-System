@@ -1,7 +1,6 @@
 ﻿using HealthProject.Models;
 using System.Diagnostics;
 using System.Net;
-using System.Reflection;
 using System.Text.Json;
 
 namespace HealthProject.Services.ProblemService
@@ -36,29 +35,21 @@ namespace HealthProject.Services.ProblemService
                 var sAM = new SymptomAddModel() { SymptomIds = symptomsIds };
 
                 var queryString = ToQueryString(model, sAM);
-                Console.WriteLine($"Generated Query String: {queryString}");
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Add{queryString}&userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
                     return true;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -71,28 +62,15 @@ namespace HealthProject.Services.ProblemService
 
             try
             {
-                string queryString = $"?id={id}";
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Remove{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Remove?id={id}");
                 response.EnsureSuccessStatusCode();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }
@@ -103,9 +81,7 @@ namespace HealthProject.Services.ProblemService
 
             try
             {
-                string queryString = $"?id={id}";
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Details{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Details?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -113,22 +89,15 @@ namespace HealthProject.Services.ProblemService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return problem;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
+                    return problem ?? new ProblemDetailsModel();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -149,22 +118,15 @@ namespace HealthProject.Services.ProblemService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return problem;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
+                    return problem ?? new List<ProblemDisplayModel>();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -197,14 +159,12 @@ namespace HealthProject.Services.ProblemService
             var problemQueryString = ToQueryString(problemAddModel);
             var symptomQueryString = ToQueryString(symptomAddModel);
 
-            // Combine query strings and remove any leading '&' from the second query string
             var combinedQueryString = problemQueryString;
             if (!string.IsNullOrEmpty(symptomQueryString))
             {
                 combinedQueryString += "&" + symptomQueryString;
             }
 
-            // Prepend '?' to the combined query string if it's not empty
             if (!string.IsNullOrEmpty(combinedQueryString))
             {
                 combinedQueryString = "?" + combinedQueryString;
@@ -228,22 +188,15 @@ namespace HealthProject.Services.ProblemService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return categories;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
+                    return categories ?? new List<SymptomCategoryDisplayModel>();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 
@@ -264,22 +217,15 @@ namespace HealthProject.Services.ProblemService
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.WriteLine("Successfully created ToDo");
-                    return subCategories;
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
+                    return subCategories ?? new List<SymptomSubCategoryDisplayModel>();
                 }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
 

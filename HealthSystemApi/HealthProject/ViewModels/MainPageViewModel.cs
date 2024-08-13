@@ -7,13 +7,14 @@ namespace HealthProject.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject
     {
-        public ICommand EnterCommand { get; }
         private IAuthenticationService authenticationService;
+
         public MainPageViewModel(IAuthenticationService authenticationService)
         {
             EnterCommand = new AsyncRelayCommand(EnterAsync);
             this.authenticationService = authenticationService;
         }
+        public ICommand EnterCommand { get; }
 
         public async Task EnterAsync()
         {

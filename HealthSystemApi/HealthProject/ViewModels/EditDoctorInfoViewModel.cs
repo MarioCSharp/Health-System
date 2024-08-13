@@ -5,16 +5,15 @@ using HealthProject.Services.DoctorService;
 using HealthProject.Services.HospitalService;
 using Newtonsoft.Json;
 using System.Windows.Input;
-using HealthProject.Views;
 namespace HealthProject.ViewModels
 {
     public partial class EditDoctorInfoViewModel : ObservableObject
     {
         [ObservableProperty]
         private DoctorDetailsModel doctor;
-        public ICommand SaveDoctorCommand { get; }
         private IDoctorService doctorService;
         private IHospitalService hospitalService;
+
         public EditDoctorInfoViewModel(DoctorDetailsModel doctor,
                                        IDoctorService doctorService,
                                        IHospitalService hospitalService)
@@ -24,12 +23,13 @@ namespace HealthProject.ViewModels
             this.hospitalService = hospitalService;
             this.SaveDoctorCommand = new AsyncRelayCommand(SaveDoctorInfo);
         }
+        public ICommand SaveDoctorCommand { get; }
 
         public async Task SaveDoctorInfo()
         {
-            await doctorService.Edit(doctor);
+            await doctorService.Edit(Doctor);
 
-            var doc = await doctorService.GetDoctor(doctor.Id);
+            var doc = await doctorService.GetDoctor(Doctor.Id);
             var hospital = await hospitalService.Details(doc.HospitalId);
             var hospitalJson = JsonConvert.SerializeObject(hospital);
             var encodedHospitalJson = Uri.EscapeDataString(hospitalJson);

@@ -16,11 +16,8 @@ namespace HealthProject.ViewModels
         private ObservableCollection<ProblemDisplayModel> problems;
 
         private IProblemService problemService;
-        private IAuthenticationService authenticationService;
 
-        public ICommand AddProblemCommand { get; }
-        public ICommand DeleteProblemCommand { get; }
-        public ICommand NavigateToProblemDetailsCommand { get; }
+        private IAuthenticationService authenticationService;
 
         public ProblemsViewPageViewModel(IProblemService problemService,
                                          IAuthenticationService authenticationService)
@@ -35,6 +32,10 @@ namespace HealthProject.ViewModels
             LoadProblems();
         }
 
+        public ICommand AddProblemCommand { get; }
+        public ICommand DeleteProblemCommand { get; }
+        public ICommand NavigateToProblemDetailsCommand { get; }
+
         public async void LoadProblems()
         {
             var auth = await authenticationService.IsAuthenticated();
@@ -42,6 +43,7 @@ namespace HealthProject.ViewModels
             if (!auth.IsAuthenticated)
             {
                 await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
             }
 
             var problems = await problemService.GetUserProblems(auth.UserId);

@@ -29,61 +29,58 @@ namespace HealthProject.Services.AuthenticationService
 
         public async Task<AuthenticationModel> IsAuthenticated()
         {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-            {
-                Debug.WriteLine("--- No internet access");
-                return new AuthenticationModel() { IsAuthenticated = false };
-            }
+            CheckInternetConnection();
 
-            var token = await SecureStorage.GetAsync("auth_token");
+            var token = await SecureStorage.Default.GetAsync("auth_token");
 
             if (token is null)
             {
                 return new AuthenticationModel() { IsAuthenticated = false };
             }
 
-            var response = await _httpClient.GetFromJsonAsync<AuthenticationModel>($"{_url}/Authentication/IsAuthenticated?token={token}", _jsonSerializerOptions);
+            var response = await _httpClient
+                .GetFromJsonAsync<AuthenticationModel>
+                    ($"{_url}/Authentication/IsAuthenticated?token={token}",
+                     _jsonSerializerOptions);
+
+            if (!response.IsAuthenticated)
+            {
+                SecureStorage.Default.Remove("auth_token");
+            }
 
             return response;
         }
 
         public async Task Login(LoginModel loginModel)
         {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-            {
-                Debug.WriteLine("--- No internet access");
-            }
+            CheckInternetConnection();
 
             try
             {
                 string queryString = ToQueryString(loginModel);
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Authentication/Login{queryString}");
+                HttpResponseMessage response = await _httpClient
+                    .GetAsync($"{_url}/Authentication/Login{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var token = JsonSerializer.Deserialize<TokenModel>(responseBody, _jsonSerializerOptions);
 
-                await SecureStorage.SetAsync("auth_token", token.Token);
+                await SecureStorage.Default.SetAsync("auth_token", token.Token);
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }
 
         public async Task Register(RegisterModel registerModel)
         {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-            {
-                Debug.WriteLine("--- No internet access");
-            }
+            CheckInternetConnection();
 
             try
             {
@@ -96,28 +93,16 @@ namespace HealthProject.Services.AuthenticationService
                 var token = JsonSerializer.Deserialize<TokenModel>(responseBody, _jsonSerializerOptions);
 
                 await SecureStorage.Default.SetAsync("auth_token", token.Token);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("\nUnexpected Exception Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
         }
-
 
         private string ToQueryString(RegisterModel registerModel)
         {
@@ -127,6 +112,7 @@ namespace HealthProject.Services.AuthenticationService
 
             return "?" + string.Join("&", properties.ToArray());
         }
+
         private string ToQueryString(LoginModel registerModel)
         {
             var properties = from p in registerModel.GetType().GetProperties()
@@ -134,6 +120,14 @@ namespace HealthProject.Services.AuthenticationService
                              select p.Name + "=" + WebUtility.UrlEncode(p.GetValue(registerModel, null).ToString());
 
             return "?" + string.Join("&", properties.ToArray());
+        }
+
+        private void CheckInternetConnection()
+        {
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                Debug.WriteLine("--- No internet access");
+            }
         }
     }
 }

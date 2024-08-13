@@ -2,7 +2,6 @@
 using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Logbook;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 
 namespace HealthSystemApi.Services.LogbookService
 {
