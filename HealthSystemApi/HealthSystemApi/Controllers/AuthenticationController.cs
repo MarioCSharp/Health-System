@@ -3,7 +3,10 @@ using HealthSystemApi.Models.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace HealthSystemApi.Controllers
 {
@@ -11,13 +14,16 @@ namespace HealthSystemApi.Controllers
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase
     {
-        private UserManager<User> userManager;
-        private SignInManager<User> signInManager;
+        private UserManager<User> _userManager;
+        private SignInManager<User> _signInManager;
+        private string _secretKey = "MedCare?Authentication?Secret?Token";  // You shouldn`t store this here!
+        private string _issuer = "http://localhost:5166";
+        private string _audience = "http://localhost:5166";
         public AuthenticationController(UserManager<User> userManager,
                                         SignInManager<User> signInManager)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
         }
         [HttpGet("Register")]
         public async Task<IActionResult> Register([FromQuery] RegisterModel registerModel)
@@ -30,13 +36,15 @@ namespace HealthSystemApi.Controllers
                 EmailConfirmed = true
             };
 
-            var result = await userManager.CreateAsync(user, registerModel.Password);
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
 
             if (result.Succeeded)
             {
-                await signInManager.SignInAsync(user, isPersistent: false);
+                await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return Ok();
+                string token = GenerateToken(user.Id);
+
+                return Ok(new { token });
             }
 
             return BadRequest(result);
@@ -45,15 +53,17 @@ namespace HealthSystemApi.Controllers
         [HttpGet("Login")]
         public async Task<IActionResult> Login([FromQuery] LoginModel loginModel)
         {
-            var user = await userManager.FindByEmailAsync(loginModel.Email);
+            var user = await _userManager.FindByEmailAsync(loginModel.Email);
 
             if (user != null)
             {
-                var result = await signInManager.PasswordSignInAsync(user, loginModel.Password, true, false);
+                var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, true, false);
 
                 if (result.Succeeded)
                 {
-                    return Ok(result);
+                    string token = GenerateToken(user.Id);
+
+                    return Ok(new { Token = token });
                 }
             }
 
@@ -62,24 +72,65 @@ namespace HealthSystemApi.Controllers
 
         [HttpGet("Logout")]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout([FromQuery] string token)
         {
-            await signInManager.SignOutAsync();
+            //TODO: Fix logout
+            await _signInManager.SignOutAsync();
 
             return Ok();
         }
 
         [HttpGet("IsAuthenticated")]
-        public async Task<IActionResult> IsAuthenticated()
+        public async Task<IActionResult> IsAuthenticated([FromQuery] string token)
         {
-            if (User.Identity.IsAuthenticated)
+            var tokenTicks = GetTokenExpirationTime(token);
+            var tokenDate = DateTimeOffset.FromUnixTimeSeconds(tokenTicks).UtcDateTime;
+
+            var now = DateTime.Now.ToUniversalTime();
+
+            var valid = tokenDate >= now;
+
+            if (valid)
             {
-                return Ok(new { IsAuthenticated = true, UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) });
+                var t = new JwtSecurityToken(token);
+
+                return Ok(new { IsAuthenticated = valid, UserId = t.Subject });
             }
-            else
+
+            return Ok(new { IsAuthenticated = false }); ;
+        }
+
+        private string GenerateToken(string userId)
+        {
+            var tokenExpiration = DateTime.UtcNow.AddDays(7);
+
+            var claims = new[]
             {
-                return Ok(new { IsAuthenticated = false });
-            }
+                new Claim(JwtRegisteredClaimNames.Sub, userId),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _issuer,
+                audience: _audience,
+                claims: claims,
+                expires: tokenExpiration,
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private long GetTokenExpirationTime(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+            var tokenExp = jwtSecurityToken.Claims.First(claim => claim.Type.Equals("exp")).Value;
+            var ticks = long.Parse(tokenExp);
+            return ticks;
         }
     }
 }

@@ -14,6 +14,9 @@ using HealthSystemApi.Services.ProblemService;
 using HealthSystemApi.Services.DocumentService;
 using HealthSystemApi.Services.MedicationService;
 using HealthSystemApi.Services.LogbookService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace HealthSystemApi
 {
@@ -30,7 +33,28 @@ namespace HealthSystemApi
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-            builder.Services.AddAuthentication();
+            builder.Services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey
+                    (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!)), // Corrected key name
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true
+                };
+            });
+
+            builder.Services.AddAuthorization();
+
             builder.Services.AddIdentityApiEndpoints<User>().AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>().AddRoles<IdentityRole>();
 
@@ -44,7 +68,6 @@ namespace HealthSystemApi
             builder.Services.AddTransient<IMedicationService, MedicationService>();
             builder.Services.AddTransient<ILogbookService, LogbookService>();
 
-            builder.Services.AddAuthorization();
 
             builder.Services.AddSwaggerGen(options =>
             {
@@ -69,6 +92,7 @@ namespace HealthSystemApi
             app.MapIdentityApi<User>();
 
             app.UseHttpsRedirection()
+                .UseAuthentication()
                 .UseAuthorization()
                 .Initialize();
 

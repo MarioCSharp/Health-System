@@ -24,7 +24,7 @@ namespace HealthProject.ViewModels
 
         public async Task LoginAsync()
         {
-            await authenticationService.Login(loginModel);
+            await authenticationService.Login(LoginModel);
 
             await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
         }

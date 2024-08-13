@@ -35,21 +35,16 @@ namespace HealthProject.Services.AuthenticationService
                 return new AuthenticationModel() { IsAuthenticated = false };
             }
 
-            try
+            var token = await SecureStorage.GetAsync("auth_token");
+
+            if (token is null)
             {
-                var response = await _httpClient.GetFromJsonAsync<AuthenticationModel>($"{_url}/Authentication/IsAuthenticated", _jsonSerializerOptions);
-                return response;
+                return new AuthenticationModel() { IsAuthenticated = false };
             }
-            catch (HttpRequestException ex)
-            {
-                Debug.WriteLine($"Request error: {ex.Message}");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Unexpected error: {ex.Message}");
-                return null;
-            }
+
+            var response = await _httpClient.GetFromJsonAsync<AuthenticationModel>($"{_url}/Authentication/IsAuthenticated?token={token}", _jsonSerializerOptions);
+
+            return response;
         }
 
         public async Task Login(LoginModel loginModel)
@@ -65,16 +60,11 @@ namespace HealthProject.Services.AuthenticationService
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Authentication/Login{queryString}");
                 response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Successfully created ToDo");
-                }
-                else
-                {
-                    Debug.WriteLine("---> Non Http 2xx response");
-                }
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var token = JsonSerializer.Deserialize<TokenModel>(responseBody, _jsonSerializerOptions);
+
+                await SecureStorage.SetAsync("auth_token", token.Token);
             }
             catch (HttpRequestException e)
             {
@@ -101,7 +91,11 @@ namespace HealthProject.Services.AuthenticationService
 
                 HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Authentication/Register{queryString}");
                 response.EnsureSuccessStatusCode();
+
                 string responseBody = await response.Content.ReadAsStringAsync();
+                var token = JsonSerializer.Deserialize<TokenModel>(responseBody, _jsonSerializerOptions);
+
+                await SecureStorage.Default.SetAsync("auth_token", token.Token);
 
                 if (response.IsSuccessStatusCode)
                 {
