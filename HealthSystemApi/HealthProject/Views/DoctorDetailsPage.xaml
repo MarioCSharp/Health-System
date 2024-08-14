@@ -55,7 +55,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Padding="20,10,20,0" Grid.Row="0">
+        <Grid Padding="20,10,20,0" Grid.Row="0" IsVisible="{Binding IsAdmin}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

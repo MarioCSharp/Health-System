@@ -88,6 +88,6 @@
         </ScrollView>
 
         <!-- Add Doctor Button -->
-        <Button Text="Add Doctor" Style="{StaticResource ButtonStyle}" Clicked="OnAddDoctorClicked"/>
+        <Button IsVisible="{Binding IsAdmin}" Text="Add Doctor" Style="{StaticResource ButtonStyle}" Clicked="OnAddDoctorClicked"/>
     </Grid>
 </ContentPage>

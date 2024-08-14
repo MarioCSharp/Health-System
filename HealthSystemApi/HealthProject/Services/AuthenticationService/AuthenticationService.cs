@@ -104,6 +104,51 @@ namespace HealthProject.Services.AuthenticationService
             }
         }
 
+        public async Task<bool> IsAdmin()
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                var token = await SecureStorage.Default.GetAsync("auth_token");
+
+                if (token is null)
+                {
+                    return false;
+                }
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Authentication/IsAdmin{token}");
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var isAdmin = JsonSerializer.Deserialize<bool>(responseBody, _jsonSerializerOptions);
+
+                return isAdmin;
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return false;
+        }
+
+        public async Task Logout()
+        {
+            var token = await SecureStorage.Default.GetAsync("auth_token");
+
+            if (token is null)
+            {
+                return;
+            }
+
+            SecureStorage.Default.Remove("auth_token");
+        }
+
         private string ToQueryString(RegisterModel registerModel)
         {
             var properties = from p in registerModel.GetType().GetProperties()

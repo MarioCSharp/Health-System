@@ -1,8 +1,11 @@
-﻿namespace HealthProject.Views
+﻿using HealthProject.Services.AuthenticationService;
+
+namespace HealthProject.Views
 {
     public partial class AppShell : Shell
     {
-        public AppShell()
+
+        public AppShell(IAuthenticationService authenticationService)
         {
             InitializeComponent();
 

@@ -1,4 +1,5 @@
-﻿using HealthProject.Services.DoctorService;
+﻿using HealthProject.Services.AuthenticationService;
+using HealthProject.Services.DoctorService;
 using HealthProject.Services.ServiceService;
 
 namespace HealthProject.Views
@@ -6,7 +7,9 @@ namespace HealthProject.Views
     public partial class App : Application
     {
         public static IServiceProvider ServiceProvider { get; private set; }
-        public App(HomePage homePage)
+
+        private IAuthenticationService authenticationService;
+        public App(HomePage homePage, IAuthenticationService authenticationService)
         {
             InitializeComponent();
 
@@ -14,7 +17,9 @@ namespace HealthProject.Views
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
-            MainPage = new AppShell();
+            this.authenticationService = authenticationService;
+
+            MainPage = new AppShell(authenticationService);
         }
 
         private void ConfigureServices(IServiceCollection services)

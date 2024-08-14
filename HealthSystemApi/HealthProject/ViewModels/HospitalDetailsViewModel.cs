@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.DoctorService;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
@@ -13,17 +14,26 @@ namespace HealthProject.ViewModels
         private HospitalDetailsModel hospital;
 
         [ObservableProperty]
+        private bool isAdmin;
+
+        [ObservableProperty]
         private ObservableCollection<DoctorModel> doctors;
 
         private IDoctorService doctorService;
+        private IAuthenticationService authenticationService;
 
         public HospitalDetailsViewModel(HospitalDetailsModel hospital,
-                                        IDoctorService doctorService)
+                                        IDoctorService doctorService,
+                                        IAuthenticationService authenticationService)
         {
-            Hospital = hospital;
             this.doctorService = doctorService;
+            this.authenticationService = authenticationService;
+
+            Hospital = hospital;
             NavigateToDoctorDetailCommand = new AsyncRelayCommand<object>(DoctorDetailsAsync);
+
             LoadDoctors();
+            CheckAdmin();
         }
 
         public ICommand NavigateToDoctorDetailCommand { get; }
@@ -31,7 +41,13 @@ namespace HealthProject.ViewModels
         public async void LoadDoctors()
         {
             var doctorModels = await doctorService.AllAsync(Hospital.Id);
+
             Doctors = new ObservableCollection<DoctorModel>(doctorModels);
+        }
+
+        public async void CheckAdmin()
+        {
+            IsAdmin = await authenticationService.IsAdmin();
         }
 
         public async Task DoctorDetailsAsync(object parameter)

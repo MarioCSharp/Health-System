@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using HealthProject.Views;
+using HealthProject.Services.AuthenticationService;
 namespace HealthProject.ViewModels
 {
     public partial class HomePageViewModel : ObservableObject
@@ -13,14 +14,23 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private ObservableCollection<HospitalModel> hospitals;
 
-        private IHospitalService hospitalService;
+        [ObservableProperty]
+        private bool isAdmin;
 
-        public HomePageViewModel(IHospitalService hospitalService)
+        private IHospitalService hospitalService;
+        private IAuthenticationService authenticationService;
+
+        public HomePageViewModel(IHospitalService hospitalService,
+                                 IAuthenticationService authenticationService)
         {
             this.hospitalService = hospitalService;
+            this.authenticationService = authenticationService;
+
             DeleteHospitalCommand = new AsyncRelayCommand<object>(DeleteAsync);
             NavigateToHospitalDetailCommand = new AsyncRelayCommand<object>(DetailsAsync);
+
             LoadHospitals();
+            CheckAdmin();
         }
 
         public ICommand DeleteHospitalCommand { get; }
@@ -29,7 +39,13 @@ namespace HealthProject.ViewModels
         public async void LoadHospitals()
         {
             var hospitalModels = await hospitalService.All();
+
             Hospitals = new ObservableCollection<HospitalModel>(hospitalModels);
+        }
+
+        public async void CheckAdmin()
+        {
+            IsAdmin = await authenticationService.IsAdmin();
         }
 
         public async Task DeleteAsync(object parameter)

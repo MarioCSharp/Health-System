@@ -1,4 +1,5 @@
-﻿using HealthSystemApi.Data.Models;
+﻿using HealthSystemApi.Data;
+using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,15 +17,19 @@ namespace HealthSystemApi.Controllers
     {
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
+        private ApplicationDbContext context;
+
         private string _secretKey = "MedCare?Authentication?Secret?Token";  // You shouldn`t store this here!
         private string _issuer = "http://localhost:5166";
         private string _audience = "http://localhost:5166";
 
         public AuthenticationController(UserManager<User> userManager,
-                                        SignInManager<User> signInManager)
+                                        SignInManager<User> signInManager,
+                                        ApplicationDbContext context)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
+            this.context = context;
         }
 
         [HttpGet("Register")]
@@ -100,6 +105,30 @@ namespace HealthSystemApi.Controllers
             }
 
             return Ok(new { IsAuthenticated = false }); ;
+        }
+
+        [HttpGet("IsAdmin")]
+        public async Task<IActionResult> IsAdmin([FromQuery] string token)
+        {
+            var tokenTicks = GetTokenExpirationTime(token);
+            var tokenDate = DateTimeOffset.FromUnixTimeSeconds(tokenTicks).UtcDateTime;
+
+            var now = DateTime.Now.ToUniversalTime();
+
+            var valid = tokenDate >= now;
+
+            if (!valid)
+            {
+                return Ok(false);
+            }
+
+            var t = new JwtSecurityToken(token);
+
+            var user = await context.Users.FindAsync(t.Subject);
+
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Administrator");
+
+            return Ok(isAdmin);
         }
 
         private string GenerateToken(string userId)

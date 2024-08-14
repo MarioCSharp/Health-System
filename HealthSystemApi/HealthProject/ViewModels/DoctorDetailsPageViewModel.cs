@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ServiceService;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
@@ -12,21 +13,31 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private DoctorDetailsModel doctor;
 
-        private IServiceService serviceService;
-
         [ObservableProperty]
         private ObservableCollection<ServiceModel> services;
 
+        [ObservableProperty]
+        private bool isAdmin;
+
+        private IServiceService serviceService;
+        private IAuthenticationService authenticationService;
+
         public DoctorDetailsPageViewModel(DoctorDetailsModel doctor,
-                                          IServiceService serviceService)
+                                          IServiceService serviceService,
+                                          IAuthenticationService authenticationService)
         {
             Doctor = doctor;
+
             EditDoctorInfoRedirect = new AsyncRelayCommand<object>(RedirectToEditInfo);
             NavigateBackCommand = new AsyncRelayCommand(OnNavigateBack);
             AddServiceRedirect = new AsyncRelayCommand<object>(RedirectToAddService);
             ServiceDetailsCommand = new AsyncRelayCommand<object>(ServiceDetailsAsync);
+
             this.serviceService = serviceService;
+            this.authenticationService = authenticationService;
+
             LoadServices();
+            CheckAdmin();
         }
 
         public ICommand EditDoctorInfoRedirect { get; }
@@ -38,6 +49,11 @@ namespace HealthProject.ViewModels
         {
             var servicesList = await serviceService.AllByIdAsync(Doctor.Id);
             Services = new ObservableCollection<ServiceModel>(servicesList);
+        }
+
+        private async void CheckAdmin()
+        {
+            IsAdmin = await authenticationService.IsAdmin();
         }
 
         public async Task RedirectToEditInfo(object parameter)

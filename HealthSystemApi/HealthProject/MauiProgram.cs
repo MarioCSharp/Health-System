@@ -3,7 +3,6 @@ using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.DoctorService;
 using HealthProject.Services.HealthIssueService;
 using HealthProject.Services.HospitalService;
-using HealthProject.Services.NavigationService;
 using HealthProject.Services.ServiceService;
 using HealthProject.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -73,7 +72,6 @@ namespace HealthProject
             builder.Services.AddHttpClient<IMedicationService, MedicationService>();
             builder.Services.AddHttpClient<IAppointmentService, AppointmentService>();
             builder.Services.AddHttpClient<ILogbookService, LogbookService>();
-            builder.Services.AddTransient<INavigationService, NavigationService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();

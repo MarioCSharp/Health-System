@@ -15,6 +15,7 @@
             </Grid.RowDefinitions>
 
             <Button Text="Добави болница" 
+                    IsVisible="{Binding IsAdmin}"
                     Clicked="Button_Clicked"
                     HorizontalOptions="End"
                     VerticalOptions="Center"

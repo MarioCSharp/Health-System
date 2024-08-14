@@ -1,4 +1,5 @@
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.ServiceService;
 using HealthProject.ViewModels;
 using Newtonsoft.Json;
@@ -10,6 +11,7 @@ public partial class DoctorDetailsPage : ContentPage
 {
     private string doctorJson;
     private IServiceService serviceService;
+    private IAuthenticationService authenticationService;
     public string DoctorJson
     {
         get => doctorJson;
@@ -17,13 +19,16 @@ public partial class DoctorDetailsPage : ContentPage
         {
             doctorJson = value;
             var hospital = JsonConvert.DeserializeObject<DoctorDetailsModel>(Uri.UnescapeDataString(value));
-            BindingContext = new DoctorDetailsPageViewModel(hospital, serviceService);
+            BindingContext = new DoctorDetailsPageViewModel(hospital, serviceService, authenticationService);
         }
     }
 
-    public DoctorDetailsPage(IServiceService serviceService)
+    public DoctorDetailsPage(IServiceService serviceService,
+                             IAuthenticationService authenticationService)
 	{
 		InitializeComponent();
+
         this.serviceService = serviceService;
+        this.authenticationService = authenticationService;
     }
 }
