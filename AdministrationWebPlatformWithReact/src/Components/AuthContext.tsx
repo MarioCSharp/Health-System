@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Authentication/Login?email=${email}&password=${password}`,
+        `http://localhost:5166/api/Authentication/SuperLogin?email=${email}&password=${password}`,
         {
           method: "GET",
           headers: {
@@ -33,6 +33,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
 
       if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
         setIsAuthenticated(true);
         navigate("/");
       } else {
@@ -40,6 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error("Failed to login", error);
+      throw error;
     }
   };
 

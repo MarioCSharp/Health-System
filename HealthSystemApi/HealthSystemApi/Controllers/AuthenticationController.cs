@@ -77,6 +77,28 @@ namespace HealthSystemApi.Controllers
             return BadRequest();
         }
 
+        [HttpGet("SuperLogin")]
+        public async Task<IActionResult> SuperLogin([FromQuery] LoginModel loginModel)
+        {
+            var user = await _userManager.FindByEmailAsync(loginModel.Email);
+
+            if (user != null)
+            {
+                var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, true, false);
+
+                var userRoles = await _userManager.GetRolesAsync(user);
+
+                if (result.Succeeded && userRoles.Count == 1)
+                {
+                    string token = GenerateToken(user.Id);
+
+                    return Ok(new { Token = token, Role = userRoles[0] });
+                }
+            }
+
+            return BadRequest();
+        }
+
         [HttpGet("Logout")]
         [Authorize]
         public async Task<IActionResult> Logout([FromQuery] string token)
@@ -101,6 +123,26 @@ namespace HealthSystemApi.Controllers
             {
                 var t = new JwtSecurityToken(token);
 
+                return Ok(new { IsAuthenticated = valid, UserId = t.Subject });
+            }
+
+            return Ok(new { IsAuthenticated = false }); ;
+        }
+
+        [HttpGet("SecureIsAuthenticated")]
+        public async Task<IActionResult> SecureIsAuthenticated([FromQuery] string token)
+        {
+            var tokenTicks = GetTokenExpirationTime(token);
+            var tokenDate = DateTimeOffset.FromUnixTimeSeconds(tokenTicks).UtcDateTime;
+
+            var now = DateTime.Now.ToUniversalTime();
+
+            var valid = tokenDate >= now;
+
+            var t = new JwtSecurityToken(token);
+
+            if (valid)
+            {
                 return Ok(new { IsAuthenticated = valid, UserId = t.Subject });
             }
 

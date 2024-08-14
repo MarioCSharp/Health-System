@@ -1,9 +1,24 @@
+import { Navigate } from "react-router-dom";
+import AdminHomePage from "./AdminHomePage";
+
 function Home() {
-  return (
-    <div>
-      <h1>Добре дошли!</h1>
-    </div>
-  );
+  const role = localStorage.getItem("role");
+
+  let content;
+
+  switch (role) {
+    case "Administrator":
+      content = <AdminHomePage />;
+      break;
+    case "Doctor":
+      content = <h1>Welcome Doctor!</h1>;
+      break;
+    default:
+      <Navigate to="/not-found" replace />;
+      break;
+  }
+
+  return <>{content}</>;
 }
 
 export default Home;

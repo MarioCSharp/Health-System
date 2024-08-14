@@ -4,11 +4,17 @@ import { useAuth } from "./AuthContext";
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(email, password);
+    try {
+      setError(null);
+      await login(email, password);
+    } catch (err) {
+      setError("Login failed. Please check your email and password.");
+    }
   };
 
   return (
@@ -41,6 +47,11 @@ const Login: React.FC = () => {
             required
           />
         </div>
+        {error && (
+          <div className="mb-3">
+            <p style={{ color: "red" }}>{error}</p>
+          </div>
+        )}
         <button type="submit" className="btn btn-primary">
           Login
         </button>

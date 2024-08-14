@@ -51,7 +51,7 @@ namespace HealthSystemApi.Controllers
         {
             var hospitals = await hospitalService.AllAsync();
 
-            return Ok(hospitals);
+            return Ok(new { Hospitals = hospitals});
         }
 
         [HttpGet("Details")]
