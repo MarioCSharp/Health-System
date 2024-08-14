@@ -26,6 +26,14 @@ namespace HealthSystemApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:5173")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+            });
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -92,9 +100,11 @@ namespace HealthSystemApi
             app.MapIdentityApi<User>();
 
             app.UseHttpsRedirection()
+                .UseCors("AllowSpecificOrigin")
                 .UseAuthentication()
                 .UseAuthorization()
                 .Initialize();
+
 
             app.MapControllers();
 
