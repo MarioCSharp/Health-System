@@ -4,6 +4,7 @@ using HealthSystemApi.Models.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -173,6 +174,19 @@ namespace HealthSystemApi.Controllers
             return Ok(isAdmin);
         }
 
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await context.Users.Take(5).ToListAsync();
+
+            return Ok(new {Users = users.Select(x => new UserDisplayModel()
+            {
+                Id = x.Id,
+                FullName = x.FullName,
+                Email = x.Email
+            })});
+        }
+        
         private string GenerateToken(string userId)
         {
             var tokenExpiration = DateTime.UtcNow.AddDays(7);
