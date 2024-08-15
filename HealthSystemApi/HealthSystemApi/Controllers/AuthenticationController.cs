@@ -1,6 +1,7 @@
 ﻿using HealthSystemApi.Data;
 using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Authentication;
+using HealthSystemApi.Services.AuthenticationService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace HealthSystemApi.Controllers
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
         private ApplicationDbContext context;
+        private IAuthenticationService authenticationService;
 
         private string _secretKey = "MedCare?Authentication?Secret?Token";  // You shouldn`t store this here!
         private string _issuer = "http://localhost:5166";
@@ -26,11 +28,13 @@ namespace HealthSystemApi.Controllers
 
         public AuthenticationController(UserManager<User> userManager,
                                         SignInManager<User> signInManager,
-                                        ApplicationDbContext context)
+                                        ApplicationDbContext context,
+                                        IAuthenticationService authenticationService)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this.context = context;
+            this.authenticationService = authenticationService;
         }
 
         [HttpGet("Register")]
@@ -153,30 +157,19 @@ namespace HealthSystemApi.Controllers
         [HttpGet("IsAdmin")]
         public async Task<IActionResult> IsAdmin([FromQuery] string token)
         {
-            var tokenTicks = GetTokenExpirationTime(token);
-            var tokenDate = DateTimeOffset.FromUnixTimeSeconds(tokenTicks).UtcDateTime;
-
-            var now = DateTime.Now.ToUniversalTime();
-
-            var valid = tokenDate >= now;
-
-            if (!valid)
-            {
-                return Ok(false);
-            }
-
-            var t = new JwtSecurityToken(token);
-
-            var user = await context.Users.FindAsync(t.Subject);
-
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Administrator");
-
-            return Ok(isAdmin);
+            return Ok(await authenticationService.IsAdministrator(token));
         }
 
         [HttpGet("GetAllUsers")]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers([FromQuery] string token)
         {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
+            {
+                return Ok(new { Users = new List<UserDisplayModel>() });
+            }
+
             var users = await context.Users.Take(5).ToListAsync();
 
             return Ok(new {Users = users.Select(x => new UserDisplayModel()
@@ -186,7 +179,22 @@ namespace HealthSystemApi.Controllers
                 Email = x.Email
             })});
         }
-        
+
+        [HttpGet("RemoveUser")]
+        public async Task<IActionResult> RemoveUser([FromQuery] string userId, string token)
+        {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
+            {
+                return Ok(new { Success = false });
+            }
+
+            var result = await authenticationService.RemoveUser(userId);
+
+            return Ok(new { Success = result });
+        }
+
         private string GenerateToken(string userId)
         {
             var tokenExpiration = DateTime.UtcNow.AddDays(7);

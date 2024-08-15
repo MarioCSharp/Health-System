@@ -3,5 +3,7 @@
     public interface IAuthenticationService
     {
         string GetUserId();
+        Task<bool> RemoveUser(string userId);
+        Task<bool> IsAdministrator(string token);
     }
 }

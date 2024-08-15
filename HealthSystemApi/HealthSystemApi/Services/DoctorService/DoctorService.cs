@@ -1,6 +1,7 @@
 ﻿using HealthSystemApi.Data;
 using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Doctor;
+using HealthSystemApi.Models.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystemApi.Services.DoctorService
@@ -29,7 +30,11 @@ namespace HealthSystemApi.Services.DoctorService
             var doctorInfo = new DoctorInfo()
             {
                 Specialization = model.Specialization,
-                DoctorId = doctor.Id
+                DoctorId = doctor.Id,
+                About = model.About,
+                ContactNumber = model.ContactNumber,
+                Email = model.Email,
+                FullName = model.FullName
             };
 
             await context.DoctorsInfo.AddAsync(doctorInfo);
@@ -106,14 +111,59 @@ namespace HealthSystemApi.Services.DoctorService
             };
         }
 
+        public async Task<(string, List<BookingDisplayModel>)> GetDoctorAppointments(int doctorId)
+        {
+            var doctor = await context.Doctors.FindAsync(doctorId);
+
+            if (doctor is null)
+            {
+                return ("", new List<BookingDisplayModel>());
+            }
+
+            var apps = await context.Bookings
+                .Where(x => x.DoctorId == doctorId)
+                .Select(x => new BookingDisplayModel
+                {
+                    Id = x.Id,
+                    Date = x.Date.ToString("dd/MM/yyyy HH:mm"),
+                    Name = x.User.FullName,
+                    ServiceName = x.Service.Name
+                }).ToListAsync();
+
+            var user = await context.Users.FindAsync(doctor.UserId);
+
+            return (user.FullName, apps);
+        }
+
+        public async Task<bool> RemoveAppointment(int appointmetId)
+        {
+            var app = await context.Bookings.FindAsync(appointmetId);
+
+            if (app is null)
+            {
+                return false;
+            }
+
+            context.Bookings.Remove(app);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<bool> RemoveAsync(int id)
         {
             var doctor = await context.Doctors.FindAsync(id);
 
             if (doctor is null) return false;
 
+            var bookings = context.Bookings.Where(x => x.DoctorId == id);
+            context.RemoveRange(bookings);
+
+            var services = context.Services.Where(x => x.DoctorId == id);
+            context.RemoveRange(services);
+
             context.Doctors.Remove(doctor);
-            await context.SaveChangesAsync(true);
+            await context.SaveChangesAsync();
 
             return !await context.Doctors.ContainsAsync(doctor);
         }

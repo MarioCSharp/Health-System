@@ -1,5 +1,6 @@
 ﻿using HealthSystemApi.Data;
 using HealthSystemApi.Models.Doctor;
+using HealthSystemApi.Services.AuthenticationService;
 using HealthSystemApi.Services.DoctorService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +12,15 @@ namespace HealthSystemApi.Controllers
     {
         private ApplicationDbContext context;
         private IDoctorService doctorService;
+        private IAuthenticationService authenticationService;
 
         public DoctorController(ApplicationDbContext context,
-                                IDoctorService doctorService)
+                                IDoctorService doctorService,
+                                IAuthenticationService authenticationService)
         {
             this.context = context;
             this.doctorService = doctorService;
+            this.authenticationService = authenticationService;
         }
 
         [HttpGet("Add")]
@@ -33,8 +37,15 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("Remove")]
-        public async Task<IActionResult> Remove([FromQuery] int id)
+        public async Task<IActionResult> Remove([FromQuery] int id, string token)
         {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin) 
+            { 
+                return BadRequest();
+            }
+
             var result = await doctorService.RemoveAsync(id);
 
             return result ? Ok() : BadRequest();
@@ -66,6 +77,36 @@ namespace HealthSystemApi.Controllers
             await doctorService.Edit(model);
 
             return Ok();
+        }
+
+        [HttpGet("GetAppointments")]
+        public async Task<IActionResult> GetAppointments([FromQuery] int id, string token)
+        {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
+            {
+                return BadRequest();
+            }
+
+            var apps = await doctorService.GetDoctorAppointments(id);
+
+            return Ok(new { FullName = apps.Item1, Appointments = apps.Item2 });
+        }
+
+        [HttpGet("RemoveAppointment")]
+        public async Task<IActionResult> RemoveAppointment([FromQuery] int id, string token)
+        {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
+            {
+                return BadRequest();
+            }
+
+            var result = await doctorService.RemoveAppointment(id);
+
+            return Ok(new { Success = result });
         }
     }
 }

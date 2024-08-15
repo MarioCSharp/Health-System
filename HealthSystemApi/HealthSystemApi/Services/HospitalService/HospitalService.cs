@@ -1,5 +1,6 @@
 ﻿using HealthSystemApi.Data;
 using HealthSystemApi.Data.Models;
+using HealthSystemApi.Models.Doctor;
 using HealthSystemApi.Models.Hospital;
 using HealthSystemApi.Services.AuthenticationService;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,20 @@ namespace HealthSystemApi.Services.HospitalService
             Id = x.Id,
             HospitalName = x.Name,
         }).ToListAsync();
+
+        public async Task<List<DoctorDisplayModel>> GetDoctorsAsync(int id)
+        {
+            return await context.Doctors
+                .Where(x => x.HospitalId == id)
+                .Select(x => new DoctorDisplayModel
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    FullName = x.User.FullName,
+                    Email = x.User.Email,
+                    Specialization = x.Specialization
+                }).ToListAsync();
+        }
 
         public async Task<HospitalDetailsModel> HospitalDetails(int id)
         {

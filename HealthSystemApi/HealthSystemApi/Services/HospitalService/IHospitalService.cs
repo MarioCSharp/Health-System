@@ -1,4 +1,5 @@
-﻿using HealthSystemApi.Models.Hospital;
+﻿using HealthSystemApi.Models.Doctor;
+using HealthSystemApi.Models.Hospital;
 
 namespace HealthSystemApi.Services.HospitalService
 {
@@ -8,5 +9,6 @@ namespace HealthSystemApi.Services.HospitalService
         Task<bool> RemoveAsync(int id);
         Task<List<HospitalModel>> AllAsync();
         Task<HospitalDetailsModel> HospitalDetails(int id);
+        Task<List<DoctorDisplayModel>> GetDoctorsAsync(int id);
     }
 }

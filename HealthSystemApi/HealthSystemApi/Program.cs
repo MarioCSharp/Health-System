@@ -17,6 +17,8 @@ using HealthSystemApi.Services.LogbookService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Identity.Client;
+using HealthSystemApi.Services.AccountService;
 
 namespace HealthSystemApi
 {
@@ -75,7 +77,7 @@ namespace HealthSystemApi
             builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<IMedicationService, MedicationService>();
             builder.Services.AddTransient<ILogbookService, LogbookService>();
-
+            builder.Services.AddTransient<IAccountService, AccountService>();
 
             builder.Services.AddSwaggerGen(options =>
             {

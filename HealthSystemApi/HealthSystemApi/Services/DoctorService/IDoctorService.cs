@@ -1,4 +1,5 @@
 ﻿using HealthSystemApi.Models.Doctor;
+using HealthSystemApi.Models.Service;
 
 namespace HealthSystemApi.Services.DoctorService
 {
@@ -10,5 +11,7 @@ namespace HealthSystemApi.Services.DoctorService
         Task<DoctorDetailsModel> GetDetailsAsync(int id);
         Task<DoctorAddModel> GetDoctor(int id);
         Task Edit(DoctorDetailsModel model);
+        Task<(string, List<BookingDisplayModel>)> GetDoctorAppointments(int doctorId);
+        Task<bool> RemoveAppointment(int appointmetId);
     }
 }

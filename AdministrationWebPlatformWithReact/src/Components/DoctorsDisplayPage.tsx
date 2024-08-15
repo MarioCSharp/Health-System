@@ -1,22 +1,26 @@
-import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
-interface User {
-  id: string;
-  fullName: string;
+interface Doctor {
+  id: number;
+  userId: string;
   email: string;
+  fullName: string;
+  specialization: string;
 }
 
-function UsersList() {
-  const [users, setUsers] = useState<User[]>([]);
+function DoctorsDisplayPage() {
+  const { hospitalId } = useParams<{ hospitalId: string }>();
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [error, setError] = useState(false);
   const token = localStorage.getItem("token");
+
   const navigate = useNavigate();
 
-  const getUsers = async () => {
+  const getDoctors = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Authentication/GetAllUsers?token=${token}`,
+        `http://localhost:5166/api/Hospital/GetDoctors?id=${hospitalId}&token=${token}`,
         {
           method: "GET",
           headers: {
@@ -27,78 +31,77 @@ function UsersList() {
 
       if (response.ok) {
         const data = await response.json();
-        setUsers(data.users);
+        setDoctors(data.doctors);
       } else {
-        throw new Error("There was an error getting all the users!");
+        throw new Error(
+          "You are either not authorized or there is a problem in the system!"
+        );
       }
     } catch (error) {
       console.log("There was an error", error);
-      setUsers([]);
-      setError(true);
-    }
-  };
-
-  const removeUser = async (id: string) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5166/api/Authentication/RemoveUser?userId=${id}&token=${token}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-
-        const success = data.success;
-
-        if (success) {
-          getUsers();
-        }
-      } else {
-        throw new Error("There was an error removing this user. Try again!");
-      }
-    } catch (error) {
-      console.log("There was an error, try again!");
+      setDoctors([]);
       setError(true);
     }
   };
 
   useEffect(() => {
-    getUsers();
+    getDoctors();
   }, []);
 
   if (error) {
     return <Navigate to="not-found" replace />;
   }
 
-  const redirectToBooked = (id: string) => {
-    navigate(`/appointments/${id}`);
+  const deleteDoctor = async (id: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5166/api/Doctor/Remove?id=${id}&token=${token}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        getDoctors();
+      } else {
+        throw new Error(
+          "You are either not authorized or there is a problem in the system!"
+        );
+      }
+    } catch (error) {
+      console.log("There was an error", error);
+      setDoctors([]);
+      setError(true);
+    }
+  };
+
+  const redirectToAppointments = (id: number) => {
+    navigate(`/doctor/appointments/${id}`);
   };
 
   return (
-    <div className="col-md-6 mx-md-3 mb-4">
+    <div className="col-md-4 mx-md-3 mb-4">
       <ul className="list-group">
-        <h3>Потребители</h3>
-        {users.length > 0 ? (
-          users.map((user) => (
+        <h3>Доктори</h3>
+        {doctors.length > 0 ? (
+          doctors.map((doctor) => (
             <li
               className="list-group-item d-flex justify-content-between align-items-center"
-              key={user.id}
+              key={doctor.id}
             >
               <span>
-                {user.fullName} | {user.email}
+                {doctor.fullName} | {doctor.email} |{doctor.specialization}
               </span>
               <div>
                 <a
                   className="btn btn-primary btn-sm mr-2"
                   style={{ marginRight: "2px" }}
-                  onClick={() => redirectToBooked(user.id)}
+                  onClick={() => redirectToAppointments(doctor.id)}
                 >
-                  Записани часове
+                  Часове
                 </a>
                 <a
                   className="btn btn-warning btn-sm mr-2"
@@ -108,7 +111,7 @@ function UsersList() {
                 </a>
                 <a
                   className="btn btn-danger btn-sm"
-                  onClick={() => removeUser(user.id)}
+                  onClick={() => deleteDoctor(doctor.id)}
                 >
                   Изтрий
                 </a>
@@ -118,17 +121,16 @@ function UsersList() {
         ) : (
           <div className="col-12">
             <div className="card mb-3">
-              <div className="card-body p-2">No users found</div>
+              <div className="card-body p-2">No doctors found</div>
             </div>
           </div>
         )}
         <li className="list-group-item">
-          <a href="#">Добави болница</a>ㅤㅤ
-          <a href="#">Виж всички</a>
+          <a href="#">Добави доктор</a>ㅤㅤ
         </li>
       </ul>
     </div>
   );
 }
 
-export default UsersList;
+export default DoctorsDisplayPage;

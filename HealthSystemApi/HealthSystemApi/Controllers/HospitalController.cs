@@ -1,4 +1,5 @@
 ﻿using HealthSystemApi.Models.Hospital;
+using HealthSystemApi.Services.AuthenticationService;
 using HealthSystemApi.Services.HospitalService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,13 @@ namespace HealthSystemApi.Controllers
     public class HospitalController : ControllerBase
     {
         private IHospitalService hospitalService;
+        private IAuthenticationService authenticationService;
 
-        public HospitalController(IHospitalService hospitalService)
+        public HospitalController(IHospitalService hospitalService,
+                                  IAuthenticationService authenticationService)
         {
             this.hospitalService = hospitalService;
+            this.authenticationService = authenticationService;
         }
 
         [HttpGet("Add")]
@@ -34,16 +38,23 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("Remove")]
-        public async Task<IActionResult> Remove([FromQuery] int id)
+        public async Task<IActionResult> Remove([FromQuery] int id, string token)
         {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
+            {
+                return Ok(new { Success = false });
+            }
+
             var result = await hospitalService.RemoveAsync(id);
 
             if (result)
             {
-                return Ok();
+                return Ok(new { Success = true });
             }
 
-            return BadRequest();
+            return Ok(new { Success = false });
         }
 
         [HttpGet("All")]
@@ -60,6 +71,21 @@ namespace HealthSystemApi.Controllers
             var result = await hospitalService.HospitalDetails(id);
 
             return Ok(result);
+        }
+
+        [HttpGet("GetDoctors")]
+        public async Task<IActionResult> GetDoctors([FromQuery] int id, string token)
+        {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
+            {
+                return BadRequest(new { Success = false });
+            }
+
+            var doctors = await hospitalService.GetDoctorsAsync(id);
+
+            return Ok(new { Doctors = doctors });
         }
     }
 }
