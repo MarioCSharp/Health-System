@@ -11,5 +11,7 @@ namespace HealthSystemApi.Models.Hospital
         public string? Location { get; set; }
 
         public string? ContactNumber { get; set; }
+
+        public string? UserId { get; set; }
     }
 }

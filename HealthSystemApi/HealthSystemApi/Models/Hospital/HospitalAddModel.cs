@@ -15,5 +15,7 @@ namespace HealthSystemApi.Models.Hospital
 
         [Required]
         public string? OwnerId { get; set; }
+
+        public string? Token { get; set; }
     }
 }

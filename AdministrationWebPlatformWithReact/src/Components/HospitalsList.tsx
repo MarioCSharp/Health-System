@@ -81,6 +81,18 @@ function HospitalsList() {
     navigate(`/doctors/${hospitalId}`);
   };
 
+  const redirectToEdit = (hospitalId: number) => {
+    navigate(`/hospital/edit/${hospitalId}`);
+  };
+
+  const redirectToAdd = () => {
+    navigate(`/hospital/add`);
+  };
+
+  const redirectToAll = () => {
+    navigate(`/hospitals`);
+  };
+
   if (error) {
     return <Navigate to="not-found" replace />;
   }
@@ -107,6 +119,7 @@ function HospitalsList() {
                 <a
                   className="btn btn-warning btn-sm mr-2"
                   style={{ marginRight: "2px" }}
+                  onClick={() => redirectToEdit(hospital.id)}
                 >
                   Редактирай
                 </a>
@@ -127,8 +140,13 @@ function HospitalsList() {
           </div>
         )}
         <li className="list-group-item">
-          <a href="#">Добави болница</a>ㅤㅤ
-          <a href="#">Виж всички</a>
+          <a href="" onClick={() => redirectToAdd()}>
+            Добави болница
+          </a>
+          ㅤㅤ
+          <a href="" onClick={() => redirectToAll()}>
+            Виж всички
+          </a>
         </li>
       </ul>
     </div>

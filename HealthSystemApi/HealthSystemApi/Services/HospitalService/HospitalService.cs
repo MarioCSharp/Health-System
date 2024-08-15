@@ -40,6 +40,25 @@ namespace HealthSystemApi.Services.HospitalService
             HospitalName = x.Name,
         }).ToListAsync();
 
+        public async Task<bool> EditAsync(HospitalEditModel model)
+        {
+            var hospital = await context.Hospitals.FindAsync(model.Id);
+
+            if (hospital == null)
+            {
+                return false;
+            }
+
+            hospital.Name = model.HospitalName;
+            hospital.ContactNumber = model.HospitalContactNumber;
+            hospital.Location = model.HospitalLocation;
+            hospital.OwnerId = model.HospitalUserId;
+
+            await context.SaveChangesAsync();
+
+            return true;    
+        }
+
         public async Task<List<DoctorDisplayModel>> GetDoctorsAsync(int id)
         {
             return await context.Doctors
@@ -52,6 +71,24 @@ namespace HealthSystemApi.Services.HospitalService
                     Email = x.User.Email,
                     Specialization = x.Specialization
                 }).ToListAsync();
+        }
+
+        public async Task<HospitalDetailsModel> GetHospital(int id)
+        {
+            var hospital = await context.Hospitals.FindAsync(id);
+
+            if (hospital == null)
+            {
+                return new HospitalDetailsModel();
+            }
+
+            return new HospitalDetailsModel() 
+            { 
+                ContactNumber = hospital.ContactNumber,
+                HospitalName = hospital.Name,
+                Location = hospital.Location,
+                UserId = hospital.OwnerId
+            };
         }
 
         public async Task<HospitalDetailsModel> HospitalDetails(int id)

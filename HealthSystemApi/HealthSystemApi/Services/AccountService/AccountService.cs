@@ -25,19 +25,14 @@ namespace HealthSystemApi.Services.AccountService
 
             var result = new List<AccountDisplayModel>();
 
-            foreach (var user in users) 
-            { 
-                var roles = await userManager.GetRolesAsync(user);
-
-                if (roles.Count == 1)
+            foreach (var user in users)
+            {
+                result.Add(new AccountDisplayModel
                 {
-                    result.Add(new AccountDisplayModel 
-                    { 
-                        Id = user.Id,
-                        FullName = user.FullName,
-                        Email = user.Email
-                    });
-                }
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    Email = user.Email
+                });
             }
 
             return result;
