@@ -5,10 +5,13 @@ namespace HealthSystemApi.Services.ServiceService
     public interface IServiceService
     {
         Task<bool> AddAsync(ServiceAddModel model);
-        Task<List<ServiceModel>> AllByIdAsync(int id);
+        Task<(string, List<ServiceModel>)> AllByIdAsync(int id);
         Task<ServiceDetailsModel> DetailsAsync(int id);
         Task<bool> BookAsync(BookingModel model);
         Task<List<string>> AvailableHoursAsync(DateTime date, int serviceId);
         Task<List<AppointmentModel>> AllByUserAsync(string userId);
+        Task<bool> Delete(int id);
+        Task<(string, decimal, string, string)> EditGET(int id);
+        Task<bool> EditPOST(ServiceEditModel model);
     }
 }

@@ -1,5 +1,8 @@
 ﻿using HealthSystemApi.Data;
+using HealthSystemApi.Data.Models;
+using HealthSystemApi.Models.Account;
 using HealthSystemApi.Models.Service;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystemApi.Services.AccountService
@@ -7,10 +10,37 @@ namespace HealthSystemApi.Services.AccountService
     public class AccountService : IAccountService
     {
         private ApplicationDbContext context;
+        private UserManager<User> userManager;
 
-        public AccountService(ApplicationDbContext context)
+        public AccountService(ApplicationDbContext context,
+                              UserManager<User> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
+        }
+
+        public async Task<List<AccountDisplayModel>> GetAccountsAsync()
+        {
+            var users = await context.Users.ToListAsync();
+
+            var result = new List<AccountDisplayModel>();
+
+            foreach (var user in users) 
+            { 
+                var roles = await userManager.GetRolesAsync(user);
+
+                if (roles.Count == 1)
+                {
+                    result.Add(new AccountDisplayModel 
+                    { 
+                        Id = user.Id,
+                        FullName = user.FullName,
+                        Email = user.Email
+                    });
+                }
+            }
+
+            return result;
         }
 
         public async Task<(string, List<BookingDisplayModel>)> GetAppointments(string userId)

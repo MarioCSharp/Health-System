@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 interface Appointment {
   id: number;
@@ -48,6 +48,10 @@ function DoctorAppointments() {
   useEffect(() => {
     getBookings();
   }, []);
+
+  if (error) {
+    return <Navigate to="not-found" replace />;
+  }
 
   const deleteAppointment = async (id: number) => {
     try {

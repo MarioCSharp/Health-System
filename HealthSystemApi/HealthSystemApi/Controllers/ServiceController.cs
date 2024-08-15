@@ -1,6 +1,8 @@
 ﻿using HealthSystemApi.Models.Service;
+using HealthSystemApi.Services.AuthenticationService;
 using HealthSystemApi.Services.ServiceService;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace HealthSystemApi.Controllers
 {
@@ -9,10 +11,13 @@ namespace HealthSystemApi.Controllers
     public class ServiceController : ControllerBase
     {
         private IServiceService serviceService;
+        private IAuthenticationService authenticationService;
 
-        public ServiceController(IServiceService serviceService)
+        public ServiceController(IServiceService serviceService,
+                                 IAuthenticationService authenticationService)
         {
             this.serviceService = serviceService;
+            this.authenticationService = authenticationService;
         }
 
         [HttpGet("Add")]
@@ -30,13 +35,15 @@ namespace HealthSystemApi.Controllers
                 return BadRequest();
             }
 
-            return Ok(result);
+            return Ok(new { Success = result });
         }
 
         [HttpGet("AllById")]
         public async Task<IActionResult> AllById([FromQuery] int id)
         {
-            return Ok(await serviceService.AllByIdAsync(id));
+            var res = await serviceService.AllByIdAsync(id);
+
+            return Ok(new { FullName = res.Item1, Services = res.Item2 });
         }
 
         [HttpGet("Details")]
@@ -75,6 +82,51 @@ namespace HealthSystemApi.Controllers
         public async Task<IActionResult> AllByUser([FromQuery] string userId)
         {
             return Ok(await serviceService.AllByUserAsync(userId));
+        }
+
+        [HttpGet("Remove")]
+        public async Task<IActionResult> Delete([FromQuery] int id, string token)
+        {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
+            {
+                return BadRequest();
+            }
+
+            var result = await serviceService.Delete(id);
+
+            return Ok(new { Success = result });
+        }
+
+        [HttpGet("Edit")]
+        public async Task<IActionResult> Edit([FromQuery] int id, string token)
+        {
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
+            {
+                return BadRequest();
+            }
+
+            var result = await serviceService.EditGET(id);
+
+            return Ok(new { ServiceName = result.Item1, ServicePrice = result.Item2, ServiceDescription = result.Item3, ServiceLocation = result.Item4 });
+        }
+
+        [HttpPost("Edit")]
+        public async Task<IActionResult> Edit([FromForm] ServiceEditModel model)
+        {
+            var isAdmin = await authenticationService.IsAdministrator(model.Token);
+
+            if (!isAdmin)
+            {
+                return BadRequest();
+            }
+
+            var result = await serviceService.EditPOST(model);
+
+            return Ok(new { Success = result });
         }
     }
 }

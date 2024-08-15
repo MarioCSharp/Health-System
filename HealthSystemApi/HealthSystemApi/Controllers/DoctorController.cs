@@ -3,6 +3,7 @@ using HealthSystemApi.Models.Doctor;
 using HealthSystemApi.Services.AuthenticationService;
 using HealthSystemApi.Services.DoctorService;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace HealthSystemApi.Controllers
 {
@@ -24,16 +25,18 @@ namespace HealthSystemApi.Controllers
         }
 
         [HttpGet("Add")]
-        public async Task<IActionResult> Add([FromQuery] DoctorAddModel model)
+        public async Task<IActionResult> Add([FromQuery] DoctorAddModel model, string token)
         {
-            if (!ModelState.IsValid)
+            var isAdmin = await authenticationService.IsAdministrator(token);
+
+            if (!isAdmin)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
 
             var result = await doctorService.AddAsync(model);
 
-            return result ? Ok() : BadRequest();
+            return result ? Ok(new { Success = result }) : BadRequest();
         }
 
         [HttpGet("Remove")]

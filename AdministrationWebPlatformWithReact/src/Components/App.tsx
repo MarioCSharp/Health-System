@@ -8,6 +8,10 @@ import NotFound from "./NotFound"; // Import the NotFound component
 import DoctorsDisplayPage from "./DoctorsDisplayPage";
 import AppointmentsComponent from "./AppointmentsComponent";
 import DoctorAppointments from "./DoctorAppointments";
+import DoctorServicesComponent from "./DoctorServicesComponent";
+import ServiceEditComponent from "./ServiceEditComponent";
+import DoctorAddComponent from "./DoctorAddComponent";
+import ServiceAddComponent from "./ServiceAddComponent";
 
 const App: React.FC = () => {
   return (
@@ -28,6 +32,22 @@ const App: React.FC = () => {
             <Route
               path="/doctor/appointments/:id"
               element={<DoctorAppointments />}
+            />
+            <Route
+              path="/doctor/services/:doctorId"
+              element={<DoctorServicesComponent />}
+            />
+            <Route
+              path="/service/edit/:id"
+              element={<ServiceEditComponent />}
+            />
+            <Route
+              path="/service/add/:doctorId"
+              element={<ServiceAddComponent />}
+            />
+            <Route
+              path="/doctor/add/:hospitalId"
+              element={<DoctorAddComponent />}
             />
           </Route>
 

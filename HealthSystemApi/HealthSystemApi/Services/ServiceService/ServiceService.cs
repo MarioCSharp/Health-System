@@ -31,15 +31,26 @@ namespace HealthSystemApi.Services.ServiceService
             return await context.Services.ContainsAsync(service);
         }
 
-        public async Task<List<ServiceModel>> AllByIdAsync(int id)
+        public async Task<(string, List<ServiceModel>)> AllByIdAsync(int id)
         {
-            return await context.Services.Where(x => x.DoctorId == id)
+            var doctor = await context.Doctors.FindAsync(id);
+
+            if (doctor is null)
+            {
+                return ("", new List<ServiceModel>());
+            }
+
+            var services = await context.Services.Where(x => x.DoctorId == id)
                 .Select(x => new ServiceModel()
                 {
                     Id = x.Id,
                     Name = x.Name,
                     Price = x.Price
                 }).ToListAsync();
+
+            var user = await context.Users.FindAsync(doctor.UserId);
+
+            return (user.FullName, services);
         }
 
         public async Task<List<AppointmentModel>> AllByUserAsync(string userId)
@@ -143,6 +154,21 @@ namespace HealthSystemApi.Services.ServiceService
             return true;
         }
 
+        public async Task<bool> Delete(int id)
+        {
+            var service = await context.Services.FindAsync(id);
+
+            if (service is null)
+            {
+                return false;
+            }
+
+            context.Services.Remove(service);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<ServiceDetailsModel> DetailsAsync(int id)
         {
             var service = await context.Services.FindAsync(id);
@@ -156,6 +182,37 @@ namespace HealthSystemApi.Services.ServiceService
                 Description = service.Description,
                 Price = service.Price
             };
+        }
+
+        public async Task<(string, decimal, string, string)> EditGET(int id)
+        {
+            var service = await context.Services.FindAsync(id);
+
+            if(service is null)
+            {
+                return ("", 0.0M, "", "");
+            }
+
+            return (service.Name ?? "", service.Price, service.Description ?? "", service.Location ?? "");
+        }
+
+        public async Task<bool> EditPOST(ServiceEditModel model)
+        {
+            var service = await context.Services.FindAsync(model.Id);
+
+            if (service is null)
+            {
+                return false;
+            }
+
+            service.Location = model.ServiceLocation;
+            service.Price = model.ServicePrice;
+            service.Description = model.ServiceDesription;
+            service.Name = model.ServiceName;
+
+            await context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

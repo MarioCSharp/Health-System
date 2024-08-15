@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 
-interface Doctor {
+interface Service {
   id: number;
-  userId: string;
-  email: string;
-  fullName: string;
-  specialization: string;
+  name: string;
+  price: number;
 }
 
-function DoctorsDisplayPage() {
-  const { hospitalId } = useParams<{ hospitalId: string }>();
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
+function DoctorServicesComponent() {
+  const { doctorId } = useParams<{ doctorId: string }>();
+  const [services, setServices] = useState<Service[]>([]);
+  const [fullName, setFullName] = useState<string>("");
   const [error, setError] = useState(false);
-  const token = localStorage.getItem("token");
 
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-  const getDoctors = async () => {
+  const getServices = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Hospital/GetDoctors?id=${hospitalId}&token=${token}`,
+        `http://localhost:5166/api/Service/AllById?id=${doctorId}`,
         {
           method: "GET",
           headers: {
@@ -31,7 +30,8 @@ function DoctorsDisplayPage() {
 
       if (response.ok) {
         const data = await response.json();
-        setDoctors(data.doctors);
+        setServices(data.services);
+        setFullName(data.fullName);
       } else {
         throw new Error(
           "You are either not authorized or there is a problem in the system!"
@@ -39,23 +39,19 @@ function DoctorsDisplayPage() {
       }
     } catch (error) {
       console.log("There was an error", error);
-      setDoctors([]);
+      setServices([]);
       setError(true);
     }
   };
 
   useEffect(() => {
-    getDoctors();
+    getServices();
   }, []);
 
-  if (error) {
-    return <Navigate to="not-found" replace />;
-  }
-
-  const deleteDoctor = async (id: number) => {
+  const deleteService = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Doctor/Remove?id=${id}&token=${token}`,
+        `http://localhost:5166/api/Service/Remove?id=${id}&token=${token}`,
         {
           method: "GET",
           headers: {
@@ -65,7 +61,16 @@ function DoctorsDisplayPage() {
       );
 
       if (response.ok) {
-        getDoctors();
+        const data = await response.json();
+        const success = data.success;
+
+        if (!success) {
+          throw new Error(
+            "You are either not authorized or there is a problem in the system!"
+          );
+        }
+
+        getServices();
       } else {
         throw new Error(
           "You are either not authorized or there is a problem in the system!"
@@ -73,20 +78,17 @@ function DoctorsDisplayPage() {
       }
     } catch (error) {
       console.log("There was an error", error);
-      setDoctors([]);
+      setServices([]);
       setError(true);
     }
   };
 
-  const redirectToAppointments = (id: number) => {
-    navigate(`/doctor/appointments/${id}`);
+  const redirectToEdit = (id: number) => {
+    navigate(`/service/edit/${id}`);
   };
 
-  const redirectToServices = (id: number) => {
-    navigate(`/doctor/services/${id}`);
-  };
-  const redirecToAddDoctor = () => {
-    navigate(`/doctor/add/${hospitalId}`);
+  const redirectToAddService = (id: number) => {
+    navigate(`/service/add/${id}`);
   };
 
   if (error) {
@@ -96,34 +98,27 @@ function DoctorsDisplayPage() {
   return (
     <div className="col-md-4 mx-md-3 mb-4">
       <ul className="list-group">
-        <h3>Доктори</h3>
-        {doctors.length > 0 ? (
-          doctors.map((doctor) => (
+        <h3>Услуги на {fullName}</h3>
+        {services.length > 0 ? (
+          services.map((service) => (
             <li
               className="list-group-item d-flex justify-content-between align-items-center"
-              key={doctor.id}
+              key={service.id}
             >
               <span>
-                {doctor.fullName} | {doctor.email} |{doctor.specialization}
+                {service.name} | {service.price}лв
               </span>
               <div>
                 <a
-                  className="btn btn-primary btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => redirectToAppointments(doctor.id)}
-                >
-                  Часове
-                </a>
-                <a
                   className="btn btn-warning btn-sm mr-2"
                   style={{ marginRight: "2px" }}
-                  onClick={() => redirectToServices(doctor.id)}
+                  onClick={() => redirectToEdit(service.id)}
                 >
-                  Услуги
+                  Редактирай
                 </a>
                 <a
                   className="btn btn-danger btn-sm"
-                  onClick={() => deleteDoctor(doctor.id)}
+                  onClick={() => deleteService(service.id)}
                 >
                   Изтрий
                 </a>
@@ -133,13 +128,13 @@ function DoctorsDisplayPage() {
         ) : (
           <div className="col-12">
             <div className="card mb-3">
-              <div className="card-body p-2">No doctors found</div>
+              <div className="card-body p-2">No services found</div>
             </div>
           </div>
         )}
         <li className="list-group-item">
-          <a href="" onClick={() => redirecToAddDoctor()}>
-            Добави доктор
+          <a href="" onClick={() => redirectToAddService(Number(doctorId))}>
+            Добави услуга
           </a>
         </li>
       </ul>
@@ -147,4 +142,4 @@ function DoctorsDisplayPage() {
   );
 }
 
-export default DoctorsDisplayPage;
+export default DoctorServicesComponent;
