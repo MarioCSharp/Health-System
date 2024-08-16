@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import AdminHomePage from "./AdminHomePage";
+import DoctorHomePage from "./DoctorHomePage";
 
 function Home() {
   const role = localStorage.getItem("role");
@@ -11,7 +12,7 @@ function Home() {
       content = <AdminHomePage />;
       break;
     case "Doctor":
-      content = <h1>Welcome Doctor!</h1>;
+      content = <DoctorHomePage />;
       break;
     default:
       <Navigate to="/not-found" replace />;

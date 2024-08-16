@@ -3,6 +3,8 @@ using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Doctor;
 using HealthSystemApi.Models.Hospital;
 using HealthSystemApi.Services.AuthenticationService;
+using HealthSystemApi.Services.DoctorService;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystemApi.Services.HospitalService
@@ -10,15 +12,28 @@ namespace HealthSystemApi.Services.HospitalService
     public class HospitalService : IHospitalService
     {
         private ApplicationDbContext context;
+        private UserManager<User> userManager;
         private IAuthenticationService authenticationService;
+        private IDoctorService doctorService;
 
-        public HospitalService(ApplicationDbContext context)
+        public HospitalService(ApplicationDbContext context,
+                               UserManager<User> userManager,
+                               IDoctorService doctorService)
         {
             this.context = context;
+            this.userManager = userManager;
+            this.doctorService = doctorService;
         }
 
         public async Task<bool> AddAsync(HospitalAddModel model)
         {
+            var user = await context.Users.FindAsync(model.OwnerId);
+
+            if (user is null)
+            {
+                return false;
+            }
+
             var hospital = new Hospital()
             {
                 Name = model.HospitalName,
@@ -29,6 +44,8 @@ namespace HealthSystemApi.Services.HospitalService
 
             await context.Hospitals.AddAsync(hospital);
             await context.SaveChangesAsync();
+
+            await userManager.AddToRoleAsync(user, "Director");
 
             return await context.Hospitals.ContainsAsync(hospital);
         }
@@ -111,6 +128,13 @@ namespace HealthSystemApi.Services.HospitalService
             if (hospital == null)
             {
                 return false;
+            }
+
+            var doctors = await context.Doctors.Where(x => x.HospitalId == id).ToListAsync();
+
+            foreach (var doctor in doctors)
+            {
+                await doctorService.RemoveAsync(doctor.Id);
             }
 
             context.Hospitals.Remove(hospital);

@@ -34,9 +34,11 @@ namespace HealthSystemApi.Extensions
                     }
 
                     var admin = new IdentityRole("Administrator");
+                    var director = new IdentityRole("Director");
                     var doctor = new IdentityRole("Doctor");
 
                     await roleManager.CreateAsync(admin);
+                    await roleManager.CreateAsync(director);
                     await roleManager.CreateAsync(doctor);
 
                     const string adminEmail = "mario_petkov2007@abv.bg";

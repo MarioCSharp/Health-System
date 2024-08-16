@@ -2,6 +2,7 @@
 using HealthSystemApi.Data.Models;
 using HealthSystemApi.Models.Doctor;
 using HealthSystemApi.Models.Service;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystemApi.Services.DoctorService
@@ -9,14 +10,24 @@ namespace HealthSystemApi.Services.DoctorService
     public class DoctorService : IDoctorService
     {
         private ApplicationDbContext context;
+        private UserManager<User> userManager;
 
-        public DoctorService(ApplicationDbContext context)
+        public DoctorService(ApplicationDbContext context,
+                             UserManager<User> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
         }
 
         public async Task<bool> AddAsync(DoctorAddModel model)
         {
+            var user = await context.Users.FindAsync(model.UserId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
             var doctor = new Doctor()
             {
                 Specialization = model.Specialization,
@@ -39,6 +50,8 @@ namespace HealthSystemApi.Services.DoctorService
 
             await context.DoctorsInfo.AddAsync(doctorInfo);
             await context.SaveChangesAsync();
+
+            await userManager.AddToRoleAsync(user, "Doctor");
 
             return await context.Doctors.ContainsAsync(doctor);
         }

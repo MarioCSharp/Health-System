@@ -1,4 +1,15 @@
+import { Navigate } from "react-router-dom";
+
 function Navigation() {
+  const logout = () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      localStorage.removeItem("token");
+      <Navigate to={"/login"}></Navigate>;
+    }
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -16,6 +27,9 @@ function Navigation() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+        <a href="" onClick={() => logout()} style={{ color: "white" }}>
+          Излизане
+        </a>
       </nav>
     </>
   );

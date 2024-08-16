@@ -7,7 +7,7 @@ interface User {
   email: string;
 }
 
-function UsersList() {
+function AllUsersComponent() {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState(false);
   const token = localStorage.getItem("token");
@@ -27,7 +27,7 @@ function UsersList() {
 
       if (response.ok) {
         const data = await response.json();
-        setUsers(data.users.slice(0, 5));
+        setUsers(data.users);
       } else {
         throw new Error("There was an error getting all the users!");
       }
@@ -79,10 +79,6 @@ function UsersList() {
     navigate(`/appointments/${id}`);
   };
 
-  const redirectToAllUsers = () => {
-    navigate(`/users`);
-  };
-
   return (
     <div className="col-md-6 mx-md-3 mb-4">
       <ul className="list-group">
@@ -105,6 +101,12 @@ function UsersList() {
                   Записани часове
                 </a>
                 <a
+                  className="btn btn-warning btn-sm mr-2"
+                  style={{ marginRight: "2px" }}
+                >
+                  Редактирай
+                </a>
+                <a
                   className="btn btn-danger btn-sm"
                   onClick={() => removeUser(user.id)}
                 >
@@ -120,14 +122,9 @@ function UsersList() {
             </div>
           </div>
         )}
-        <li className="list-group-item">
-          <a href="" onClick={() => redirectToAllUsers()}>
-            Виж всички
-          </a>
-        </li>
       </ul>
     </div>
   );
 }
 
-export default UsersList;
+export default AllUsersComponent;

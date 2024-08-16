@@ -15,6 +15,8 @@ import ServiceAddComponent from "./ServiceAddComponent";
 import HospitalEditComponent from "./HospitalEditComponent";
 import HospitalAddComponent from "./HospitalAddComponent";
 import AllHospitalsComponents from "./AllHospitalsComponents";
+import AllUsersComponent from "./AllUsersComponent";
+import AllAppointments from "./AllAppointments";
 
 const App: React.FC = () => (
   <Router>
@@ -48,6 +50,8 @@ const App: React.FC = () => (
           />
           <Route path="/hospital/add" element={<HospitalAddComponent />} />
           <Route path="/hospitals" element={<AllHospitalsComponents />} />
+          <Route path="/users" element={<AllUsersComponent />} />
+          <Route path="/appointments" element={<AllAppointments />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

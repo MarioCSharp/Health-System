@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Identity.Client;
 using HealthSystemApi.Services.AccountService;
+using HealthSystemApi.Services.AppointmentService;
 
 namespace HealthSystemApi
 {
@@ -78,6 +79,7 @@ namespace HealthSystemApi
             builder.Services.AddTransient<IMedicationService, MedicationService>();
             builder.Services.AddTransient<ILogbookService, LogbookService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
+            builder.Services.AddTransient<IAppointmentService, AppointmentService>();
 
             builder.Services.AddSwaggerGen(options =>
             {

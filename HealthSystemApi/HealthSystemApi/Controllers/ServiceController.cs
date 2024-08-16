@@ -20,9 +20,16 @@ namespace HealthSystemApi.Controllers
             this.authenticationService = authenticationService;
         }
 
-        [HttpGet("Add")]
-        public async Task<IActionResult> Add([FromQuery] ServiceAddModel model)
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add([FromForm] ServiceAddModel model)
         {
+            var isAdmin = await authenticationService.IsAdministrator(model.Token);
+
+            if (!isAdmin)
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

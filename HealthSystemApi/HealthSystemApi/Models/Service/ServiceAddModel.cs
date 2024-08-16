@@ -18,5 +18,7 @@ namespace HealthSystemApi.Models.Service
 
         [Required]
         public int DoctorId { get; set; }
+
+        public string? Token { get; set; }
     }
 }

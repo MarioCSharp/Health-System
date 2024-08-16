@@ -27,12 +27,17 @@ namespace HealthSystemApi.Services.AccountService
 
             foreach (var user in users)
             {
-                result.Add(new AccountDisplayModel
+                var roles = await userManager.GetRolesAsync(user);
+
+                if (roles.Count == 0)
                 {
-                    Id = user.Id,
-                    FullName = user.FullName,
-                    Email = user.Email
-                });
+                    result.Add(new AccountDisplayModel
+                    {
+                        Id = user.Id,
+                        FullName = user.FullName,
+                        Email = user.Email
+                    });
+                }
             }
 
             return result;

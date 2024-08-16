@@ -16,19 +16,17 @@ function ServiceAddComponent() {
     e.preventDefault();
 
     try {
+      const formData = new FormData();
+      formData.append("DoctorId", doctorId!);
+      formData.append("Name", name);
+      formData.append("Price", price);
+      formData.append("Description", description);
+      formData.append("Location", location);
+      formData.append("Token", token!);
+
       const response = await fetch("http://localhost:5166/api/Service/Add", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          doctorId,
-          name,
-          price,
-          location,
-          description,
-          token,
-        }),
+        body: formData,
       });
 
       if (response.ok) {
