@@ -37,7 +37,6 @@ namespace HealthProject.ViewModels
             this.authenticationService = authenticationService;
 
             LoadServices();
-            CheckAdmin();
         }
 
         public ICommand EditDoctorInfoRedirect { get; }
@@ -51,16 +50,11 @@ namespace HealthProject.ViewModels
             Services = new ObservableCollection<ServiceModel>(servicesList);
         }
 
-        private async void CheckAdmin()
-        {
-            IsAdmin = await authenticationService.IsAdmin();
-        }
-
         public async Task RedirectToEditInfo(object parameter)
         {
             if (parameter is int id)
             {
-                var doctorJson = JsonConvert.SerializeObject(doctor);
+                var doctorJson = JsonConvert.SerializeObject(Doctor);
                 var encodedDoctorJson = Uri.EscapeDataString(doctorJson);
                 await Shell.Current.GoToAsync($"EditDoctorInfo?hospitalJson={encodedDoctorJson}");
             }

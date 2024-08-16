@@ -14,34 +14,12 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Button Text="Добави болница" 
-                    IsVisible="{Binding IsAdmin}"
-                    Clicked="Button_Clicked"
-                    HorizontalOptions="End"
-                    VerticalOptions="Center"
-                    Margin="0,0,0,20"
-                    BackgroundColor="#007ACC"
-                    TextColor="White"
-                    CornerRadius="10"
-                    HeightRequest="50"
-                    WidthRequest="180"/>
-
             <CollectionView Grid.Row="1"
                             ItemsSource="{Binding Hospitals}"
                             Margin="0,10,0,0">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
-                            <SwipeView.RightItems>
-                                <SwipeItems Mode="Reveal">
-                                    <SwipeItem Text="Delete" 
-                                               BackgroundColor="#FF3B30" 
-                                               Command="{Binding BindingContext.DeleteHospitalCommand, Source={x:Reference RootPage}}"
-                                               CommandParameter="{Binding Id}"
-                                               IconImageSource="delete_icon.png">
-                                    </SwipeItem>
-                                </SwipeItems>
-                            </SwipeView.RightItems>
                             <Frame CornerRadius="15" 
                                    BorderColor="#007ACC" 
                                    Margin="0,5" 

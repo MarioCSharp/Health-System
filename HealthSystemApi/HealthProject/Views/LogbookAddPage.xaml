@@ -32,7 +32,7 @@
 
             <!-- Dynamic Inputs Based on Selection -->
             <StackLayout x:Name="Temperature" IsVisible="False">
-                <Label Text="Temperature (°C)" />
+                <Label Text="Температура (°C)" />
                 <Entry x:Name="TemperatureInput" Keyboard="Numeric" />
             </StackLayout>
 

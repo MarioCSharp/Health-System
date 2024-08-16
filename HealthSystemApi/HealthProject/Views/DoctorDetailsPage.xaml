@@ -55,16 +55,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Padding="20,10,20,0" Grid.Row="0" IsVisible="{Binding IsAdmin}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Button Text="Редактирай" Style="{StaticResource ButtonStyle}" Command="{Binding EditDoctorInfoRedirect}" CommandParameter="{Binding Doctor.Id}" Grid.Column="0" />
-            <Button Text="Добави услуга" Style="{StaticResource ButtonStyle}" Command="{Binding AddServiceRedirect}" CommandParameter="{Binding Doctor.Id}" Grid.Column="1" />
-        </Grid>
-
         <ScrollView Grid.Row="1">
             <StackLayout Style="{StaticResource ContentPaddingStyle}">
                 <Frame Style="{StaticResource CardFrameStyle}">

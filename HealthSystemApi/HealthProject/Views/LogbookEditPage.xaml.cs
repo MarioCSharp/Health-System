@@ -24,7 +24,7 @@ public partial class LogbookEditPage : ContentPage
     public LogbookEditPage(ILogbookService logbookService)
 	{
 		InitializeComponent();
-
+        Title = "Редактиране на запис";
         this.logbookService = logbookService;
 	}
 

@@ -23,5 +23,7 @@ public partial class HealtIssueDetailsPage : ContentPage
     public HealtIssueDetailsPage()
 	{
 		InitializeComponent();
-	}
+
+        Title = "Детайли за здравен проблем";
+    }
 }

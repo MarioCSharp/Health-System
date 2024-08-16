@@ -8,8 +8,8 @@ public partial class LogbookViewPage : ContentPage
 	public LogbookViewPage(LogbookPageViewModel viewModel)
 	{
 		InitializeComponent();
-
-		BindingContext = this.viewModel = viewModel;
+        Title = "Записи";
+        BindingContext = this.viewModel = viewModel;
 	}
 
     protected override void OnAppearing()

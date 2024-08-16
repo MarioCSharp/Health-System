@@ -21,5 +21,6 @@ public partial class MedicationDetailsPage : ContentPage
     public MedicationDetailsPage()
 	{
 		InitializeComponent();
-	}
+        Title = "Детайли за лекарство";
+    }
 }

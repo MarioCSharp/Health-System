@@ -8,7 +8,7 @@
              BackgroundColor="#fff">
     <ScrollView>
         <StackLayout Padding="20" Spacing="15">
-            <Entry Placeholder="Enter notes here..." 
+            <Entry Placeholder="Оставете бележки тук..." 
                    Text="{Binding Problem.Notes}" 
                    FontSize="16"
                    BackgroundColor="White"
@@ -29,7 +29,7 @@
                         Margin="0,0,0,10"
                         />
 
-            <Entry Placeholder="Health Issue ID" 
+            <Entry Placeholder="ИД на здравен проблем" 
                    Keyboard="Numeric" 
                    Text="{Binding Problem.HealthIssueId}" 
                    FontSize="16"
@@ -114,7 +114,7 @@
             </CollectionView>
 
             <Frame Padding="10" Margin="0,10" BackgroundColor="Transparent" HasShadow="False">
-                <Button Text="Add Problem" 
+                <Button Text="Добавяне на проблем" 
                         Command="{Binding ProblemAddCommand}" 
                         BackgroundColor="#007ACC"
                         TextColor="White"

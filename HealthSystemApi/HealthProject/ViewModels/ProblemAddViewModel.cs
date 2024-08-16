@@ -40,6 +40,8 @@ namespace HealthProject.ViewModels
             this.problemService = problemService;
             this.authenticationService = authenticationService;
 
+            problem.Date = DateTime.Now;
+
             LoadData();
         }
 

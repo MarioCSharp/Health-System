@@ -8,6 +8,9 @@ public partial class ProblemsViewPage : ContentPage
     public ProblemsViewPage(ProblemsViewPageViewModel model)
     {
         InitializeComponent();
+
+        Title = "Проблеми";
+
         BindingContext = viewModel = model;
     }
 

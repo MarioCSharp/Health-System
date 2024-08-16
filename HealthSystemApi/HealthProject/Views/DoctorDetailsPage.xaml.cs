@@ -28,6 +28,8 @@ public partial class DoctorDetailsPage : ContentPage
 	{
 		InitializeComponent();
 
+        Title = "Детайли за доктор";
+
         this.serviceService = serviceService;
         this.authenticationService = authenticationService;
     }

@@ -26,6 +26,9 @@ public partial class BookingPage : ContentPage
                        IAuthenticationService authenticationService)
 	{
         InitializeComponent();
+
+        Title = "Записване на час";
+
         this.serviceService = serviceService;
         this.authenticationService = authenticationService;
 	}

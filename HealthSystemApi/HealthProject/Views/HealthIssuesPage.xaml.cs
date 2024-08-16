@@ -9,7 +9,10 @@ public partial class HealthIssuesPage : ContentPage
     public HealthIssuesPage(HealthIssuePageViewModel model)
 	{
 		InitializeComponent();
-		BindingContext = viewModel = model;
+
+        Title = "Здравни проблеми";
+
+        BindingContext = viewModel = model;
 	}
 
     protected override void OnAppearing()

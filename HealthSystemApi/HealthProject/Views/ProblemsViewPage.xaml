@@ -8,11 +8,7 @@
 
     <ContentPage.Content>
         <Grid>
-            <Label FontSize="32" 
-                   FontAttributes="Bold"
-                   Text="Проблеми"
-                   HorizontalOptions="Center"/>
-            <CollectionView ItemsSource="{Binding Problems}" Margin="10, 70">
+            <CollectionView ItemsSource="{Binding Problems}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame CornerRadius="10" 

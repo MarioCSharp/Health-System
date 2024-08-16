@@ -59,11 +59,12 @@ namespace HealthProject.Services.ServiceService
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var services = JsonSerializer.Deserialize<List<ServiceModel>>(jsonResponse, _jsonSerializerOptions);
 
-                if (response.IsSuccessStatusCode)
+                var result = JsonSerializer.Deserialize<ServiceResponse>(jsonResponse, _jsonSerializerOptions);
+
+                if (result != null && response.IsSuccessStatusCode)
                 {
-                    return services ?? new List<ServiceModel>();
+                    return result.Services ?? new List<ServiceModel>();
                 }
             }
             catch (HttpRequestException e)
@@ -194,6 +195,11 @@ namespace HealthProject.Services.ServiceService
             {
                 Debug.WriteLine("--- No internet access");
             }
+        }
+
+        public class ServiceResponse
+        {
+            public List<ServiceModel> Services { get; set; } = new List<ServiceModel>();
         }
     }
 }

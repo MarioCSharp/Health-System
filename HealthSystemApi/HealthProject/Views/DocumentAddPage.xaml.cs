@@ -7,6 +7,7 @@ public partial class DocumentAddPage : ContentPage
 	public DocumentAddPage(DocumentAddViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
+        Title = "Добавяне на документ";
+        BindingContext = viewModel;
 	}
 }

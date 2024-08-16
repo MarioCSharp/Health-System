@@ -23,6 +23,9 @@ public partial class ServiceDetailsPage : ContentPage
     public ServiceDetailsPage(IAuthenticationService authenticationService)
 	{
 		InitializeComponent();
+
+        Title = "Детайли за услуга";
+
         this.authenticationService = authenticationService;
 	}
 }

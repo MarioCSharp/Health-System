@@ -9,6 +9,7 @@ namespace HealthProject.Views
         public MedicationSchedulePage(MedicationScheduleViewModel viewModel)
         {
             InitializeComponent();
+            Title = "Лекарства";
             BindingContext = this.viewModel = viewModel;
         }
 

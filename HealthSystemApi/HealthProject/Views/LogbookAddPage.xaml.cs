@@ -10,6 +10,7 @@ public partial class LogbookAddPage : ContentPage
     public LogbookAddPage(LogbookAddViewModel viewModel)
     {
         InitializeComponent();
+        Title = "Добавяне на запис";
         BindingContext = this.viewModel = viewModel;
     }
 

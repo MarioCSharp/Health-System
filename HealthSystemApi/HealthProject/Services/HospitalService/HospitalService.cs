@@ -57,9 +57,10 @@ namespace HealthProject.Services.HospitalService
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var hospitals = JsonSerializer.Deserialize<List<HospitalModel>>(jsonResponse, _jsonSerializerOptions);
+                var wrapper = JsonSerializer.Deserialize<HospitalWrapper>(jsonResponse, _jsonSerializerOptions);
 
-                return hospitals ?? new List<HospitalModel>();
+                return wrapper?.Hospitals ?? new List<HospitalModel>();
+
             }
             catch (HttpRequestException ex)
             {
@@ -137,6 +138,11 @@ namespace HealthProject.Services.HospitalService
             {
                 Debug.WriteLine("--- No internet access");
             }
+        }
+
+        public class HospitalWrapper
+        {
+            public List<HospitalModel> Hospitals { get; set; } = new List<HospitalModel>();
         }
     }
 }

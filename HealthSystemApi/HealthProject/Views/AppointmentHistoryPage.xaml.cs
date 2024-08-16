@@ -8,7 +8,8 @@ public partial class AppointmentHistoryPage : ContentPage
 	public AppointmentHistoryPage(AppointmentHistoryViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = this.viewModel = viewModel;
+        Title = "";
+        BindingContext = this.viewModel = viewModel;
 	}
 
     protected async override void OnAppearing()

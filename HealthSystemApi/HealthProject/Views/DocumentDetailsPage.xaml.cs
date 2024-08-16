@@ -24,6 +24,7 @@ public partial class DocumentDetailsPage : ContentPage
     public DocumentDetailsPage(IDocumentService documentService)
     {
         InitializeComponent();
+        Title = "Детайли за документ";
         this.documentService = documentService;
         this.saveFileService = new SaveFileService();
     }

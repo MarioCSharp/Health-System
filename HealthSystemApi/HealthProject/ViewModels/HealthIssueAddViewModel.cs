@@ -23,6 +23,7 @@ namespace HealthProject.ViewModels
             this.healthIssueService = healthIssueService;
             AddHealthIssueCommand = new AsyncRelayCommand(AddHealthIssueAsync);
             this.userId = userId; 
+            healthIssue.IssueEndDate = DateTime.Now;
         }
         public ICommand AddHealthIssueCommand { get; }
 

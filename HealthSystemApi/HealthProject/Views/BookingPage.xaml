@@ -7,10 +7,10 @@
              Shell.NavBarIsVisible="True">
     
     <StackLayout Padding="20">
-        <Label Text="Select Date:" FontSize="Medium" />
+        <Label Text="Избери дата:" FontSize="Medium" />
         <DatePicker Date="{Binding SelectedDate}" />
 
-        <Label Text="Available Hours:" FontSize="Medium" Margin="0,20,0,0" />
+        <Label Text="Свободни часове:" FontSize="Medium" Margin="0,20,0,0" />
         <Picker ItemsSource="{Binding AvailableHours}" 
         SelectedItem="{Binding SelectedHour}" />
 

@@ -17,6 +17,7 @@ public partial class MedicationAddPage : ContentPage
     public MedicationAddPage(MedicationAddViewModel viewModel)
     {
         InitializeComponent();
+        Title = "Добавяне на лекарство";
         BindingContext = this.viewModel = viewModel;
         FrequencyPicker.SelectedIndex = 0;
     }

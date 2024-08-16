@@ -10,7 +10,8 @@ public partial class DocumentViewPage : ContentPage
     public DocumentViewPage(DocumetnsViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = this.viewModel = viewModel;
+        Title = "Документи";
+        BindingContext = this.viewModel = viewModel;
     }
 
     protected override void OnAppearing()

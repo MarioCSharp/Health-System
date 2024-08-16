@@ -15,6 +15,8 @@ public partial class ProblemAddPage : ContentPage
 	{
 		InitializeComponent();
 
+        Title = "Добавяне на проблем";
+
         this.problemService = problemService;
         this.authenticationService = authenticationService;
         viewModel = new ProblemAddViewModel(problemService, authenticationService);

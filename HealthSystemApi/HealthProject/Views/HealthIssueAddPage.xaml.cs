@@ -20,6 +20,9 @@ public partial class HealthIssueAddPage : ContentPage
     public HealthIssueAddPage(IHealthIssueService healthIssueService)
 	{
 		InitializeComponent();
+
+        Title = "Добавяне на здравен проблем";
+
         this.healthIssueService = healthIssueService;
 	}
 }
