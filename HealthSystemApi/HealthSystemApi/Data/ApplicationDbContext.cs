@@ -23,6 +23,8 @@ namespace HealthSystemApi.Data
         public DbSet<Medication> Medications { get; set; }
         public DbSet<MedicationSchedule> MedicationSchedules { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<AppointmentComment> AppointmentComments { get; set; }
+        public DbSet<AppointmentPrescription> AppointmentPrescriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

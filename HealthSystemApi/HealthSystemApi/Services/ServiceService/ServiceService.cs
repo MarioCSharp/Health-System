@@ -163,6 +163,12 @@ namespace HealthSystemApi.Services.ServiceService
                 return false;
             }
 
+            var bookings = context.Bookings
+                .Where(x => x.ServiceId == service.Id);
+
+            context.Bookings.RemoveRange(bookings);
+            await context.SaveChangesAsync();
+
             context.Services.Remove(service);
             await context.SaveChangesAsync();
 

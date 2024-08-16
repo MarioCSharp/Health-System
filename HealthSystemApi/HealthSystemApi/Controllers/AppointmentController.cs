@@ -1,6 +1,8 @@
-﻿using HealthSystemApi.Services.AppointmentService;
+﻿using HealthSystemApi.Models.Appointment;
+using HealthSystemApi.Services.AppointmentService;
 using HealthSystemApi.Services.AuthenticationService;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace HealthSystemApi.Controllers
 {
@@ -62,5 +64,67 @@ namespace HealthSystemApi.Controllers
 
             return Ok(new { Success = result });
         }
+
+        [HttpPost("AddComment")]
+        public async Task<IActionResult> AddComment([FromForm] AppointmentCommentAddModel model)
+        {
+            var isDoctor = await authenticationService.IsDoctor(model.Token ?? "");
+
+            if (!isDoctor)
+            {
+                return BadRequest();
+            }
+
+            var result = await appointmentService.AddComent(model);
+
+            return Ok(new { Success = result });
+        }
+
+        [HttpPost("IssuePrescription")]
+        public async Task<IActionResult> IssuePrescription([FromForm] PrescriptionModel model)
+        {
+            var isDoctor = await authenticationService.IsDoctor(model.Token ?? "");
+
+            if (!isDoctor)
+            {
+                return BadRequest();
+            }
+
+            var result = await appointmentService.IssuePrescriptionAsync(model);
+
+            var success = result.Item1;
+            var file = result.Item2;
+
+            if (success)
+            {
+                return File(file.OpenReadStream(), file.ContentType, file.FileName);
+            }
+
+            return BadRequest("Failed to issue prescription");
+        }
+
+        [HttpGet("HasPrescription")]
+        public async Task<IActionResult> HasPrescription([FromQuery] string token, int appointmentId)
+        {
+            var isDoctor = await authenticationService.IsDoctor(token ?? "");
+
+            if (!isDoctor)
+            {
+                return Unauthorized();
+            }
+
+            var result = await appointmentService.HasPrescriptionAsync(appointmentId);
+
+            var success = result.Item1;
+            var file = result.Item2;
+
+            if (success)
+            {
+                return File(file.OpenReadStream(), file.ContentType, file.FileName);
+            }
+
+            return BadRequest();
+        }
+
     }
 }

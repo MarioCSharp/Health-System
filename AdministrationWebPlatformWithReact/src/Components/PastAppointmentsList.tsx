@@ -1,5 +1,7 @@
+import FeedbackComponent from "./FeedbackComponent";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import PrescriptionComponent from "./PrescriptionComponent";
 
 interface Appointment {
   id: number;
@@ -12,6 +14,12 @@ function PastAppointmentsList() {
   const token = localStorage.getItem("token");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [error, setError] = useState<boolean>(false);
+  const [selectedFeedbackId, setSelectedFeedbackId] = useState<number | null>(
+    null
+  );
+  const [selectedPrescriptionId, setSelectedPrescriptionId] = useState<
+    number | null
+  >(null);
 
   const navigate = useNavigate();
 
@@ -22,14 +30,13 @@ function PastAppointmentsList() {
         {
           method: "GET",
           headers: {
-            "Content-Type": "applicaiton/json",
+            "Content-Type": "application/json",
           },
         }
       );
 
       if (response.ok) {
         const data = await response.json();
-
         setAppointments(data.appointments.slice(0, 5));
       } else {
         throw new Error("There was an error loading your appointments");
@@ -50,37 +57,19 @@ function PastAppointmentsList() {
   };
 
   if (error) {
-    <Navigate to={"not-found"}></Navigate>;
+    return <Navigate to={"not-found"} />;
   }
 
-  const removeAppointment = async (id: number) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5166/api/Appointment/Remove?token=${token}&id=${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "applicaiton/json",
-          },
-        }
-      );
+  const handleFeedbackClick = (appointmentId: number) => {
+    setSelectedFeedbackId((prev) =>
+      prev === appointmentId ? null : appointmentId
+    );
+  };
 
-      if (response.ok) {
-        const data = await response.json();
-
-        if (data.success) {
-          getAppointments();
-        } else {
-          throw new Error("There was an error deleting this appointment");
-        }
-      } else {
-        throw new Error("There was an error deleting this appointment");
-      }
-    } catch (error) {
-      console.log("Error!", error);
-      setAppointments([]);
-      setError(true);
-    }
+  const handlePrescriptionClick = (appointmentId: number) => {
+    setSelectedPrescriptionId((prev) =>
+      prev === appointmentId ? null : appointmentId
+    );
   };
 
   return (
@@ -90,27 +79,35 @@ function PastAppointmentsList() {
         {appointments.length > 0 ? (
           appointments.map((appointment) => (
             <li
-              className="list-group-item d-flex justify-content-between align-items-center"
+              className="list-group-item d-flex flex-column"
               key={appointment.id}
             >
-              <span>
-                {appointment.serviceName} | {appointment.patientName} |{" "}
-                {appointment.date}
-              </span>
-              <div>
-                <a
-                  className="btn btn-primary btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                >
-                  Издай записка
-                </a>
-                <a
-                  className="btn btn-danger btn-sm"
-                  onClick={() => removeAppointment(appointment.id)}
-                >
-                  Изтрий
-                </a>
+              <div className="d-flex justify-content-between align-items-center">
+                <span>
+                  {appointment.serviceName} | {appointment.patientName} |{" "}
+                  {appointment.date}
+                </span>
+                <div>
+                  <button
+                    className="btn btn-primary btn-sm mr-2"
+                    onClick={() => handlePrescriptionClick(appointment.id)}
+                  >
+                    Издай амбулаторен лист
+                  </button>
+                  <button
+                    className="btn btn-primary btn-sm mr-2"
+                    onClick={() => handleFeedbackClick(appointment.id)}
+                  >
+                    Обратна връзка
+                  </button>
+                </div>
               </div>
+              {selectedPrescriptionId === appointment.id && (
+                <PrescriptionComponent appointmentId={String(appointment.id)} />
+              )}
+              {selectedFeedbackId === appointment.id && (
+                <FeedbackComponent appointmentId={String(appointment.id)} />
+              )}
             </li>
           ))
         ) : (

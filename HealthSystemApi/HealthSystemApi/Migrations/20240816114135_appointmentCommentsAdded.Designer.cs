@@ -4,6 +4,7 @@ using HealthSystemApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthSystemApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240816114135_appointmentCommentsAdded")]
+    partial class appointmentCommentsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -42,28 +45,6 @@ namespace HealthSystemApi.Migrations
                     b.HasIndex("AppointmentId");
 
                     b.ToTable("AppointmentComments");
-                });
-
-            modelBuilder.Entity("HealthSystemApi.Data.Models.AppointmentPrescription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AppointmentId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("File")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppointmentId");
-
-                    b.ToTable("AppointmentPrescriptions");
                 });
 
             modelBuilder.Entity("HealthSystemApi.Data.Models.Booking", b =>
@@ -737,17 +718,6 @@ namespace HealthSystemApi.Migrations
                 });
 
             modelBuilder.Entity("HealthSystemApi.Data.Models.AppointmentComment", b =>
-                {
-                    b.HasOne("HealthSystemApi.Data.Models.Booking", "Appointment")
-                        .WithMany()
-                        .HasForeignKey("AppointmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Appointment");
-                });
-
-            modelBuilder.Entity("HealthSystemApi.Data.Models.AppointmentPrescription", b =>
                 {
                     b.HasOne("HealthSystemApi.Data.Models.Booking", "Appointment")
                         .WithMany()
