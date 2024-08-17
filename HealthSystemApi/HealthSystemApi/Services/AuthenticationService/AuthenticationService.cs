@@ -124,5 +124,23 @@ namespace HealthSystemApi.Services.AuthenticationService
 
             return await userManager.IsInRoleAsync(user, "Doctor");
         }
+
+        public async Task<bool> IsDirector(string token)
+        {
+            var isValid = TokenIsValid(token);
+
+            if (!isValid)
+            {
+                return false;
+            }
+
+            var t = new JwtSecurityToken(token);
+
+            var userId = t.Subject;
+
+            var user = await context.Users.FindAsync(userId);
+
+            return await userManager.IsInRoleAsync(user, "Director");
+        }
     }
 }

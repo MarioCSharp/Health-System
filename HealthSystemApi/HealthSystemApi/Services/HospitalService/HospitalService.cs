@@ -6,6 +6,7 @@ using HealthSystemApi.Services.AuthenticationService;
 using HealthSystemApi.Services.DoctorService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace HealthSystemApi.Services.HospitalService
 {
@@ -69,7 +70,11 @@ namespace HealthSystemApi.Services.HospitalService
             hospital.Name = model.HospitalName;
             hospital.ContactNumber = model.HospitalContactNumber;
             hospital.Location = model.HospitalLocation;
-            hospital.OwnerId = model.HospitalUserId;
+
+            if (!string.IsNullOrEmpty(model.HospitalUserId))
+            {
+                hospital.OwnerId = model.HospitalUserId;
+            }
 
             await context.SaveChangesAsync();
 
@@ -105,6 +110,26 @@ namespace HealthSystemApi.Services.HospitalService
                 HospitalName = hospital.Name,
                 Location = hospital.Location,
                 UserId = hospital.OwnerId
+            };
+        }
+
+        public async Task<HospitalDetailsModel> GetHospitalByToken(string token)
+        {
+            var t = new JwtSecurityToken(token);
+
+            var userId = t.Subject;
+
+            var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+            if (hospital == null)
+            {
+                return new HospitalDetailsModel();
+            }
+
+            return new HospitalDetailsModel()
+            {
+                Id = hospital.Id,
+                HospitalName = hospital.Name
             };
         }
 

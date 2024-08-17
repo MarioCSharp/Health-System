@@ -36,7 +36,6 @@
         <StackLayout Padding="20" Spacing="25" VerticalOptions="CenterAndExpand">
             <Label Text="Вписване" FontSize="30" HorizontalOptions="Center" TextColor="#007AFF" />
 
-            <!-- Add an image -->
             <Image Source="logo.png" HeightRequest="100" HorizontalOptions="Center" Margin="0,20" />
 
             <Label Text="Имейл" />
@@ -47,7 +46,6 @@
 
             <Button Text="Вписване" Command="{Binding LoginCommand}" />
 
-            <!-- Add "Имаш регистрация?" label and "Вписване" button -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,20,0,0">
                 <Label Text="Нямате регистрация?" VerticalOptions="Center" TextColor="#8E8E93" />
                 <Button Text="Регистриране" Command="{Binding RegisterCommand}" Margin="10,0" BackgroundColor="Transparent" TextColor="#007AFF" />

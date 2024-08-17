@@ -12,5 +12,6 @@ namespace HealthSystemApi.Services.HospitalService
         Task<List<DoctorDisplayModel>> GetDoctorsAsync(int id);
         Task<HospitalDetailsModel> GetHospital(int id);
         Task<bool> EditAsync(HospitalEditModel model);
+        Task<HospitalDetailsModel> GetHospitalByToken(string token);
     }
 }

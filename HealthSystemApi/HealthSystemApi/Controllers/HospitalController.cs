@@ -100,8 +100,9 @@ namespace HealthSystemApi.Controllers
         public async Task<IActionResult> GetHospital([FromQuery] string token, int hospitalId)
         {
             var isAdmin = await authenticationService.IsAdministrator(token);
+            var isDirector = await authenticationService.IsDirector(token ?? "");
 
-            if (!isAdmin)
+            if (!isAdmin && !isDirector)
             {
                 return BadRequest(new { Success = false });
             }
@@ -115,8 +116,9 @@ namespace HealthSystemApi.Controllers
         public async Task<IActionResult> Edit([FromForm] HospitalEditModel model)
         {
             var isAdmin = await authenticationService.IsAdministrator(model.Token ?? "");
+            var isDirector = await authenticationService.IsDirector(model.Token ?? "");
 
-            if (!isAdmin)
+            if (!isAdmin && !isDirector)
             {
                 return BadRequest(new { Success = false });
             }
@@ -124,6 +126,21 @@ namespace HealthSystemApi.Controllers
             var result = await hospitalService.EditAsync(model);
 
             return Ok(new { Success = result });
+        }
+
+        [HttpGet("GetDirectorHospital")]
+        public async Task<IActionResult> GetDirectorHospital([FromQuery] string token)
+        {
+            var isDirector = await authenticationService.IsDirector(token ?? "");
+
+            if (!isDirector)
+            {
+                return BadRequest(new { Success = false });
+            }
+
+            var hospital = await hospitalService.GetHospitalByToken(token);
+
+            return Ok(new { Hospital = hospital });
         }
     }
 }
