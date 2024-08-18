@@ -11,5 +11,7 @@ namespace HealthSystem.Admins.Services.DoctorService
         Task<DoctorAddModel> GetDoctor(int id);
         Task Edit(DoctorDetailsModel model);
         Task<DoctorModel> GetDoctorByUserId(string userId);
+        Task<List<DoctorModel>> GetAllDoctorsByUserId(string userId);
+        Task<int> HospitalIdByDirector(string userId);
     }
 }

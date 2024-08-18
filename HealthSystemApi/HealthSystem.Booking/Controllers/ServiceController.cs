@@ -17,7 +17,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpPost("Add")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Add([FromForm] ServiceAddModel model)
         {
             if (!ModelState.IsValid)
@@ -82,7 +82,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpGet("Remove")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
             var result = await serviceService.Delete(id);
@@ -91,7 +91,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpGet("Edit")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Edit([FromQuery] int id)
         {
             var result = await serviceService.EditGET(id);
@@ -100,7 +100,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpPost("Edit")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Edit([FromForm] ServiceEditModel model)
         {
             var result = await serviceService.EditPOST(model);
@@ -109,7 +109,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpGet("DeleteAllByDoctorId")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteAllByDoctorId([FromQuery] int doctorId)
         {
             await serviceService.DeleteAllByDoctorId(doctorId);

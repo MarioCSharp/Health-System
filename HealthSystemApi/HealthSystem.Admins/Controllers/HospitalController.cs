@@ -66,7 +66,7 @@ namespace HealthSystem.Admins.Controllers
         }
 
         [HttpGet("GetDoctors")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> GetDoctors([FromQuery] int id)
         {
             var doctors = await hospitalService.GetDoctorsAsync(id);

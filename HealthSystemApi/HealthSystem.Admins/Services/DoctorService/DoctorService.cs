@@ -1,7 +1,6 @@
 ﻿using HealthSystem.Admins.Data;
 using HealthSystem.Admins.Data.Models;
 using HealthSystem.Admins.Models;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystem.Admins.Services.DoctorService
@@ -14,7 +13,7 @@ namespace HealthSystem.Admins.Services.DoctorService
                              HttpClient httpClient)
         {
             this.context = context;
-            this.httpClient = httpClient;   
+            this.httpClient = httpClient;
         }
 
         public async Task<bool> AddAsync(DoctorAddModel model)
@@ -90,6 +89,25 @@ namespace HealthSystem.Admins.Services.DoctorService
                 }).ToListAsync();
         }
 
+        public async Task<List<DoctorModel>> GetAllDoctorsByUserId(string userId)
+        {
+            var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+            if (hospital == null)
+            {
+                return new List<DoctorModel>();
+            }
+
+            return await context.Doctors
+                .Where(x => x.HospitalId == hospital.Id)
+                .Select(x => new DoctorModel
+                {
+                    Id = x.Id,
+                    FullName = x.FullName,
+                    Specialization = x.Specialization
+                }).ToListAsync();
+        }
+
         public async Task<DoctorDetailsModel> GetDetailsAsync(int id)
         {
             var info = await context.DoctorsInfo.FindAsync(id);
@@ -127,6 +145,18 @@ namespace HealthSystem.Admins.Services.DoctorService
                 FullName = doctor.FullName,
                 Specialization = doctor.Specialization
             };
+        }
+
+        public async Task<int> HospitalIdByDirector(string userId)
+        {
+            var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+            if (hospital == null)
+            {
+                return 0;
+            }
+
+            return hospital.Id;
         }
 
         public async Task<bool> RemoveAsync(int id)

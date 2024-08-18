@@ -2,6 +2,7 @@
 using HealthSystem.Admins.Services.DoctorService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HealthSystem.Admins.Controllers
 {
@@ -65,6 +66,24 @@ namespace HealthSystem.Admins.Controllers
         public async Task<IActionResult> GetDoctorByUserId(string userId)
         {
             return Ok(await doctorService.GetDoctorByUserId(userId));
+        }
+
+        [HttpGet("AllByDirector")]
+        [Authorize(Roles = "Director")]
+        public async Task<IActionResult> AllByDirector()
+        {
+            var result = await doctorService.GetAllDoctorsByUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Ok(new { Doctors = result });
+        }
+
+        [HttpGet("HospitalIdByDirector")]
+        [Authorize(Roles = "Director")]
+        public async Task<IActionResult> HospitalIdByDirector()
+        {
+            var result = await doctorService.HospitalIdByDirector(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Ok(new { HospitalId = result });
         }
     }
 }
