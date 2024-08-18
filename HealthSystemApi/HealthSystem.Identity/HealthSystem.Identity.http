@@ -1,0 +1,6 @@
+@HealthSystem.Identity_HostAddress = http://localhost:5196
+
+GET {{HealthSystem.Identity_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

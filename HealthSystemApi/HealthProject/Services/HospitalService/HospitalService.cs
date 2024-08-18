@@ -16,7 +16,7 @@ namespace HealthProject.Services.HospitalService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "https://localhost";
 
             _url = $"{_baseAddress}/api";
 
@@ -26,34 +26,13 @@ namespace HealthProject.Services.HospitalService
             };
         }
 
-        public async Task Add(AddHospitalModel model)
-        {
-            CheckInternetConnection();
-
-            try
-            {
-                string queryString = ToQueryString(model);
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Add{queryString}");
-                response.EnsureSuccessStatusCode();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-        }
-
         public async Task<List<HospitalModel>> All()
         {
             CheckInternetConnection();
 
             try
             {
-                var response = await _httpClient.GetAsync($"{_url}/Hospital/All");
+                var response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Hospital/All");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -74,33 +53,13 @@ namespace HealthProject.Services.HospitalService
             return new List<HospitalModel>();
         }
 
-
-        public async Task Delete(int id)
-        {
-            CheckInternetConnection();
-
-            try
-            {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Remove?id={id}");
-                response.EnsureSuccessStatusCode();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-        }
-
         public async Task<HospitalDetailsModel> Details(int id)
         {
             CheckInternetConnection();
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Hospital/Details?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Hospital/Details?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();

@@ -2,7 +2,6 @@
 using HealthSystemApi.Services.AuthenticationService;
 using HealthSystemApi.Services.HospitalService;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace HealthSystemApi.Controllers
 {

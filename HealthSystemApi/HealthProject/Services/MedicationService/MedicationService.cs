@@ -17,7 +17,7 @@ namespace HealthProject.Services.MedicationService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "http://localhost";
 
             _url = $"{_baseAddress}/api";
 
@@ -57,7 +57,7 @@ namespace HealthProject.Services.MedicationService
             form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
             form.Add(new StringContent(model.UserId ?? string.Empty), "UserId");
 
-            var response = await _httpClient.PostAsync($"{_url}/Medication/Add", form);
+            var response = await _httpClient.PostAsync($"{_baseAddress}:5115/api/Medication/Add", form);
             response.EnsureSuccessStatusCode();
 
             var resultContent = await response.Content.ReadAsStringAsync();
@@ -72,7 +72,7 @@ namespace HealthProject.Services.MedicationService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Medication/UserMedicaiton?userId={userId}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/Medication/UserMedicaiton?userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -101,7 +101,7 @@ namespace HealthProject.Services.MedicationService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Medication/Remove?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/Medication/Remove?id={id}");
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException e)
@@ -120,7 +120,7 @@ namespace HealthProject.Services.MedicationService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Medication/Details?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/Medication/Details?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -147,7 +147,7 @@ namespace HealthProject.Services.MedicationService
         {
             CheckInternetConnection();
 
-            HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Medication/UserSchedule?userId={userId}");
+            HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/Medication/UserSchedule?userId={userId}");
             response.EnsureSuccessStatusCode();
 
             string responseBody = await response.Content.ReadAsStringAsync();

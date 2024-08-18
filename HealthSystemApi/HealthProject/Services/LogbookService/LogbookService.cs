@@ -16,7 +16,7 @@ namespace HealthProject.Services.LogbookService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "http://localhost";
 
             _url = $"{_baseAddress}/api";
 
@@ -48,7 +48,7 @@ namespace HealthProject.Services.LogbookService
             form.Add(new StringContent(model.UserId ?? ""), "UserId");
             form.Add(new StringContent(model.Date.ToString("dd/MM/yyyy HH:mm")), "Date");
 
-            var response = await _httpClient.PostAsync($"{_url}/Logbook/Add", form);
+            var response = await _httpClient.PostAsync($"{_baseAddress}:5115/api/Logbook/Add", form);
             response.EnsureSuccessStatusCode();
 
             var resultContent = await response.Content.ReadAsStringAsync();
@@ -61,7 +61,7 @@ namespace HealthProject.Services.LogbookService
         {
             CheckInternetConnection();
 
-            var response = await _httpClient.GetAsync($"{_url}/Logbook/Remove?id={id}");
+            var response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/Logbook/Remove?id={id}");
             response.EnsureSuccessStatusCode();
 
             var resultContent = await response.Content.ReadAsStringAsync();
@@ -93,7 +93,7 @@ namespace HealthProject.Services.LogbookService
             form.Add(new StringContent(model.UserId), "UserId");
             form.Add(new StringContent(model.Date.ToString("dd/MM/yyyy mm:HH")), "Date");
 
-            var response = await _httpClient.PostAsync($"{_url}/Logbook/Edit", form);
+            var response = await _httpClient.PostAsync($"{_baseAddress}:5115/api/Logbook/Edit", form);
             response.EnsureSuccessStatusCode();
 
             var resultContent = await response.Content.ReadAsStringAsync();
@@ -106,7 +106,7 @@ namespace HealthProject.Services.LogbookService
         {
             CheckInternetConnection();
 
-            var response = await _httpClient.GetAsync($"{_url}/Logbook/AllByUser?userId={userId}");
+            var response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/Logbook/AllByUser?userId={userId}");
             response.EnsureSuccessStatusCode();
 
             var resultContent = await response.Content.ReadAsStringAsync();
@@ -119,7 +119,7 @@ namespace HealthProject.Services.LogbookService
         {
             CheckInternetConnection();
 
-            var response = await _httpClient.GetAsync($"{_url}/Logbook/Edit?id={id}");
+            var response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/Logbook/Edit?id={id}");
             response.EnsureSuccessStatusCode();
 
             var resultContent = await response.Content.ReadAsStringAsync();

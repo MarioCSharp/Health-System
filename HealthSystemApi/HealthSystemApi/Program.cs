@@ -17,7 +17,6 @@ using HealthSystemApi.Services.LogbookService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.Identity.Client;
 using HealthSystemApi.Services.AccountService;
 using HealthSystemApi.Services.AppointmentService;
 

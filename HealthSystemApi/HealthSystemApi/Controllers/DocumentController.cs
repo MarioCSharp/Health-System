@@ -1,7 +1,6 @@
 ﻿using HealthSystemApi.Models.Document;
 using HealthSystemApi.Services.DocumentService;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace HealthSystemApi.Controllers
 {

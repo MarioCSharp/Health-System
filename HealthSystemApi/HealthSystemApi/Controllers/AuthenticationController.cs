@@ -104,16 +104,6 @@ namespace HealthSystemApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("Logout")]
-        [Authorize]
-        public async Task<IActionResult> Logout([FromQuery] string token)
-        {
-            //TODO: Fix logout
-            await _signInManager.SignOutAsync();
-
-            return Ok();
-        }
-
         [HttpGet("IsAuthenticated")]
         public async Task<IActionResult> IsAuthenticated([FromQuery] string token)
         {

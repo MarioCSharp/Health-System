@@ -16,7 +16,7 @@ namespace HealthProject.Services.ServiceService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "https://localhost";
 
             _url = $"{_baseAddress}/api";
 
@@ -24,27 +24,6 @@ namespace HealthProject.Services.ServiceService
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
-        }
-
-        public async Task AddAsync(ServiceAddModel model)
-        {
-            CheckInternetConnection();
-
-            try
-            {
-                string queryString = ToQueryString(model);
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/Add{queryString}");
-                response.EnsureSuccessStatusCode();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
         }
 
         public async Task<List<ServiceModel>> AllByIdAsync(int id)
@@ -55,7 +34,7 @@ namespace HealthProject.Services.ServiceService
             {
                 string queryString = $"?id={id}";
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/AllById{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5046/api/Service/AllById{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -85,7 +64,7 @@ namespace HealthProject.Services.ServiceService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/Details?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5046/api/Service/Details?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -117,7 +96,7 @@ namespace HealthProject.Services.ServiceService
                 string formattedDate = date.ToString("yyyy-MM-dd");
                 string queryString = $"?date={formattedDate}&serviceId={serviceId}";
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/AvailableHours{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5046/api/Service/AvailableHours{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -148,7 +127,7 @@ namespace HealthProject.Services.ServiceService
             {
                 var queryString = ToQueryString(model);
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/Book{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5046/api/Service/Book{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();

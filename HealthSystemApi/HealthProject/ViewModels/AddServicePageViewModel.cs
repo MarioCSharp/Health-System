@@ -23,23 +23,11 @@ namespace HealthProject.ViewModels
                                        IDoctorService doctorService)
         {
             DoctorPass = doctorPass;
-            AddServiceCommand = new AsyncRelayCommand(AddServiceAsync);
             this.serviceService = serviceService;
             this.doctorService = doctorService;
             service = new ServiceAddModel() { DoctorId = doctorPass.Id };
         }
         public ICommand AddServiceCommand { get; }
 
-        public async Task AddServiceAsync()
-        {
-            await serviceService.AddAsync(Service);
-
-            var doctor = await doctorService.DetailsAsync(DoctorPass.Id);
-
-            var doctorJson = JsonConvert.SerializeObject(doctor);
-            var encodedDoctorJson = Uri.EscapeDataString(doctorJson);
-
-            await Shell.Current.GoToAsync($"DoctorDetailsPage?doctorJson={encodedDoctorJson}");
-        }
     }
 }

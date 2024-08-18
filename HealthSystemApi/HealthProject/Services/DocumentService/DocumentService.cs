@@ -19,7 +19,7 @@ namespace HealthProject.Services.DocumentService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "https://localhost";
 
             _url = $"{_baseAddress}/api";
 
@@ -47,7 +47,7 @@ namespace HealthProject.Services.DocumentService
             form.Add(new StringContent(model.FileExtension), "FileExtension");
             form.Add(new StringContent(model.UserId.ToString()), "UserId");
 
-            var response = await _httpClient.PostAsync($"{_url}/Document/Add", form);
+            var response = await _httpClient.PostAsync($"{_baseAddress}:5256/api/Document/Add", form);
             response.EnsureSuccessStatusCode();
 
             var resultContent = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ namespace HealthProject.Services.DocumentService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/Details?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5256/api/Document/Details?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -91,7 +91,7 @@ namespace HealthProject.Services.DocumentService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/AllByUser?userId={userId}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5256/api/Document/AllByUser?userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -120,7 +120,7 @@ namespace HealthProject.Services.DocumentService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Document/Remove?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5256/api/Document/Remove?id={id}");
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException e)

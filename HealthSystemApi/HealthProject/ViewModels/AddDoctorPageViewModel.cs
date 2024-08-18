@@ -21,28 +21,12 @@ namespace HealthProject.ViewModels
                                       IHospitalService hospitalService)
         {
             doctorModel = new AddDoctorModel();
-            AddDoctorCommand = new AsyncRelayCommand(AddDoctorAsync);
             NavigateBackCommand = new Command(OnNavigateBack);
             this.doctorService = doctorService;
             this.hospitalService = hospitalService;
         }
         public ICommand AddDoctorCommand { get; }
         public ICommand NavigateBackCommand { get; }
-
-        private async Task AddDoctorAsync()
-        {
-            var result = await doctorService.AddDoctorAsync(doctorModel);
-
-            if (!result)
-            {
-                await Shell.Current.GoToAsync($"{nameof(AddDoctorPage)}");
-            }
-
-            var hospital = await hospitalService.Details(doctorModel.HospitalId);
-            var hospitalJson = JsonConvert.SerializeObject(hospital);
-            var encodedHospitalJson = Uri.EscapeDataString(hospitalJson);
-            await Shell.Current.GoToAsync($"HospitalDetailsPage?hospitalJson={encodedHospitalJson}");
-        }
 
         private async void OnNavigateBack()
         {

@@ -15,9 +15,7 @@ namespace HealthProject.Services.AppointmentService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
-
-            _url = $"{_baseAddress}/api";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "https://localhost";
 
             _jsonSerializerOptions = new JsonSerializerOptions
             {
@@ -31,7 +29,7 @@ namespace HealthProject.Services.AppointmentService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Service/AllByUser?userId={userId}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"http://{_baseAddress}:5046/api/Service/AllByUser?userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();

@@ -26,11 +26,9 @@ namespace HealthProject.ViewModels
             this.hospitalService = hospitalService;
             this.authenticationService = authenticationService;
 
-            DeleteHospitalCommand = new AsyncRelayCommand<object>(DeleteAsync);
             NavigateToHospitalDetailCommand = new AsyncRelayCommand<object>(DetailsAsync);
 
             LoadHospitals();
-            CheckAdmin();
         }
 
         public ICommand DeleteHospitalCommand { get; }
@@ -43,19 +41,6 @@ namespace HealthProject.ViewModels
             Hospitals = new ObservableCollection<HospitalModel>(hospitalModels);
         }
 
-        public async void CheckAdmin()
-        {
-            IsAdmin = await authenticationService.IsAdmin();
-        }
-
-        public async Task DeleteAsync(object parameter)
-        {
-            if (parameter is int id)
-            {
-                await hospitalService.Delete(id);
-                LoadHospitals();
-            }
-        }
         public async Task DetailsAsync(object parameter)
         {
             if (parameter is int id)

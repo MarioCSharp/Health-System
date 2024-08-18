@@ -17,19 +17,11 @@ namespace HealthProject.ViewModels
         {
             this.hospitalService = hospitalService;
             hospitalModel = new AddHospitalModel();
-            AddHospitalCommand = new AsyncRelayCommand(AddHospitalCommandAsync);
             NavigateBackCommand = new Command(OnNavigateBack);
         }
 
         public ICommand AddHospitalCommand { get; }
         public ICommand NavigateBackCommand { get; }
-
-        public async Task AddHospitalCommandAsync()
-        {
-            await hospitalService.Add(HospitalModel);
-
-            await Shell.Current.GoToAsync($"{nameof(HomePage)}");
-        }
 
         private async void OnNavigateBack()
         {

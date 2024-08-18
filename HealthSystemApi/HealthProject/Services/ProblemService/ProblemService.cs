@@ -16,7 +16,7 @@ namespace HealthProject.Services.ProblemService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "http://localhost";
 
             _url = $"{_baseAddress}/api";
 
@@ -36,7 +36,7 @@ namespace HealthProject.Services.ProblemService
 
                 var queryString = ToQueryString(model, sAM);
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Add{queryString}&userId={userId}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5098/api/Problem/Add{queryString}&userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -62,7 +62,7 @@ namespace HealthProject.Services.ProblemService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Remove?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5098/api/Problem/Remove?id={id}");
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException e)
@@ -81,7 +81,7 @@ namespace HealthProject.Services.ProblemService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/Details?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5098/api/Problem/Details?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -110,7 +110,7 @@ namespace HealthProject.Services.ProblemService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/UserIssues?userId={userId}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5098/api/Problem/UserIssues?userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -180,7 +180,7 @@ namespace HealthProject.Services.ProblemService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/GetSymptomCategories");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5098/api/Problem/GetSymptomCategories");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -209,7 +209,7 @@ namespace HealthProject.Services.ProblemService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Problem/GetSymptomSubCategories");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5098/api/Problem/GetSymptomSubCategories");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();

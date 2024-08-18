@@ -16,7 +16,7 @@ namespace HealthProject.Services.HealthIssueService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "https://localhost";
 
             _url = $"{_baseAddress}/api";
 
@@ -40,7 +40,7 @@ namespace HealthProject.Services.HealthIssueService
                 string queryString = $"?startDate={model.StartDate}&endDate={model.EndDate}&name={Uri.EscapeDataString(name)}&description={Uri.EscapeDataString(description)}&userId={Uri.EscapeDataString(userId)}";
 
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/Add{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/HealthIssue/Add{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
@@ -66,7 +66,7 @@ namespace HealthProject.Services.HealthIssueService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/UserIssues?userId={userId}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/HealthIssue/UserIssues?userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -97,7 +97,7 @@ namespace HealthProject.Services.HealthIssueService
             {
                 string queryString = $"?id={id}";
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/Details{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/HealthIssue/Details{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -128,7 +128,7 @@ namespace HealthProject.Services.HealthIssueService
             {
                 string queryString = $"?id={id}";
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/HealthIssue/Remove{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5115/api/HealthIssue/Remove{queryString}");
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException e)

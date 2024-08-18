@@ -33,7 +33,6 @@ namespace HealthProject.ViewModels
             NavigateToDoctorDetailCommand = new AsyncRelayCommand<object>(DoctorDetailsAsync);
 
             LoadDoctors();
-            CheckAdmin();
         }
 
         public ICommand NavigateToDoctorDetailCommand { get; }
@@ -44,12 +43,6 @@ namespace HealthProject.ViewModels
 
             Doctors = new ObservableCollection<DoctorModel>(doctorModels);
         }
-
-        public async void CheckAdmin()
-        {
-            IsAdmin = await authenticationService.IsAdmin();
-        }
-
         public async Task DoctorDetailsAsync(object parameter)
         {
             if (parameter is int id)

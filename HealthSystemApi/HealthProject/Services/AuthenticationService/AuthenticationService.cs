@@ -1,6 +1,7 @@
 ﻿using HealthProject.Models;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -17,9 +18,7 @@ namespace HealthProject.Services.AuthenticationService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
-
-            _url = $"{_baseAddress}/api";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "https://localhost";
 
             _jsonSerializerOptions = new JsonSerializerOptions
             {
@@ -38,17 +37,20 @@ namespace HealthProject.Services.AuthenticationService
                 return new AuthenticationModel() { IsAuthenticated = false };
             }
 
-            var response = await _httpClient
-                .GetFromJsonAsync<AuthenticationModel>
-                    ($"{_url}/Authentication/IsAuthenticated?token={token}",
-                     _jsonSerializerOptions);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_baseAddress}:5196/api/Authentication/IsAuthenticated");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            if (!response.IsAuthenticated)
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var authModel = await response.Content.ReadFromJsonAsync<AuthenticationModel>(_jsonSerializerOptions);
+
+            if (!authModel.IsAuthenticated)
             {
                 SecureStorage.Default.Remove("auth_token");
             }
 
-            return response;
+            return authModel;
         }
 
         public async Task Login(LoginModel loginModel)
@@ -60,7 +62,7 @@ namespace HealthProject.Services.AuthenticationService
                 string queryString = ToQueryString(loginModel);
 
                 HttpResponseMessage response = await _httpClient
-                    .GetAsync($"{_url}/Authentication/Login{queryString}");
+                    .GetAsync($"{_baseAddress}:5196/api/Authentication/Login{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -86,7 +88,7 @@ namespace HealthProject.Services.AuthenticationService
             {
                 string queryString = ToQueryString(registerModel);
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Authentication/Register{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5196/api/Authentication/Register{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -102,39 +104,6 @@ namespace HealthProject.Services.AuthenticationService
             {
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
-        }
-
-        public async Task<bool> IsAdmin()
-        {
-            CheckInternetConnection();
-
-            try
-            {
-                var token = await SecureStorage.Default.GetAsync("auth_token");
-
-                if (token is null)
-                {
-                    return false;
-                }
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Authentication/IsAdmin{token}");
-                response.EnsureSuccessStatusCode();
-
-                string responseBody = await response.Content.ReadAsStringAsync();
-                var isAdmin = JsonSerializer.Deserialize<bool>(responseBody, _jsonSerializerOptions);
-
-                return isAdmin;
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-
-            return false;
         }
 
         public async Task Logout()

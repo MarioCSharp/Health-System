@@ -1,6 +1,7 @@
 ﻿using HealthProject.Models;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace HealthProject.Services.DoctorService
@@ -16,7 +17,7 @@ namespace HealthProject.Services.DoctorService
         {
             _httpClient = httpClient;
 
-            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5166" : "https://localhost:7097";
+            _baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2" : "https://localhost";
 
             _url = $"{_baseAddress}/api";
 
@@ -26,41 +27,13 @@ namespace HealthProject.Services.DoctorService
             };
         }
 
-        public async Task<bool> AddDoctorAsync(AddDoctorModel doctorModel)
-        {
-            CheckInternetConnection();
-
-            try
-            {
-                string queryString = ToQueryString(doctorModel);
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/Add{queryString}");
-                response.EnsureSuccessStatusCode();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-
-            return false;
-        }
-
         public async Task<List<DoctorModel>> AllAsync(int id)
         {
             CheckInternetConnection();
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/All?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Doctor/All?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -89,7 +62,7 @@ namespace HealthProject.Services.DoctorService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/Details?id={id}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Doctor/Details?id={id}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -112,27 +85,6 @@ namespace HealthProject.Services.DoctorService
             return new DoctorDetailsModel();
         }
 
-        public async Task Edit(DoctorDetailsModel model)
-        {
-            CheckInternetConnection();
-
-            try
-            {
-                string queryString = ToQueryString(model);
-
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/Edit{queryString}");
-                response.EnsureSuccessStatusCode();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-        }
-
         public async Task<AddDoctorModel> GetDoctor(int id)
         {
             CheckInternetConnection();
@@ -141,7 +93,7 @@ namespace HealthProject.Services.DoctorService
             {
                 string queryString = $"?id={id}";
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_url}/Doctor/GetDoctor{queryString}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Doctor/GetDoctor{queryString}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
