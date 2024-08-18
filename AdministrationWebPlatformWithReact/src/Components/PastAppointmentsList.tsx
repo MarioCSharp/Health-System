@@ -26,11 +26,12 @@ function PastAppointmentsList() {
   const getAppointments = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Appointment/GetPastAppointmentsByDoctorUserId?token=${token}`,
+        `http://localhost:5046/api/Appointment/GetPastAppointmentsByDoctorUserId`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

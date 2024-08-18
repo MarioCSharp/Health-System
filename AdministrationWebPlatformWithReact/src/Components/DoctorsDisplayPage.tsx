@@ -20,11 +20,12 @@ function DoctorsDisplayPage() {
   const getDoctors = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Hospital/GetDoctors?id=${hospitalId}&token=${token}`,
+        `http://localhost:5025/api/Hospital/GetDoctors?id=${hospitalId}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -55,11 +56,12 @@ function DoctorsDisplayPage() {
   const deleteDoctor = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Doctor/Remove?id=${id}&token=${token}`,
+        `http://localhost:5025/api/Doctor/Remove?id=${id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

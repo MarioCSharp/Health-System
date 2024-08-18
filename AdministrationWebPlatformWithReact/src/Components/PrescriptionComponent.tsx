@@ -46,10 +46,13 @@ function PrescriptionComponent({ appointmentId }: PrescriptionComponentProps) {
 
     try {
       const response = await fetch(
-        "http://localhost:5166/api/Appointment/IssuePrescription",
+        "http://localhost:5046/api/Appointment/IssuePrescription",
         {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -78,11 +81,12 @@ function PrescriptionComponent({ appointmentId }: PrescriptionComponentProps) {
   const checkIfAppointmentHasPrescription = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Appointment/HasPrescription?token=${token!}&appointmentId=${appointmentId}`,
+        `http://localhost:5046/api/Appointment/HasPrescription?appointmentId=${appointmentId}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

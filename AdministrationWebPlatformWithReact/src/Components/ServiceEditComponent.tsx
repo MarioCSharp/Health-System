@@ -16,11 +16,12 @@ const ServiceEditComponent: React.FC = () => {
   const getService = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Service/Edit?id=${id}&token=${token}`,
+        `http://localhost:5046/api/Service/Edit?id=${id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -54,9 +55,12 @@ const ServiceEditComponent: React.FC = () => {
       formData.append("ServiceLocation", serviceLocation);
       formData.append("Token", token || "");
 
-      const response = await fetch(`http://localhost:5166/api/Service/Edit`, {
+      const response = await fetch(`http://localhost:5046/api/Service/Edit`, {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {

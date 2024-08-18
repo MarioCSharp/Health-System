@@ -19,11 +19,12 @@ function DoctorAppointments() {
   const getBookings = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Doctor/GetAppointments?id=${id}&token=${token}`,
+        `http://localhost:5046/api/Appointment/GetAppointments?id=${id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -56,11 +57,12 @@ function DoctorAppointments() {
   const deleteAppointment = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Doctor/RemoveAppointment?id=${id}&token=${token}`,
+        `http://localhost:5046/api/Appointment/RemoveAppointment?id=${id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

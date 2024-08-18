@@ -18,11 +18,12 @@ function NextAppointmentsList() {
   const getAppointments = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Appointment/GetNextAppointmentsByDoctorUserId?token=${token}`,
+        `http://localhost:5046/api/Appointment/GetNextAppointmentsByDoctorUserId`,
         {
           method: "GET",
           headers: {
             "Content-Type": "applicaiton/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

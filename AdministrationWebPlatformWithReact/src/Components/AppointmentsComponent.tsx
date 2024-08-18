@@ -18,11 +18,12 @@ function AppointmentsComponent() {
   const getBookings = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Account/GetUserAppointments?userId=${id}&token=${token}`,
+        `http://localhost:5046/api/Appointment/GetUserAppointments?userId=${id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -30,9 +31,8 @@ function AppointmentsComponent() {
       if (response.ok) {
         const data = await response.json();
 
-        // Adjust the destructuring to match the API response
-        setAppointments(data.appointments || []); // Use `appointments` instead of `bookings`
-        setUserFullName(data.fullName || ""); // Use `fullName` instead of `FullName`
+        setAppointments(data.appointments || []);
+        setUserFullName(data.fullName || "");
       } else {
         throw new Error(
           "You are either not authorized or there is a problem in the system!"

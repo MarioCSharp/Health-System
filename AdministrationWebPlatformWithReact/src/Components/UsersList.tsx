@@ -16,11 +16,12 @@ function UsersList() {
   const getUsers = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Authentication/GetAllUsers?token=${token}`,
+        `http://localhost:5196/api/Authentication/GetAllUsers`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -34,35 +35,6 @@ function UsersList() {
     } catch (error) {
       console.log("There was an error", error);
       setUsers([]);
-      setError(true);
-    }
-  };
-
-  const removeUser = async (id: string) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5166/api/Authentication/RemoveUser?userId=${id}&token=${token}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-
-        const success = data.success;
-
-        if (success) {
-          getUsers();
-        }
-      } else {
-        throw new Error("There was an error removing this user. Try again!");
-      }
-    } catch (error) {
-      console.log("There was an error, try again!");
       setError(true);
     }
   };
@@ -105,10 +77,10 @@ function UsersList() {
                   Записани часове
                 </a>
                 <a
-                  className="btn btn-danger btn-sm"
-                  onClick={() => removeUser(user.id)}
+                  className="btn btn-warning btn-sm mr-2"
+                  style={{ marginRight: "2px" }}
                 >
-                  Изтрий
+                  Редактирай
                 </a>
               </div>
             </li>

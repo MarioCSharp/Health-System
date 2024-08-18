@@ -19,11 +19,12 @@ function DoctorServicesComponent() {
   const getServices = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Service/AllById?id=${doctorId}`,
+        `http://localhost:5046/api/Service/AllById?id=${doctorId}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -51,11 +52,12 @@ function DoctorServicesComponent() {
   const deleteService = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Service/Remove?id=${id}&token=${token}`,
+        `http://localhost:5046/api/Service/Remove?id=${id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

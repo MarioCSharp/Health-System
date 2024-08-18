@@ -18,11 +18,12 @@ function MyHospitalComponent() {
   const getHospital = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Hospital/GetDirectorHospital?token=${token}`,
+        `http://localhost:5025/api/Hospital/GetDirectorHospital?token=${token}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

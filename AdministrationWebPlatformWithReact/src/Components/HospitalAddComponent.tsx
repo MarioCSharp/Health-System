@@ -22,11 +22,12 @@ function HospitalAddComponent() {
   const getUsersWithNoRoles = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Account/GetAccountsWithNoRoles?token=${token}`,
+        `http://localhost:5196/api/Account/GetAccountsWithNoRoles`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -54,12 +55,14 @@ function HospitalAddComponent() {
     formData.append("Location", hospitalLocation);
     formData.append("ContactNumber", hospitalContactNumber);
     formData.append("OwnerId", selectedUserId);
-    formData.append("Token", token!);
 
     try {
-      const response = await fetch(`http://localhost:5166/api/Hospital/Add`, {
+      const response = await fetch(`http://localhost:5025/api/Hospital/Add`, {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {

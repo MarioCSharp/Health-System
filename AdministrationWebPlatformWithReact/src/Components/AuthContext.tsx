@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Authentication/SuperLogin?email=${email}&password=${password}`,
+        `http://localhost:5196/api/Authentication/SuperLogin?email=${email}&password=${password}`,
         {
           method: "GET",
           headers: {

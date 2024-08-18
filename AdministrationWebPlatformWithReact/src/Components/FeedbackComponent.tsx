@@ -19,10 +19,13 @@ function FeedbackComponent({ appointmentId }: Props) {
       formData.append("Token", token!);
 
       const response = await fetch(
-        `http://localhost:5166/api/Appointment/AddComment`,
+        `http://localhost:5046/api/Appointment/AddComment`,
         {
           method: "POST",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 

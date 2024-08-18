@@ -24,9 +24,12 @@ function ServiceAddComponent() {
       formData.append("Location", location);
       formData.append("Token", token!);
 
-      const response = await fetch("http://localhost:5166/api/Service/Add", {
+      const response = await fetch("http://localhost:5046/api/Service/Add", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {

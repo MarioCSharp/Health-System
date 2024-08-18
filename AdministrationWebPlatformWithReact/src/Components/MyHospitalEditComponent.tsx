@@ -15,11 +15,12 @@ function MyHospitalEditComponent({ hospitalId }: Props) {
   const getHospital = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Hospital/GetHospital?token=${token}&hospitalId=${hospitalId}`,
+        `http://localhost:5025/api/Hospital/GetHospital?hospitalId=${hospitalId}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -46,9 +47,12 @@ function MyHospitalEditComponent({ hospitalId }: Props) {
     formData.append("Token", token!);
 
     try {
-      const response = await fetch("http://localhost:5166/api/Hospital/Edit", {
+      const response = await fetch("http://localhost:5025/api/Hospital/Edit", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {

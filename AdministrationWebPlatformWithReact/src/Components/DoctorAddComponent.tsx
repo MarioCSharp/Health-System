@@ -24,11 +24,12 @@ function DoctorAddComponent() {
   const getUsersWithNoRoles = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Account/GetAccountsWithNoRoles?token=${token}`,
+        `http://localhost:5196/api/Account/GetAccountsWithNoRoles`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -56,11 +57,12 @@ function DoctorAddComponent() {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Doctor/Add?token=${token}&specialization=${specialization}&userId=${selectedUserId}&about=${about}&contactNumber=${contactNumber}&email=${email}&fullName=${fullName}&hospitalId=${hospitalId}`,
+        `http://localhost:5025/api/Doctor/Add?specialization=${specialization}&userId=${selectedUserId}&about=${about}&contactNumber=${contactNumber}&email=${email}&fullName=${fullName}&hospitalId=${hospitalId}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

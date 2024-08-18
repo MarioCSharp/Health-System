@@ -14,11 +14,12 @@ const ProtectedRoute: React.FC = () => {
       }
       console.log(localStorage.getItem("role"));
       const response = await fetch(
-        `http://localhost:5166/api/Authentication/SecureIsAuthenticated?token=${token}`,
+        `http://localhost:5196/api/Authentication/SecureIsAuthenticated`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

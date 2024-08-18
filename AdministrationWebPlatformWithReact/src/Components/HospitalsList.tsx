@@ -15,7 +15,7 @@ function HospitalsList() {
 
   const getHospitals = async () => {
     try {
-      const response = await fetch(`http://localhost:5166/api/Hospital/All`, {
+      const response = await fetch(`http://localhost:5025/api/Hospital/All`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -40,11 +40,12 @@ function HospitalsList() {
   const removeHospital = async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:5166/api/Hospital/Remove?id=${id}&token=${token}`,
+        `http://localhost:5025/api/Hospital/Remove?id=${id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
