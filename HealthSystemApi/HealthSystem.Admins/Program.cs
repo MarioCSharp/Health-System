@@ -3,6 +3,7 @@ using HealthSystem.Admins.Services.DoctorService;
 using HealthSystem.Admins.Services.HospitalService;
 using Microsoft.EntityFrameworkCore;
 using HealthSystemCommon.Infrastructure;
+using HealthSystem.Admins.Models;
 
 namespace HealthSystem.Admins
 {
@@ -23,7 +24,7 @@ namespace HealthSystem.Admins
             builder.Services.AddTransient<IDoctorService, DoctorService>();
 
             builder.Services.AddTokenAuthentication(builder.Configuration);
-
+            
             builder.Services.AddHttpClient<IDoctorService, DoctorService>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:5196");

@@ -1,16 +1,11 @@
 using HealthSystem.Identity.Data;
 using HealthSystem.Identity.Data.Models;
 using HealthSystem.Identity.Services.IdentityService;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using System.Text;
 using HealthSystemCommon.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.DependencyInjection;
 using HealthSystem.Identity.Infrastructure;
 using HealthSystem.Identity.Services.AccountService;
 
@@ -67,7 +62,6 @@ namespace HealthSystem.Identity
             });
 
             app.UseAuthentication().UseAuthorization();
-
 
             app.MapControllers();
 

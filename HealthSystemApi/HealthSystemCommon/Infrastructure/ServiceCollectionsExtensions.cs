@@ -1,9 +1,9 @@
 ﻿using HealthSystemCommon.Services.Identity;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace HealthSystemCommon.Infrastructure
@@ -35,8 +35,7 @@ namespace HealthSystemCommon.Infrastructure
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
-                        ValidateAudience = false,
-                        NameClaimType = JwtRegisteredClaimNames.Sub
+                        ValidateAudience = false
                     };
                 });
 

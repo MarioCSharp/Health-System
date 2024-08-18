@@ -1,6 +1,7 @@
 ﻿using HealthSystem.Admins.Data;
 using HealthSystem.Admins.Data.Models;
 using HealthSystem.Admins.Models;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystem.Admins.Services.DoctorService
