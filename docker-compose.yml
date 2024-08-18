@@ -1,0 +1,128 @@
+services:
+
+    data:
+        container_name: sqlserver
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports: 
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=yourStrongPassword12!@
+        volumes: 
+            - sqldata:/var/opt/mssql 
+        networks: 
+            - carrentalsystem-network
+
+    identity:
+        container_name: identity
+        build:
+            context: ./HealthSystemApi
+            dockerfile: ./HealthSystem.Identity/Dockerfile
+        ports: 
+            - "5196:80"
+        env_file: HealthSystemApi/HealthSystemCommon/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Identity;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - carrentalsystem-network
+        depends_on:
+            - data
+            
+    admins:
+        container_name: admins
+        build:
+            context: ./HealthSystemApi
+            dockerfile: ./HealthSystem.Admins/Dockerfile
+        ports: 
+            - "5025:80"
+        env_file: HealthSystemApi/HealthSystemCommon/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Admins;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/dealers/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - carrentalsystem-network
+        depends_on:
+            - data
+            
+    booking:
+        container_name: booking
+        build:
+            context: ./HealthSystemApi
+            dockerfile: ./HealthSystem.Booking/Dockerfile
+        ports: 
+            - "5046:80"
+        env_file: HealthSystemApi/HealthSystemCommon/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Booking;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - carrentalsystem-network
+        depends_on:
+            - data
+
+    documents:
+        container_name: documents
+        build:
+            context: ./HealthSystemApi
+            dockerfile: ./HealthSystem.Documents/Dockerfile
+        ports: 
+            - "5256:80"
+        env_file: HealthSystemApi/HealthSystemCommon/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Documents;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - carrentalsystem-network
+        depends_on:
+            - data
+
+    healthcare:
+        container_name: healthcare
+        build:
+            context: ./HealthSystemApi
+            dockerfile: ./HealthSystem.HealthCare/Dockerfile
+        ports: 
+            - "5115:80"
+        env_file: HealthSystemApi/HealthSystemCommon/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.HealthCare;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - carrentalsystem-network
+        depends_on:
+            - data
+
+    problems:
+        container_name: problems
+        build:
+            context: ./HealthSystemApi
+            dockerfile: ./HealthSystem.Problems/Dockerfile
+        ports: 
+            - "5098:80"
+        env_file: HealthSystemApi/HealthSystemCommon/Common.env
+        environment:
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Problems;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+        restart: on-failure
+        volumes:
+            - ./.aspnet/statistics/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+        networks: 
+            - carrentalsystem-network
+        depends_on:
+            - data
+    
+networks:
+    carrentalsystem-network:
+
+volumes:
+    sqldata:
