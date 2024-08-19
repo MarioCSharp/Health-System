@@ -160,7 +160,11 @@ function DoctorsInMyHosptail() {
           </div>
         )}
         <li className="list-group-item">
-          <a href="" onClick={() => redirectToAdd()}>
+          <a
+            href=""
+            onClick={() => redirectToAdd()}
+            style={{ marginRight: "10px" }}
+          >
             Добави доктор
           </a>
           <a href="" onClick={() => redirectToAll()}>

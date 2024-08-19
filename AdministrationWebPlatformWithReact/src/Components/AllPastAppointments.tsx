@@ -1,6 +1,6 @@
 import FeedbackComponent from "./FeedbackComponent";
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import PrescriptionComponent from "./PrescriptionComponent";
 
 interface Appointment {
@@ -10,7 +10,7 @@ interface Appointment {
   date: string;
 }
 
-function PastAppointmentsList() {
+function AllPastAppointmentsList() {
   const token = localStorage.getItem("token");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [error, setError] = useState<boolean>(false);
@@ -20,8 +20,6 @@ function PastAppointmentsList() {
   const [selectedPrescriptionId, setSelectedPrescriptionId] = useState<
     number | null
   >(null);
-
-  const navigate = useNavigate();
 
   const getAppointments = async () => {
     try {
@@ -38,7 +36,7 @@ function PastAppointmentsList() {
 
       if (response.ok) {
         const data = await response.json();
-        setAppointments(data.appointments.slice(0, 5));
+        setAppointments(data.appointments.slice);
       } else {
         throw new Error("There was an error loading your appointments");
       }
@@ -52,10 +50,6 @@ function PastAppointmentsList() {
   useEffect(() => {
     getAppointments();
   }, []);
-
-  const redirecToAllAppointments = () => {
-    navigate(`/past-appointments`);
-  };
 
   if (error) {
     return <Navigate to={"not-found"} />;
@@ -118,14 +112,9 @@ function PastAppointmentsList() {
             </div>
           </div>
         )}
-        <li className="list-group-item">
-          <a href="" onClick={() => redirecToAllAppointments()}>
-            Виж всички
-          </a>
-        </li>
       </ul>
     </div>
   );
 }
 
-export default PastAppointmentsList;
+export default AllPastAppointmentsList;

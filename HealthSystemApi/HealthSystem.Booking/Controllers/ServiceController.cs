@@ -2,6 +2,7 @@
 using HealthSystem.Booking.Services.ServiceService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HealthSystem.Booking.Controllers
 {
@@ -43,6 +44,15 @@ namespace HealthSystem.Booking.Controllers
             return Ok(new { FullName = res.Item1, Services = res.Item2 });
         }
 
+        [HttpGet("GetDoctorServices")]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> GetDoctorServices()
+        {
+            var res = await serviceService.AllByUserIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Ok(new { Services = res });
+        }
+
         [HttpGet("Details")]
         public async Task<IActionResult> Details([FromQuery] int id)
         {
@@ -82,7 +92,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpGet("Remove")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator,Director,Doctor")]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
             var result = await serviceService.Delete(id);
@@ -91,7 +101,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpGet("Edit")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator,Director,Doctor")]
         public async Task<IActionResult> Edit([FromQuery] int id)
         {
             var result = await serviceService.EditGET(id);
@@ -100,7 +110,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpPost("Edit")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator,Director,Doctor")]
         public async Task<IActionResult> Edit([FromForm] ServiceEditModel model)
         {
             var result = await serviceService.EditPOST(model);

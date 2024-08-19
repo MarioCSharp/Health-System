@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 interface Appointment {
   id: number;
@@ -8,12 +8,10 @@ interface Appointment {
   date: string;
 }
 
-function NextAppointmentsList() {
+function AllNextAppointmentsList() {
   const token = localStorage.getItem("token");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [error, setError] = useState<boolean>(false);
-
-  const navigate = useNavigate();
 
   const getAppointments = async () => {
     try {
@@ -31,7 +29,7 @@ function NextAppointmentsList() {
       if (response.ok) {
         const data = await response.json();
 
-        setAppointments(data.appointments.slice(0, 5));
+        setAppointments(data.appointments);
       } else {
         throw new Error("There was an error loading your appointments");
       }
@@ -45,10 +43,6 @@ function NextAppointmentsList() {
   useEffect(() => {
     getAppointments();
   }, []);
-
-  const redirecToAllAppointments = () => {
-    navigate("/next-appointments");
-  };
 
   if (error) {
     <Navigate to={"not-found"}></Navigate>;
@@ -77,14 +71,9 @@ function NextAppointmentsList() {
             </div>
           </div>
         )}
-        <li className="list-group-item">
-          <a href="" onClick={() => redirecToAllAppointments()}>
-            Виж всички
-          </a>
-        </li>
       </ul>
     </div>
   );
 }
 
-export default NextAppointmentsList;
+export default AllNextAppointmentsList;

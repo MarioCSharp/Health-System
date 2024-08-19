@@ -6,6 +6,7 @@ namespace HealthSystem.Booking.Services.ServiceService
     {
         Task<bool> AddAsync(ServiceAddModel model);
         Task<(string, List<ServiceModel>)> AllByIdAsync(int id);
+        Task<List<ServiceModel>> AllByUserIdAsync(string userId);
         Task<ServiceDetailsModel> DetailsAsync(int id);
         Task<bool> BookAsync(BookingModel model);
         Task<List<string>> AvailableHoursAsync(DateTime date, int serviceId);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MyHospitalEditComponent from "./MyHospitalEditComponent";
+import MyHospitalDetailsComponent from "./MyHospitalDetailsComponent";
 
 interface Hospital {
   id: number;
@@ -10,6 +11,9 @@ function MyHospitalComponent() {
   const [hospital, setHospital] = useState<Hospital>();
   const [error, setError] = useState<boolean>();
   const [selectedEditHospitalId, setSelectedEditHospitalId] = useState<
+    number | null
+  >(null);
+  const [selectedDetailsHospitalId, setSelectedDetailsHospitalId] = useState<
     number | null
   >(null);
 
@@ -51,6 +55,12 @@ function MyHospitalComponent() {
     );
   };
 
+  const handleHospitalDetailsClick = (hospitalId: number) => {
+    setSelectedDetailsHospitalId((prev) =>
+      prev === hospitalId ? null : hospitalId
+    );
+  };
+
   return (
     <div className="col-md-5 mx-md-3 mb-4">
       <ul className="list-group">
@@ -60,6 +70,13 @@ function MyHospitalComponent() {
             {hospital?.hospitalName}
             <div>
               <a
+                className="btn btn-primary"
+                onClick={() => handleHospitalDetailsClick(Number(hospital?.id))}
+                style={{ marginRight: "2px" }}
+              >
+                Информация
+              </a>
+              <a
                 className="btn btn-warning"
                 onClick={() => handleHospitalEditClick(Number(hospital?.id))}
               >
@@ -67,6 +84,9 @@ function MyHospitalComponent() {
               </a>
             </div>
           </div>
+          {selectedDetailsHospitalId === hospital?.id && (
+            <MyHospitalDetailsComponent hospitalId={String(hospital.id)} />
+          )}
           {selectedEditHospitalId === hospital?.id && (
             <MyHospitalEditComponent hospitalId={String(hospital.id)} />
           )}

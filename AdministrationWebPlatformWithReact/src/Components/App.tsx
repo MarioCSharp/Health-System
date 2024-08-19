@@ -17,6 +17,8 @@ import HospitalAddComponent from "./HospitalAddComponent";
 import AllHospitalsComponents from "./AllHospitalsComponents";
 import AllUsersComponent from "./AllUsersComponent";
 import AllAppointments from "./AllAppointments";
+import PastAppointmentsList from "./PastAppointmentsList";
+import AllNextAppointmentsList from "./AllNextAppointments";
 
 const App: React.FC = () => (
   <Router>
@@ -27,6 +29,11 @@ const App: React.FC = () => (
           <Route path="/" element={<Home />} />
           <Route path="/doctors/:hospitalId" element={<DoctorsDisplayPage />} />
           <Route path="/appointments/:id" element={<AppointmentsComponent />} />
+          <Route path="/past-appointments" element={<PastAppointmentsList />} />
+          <Route
+            path="/next-appointments"
+            element={<AllNextAppointmentsList />}
+          />
           <Route
             path="/doctor/appointments/:id"
             element={<DoctorAppointments />}

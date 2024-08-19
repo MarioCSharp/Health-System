@@ -67,6 +67,21 @@ namespace HealthSystem.Booking.Services.ServiceService
                 }).ToListAsync();
         }
 
+        public async Task<List<ServiceModel>> AllByUserIdAsync(string userId)
+        {
+            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+            var doctor = await doctorResponse.Content.ReadFromJsonAsync<DoctorModel>();
+
+            return await context.Services
+                .Where(x => x.DoctorId == doctor.Id)
+                .Select(x => new ServiceModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price
+                }).ToListAsync();
+        }
+
         public async Task<List<string>> AvailableHoursAsync(DateTime date, int serviceId)
         {
             var service = await context.Services.FindAsync(serviceId);
@@ -103,7 +118,7 @@ namespace HealthSystem.Booking.Services.ServiceService
 
                 model.DoctorId = d.DoctorId;
             }
-            
+
             var bookings = await context.Bookings
                 .Where(x => x.Date.Day == model.Day &&
                             x.Date.Month == model.Month &&
@@ -131,7 +146,7 @@ namespace HealthSystem.Booking.Services.ServiceService
                 minute = int.Parse(model.Time[3].ToString() + model.Time[4].ToString());
             }
 
-            foreach (var item in bookings) 
+            foreach (var item in bookings)
             {
                 if (item.Date.Hour == hour && item.Date.Minute == minute)
                 {
@@ -214,7 +229,7 @@ namespace HealthSystem.Booking.Services.ServiceService
         {
             var service = await context.Services.FindAsync(id);
 
-            if(service is null)
+            if (service is null)
             {
                 return ("", 0.0M, "", "");
             }
