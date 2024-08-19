@@ -14,5 +14,6 @@ namespace HealthSystem.Booking.Services.AppointmentService
         Task<bool> RemoveAppointment(int appointmetId);
         Task DeleteAllByDoctorId(int doctor);
         Task<(string, List<BookingDisplayModel>)> GetUserAppointments(string userId);
+        Task<List<PrescriptionDisplayModel>> GetUserPrescriptions(string userId);
     }
 }

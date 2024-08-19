@@ -122,5 +122,13 @@ namespace HealthSystem.Booking.Controllers
 
             return Ok(new { FullName = result.Item1, Appointments = result.Item2 });
         }
+
+        [HttpGet("GetUserPrescriptions")]
+        public async Task<IActionResult> GetUserPrescriptions([FromQuery] string userId)
+        {
+            var result = await appointmentService.GetUserPrescriptions(userId);
+
+            return Ok(result);
+        }
     }
 }

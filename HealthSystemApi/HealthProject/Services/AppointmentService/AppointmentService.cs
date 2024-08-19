@@ -49,6 +49,32 @@ namespace HealthProject.Services.AppointmentService
             return new List<AppointmentModel>();
         }
 
+        public async Task<List<PrescriptionDisplayModel>> GetUserPrescriptions(string userId)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"http://{_baseAddress}:5046/api/Appointment/GetUserPrescriptions?userId={userId}");
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var prescriptions = JsonSerializer.Deserialize<List<PrescriptionDisplayModel>>(responseBody, _jsonSerializerOptions);
+
+                return prescriptions ?? new List<PrescriptionDisplayModel>();
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new List<PrescriptionDisplayModel>();
+        }
+
         private void CheckInternetConnection()
         {
             if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)

@@ -162,6 +162,33 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return (userName, result);
         }
 
+        public async Task<List<PrescriptionDisplayModel>> GetUserPrescriptions(string userId)
+        {
+            var appointments = await context.Bookings
+                            .Where(x => x.UserId == userId)
+                            .ToListAsync();
+
+            var result = new List<PrescriptionDisplayModel>();
+            var allPrescriptions = await context.AppointmentPrescriptions.ToListAsync();
+
+            foreach (var appointment in appointments)
+            {
+                var pres = allPrescriptions.FirstOrDefault(x => x.AppointmentId == appointment.Id);
+
+                if (pres is not null)
+                {
+                    result.Add(new PrescriptionDisplayModel()
+                    {
+                        Date = appointment.Date.ToString("dd/MM/yyyy HH:mm"),
+                        DoctorName = appointment.DoctorName,
+                        File = pres.File
+                    });
+                }
+            }
+
+            return result;
+        }
+
         public async Task<(bool, IFormFile)> HasPrescriptionAsync(int appointmentId)
         {
             var appointment = await context.Bookings.FindAsync(appointmentId);
