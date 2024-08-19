@@ -15,11 +15,12 @@ function MyServiceEditComponent({ serviceId }: Props) {
   const getService = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5046/api/Serivce/Edit?id=${token}`,
+        `http://localhost:5046/api/Service/Edit?id=${serviceId}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -27,10 +28,10 @@ function MyServiceEditComponent({ serviceId }: Props) {
       if (response.ok) {
         const data = await response.json();
 
-        setName(data.name);
-        setPrice(data.price);
-        setLocation(data.location);
-        setDescription(data.description);
+        setName(data.serviceName || "");
+        setPrice(data.servicePrice || "");
+        setLocation(data.serviceLocation || "");
+        setDescription(data.serviceDescription || "");
       } else {
         throw new Error("There was an error loading the service!");
       }
@@ -49,11 +50,11 @@ function MyServiceEditComponent({ serviceId }: Props) {
     formData.append("Id", serviceId);
     formData.append("ServiceName", name);
     formData.append("ServicePrice", price);
-    formData.append("ServiceDescription", description);
+    formData.append("ServiceDesription", description);
     formData.append("ServiceLocation", location);
 
     try {
-      const response = await fetch(`http://localhost:5046/api/Serivce/Edit`, {
+      const response = await fetch(`http://localhost:5046/api/Service/Edit`, {
         method: "POST",
         body: formData,
         headers: {
@@ -113,8 +114,11 @@ function MyServiceEditComponent({ serviceId }: Props) {
             />
           </div>
         </div>
+
+        <br></br>
+
         <div className="row">
-          <div className="col-md-4 form-group">
+          <div className="form-group">
             <label htmlFor="serviceDescription">Описание:</label>
             <textarea
               rows={3}

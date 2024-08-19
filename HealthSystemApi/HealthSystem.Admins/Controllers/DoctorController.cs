@@ -85,5 +85,14 @@ namespace HealthSystem.Admins.Controllers
 
             return Ok(new { HospitalId = result });
         }
+
+        [HttpGet("GetDoctorId")]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> GetDoctorId()
+        {
+            var result = await doctorService.GetDoctorByUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Ok(new { Id = result.Id });
+        }
     }
 }

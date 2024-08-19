@@ -18,7 +18,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpPost("Add")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator,Director,Doctor")]
         public async Task<IActionResult> Add([FromForm] ServiceAddModel model)
         {
             if (!ModelState.IsValid)

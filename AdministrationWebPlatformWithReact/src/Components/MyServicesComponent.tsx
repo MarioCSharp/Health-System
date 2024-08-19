@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MyServiceEditComponent from "./MyServiceEditComponent";
+import { redirect, useNavigate } from "react-router-dom";
 
 interface Service {
   id: number;
@@ -13,6 +14,8 @@ function MyServicesComponent() {
   const [error, setError] = useState<boolean>();
 
   const [selectedServiceId, setSelectedServiceId] = useState<number | null>();
+  const [doctorId, setDoctorId] = useState<number | null>();
+  const navigate = useNavigate();
 
   const getServices = async () => {
     try {
@@ -22,7 +25,7 @@ function MyServicesComponent() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authentication: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -41,8 +44,36 @@ function MyServicesComponent() {
     }
   };
 
+  const getDoctorId = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5025/api/Doctor/GetDoctorId`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        setDoctorId(data.id);
+      } else {
+        throw new Error("There was an error loading your services!");
+      }
+    } catch (error) {
+      console.log(error);
+      setError(true);
+      setDoctorId(null);
+    }
+  };
+
   useEffect(() => {
     getServices();
+    getDoctorId();
   }, []);
 
   const handleEditClick = (serviceId: number) => {
@@ -85,6 +116,10 @@ function MyServicesComponent() {
     }
   };
 
+  const handleAddClick = () => {
+    navigate(`/service/add/${doctorId}`);
+  };
+
   return (
     <div className="col-md-7 mx-md-3 mb-4">
       <ul className="list-group">
@@ -100,6 +135,7 @@ function MyServicesComponent() {
                   <button
                     className="btn btn-warning btn-sm mr-2"
                     onClick={() => handleEditClick(service.id)}
+                    style={{ marginRight: "2px" }}
                   >
                     Редактирай
                   </button>
@@ -123,8 +159,11 @@ function MyServicesComponent() {
             </div>
           </div>
         )}
+        {error && <p className="text-danger">Грешка!</p>}
         <li className="list-group-item">
-          <a href="">Добави услуга</a>
+          <a href="" onClick={() => handleAddClick()}>
+            Добави услуга
+          </a>
         </li>
       </ul>
     </div>
