@@ -29,7 +29,8 @@ namespace HealthProject.Services.AppointmentService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"http://{_baseAddress}:5046/api/Service/AllByUser?userId={userId}");
+                string url = $"{_baseAddress}:5046/api/Service/AllByUser?userId={userId}";
+                HttpResponseMessage response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -55,7 +56,7 @@ namespace HealthProject.Services.AppointmentService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"http://{_baseAddress}:5046/api/Appointment/GetUserPrescriptions?userId={userId}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5046/api/Appointment/GetUserPrescriptions?userId={userId}");
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();

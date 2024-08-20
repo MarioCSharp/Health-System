@@ -64,6 +64,13 @@
         Route="AppointmentHistoryPage"/>
     </FlyoutItem>
 
+    <FlyoutItem Title="Амбулаторни листове">
+        <ShellContent
+        Title="Амбулаторни листове"
+        ContentTemplate="{DataTemplate local:MyPrescriptionsPage}"
+        Route="LogbookViewPage"/>
+    </FlyoutItem>
+
     <FlyoutItem Title="Записи">
         <ShellContent
         Title="Записи"
