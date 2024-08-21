@@ -19,13 +19,27 @@ namespace HealthSystem.Booking.Services.AppointmentService
             this.httpClient = httpClient;
         }
 
-        public async Task<bool> AddComent(AppointmentCommentAddModel model)
+        public async Task<bool> AddComment(AppointmentCommentAddModel model, string userId)
         {
+            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+
+            if (!doctorResponse.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+            var doctor = await doctorResponse.Content.ReadFromJsonAsync<DoctorModel>();
+
+            if (doctor == null)
+            {
+                return false;
+            }
+
             var appointment = await context.Bookings.FindAsync(model.AppointmentId);
 
-            if (appointment is null)
+            if (appointment is null || appointment.DoctorId != doctor.Id)
             {
-                return false;   
+                return false;
             }
 
             var comment = new AppointmentComment()
@@ -217,84 +231,102 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return (true, formFile);
         }
 
-        public async Task<(bool, IFormFile)> IssuePrescriptionAsync(PrescriptionModel model)
+        public async Task<(bool, IFormFile)> IssuePrescriptionAsync(PrescriptionModel model, string userId)
         {
+            var appointment = await context.Bookings.FindAsync(model.AppointmentId);
+
+            if (appointment == null) 
+            {
+                return (false, null);
+            }
+
+            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+
+            if (!doctorResponse.IsSuccessStatusCode)
+            {
+                return (false, null);
+            }
+
+            var doctor = await doctorResponse.Content.ReadFromJsonAsync<DoctorModel>();
+
+            if (doctor == null || doctor.Id != appointment.DoctorId)
+            {
+                return (false, null);
+            }
+
             PdfDocument document = new PdfDocument();
             document.Info.Title = "Амбулаторен лист";
 
             PdfPage page = document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
-            // Define fonts, pens, and initial positions
             XFont titleFont = new XFont("Verdana", 14, XFontStyle.Bold);
             XFont normalFont = new XFont("Verdana", 8, XFontStyle.Regular);
             XPen linePen = new XPen(XColors.Black, 0.5);
             int marginLeft = 40;
             int yPoint = 20;
 
-            // Title
             gfx.DrawString("АМБУЛАТОРЕН ЛИСТ", titleFont, XBrushes.Black, new XRect(0, yPoint, page.Width, 20), XStringFormats.Center);
             yPoint += 30;
 
-            // Draw the static structure of the form
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 20); // Healthcare institution
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 20); 
             gfx.DrawString("Здравно заведение:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
 
             yPoint += 25;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 20); // Department
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 20);
             gfx.DrawString("Отделение:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
 
             yPoint += 25;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 60); // Patient Information
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 60); 
             gfx.DrawString($"Име на пациента: {model.FullName}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString($"Дата на раждане: {model.DateOfBirth}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 20, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString($"ЕГН: {model.EGN}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 35, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString($"Адрес: {model.Address}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 50, page.Width, 15), XStringFormats.TopLeft);
 
             yPoint += 65;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); // Complaints
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
             gfx.DrawString("Оплаквания:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Complaints, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); // Diagnosis
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
             gfx.DrawString("Диагноза:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Diagnosis, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); // Conditions
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
             gfx.DrawString("Състояние:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Conditions, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); // Status
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
             gfx.DrawString("Текущ статус:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Status, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); // Therapy
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
             gfx.DrawString("Терапия:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Therapy, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); // Recommended Tests
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40);
             gfx.DrawString("Препоръчани изследвания:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Tests, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); // Doctor's Information
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); 
             gfx.DrawString($"Име на лекаря: {model.DoctorName}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString($"УИН: {model.UIN}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 20, page.Width, 15), XStringFormats.TopLeft);
 
             yPoint += 35;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); // Signature
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); 
             gfx.DrawString("Подпис на лекаря:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
-            gfx.DrawLine(linePen, marginLeft + 100, yPoint + 20, page.Width - marginLeft - 20, yPoint + 20); // Line for signature
+            gfx.DrawLine(linePen, marginLeft + 100, yPoint + 20, page.Width - marginLeft - 20, yPoint + 20); 
 
             yPoint += 35;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); // Patient Signature
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); 
             gfx.DrawString("Подпис на пациента:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
-            gfx.DrawLine(linePen, marginLeft + 100, yPoint + 20, page.Width - marginLeft - 20, yPoint + 20); // Line for signature
+            gfx.DrawLine(linePen, marginLeft + 100, yPoint + 20, page.Width - marginLeft - 20, yPoint + 20); 
 
             MemoryStream stream = new MemoryStream();
             document.Save(stream, false);
@@ -317,11 +349,25 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return (true, file);
         }
 
-        public async Task<bool> Remove(int id)
+        public async Task<bool> Remove(int id, string userId)
         {
+            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+
+            if (!doctorResponse.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+            var doctor = await doctorResponse.Content.ReadFromJsonAsync<DoctorModel>();
+
+            if (doctor == null)
+            {
+                return false;
+            }
+
             var app = await context.Bookings.FindAsync(id);
 
-            if (app is null)
+            if (app is null || app.DoctorId != doctor.Id)
             {
                 return false;
             }

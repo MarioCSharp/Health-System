@@ -2,6 +2,7 @@
 using HealthSystem.Admins.Services.HospitalService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HealthSystem.Admins.Controllers
 {
@@ -69,7 +70,7 @@ namespace HealthSystem.Admins.Controllers
         [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> GetDoctors([FromQuery] int id)
         {
-            var doctors = await hospitalService.GetDoctorsAsync(id);
+            var doctors = await hospitalService.GetDoctorsAsync(id, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
 
             return Ok(new { Doctors = doctors });
         }
@@ -78,7 +79,7 @@ namespace HealthSystem.Admins.Controllers
         [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> GetHospital([FromQuery] int hospitalId)
         {
-            var hospital = await hospitalService.GetHospital(hospitalId);
+            var hospital = await hospitalService.GetHospital(hospitalId, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
 
             return Ok(new { ContactNumber = hospital.ContactNumber, Location = hospital.Location, Name = hospital.HospitalName, UserId = hospital.UserId });
         }
@@ -87,7 +88,7 @@ namespace HealthSystem.Admins.Controllers
         [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Edit([FromForm] HospitalEditModel model)
         {
-            var result = await hospitalService.EditAsync(model);
+            var result = await hospitalService.EditAsync(model, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
 
             return Ok(new { Success = result });
         }

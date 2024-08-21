@@ -39,7 +39,7 @@ namespace HealthSystem.Booking.Controllers
         [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> Remove([FromQuery] int id)
         {
-            var result = await appointmentService.Remove(id);
+            var result = await appointmentService.Remove(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             return Ok(new { Success = result });
         }
@@ -48,7 +48,7 @@ namespace HealthSystem.Booking.Controllers
         [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> AddComment([FromForm] AppointmentCommentAddModel model)
         {
-            var result = await appointmentService.AddComent(model);
+            var result = await appointmentService.AddComment(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             return Ok(new { Success = result });
         }
@@ -57,7 +57,7 @@ namespace HealthSystem.Booking.Controllers
         [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> IssuePrescription([FromForm] PrescriptionModel model)
         {
-            var result = await appointmentService.IssuePrescriptionAsync(model);
+            var result = await appointmentService.IssuePrescriptionAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var success = result.Item1;
             var file = result.Item2;

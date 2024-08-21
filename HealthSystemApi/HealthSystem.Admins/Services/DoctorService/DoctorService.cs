@@ -16,8 +16,23 @@ namespace HealthSystem.Admins.Services.DoctorService
             this.httpClient = httpClient;
         }
 
-        public async Task<bool> AddAsync(DoctorAddModel model)
+        public async Task<bool> AddAsync(DoctorAddModel model, string userId)
         {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+                if (hospital is null) 
+                {
+                    return false;
+                }
+
+                if (model.HospitalId != hospital.Id)
+                {
+                    return false;
+                }
+            }
+
             var doctor = new Doctor()
             {
                 FullName = model.FullName,
@@ -48,8 +63,30 @@ namespace HealthSystem.Admins.Services.DoctorService
             return await context.Doctors.ContainsAsync(doctor);
         }
 
-        public async Task Edit(DoctorDetailsModel model)
+        public async Task Edit(DoctorDetailsModel model, string userId)
         {
+            var doctor = await context.Doctors.FindAsync(model.Id);
+
+            if (doctor is null) 
+            { 
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+                if (hospital is null)
+                {
+                    return;
+                }
+
+                if (hospital.Id != doctor.HospitalId)
+                {
+                    return;
+                }
+            }
+
             var doc = await context.DoctorsInfo.FirstOrDefaultAsync(x => x.DoctorId == model.Id);
 
             var wasNull = false;
@@ -59,8 +96,6 @@ namespace HealthSystem.Admins.Services.DoctorService
                 wasNull = true;
                 doc = new DoctorInfo();
             }
-
-            var doctor = await context.Doctors.FindAsync(model.Id);
 
             doctor.Specialization = model.Specialization;
             doc.Email = model.Email;
@@ -159,11 +194,29 @@ namespace HealthSystem.Admins.Services.DoctorService
             return hospital.Id;
         }
 
-        public async Task<bool> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id, string userId)
         {
             var doctor = await context.Doctors.FindAsync(id);
 
-            if (doctor is null) return false;
+            if (doctor is null)
+            {
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+                if (hospital is null)
+                {
+                    return false;
+                }
+
+                if (doctor.HospitalId != hospital.Id)
+                {
+                    return false;
+                }
+            }
 
             var response = await httpClient.GetAsync($"http://localhost:5046/api/Appointment/DeleteAllByDoctorId?doctorId={id}");
             var response2 = await httpClient.GetAsync($"http://localhost:5046/api/Service/DeleteAllByDoctorId?doctorId={id}");

@@ -17,19 +17,19 @@ namespace HealthSystem.Admins.Controllers
         }
 
         [HttpGet("Add")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Add([FromQuery] DoctorAddModel model)
         {
-            var result = await doctorService.AddAsync(model);
+            var result = await doctorService.AddAsync(model, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
 
             return result ? Ok(new { Success = result }) : BadRequest();
         }
 
         [HttpGet("Remove")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Remove([FromQuery] int id)
         {
-            var result = await doctorService.RemoveAsync(id);
+            var result = await doctorService.RemoveAsync(id, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
 
             return result ? Ok() : BadRequest();
         }
@@ -55,9 +55,10 @@ namespace HealthSystem.Admins.Controllers
         }
 
         [HttpGet("Edit")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Edit([FromQuery] DoctorDetailsModel model)
         {
-            await doctorService.Edit(model);
+            await doctorService.Edit(model, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
 
             return Ok();
         }

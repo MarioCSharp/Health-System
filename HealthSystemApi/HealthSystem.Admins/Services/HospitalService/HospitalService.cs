@@ -2,7 +2,6 @@
 using HealthSystem.Admins.Data.Models;
 using HealthSystem.Admins.Models;
 using HealthSystem.Admins.Services.DoctorService;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -48,13 +47,28 @@ namespace HealthSystem.Admins.Services.HospitalService
             HospitalName = x.Name,
         }).ToListAsync();
 
-        public async Task<bool> EditAsync(HospitalEditModel model)
+        public async Task<bool> EditAsync(HospitalEditModel model, string userId)
         {
             var hospital = await context.Hospitals.FindAsync(model.Id);
 
             if (hospital == null)
             {
                 return false;
+            }
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var userHospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+                if (userHospital is null)
+                {
+                    return false;
+                }
+
+                if (hospital.Id != userHospital.Id)
+                {
+                    return false;
+                }
             }
 
             hospital.Name = model.HospitalName;
@@ -71,8 +85,23 @@ namespace HealthSystem.Admins.Services.HospitalService
             return true;
         }
 
-        public async Task<List<DoctorDisplayModel>> GetDoctorsAsync(int id)
+        public async Task<List<DoctorDisplayModel>> GetDoctorsAsync(int id, string userId)
         {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+                if (hospital is null)
+                {
+                    return new List<DoctorDisplayModel>();
+                }
+
+                if (id != hospital.Id)
+                {
+                    return new List<DoctorDisplayModel>();
+                }
+            }
+
             return await context.Doctors
                 .Where(x => x.HospitalId == id)
                 .Select(x => new DoctorDisplayModel()
@@ -86,13 +115,28 @@ namespace HealthSystem.Admins.Services.HospitalService
                 .ToListAsync();
         }
 
-        public async Task<HospitalDetailsModel> GetHospital(int id)
+        public async Task<HospitalDetailsModel> GetHospital(int id, string userId)
         {
             var hospital = await context.Hospitals.FindAsync(id);
 
             if (hospital == null)
             {
                 return new HospitalDetailsModel();
+            }
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var userHospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
+
+                if (userHospital is null)
+                {
+                    return new HospitalDetailsModel();
+                }
+
+                if (hospital.Id != userHospital.Id)
+                {
+                    return new HospitalDetailsModel();
+                }
             }
 
             return new HospitalDetailsModel()
@@ -150,7 +194,7 @@ namespace HealthSystem.Admins.Services.HospitalService
 
             foreach (var doctor in doctors)
             {
-                await doctorService.RemoveAsync(doctor.Id);
+                await doctorService.RemoveAsync(doctor.Id, hospital.OwnerId);
             }
 
             context.Hospitals.Remove(hospital);

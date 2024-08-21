@@ -6,9 +6,9 @@ namespace HealthSystem.Booking.Services.AppointmentService
     {
         Task<List<AppointmentPatientModel>> GetNextAppointmentsByDoctorUserId(string token);
         Task<List<AppointmentPatientModel>> GetPastAppointmentsByDoctorUserId(string token);
-        Task<bool> Remove(int id);
-        Task<bool> AddComent(AppointmentCommentAddModel model);
-        Task<(bool, IFormFile)> IssuePrescriptionAsync(PrescriptionModel model);
+        Task<bool> Remove(int id, string userId);
+        Task<bool> AddComment(AppointmentCommentAddModel model, string userId);
+        Task<(bool, IFormFile)> IssuePrescriptionAsync(PrescriptionModel model, string userId);
         Task<(bool, IFormFile)> HasPrescriptionAsync(int appointmentId);
         Task<(string, List<BookingDisplayModel>)> GetDoctorAppointments(int doctorId);
         Task<bool> RemoveAppointment(int appointmetId);

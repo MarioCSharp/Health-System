@@ -8,9 +8,9 @@ namespace HealthSystem.Admins.Services.HospitalService
         Task<bool> RemoveAsync(int id);
         Task<List<HospitalModel>> AllAsync();
         Task<HospitalDetailsModel> HospitalDetails(int id);
-        Task<List<DoctorDisplayModel>> GetDoctorsAsync(int id);
-        Task<HospitalDetailsModel> GetHospital(int id);
-        Task<bool> EditAsync(HospitalEditModel model);
+        Task<List<DoctorDisplayModel>> GetDoctorsAsync(int id, string userId);
+        Task<HospitalDetailsModel> GetHospital(int id, string userId);
+        Task<bool> EditAsync(HospitalEditModel model, string userId);
         Task<HospitalDetailsModel> GetHospitalByToken(string token);
     }
 }
