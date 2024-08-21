@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             x:Class="HealthProject.Views.DiagnosisPredictionPage"
+             Title="Diagnosis Prediction">
+
+    <VerticalStackLayout Padding="10" Spacing="10">
+        <Entry x:Name="SymptomEntry" Placeholder="Enter a symptom"
+               Text="{Binding SymptomEntryText, Mode=TwoWay}" />
+
+        <Button Text="Add Symptom"
+                Command="{Binding AddSymptomCommand}"
+                CommandParameter="{Binding Text, Source={x:Reference SymptomEntry}}" />
+
+        <CollectionView ItemsSource="{Binding Symptoms}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding .}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Submit Symptoms"
+                Command="{Binding SubmitSymptomsCommand}"/>
+
+        <Label Text="{Binding PredictionResult}" 
+               FontSize="Medium" 
+               TextColor="Blue"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>

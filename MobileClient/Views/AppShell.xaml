@@ -78,6 +78,13 @@
         Route="LogbookViewPage"/>
     </FlyoutItem>
 
+    <FlyoutItem Title="Диагнозер предиктор">
+        <ShellContent
+        Title="Диагнозер предиктор"
+        ContentTemplate="{DataTemplate local:DiagnosisPredictionPage}"
+        Route="DiagnosisPredictionPage"/>
+    </FlyoutItem>
+
     <FlyoutItem Title="Автентикация">
         <Tab>
             <ShellContent

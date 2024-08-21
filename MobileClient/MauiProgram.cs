@@ -13,6 +13,7 @@ using HealthProject.Services.MedicationService;
 using HealthProject.Services.AppointmentService;
 using HealthProject.Services.LogbookService;
 using Syncfusion.Maui.Core.Hosting;
+using HealthProject.Services.DiagnosisService;
 
 namespace HealthProject
 {
@@ -63,6 +64,7 @@ namespace HealthProject
             builder.Services.AddTransient<LogbookEditViewModel>();
             builder.Services.AddTransient<MedicationScheduleViewModel>();
             builder.Services.AddTransient<MyPrescriptionsViewModel>();
+            builder.Services.AddTransient<DiagnosisViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IServiceService, ServiceService>();
@@ -73,6 +75,7 @@ namespace HealthProject
             builder.Services.AddHttpClient<IMedicationService, MedicationService>();
             builder.Services.AddHttpClient<IAppointmentService, AppointmentService>();
             builder.Services.AddHttpClient<ILogbookService, LogbookService>();
+            builder.Services.AddHttpClient<IDiagnosisService, DiagnosisService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
@@ -82,6 +85,7 @@ namespace HealthProject
             builder.Services.AddTransient<IMedicationService, MedicationService>();
             builder.Services.AddTransient<IAppointmentService, AppointmentService>();
             builder.Services.AddTransient<ILogbookService, LogbookService>();
+            builder.Services.AddTransient<IDiagnosisService, DiagnosisService>();
             builder.Services.AddTransient<HospitalDetailsPage>();
             builder.Services.AddTransient<MyPrescriptionsPage>();
             builder.Services.AddTransient<EditDoctorInfo>();
@@ -104,6 +108,7 @@ namespace HealthProject
             builder.Services.AddTransient<LogbookEditPage>();
             builder.Services.AddTransient<LogbookViewPage>();
             builder.Services.AddTransient<MedicationSchedulePage>();
+            builder.Services.AddTransient<DiagnosisPredictionPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
