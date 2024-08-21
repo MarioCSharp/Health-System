@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthProject", "HealthProject\HealthProject.csproj", "{953F69C8-0DC2-4061-A1CD-269268A96D51}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSystem.Identity", "HealthSystem.Identity\HealthSystem.Identity.csproj", "{69875EAF-10BD-4EDB-A640-9BEBF677515B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSystem.Admins", "HealthSystem.Admins\HealthSystem.Admins.csproj", "{077EBA43-84B2-4FB9-8D2F-2B9D4F971BDF}"
@@ -31,30 +29,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|ARM64.Deploy.0 = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|x64.Build.0 = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|x64.Deploy.0 = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|x86.Build.0 = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Debug|x86.Deploy.0 = Debug|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|ARM64.Build.0 = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|ARM64.Deploy.0 = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|x64.ActiveCfg = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|x64.Build.0 = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|x64.Deploy.0 = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|x86.ActiveCfg = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|x86.Build.0 = Release|Any CPU
-		{953F69C8-0DC2-4061-A1CD-269268A96D51}.Release|x86.Deploy.0 = Release|Any CPU
 		{69875EAF-10BD-4EDB-A640-9BEBF677515B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{69875EAF-10BD-4EDB-A640-9BEBF677515B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69875EAF-10BD-4EDB-A640-9BEBF677515B}.Debug|ARM64.ActiveCfg = Debug|Any CPU

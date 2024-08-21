@@ -124,18 +124,17 @@ function MyServicesComponent() {
     <div className="col-md-7 mx-md-3 mb-4">
       <ul className="list-group">
         <h3>Моите услуги</h3>
-        {services.length > 0 ? (
+        {services?.length ? (
           services.map((service) => (
             <li className="list-group-item d-flex flex-column" key={service.id}>
               <div className="d-flex justify-content-between align-items-center">
                 <span>
-                  {service.name} | {service.price}
+                  {service.name} | {service.price} лв
                 </span>
                 <div>
                   <button
                     className="btn btn-warning btn-sm mr-2"
                     onClick={() => handleEditClick(service.id)}
-                    style={{ marginRight: "2px" }}
                   >
                     Редактирай
                   </button>
@@ -155,13 +154,12 @@ function MyServicesComponent() {
         ) : (
           <div className="col-12">
             <div className="card mb-3">
-              <div className="card-body p-2">No appointments found</div>
+              <div className="card-body p-2">No services found</div>
             </div>
           </div>
         )}
-        {error && <p className="text-danger">Грешка!</p>}
         <li className="list-group-item">
-          <a href="" onClick={() => handleAddClick()}>
+          <a href="#" onClick={() => navigate(`/service/add/${doctorId}`)}>
             Добави услуга
           </a>
         </li>

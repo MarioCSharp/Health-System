@@ -106,7 +106,7 @@ function DoctorsDisplayPage() {
               key={doctor.id}
             >
               <span>
-                {doctor.fullName} | {doctor.email} |{doctor.specialization}
+                {doctor.fullName} | {doctor.email} | {doctor.specialization}
               </span>
               <div>
                 <a

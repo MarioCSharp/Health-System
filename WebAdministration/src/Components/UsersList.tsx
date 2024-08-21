@@ -76,12 +76,6 @@ function UsersList() {
                 >
                   Записани часове
                 </a>
-                <a
-                  className="btn btn-warning btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                >
-                  Редактирай
-                </a>
               </div>
             </li>
           ))

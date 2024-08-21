@@ -58,8 +58,8 @@ function NextAppointmentsList() {
     <div className="col-md-4 mx-md-3 mb-4">
       <ul className="list-group">
         <h3>Предстоящи часове</h3>
-        {appointments.length > 0 ? (
-          appointments.map((appointment) => (
+        {appointments?.length ? (
+          appointments.slice(0, 5).map((appointment) => (
             <li
               className="list-group-item d-flex justify-content-between align-items-center"
               key={appointment.id}
@@ -78,7 +78,7 @@ function NextAppointmentsList() {
           </div>
         )}
         <li className="list-group-item">
-          <a href="" onClick={() => redirecToAllAppointments()}>
+          <a href="#" onClick={() => navigate("/next-appointments")}>
             Виж всички
           </a>
         </li>

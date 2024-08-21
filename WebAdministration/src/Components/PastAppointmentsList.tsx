@@ -77,8 +77,8 @@ function PastAppointmentsList() {
     <div className="col-md-7 mx-md-3 mb-4">
       <ul className="list-group">
         <h3>Минали часове</h3>
-        {appointments.length > 0 ? (
-          appointments.map((appointment) => (
+        {appointments?.length ? (
+          appointments.slice(0, 5).map((appointment) => (
             <li
               className="list-group-item d-flex flex-column"
               key={appointment.id}
@@ -119,7 +119,7 @@ function PastAppointmentsList() {
           </div>
         )}
         <li className="list-group-item">
-          <a href="" onClick={() => redirecToAllAppointments()}>
+          <a href="#" onClick={() => navigate(`/past-appointments`)}>
             Виж всички
           </a>
         </li>
