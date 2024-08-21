@@ -200,7 +200,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For any questions or inquiries, please contact:
 
-- **Project Maintainer**: [Mario Petkov](mailto:[mpetkov171@gmail.com](https://www.linkedin.com/in/mario-petkov-a5582a227/))
+- **Project Maintainer**: [Mario Petkov](mailto:https://www.linkedin.com/in/mario-petkov-a5582a227/)
 - **GitHub**: [https://github.com/MarioCSharp/Health-System](https://github.com/MarioCSharp/Health-System)
 
 ---
