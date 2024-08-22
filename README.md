@@ -86,7 +86,7 @@ The MedCare project is organized into four main components:
 
 - **Notifications**:
 
-  - Push notifications implemented using third-party services like Firebase Cloud Messaging (FCM).
+  - Push notifications implemented using Plugin.LocalNotification version 10.1.8.
 
 - **AI/ML**:
   - Integrated diagnosis predictor using machine learning models.
@@ -181,7 +181,7 @@ git clone https://github.com/MarioCSharp/Health-System
 
 API documentation is available via Swagger for the ASP.NET API and via automatically generated docs in FastAPI.
 
-- **ASP.NET API**: Different port for every microservice
+- **ASP.NET API**: Different port for every microservice.
 - **FastAPI**: Access `https://localhost:8080/docs` for documentation.
 
 ### Reporting Issues
