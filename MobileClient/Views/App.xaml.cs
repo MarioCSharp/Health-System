@@ -1,6 +1,7 @@
 ﻿using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.DoctorService;
 using HealthProject.Services.ServiceService;
+using Plugin.LocalNotification;
 
 namespace HealthProject.Views
 {
@@ -28,6 +29,13 @@ namespace HealthProject.Views
             services.AddTransient<IServiceService, ServiceService>();
             services.AddTransient<HospitalDetailsPage>();
             services.AddTransient<DoctorDetailsPage>();
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            LocalNotificationCenter.Current.RequestNotificationPermission();
         }
     }
 }

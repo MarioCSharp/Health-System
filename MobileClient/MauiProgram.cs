@@ -14,6 +14,7 @@ using HealthProject.Services.AppointmentService;
 using HealthProject.Services.LogbookService;
 using Syncfusion.Maui.Core.Hosting;
 using HealthProject.Services.DiagnosisService;
+using Plugin.LocalNotification;
 
 namespace HealthProject
 {
@@ -22,6 +23,7 @@ namespace HealthProject
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
@@ -30,6 +32,8 @@ namespace HealthProject
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.UseLocalNotification();
 
             builder.Services.AddTransient<RegisterPage>();
             builder.Services.AddTransient<LoginPage>();
