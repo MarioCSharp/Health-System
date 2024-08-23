@@ -34,14 +34,22 @@ namespace HealthProject.Services.DoctorService
 
             try
             {
-                HttpResponseMessage docResponse = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Appointment/GetDoctorByAppointmentId?id={appointmentId}");
+                HttpResponseMessage docResponse = await _httpClient.GetAsync($"{_baseAddress}:5046/api/Appointment/GetDoctorByAppointmentId?id={appointmentId}");
                 docResponse.EnsureSuccessStatusCode();
 
                 var jsonResponse = await docResponse.Content.ReadAsStringAsync();
                 var doctorId = JsonSerializer.Deserialize<int>(jsonResponse, _jsonSerializerOptions);
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Doctor/AddRating?rating={model.Rating}&comment={model.Comment}&appointmentId={appointmentId}&doctorId={doctorId}");
-                response.EnsureSuccessStatusCode();
+                var token = await SecureStorage.GetAsync("auth_token");
+
+                var request = new HttpRequestMessage(HttpMethod.Get, $"{_baseAddress}:5025/api/Doctor/AddRating?rating={model.Rating}&comment={model.Comment}&appointmentId={appointmentId}&doctorId={doctorId}");
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+
+                HttpResponseMessage response = await _httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
