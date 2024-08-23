@@ -61,6 +61,22 @@ namespace HealthSystem.Booking.Services.AppointmentService
             await context.SaveChangesAsync();
         }
 
+        public async Task<AppointmentReturnModel> GetAppointment(int id)
+        {
+            var app = await context.Bookings.FindAsync(id);
+
+            if (app == null)
+            {
+                return new AppointmentReturnModel();
+            }
+
+            return new AppointmentReturnModel()
+            {
+                DoctorId = app.DoctorId,
+                UserId = app.UserId
+            };
+        }
+
         public async Task<(string, List<BookingDisplayModel>)> GetDoctorAppointments(int doctorId)
         {
             var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctor?id={doctorId}");

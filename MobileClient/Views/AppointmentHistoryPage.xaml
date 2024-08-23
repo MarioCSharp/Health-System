@@ -40,6 +40,7 @@
                                            FontSize="14" 
                                            VerticalOptions="Center"
                                            TextColor="Gray"/>
+                                    <Button Text="Добави оценка" Command="{Binding AddRatingCommand}" CommandParameter="{Binding Id}" IsVisible="{Binding IsPast}"></Button>
                                 </StackLayout>
                             </Frame>
                         </SwipeView>

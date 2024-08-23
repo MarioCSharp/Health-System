@@ -130,5 +130,21 @@ namespace HealthSystem.Booking.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("GetAppointment")]
+        public async Task<IActionResult> GetAppointment([FromQuery] int id)
+        {
+            var result = await appointmentService.GetAppointment(id);
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetDoctorByAppointmentId")]
+        public async Task<IActionResult> GetDoctorByAppointmentId([FromQuery] int id)
+        {
+            var result = await appointmentService.GetAppointment(id);
+
+            return Ok(result.DoctorId);
+        }
     }
 }

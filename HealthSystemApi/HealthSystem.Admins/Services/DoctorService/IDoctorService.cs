@@ -13,5 +13,6 @@ namespace HealthSystem.Admins.Services.DoctorService
         Task<DoctorModel> GetDoctorByUserId(string userId);
         Task<List<DoctorModel>> GetAllDoctorsByUserId(string userId);
         Task<int> HospitalIdByDirector(string userId);
+        Task<bool> AddRating(float rating, string comment, int doctorId, int appointmentId, string userId);
     }
 }

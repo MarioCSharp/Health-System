@@ -2,6 +2,7 @@
 using HealthSystem.Admins.Data.Models;
 using HealthSystem.Admins.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace HealthSystem.Admins.Services.DoctorService
 {
@@ -22,7 +23,7 @@ namespace HealthSystem.Admins.Services.DoctorService
             {
                 var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);
 
-                if (hospital is null) 
+                if (hospital is null)
                 {
                     return false;
                 }
@@ -63,12 +64,49 @@ namespace HealthSystem.Admins.Services.DoctorService
             return await context.Doctors.ContainsAsync(doctor);
         }
 
+        public async Task<bool> AddRating(float rating, string comment, int doctorId, int appointmentId, string userId)
+        {
+            var response = await httpClient.GetAsync($"http://localhost:5046/api/Appointment/GetAppointment?id={appointmentId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+            var appointment = await response.Content.ReadFromJsonAsync<AppointmentModel>();
+
+            if (appointment is null || appointment.UserId != userId || appointment.DoctorId != doctorId)
+            {
+                return false;
+            }
+
+            var exists = await context.DoctorRatings.AnyAsync(x => x.DoctorId == doctorId && x.AppointmentId == appointmentId);
+
+            if (exists)
+            {
+                return false;
+            }
+
+            var doctoRating = new DoctorRating()
+            {
+                Rating = rating,
+                Comment = comment,
+                DoctorId = doctorId,
+                AppointmentId = appointmentId
+            };
+
+            await context.DoctorRatings.AddAsync(doctoRating);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task Edit(DoctorDetailsModel model, string userId)
         {
             var doctor = await context.Doctors.FindAsync(model.Id);
 
-            if (doctor is null) 
-            { 
+            if (doctor is null)
+            {
                 return;
             }
 

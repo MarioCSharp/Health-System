@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
 using HealthProject.Services.AppointmentService;
 using HealthProject.Services.AuthenticationService;
 using HealthProject.Views;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace HealthProject.ViewModels
 {
@@ -21,7 +23,20 @@ namespace HealthProject.ViewModels
             this.appointmentService = appointmentService;
             this.authenticationService = authenticationService;
 
+            AddRatingCommand = new AsyncRelayCommand<object>(RedirectToAddRating);
+
             LoadHistory();  
+        }
+
+        public ICommand AddRatingCommand { get; }
+
+        public async Task RedirectToAddRating(object parameter)
+        {
+            if (parameter is int id)
+            {
+                await Shell.Current.GoToAsync($"AddRatingPage?id={id}");
+                return;
+            }
         }
 
         public async Task LoadHistory()
@@ -35,6 +50,14 @@ namespace HealthProject.ViewModels
             }
 
             var apps = await appointmentService.GetUserAppointmentsAsync(authToken.UserId);
+
+            foreach (var app in apps)
+            {
+                if (DateTime.Parse(app.Date) < DateTime.Now)
+                {
+                    app.IsPast = true;
+                }
+            }
 
             History = new ObservableCollection<AppointmentModel>(apps);
         }

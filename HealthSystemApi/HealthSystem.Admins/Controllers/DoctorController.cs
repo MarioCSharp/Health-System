@@ -95,5 +95,14 @@ namespace HealthSystem.Admins.Controllers
 
             return Ok(new { Id = result.Id });
         }
+
+        [HttpGet("AddRating")]
+        [Authorize]
+        public async Task<IActionResult> AddRating([FromQuery] float rating, string comment, int doctorId, int appointmentId)
+        {
+            var result = await doctorService.AddRating(rating, comment, doctorId, appointmentId, User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return result ? Ok(true) : BadRequest();
+        }
     }
 }

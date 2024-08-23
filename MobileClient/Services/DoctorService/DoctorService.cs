@@ -1,6 +1,7 @@
 ﻿using HealthProject.Models;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -25,6 +26,38 @@ namespace HealthProject.Services.DoctorService
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
+        }
+
+        public async Task<bool> AddRating(RatingAddModel model, int appointmentId)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage docResponse = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Appointment/GetDoctorByAppointmentId?id={appointmentId}");
+                docResponse.EnsureSuccessStatusCode();
+
+                var jsonResponse = await docResponse.Content.ReadAsStringAsync();
+                var doctorId = JsonSerializer.Deserialize<int>(jsonResponse, _jsonSerializerOptions);
+
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Doctor/AddRating?rating={model.Rating}&comment={model.Comment}&appointmentId={appointmentId}&doctorId={doctorId}");
+                response.EnsureSuccessStatusCode();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return false;
         }
 
         public async Task<List<DoctorModel>> AllAsync(int id)

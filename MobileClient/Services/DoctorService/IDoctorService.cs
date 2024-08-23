@@ -7,5 +7,6 @@ namespace HealthProject.Services.DoctorService
         Task<DoctorDetailsModel> DetailsAsync(int id);
         Task<List<DoctorModel>> AllAsync(int id);
         Task<AddDoctorModel> GetDoctor(int id);
+        Task<bool> AddRating(RatingAddModel model, int appointmentId);
     }
 }

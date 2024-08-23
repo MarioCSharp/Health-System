@@ -6,5 +6,7 @@
         public string? ServiceName { get; set; }
         public string? DoctorName { get; set; }
         public string? Date { get; set; }
+
+        public bool IsPast { get; set; }
     }
 }
