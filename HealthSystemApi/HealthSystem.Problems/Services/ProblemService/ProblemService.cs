@@ -983,9 +983,7 @@ namespace HealthSystem.Problems.Services.ProblemService
 
         public async Task<bool> RemoveAsync(int id)
         {
-            var problem = await context.Problems.FindAsync(id);
-
-            if (problem is null) return false;
+            var problem = new Problem() { Id = id };
 
             context.Problems.Remove(problem);
             await context.SaveChangesAsync();

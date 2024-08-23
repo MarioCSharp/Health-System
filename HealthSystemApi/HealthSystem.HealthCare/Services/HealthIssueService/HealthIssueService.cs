@@ -66,9 +66,7 @@ namespace HealthSystem.HealthCare.Services.HealthIssueService
 
         public async Task<bool> RemoveAsync(int id)
         {
-            var hI = await context.HealthIssues.FindAsync(id);
-
-            if (hI == null) return false;
+            var hI = new HealthIssue() { Id = id };
 
             context.HealthIssues.Remove(hI);
             await context.SaveChangesAsync();

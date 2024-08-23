@@ -89,9 +89,7 @@ namespace HealthSystem.Documents.Services.DocumentService
 
         public async Task<bool> RemoveAsync(int id)
         {
-            var document = await context.Documents.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (document is null) return false;
+            var document = new Document() { Id = id };
 
             context.Documents.Remove(document);
             await context.SaveChangesAsync();

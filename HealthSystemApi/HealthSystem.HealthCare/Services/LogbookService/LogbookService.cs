@@ -48,17 +48,12 @@ namespace HealthSystem.HealthCare.Services.LogbookService
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var log = await context.Logs.FindAsync(id);
-
-            if (log is null)
-            {
-                return false;
-            }
+            var log = new Log() { Id = id };
 
             context.Remove(log);
             await context.SaveChangesAsync();
 
-            return await context.Logs.ContainsAsync(log);
+            return true;
         }
 
         public async Task<bool> EditAsync(LogAddModel model)

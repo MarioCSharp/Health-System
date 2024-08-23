@@ -181,7 +181,7 @@ namespace HealthSystem.Admins.Services.HospitalService
             };
         }
 
-        public async Task<bool> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id) // TODO: Optimize
         {
             var hospital = await context.Hospitals.FindAsync(id);
 

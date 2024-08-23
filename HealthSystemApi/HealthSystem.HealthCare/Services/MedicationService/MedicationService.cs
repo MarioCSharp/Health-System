@@ -73,12 +73,7 @@ namespace HealthSystem.HealthCare.Services.MedicationService
                 return false;
             }
 
-            var schedule = await context.MedicationSchedules.FindAsync(medication.MedicationScheduleId);
-
-            if (schedule == null)
-            {
-                return false;
-            }
+            var schedule = new MedicationSchedule() { Id = medication.MedicationScheduleId };
 
             context.Remove(medication);
             context.Remove(schedule);

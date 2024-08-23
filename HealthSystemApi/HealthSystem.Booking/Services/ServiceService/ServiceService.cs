@@ -183,18 +183,9 @@ namespace HealthSystem.Booking.Services.ServiceService
 
         public async Task<bool> Delete(int id)
         {
-            var service = await context.Services.FindAsync(id);
+            var service = new Service() { Id = id };
 
-            if (service is null)
-            {
-                return false;
-            }
-
-            var bookings = context.Bookings
-                .Where(x => x.ServiceId == service.Id);
-
-            context.Bookings.RemoveRange(bookings);
-            await context.SaveChangesAsync();
+            await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Bookings WHERE ServiceId = {id}");
 
             context.Services.Remove(service);
             await context.SaveChangesAsync();
@@ -204,10 +195,7 @@ namespace HealthSystem.Booking.Services.ServiceService
 
         public async Task DeleteAllByDoctorId(int doctorId)
         {
-            var services = context.Services.Where(x => x.DoctorId == doctorId);
-
-            context.Services.RemoveRange(services);
-            await context.SaveChangesAsync();
+            await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Services WHERE DoctorId = {doctorId}");
         }
 
         public async Task<ServiceDetailsModel> DetailsAsync(int id)
