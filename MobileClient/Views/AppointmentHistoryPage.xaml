@@ -6,7 +6,6 @@
              Title="AppointmentHistoryPage">
     <ContentPage.Content>
         <StackLayout>
-            <!-- Title Label -->
             <Label Text="Записани часове"
                    FontSize="24"
                    FontAttributes="Bold"
@@ -15,7 +14,6 @@
                    TextColor="#007ACC"
                    Margin="20"/>
 
-            <!-- Appointment History List -->
             <CollectionView ItemsSource="{Binding History}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -40,7 +38,10 @@
                                            FontSize="14" 
                                            VerticalOptions="Center"
                                            TextColor="Gray"/>
-                                    <Button Text="Добави оценка" Command="{Binding AddRatingCommand}" CommandParameter="{Binding Id}" IsVisible="{Binding IsPast}"></Button>
+                                    <Button Text="Добави оценка" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:AppointmentHistoryViewModel}}, Path=AddRatingCommand}" 
+                                            CommandParameter="{Binding Id}" 
+                                            IsVisible="{Binding IsPast}" />
                                 </StackLayout>
                             </Frame>
                         </SwipeView>

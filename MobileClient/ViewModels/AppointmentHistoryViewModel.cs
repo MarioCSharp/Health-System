@@ -53,7 +53,9 @@ namespace HealthProject.ViewModels
 
             foreach (var app in apps)
             {
-                if (DateTime.Parse(app.Date) < DateTime.Now)
+                var parsed = DateTime.TryParseExact(app.Date, "dd.MM.yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime date);
+
+                if (date < DateTime.Now)
                 {
                     app.IsPast = true;
                 }
