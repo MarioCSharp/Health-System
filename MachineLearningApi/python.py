@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.metrics import accuracy_score, classification_report
 
-url = "https://raw.githubusercontent.com/MarioCSharp/data-sets/main/symptoms_diagnosis_prevention.csv"
+url = "main-dataset.csv"
 data = pd.read_csv(url)
 
 data = data.dropna()
