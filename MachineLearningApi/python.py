@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.metrics import accuracy_score, classification_report
+import joblib
 
 url = "main-dataset.csv"
 data = pd.read_csv(url)
@@ -19,12 +20,12 @@ data = pd.concat([data, symptoms_df], axis=1)
 
 data = data.drop('Симптоми', axis=1)
 
-data['Комбинирано'] = data['Диагноза'] + '|' + data['Предотвратяване']
+data['Комбинирано'] = data['Диагноза'] + '|' + data['Предотвратяване'] + '|' + data['Лекар']
 
 le = LabelEncoder()
 data['Комбинирано'] = le.fit_transform(data['Комбинирано'])
 
-X = data.drop(['Диагноза', 'Предотвратяване', 'Комбинирано'], axis=1)
+X = data.drop(['Диагноза', 'Предотвратяване', 'Лекар', 'Комбинирано'], axis=1)
 y = data['Комбинирано']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -36,7 +37,6 @@ y_pred = model.predict(X_test)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 
-import joblib
 joblib.dump(model, 'symptoms_diagnosis_prevention_model.pkl')
 joblib.dump(mlb_symptoms, 'mlb_symptoms.pkl')
 joblib.dump(le, 'label_encoder.pkl')

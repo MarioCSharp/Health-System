@@ -181,14 +181,9 @@ namespace HealthSystem.Admins.Services.HospitalService
             };
         }
 
-        public async Task<bool> RemoveAsync(int id) // TODO: Optimize
+        public async Task<bool> RemoveAsync(int id)
         {
-            var hospital = await context.Hospitals.FindAsync(id);
-
-            if (hospital == null)
-            {
-                return false;
-            }
+            var hospital = new Hospital() { Id = id };
 
             var doctors = await context.Doctors.Where(x => x.HospitalId == id).ToListAsync();
 
@@ -200,7 +195,7 @@ namespace HealthSystem.Admins.Services.HospitalService
             context.Hospitals.Remove(hospital);
             await context.SaveChangesAsync();
 
-            return !await context.Hospitals.ContainsAsync(hospital);
+            return !await context.Hospitals.AnyAsync(x => x.Id == id);
         }
     }
 }

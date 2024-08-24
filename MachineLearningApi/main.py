@@ -21,6 +21,7 @@ class PredictionResponse(BaseModel):
     diagnosis: str
     prevention: str
     probability: float
+    doctorSpecialization: str
 
 @app.post("/predict", response_model=list[PredictionResponse])
 async def predict_symptoms(request: SymptomsRequest):
@@ -45,11 +46,12 @@ async def predict_symptoms(request: SymptomsRequest):
     
     response = []
     for idx, prediction in zip(top_n_indices, top_n_predictions):
-        diagnosis, prevention = prediction.split('|')
+        diagnosis, prevention, doctorSpecialization = prediction.split('|')
         response.append(PredictionResponse(
             diagnosis=diagnosis,
             prevention=prevention,
-            probability=probabilities[idx]
+            probability=probabilities[idx],
+            doctorSpecialization=doctorSpecialization
         ))
     
     return response

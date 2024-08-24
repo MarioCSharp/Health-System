@@ -76,7 +76,7 @@ function DoctorAddComponent() {
           );
         }
 
-        navigate(`/`);
+        navigate(`/doctors/${hospitalId}`);
       } else {
         throw new Error(
           "You are either not authorized or there is a problem in the system!"
