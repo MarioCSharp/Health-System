@@ -2,7 +2,6 @@
 using HealthSystem.Admins.Data.Models;
 using HealthSystem.Admins.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace HealthSystem.Admins.Services.DoctorService
 {
@@ -99,6 +98,11 @@ namespace HealthSystem.Admins.Services.DoctorService
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<bool> AppointmentHasRating(int appointmentId)
+        {
+            return await context.DoctorRatings.AnyAsync(x => x.AppointmentId == appointmentId);
         }
 
         public async Task Edit(DoctorDetailsModel model, string userId)

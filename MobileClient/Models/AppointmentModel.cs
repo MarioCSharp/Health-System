@@ -8,5 +8,8 @@
         public string? Date { get; set; }
 
         public bool IsPast { get; set; }
+        public bool HasRating { get; set; }
+
+        public bool IsVisible { get; set; }
     }
 }

@@ -36,6 +36,34 @@ namespace HealthProject.Services.AppointmentService
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var appointments = JsonSerializer.Deserialize<List<AppointmentModel>>(responseBody, _jsonSerializerOptions);
 
+                foreach (var app in appointments)
+                {
+                    url = $"{_baseAddress}:5025/api/Doctor/HasRating?appointmentId={app.Id}";
+
+                    response = await _httpClient.GetAsync(url);
+
+                    responseBody = await response.Content.ReadAsStringAsync();
+                    var hasRating = JsonSerializer.Deserialize<bool>(responseBody, _jsonSerializerOptions);
+
+                    app.HasRating = hasRating;
+
+                    var parsed = DateTime.TryParseExact(app.Date, "dd.MM.yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime date);
+
+                    if (date < DateTime.Now)
+                    {
+                        app.IsPast = true;
+                    }
+
+                    if (app.HasRating || !app.IsPast)
+                    {
+                        app.IsVisible = false;
+                    }
+                    else
+                    {
+                        app.IsVisible = true;
+                    }
+                }
+
                 return appointments ?? new List<AppointmentModel>();
             }
             catch (HttpRequestException e)

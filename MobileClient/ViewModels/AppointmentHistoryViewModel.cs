@@ -51,16 +51,6 @@ namespace HealthProject.ViewModels
 
             var apps = await appointmentService.GetUserAppointmentsAsync(authToken.UserId);
 
-            foreach (var app in apps)
-            {
-                var parsed = DateTime.TryParseExact(app.Date, "dd.MM.yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime date);
-
-                if (date < DateTime.Now)
-                {
-                    app.IsPast = true;
-                }
-            }
-
             History = new ObservableCollection<AppointmentModel>(apps);
         }
     }

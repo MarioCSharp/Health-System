@@ -104,5 +104,11 @@ namespace HealthSystem.Admins.Controllers
 
             return result ? Ok(true) : BadRequest();
         }
+
+        [HttpGet("HasRating")]
+        public async Task<IActionResult> HasRating([FromQuery] int appointmentId)
+        {
+            return Ok(await doctorService.AppointmentHasRating(appointmentId));
+        }
     }
 }
