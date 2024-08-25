@@ -224,6 +224,20 @@ namespace HealthSystem.Admins.Services.DoctorService
             };
         }
 
+        public async Task<List<DoctorModel>> GetTopDoctorsWithSpecialization(string specialization, int top)
+        {
+            return await context.Doctors
+                    .Where(x => x.Specialization == specialization)
+                    .OrderBy(x => context.DoctorRatings.Where(y => y.DoctorId == x.Id).Sum(x => x.Rating) / context.DoctorRatings.Where(y => y.DoctorId == x.Id).Count())
+                    .Select(x => new DoctorModel()
+                    {
+                        Id = x.Id,
+                        FullName = x.FullName,
+                        Specialization = x.Specialization
+                    })
+                    .ToListAsync();
+        }
+
         public async Task<int> HospitalIdByDirector(string userId)
         {
             var hospital = await context.Hospitals.FirstOrDefaultAsync(x => x.OwnerId == userId);

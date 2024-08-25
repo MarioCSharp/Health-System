@@ -1,7 +1,9 @@
-﻿namespace HealthProject.Services.DiagnosisService
+﻿using HealthProject.Models;
+
+namespace HealthProject.Services.DiagnosisService
 {
     public interface IDiagnosisService
     {
-        Task<string> GetPrediction(List<string> symptoms);
+        Task<PredictionModel> GetPrediction(List<string> symptoms);
     }
 }

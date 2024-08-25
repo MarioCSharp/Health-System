@@ -6,13 +6,17 @@
              Title="Diagnosis Prediction">
 
     <VerticalStackLayout Padding="10" Spacing="10">
-        <Entry x:Name="SymptomEntry" Placeholder="Enter a symptom"
-               Text="{Binding SymptomEntryText, Mode=TwoWay}" />
+        <!-- Entry for entering a symptom -->
+        <Entry x:Name="SymptomEntry" 
+               Placeholder="Enter a symptom"
+               Text="{Binding SymptomInput}" />
 
+        <!-- Button to add the symptom -->
         <Button Text="Add Symptom"
                 Command="{Binding AddSymptomCommand}"
                 CommandParameter="{Binding Text, Source={x:Reference SymptomEntry}}" />
 
+        <!-- CollectionView to display added symptoms -->
         <CollectionView ItemsSource="{Binding Symptoms}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
@@ -21,9 +25,11 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+        <!-- Button to submit symptoms and get prediction -->
         <Button Text="Submit Symptoms"
                 Command="{Binding SubmitSymptomsCommand}"/>
 
+        <!-- Label to display the prediction result -->
         <Label Text="{Binding PredictionResult}" 
                FontSize="Medium" 
                TextColor="Blue"

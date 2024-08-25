@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HealthProject.Models;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
@@ -24,7 +25,7 @@ namespace HealthProject.Services.DiagnosisService
             };
         }
 
-        public async Task<string> GetPrediction(List<string> symptoms)
+        public async Task<PredictionModel> GetPrediction(List<string> symptoms)
         {
             CheckInternetConnection();
 
@@ -44,12 +45,41 @@ namespace HealthProject.Services.DiagnosisService
 
                     var sb = new StringBuilder();
 
+                    var count = 1;
+
+                    var neededDoctors = new Dictionary<string, int>();
+
                     foreach (var prediction in predictions)
                     {
-                        sb.AppendLine($"Диагноза: {prediction.Diagnosis}, Предпазване: {prediction.Prevention}, Точност: {prediction.Probability * 100}%");
+                        sb.AppendLine($"---Прогноза {count++}---");
+                        sb.AppendLine($"Диагноза: {prediction.Diagnosis}\n Предпазване: {prediction.Prevention}\n Точност: {prediction.Probability * 100}%");
+
+                        if (!neededDoctors.ContainsKey(prediction.DoctorSpecialization))
+                        {
+                            neededDoctors[prediction.DoctorSpecialization] = 1;
+                        }
+                        else
+                        {
+                            neededDoctors[prediction.DoctorSpecialization]++; 
+                        }
                     }
 
-                    return sb.ToString();
+                    var recommendedDoctors = new List<DoctorModel>();
+
+                    foreach (var doc in neededDoctors)
+                    {
+                        response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Doctor/GetTopDoctorsWithSpecialization?specialization={doc.Key}&top={doc.Value}");
+
+                        var responsesDoctors = JsonConvert.DeserializeObject<List<DoctorModel>>(responseContent);
+
+                        recommendedDoctors.AddRange(responsesDoctors);
+                    }
+
+                    return new PredictionModel()
+                    {
+                        Prediction = sb.ToString(),
+                        RecommendedDoctors = recommendedDoctors
+                    };
                 }
                 else
                 {
@@ -61,7 +91,7 @@ namespace HealthProject.Services.DiagnosisService
                 Console.WriteLine(error.Message);
             }
 
-            return string.Empty;
+            return new PredictionModel();
         }
 
         private void CheckInternetConnection()
@@ -77,6 +107,7 @@ namespace HealthProject.Services.DiagnosisService
             public string? Diagnosis { get; set; }
             public string? Prevention { get; set; }
             public float Probability { get; set; }
+            public string? DoctorSpecialization { get; set; }
         }
     }
 }

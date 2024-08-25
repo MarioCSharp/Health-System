@@ -110,5 +110,11 @@ namespace HealthSystem.Admins.Controllers
         {
             return Ok(await doctorService.AppointmentHasRating(appointmentId));
         }
+
+        [HttpGet("GetTopDoctorsWithSpecialization")]
+        public async Task<IActionResult> GetTopDoctorsWithSpecialization([FromQuery] string specialization, int top)
+        {
+            return Ok(await doctorService.GetTopDoctorsWithSpecialization(specialization, top));
+        }
     }
 }

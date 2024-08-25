@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HealthProject.Models;
 using HealthProject.Services.DiagnosisService;
 using System.Collections.ObjectModel;
 
@@ -13,26 +14,27 @@ namespace HealthProject.ViewModels
         {
             this.diagnosisService = diagnosisService;
             Symptoms = new ObservableCollection<string>();
-            PredictionResult = string.Empty;
-            SymptomEntryText = string.Empty;
+            RecommendedDoctors = new ObservableCollection<DoctorModel>();
+            SymptomsInput = new SymptomsInput();
         }
 
         [ObservableProperty]
         private ObservableCollection<string> symptoms;
 
         [ObservableProperty]
-        private string predictionResult;
+        private SymptomsInput symptomsInput;
 
         [ObservableProperty]
-        private string symptomEntryText;
+        private ObservableCollection<DoctorModel> recommendedDoctors;
 
         [RelayCommand]
-        private void AddSymptom()
+        private void AddSymptom(string symptom)
         {
-            if (!string.IsNullOrWhiteSpace(SymptomEntryText))
+            if (!string.IsNullOrWhiteSpace(symptom))
             {
-                Symptoms.Add(SymptomEntryText);
-                SymptomEntryText = string.Empty;
+                Symptoms.Add(symptom);
+                SymptomsInput.SymptomInput = "";
+                SymptomsInput.PredictionResult = "";
             }
         }
 
@@ -42,12 +44,20 @@ namespace HealthProject.ViewModels
             if (Symptoms.Any())
             {
                 var prediction = await diagnosisService.GetPrediction(Symptoms.ToList());
-                PredictionResult = prediction;
+
+                SymptomsInput.PredictionResult = prediction.Prediction ?? "Error!";
+                RecommendedDoctors = new ObservableCollection<DoctorModel>(prediction.RecommendedDoctors);
             }
             else
             {
-                PredictionResult = "Please add at least one symptom.";
+                SymptomsInput.PredictionResult = "Please add at least one symptom.";
             }
         }
+    }
+
+    public class SymptomsInput
+    {
+        public string? SymptomInput { get; set; } = "";
+        public string? PredictionResult { get; set; } = "";
     }
 }
