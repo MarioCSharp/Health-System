@@ -119,7 +119,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpGet("DeleteAllByDoctorId")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> DeleteAllByDoctorId([FromQuery] int doctorId)
         {
             await serviceService.DeleteAllByDoctorId(doctorId);

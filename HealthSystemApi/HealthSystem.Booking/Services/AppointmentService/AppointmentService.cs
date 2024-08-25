@@ -56,9 +56,7 @@ namespace HealthSystem.Booking.Services.AppointmentService
 
         public async Task DeleteAllByDoctorId(int doctorId)
         {
-            var appointments = context.Bookings.Where(x => x.DoctorId == doctorId);
-            context.Bookings.RemoveRange(appointments);
-            await context.SaveChangesAsync();
+            await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Bookings WHERE DoctorId = {doctorId}");
         }
 
         public async Task<AppointmentReturnModel> GetAppointment(int id)

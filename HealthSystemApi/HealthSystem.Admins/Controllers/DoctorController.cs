@@ -29,7 +29,11 @@ namespace HealthSystem.Admins.Controllers
         [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Remove([FromQuery] int id)
         {
-            var result = await doctorService.RemoveAsync(id, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
+            var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+            var token = authHeader?.StartsWith("Bearer ") == true ? authHeader.Substring("Bearer ".Length).Trim() : null;
+
+            var result = await doctorService.RemoveAsync(id, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty, token);
 
             return result ? Ok() : BadRequest();
         }

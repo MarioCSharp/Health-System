@@ -69,14 +69,6 @@
                        AutomationProperties.IsInAccessibleTree="True" 
                        AutomationProperties.Name="Contact Number Entry" />
 
-                    <Label Text="ИД на здравен проблем:" Style="{StaticResource LabelStyle}" 
-                       AutomationProperties.IsInAccessibleTree="True" 
-                       AutomationProperties.Name="Owner ID" />
-                    <Entry x:Name="OwnerIdEntry" Placeholder="Идентификатор на здравен проблем" Style="{StaticResource EntryStyle}" 
-                       Text="{Binding Document.HealthIssueId}" 
-                       AutomationProperties.IsInAccessibleTree="True" 
-                       AutomationProperties.Name="Owner ID Entry" />
-
                     <Button Text="Изберете файл" 
                             Style="{StaticResource ButtonStyle}" 
                             Command="{Binding PickFileCommand}" 

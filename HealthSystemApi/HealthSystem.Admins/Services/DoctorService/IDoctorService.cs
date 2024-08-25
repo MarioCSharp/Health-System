@@ -5,7 +5,7 @@ namespace HealthSystem.Admins.Services.DoctorService
     public interface IDoctorService
     {
         Task<bool> AddAsync(DoctorAddModel model, string userId);
-        Task<bool> RemoveAsync(int id, string userId);
+        Task<bool> RemoveAsync(int id, string userId, string token);
         Task<List<DoctorModel>> GetAllAsync(int id);
         Task<DoctorDetailsModel> GetDetailsAsync(int id);
         Task<DoctorAddModel> GetDoctor(int id);

@@ -181,7 +181,7 @@ namespace HealthSystem.Admins.Services.HospitalService
             };
         }
 
-        public async Task<bool> RemoveAsync(int id)
+        public async Task<bool> RemoveAsync(int id, string token)
         {
             var hospital = new Hospital() { Id = id };
 
@@ -189,7 +189,7 @@ namespace HealthSystem.Admins.Services.HospitalService
 
             foreach (var doctor in doctors)
             {
-                await doctorService.RemoveAsync(doctor.Id, hospital.OwnerId);
+                await doctorService.RemoveAsync(doctor.Id, hospital.OwnerId, token);
             }
 
             context.Hospitals.Remove(hospital);

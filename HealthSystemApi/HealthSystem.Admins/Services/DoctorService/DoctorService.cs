@@ -2,6 +2,7 @@
 using HealthSystem.Admins.Data.Models;
 using HealthSystem.Admins.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 
 namespace HealthSystem.Admins.Services.DoctorService
 {
@@ -94,8 +95,15 @@ namespace HealthSystem.Admins.Services.DoctorService
                 AppointmentId = appointmentId
             };
 
-            await context.DoctorRatings.AddAsync(doctoRating);
-            await context.SaveChangesAsync();
+            try
+            {
+                await context.DoctorRatings.AddAsync(doctoRating);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             return true;
         }
@@ -250,7 +258,7 @@ namespace HealthSystem.Admins.Services.DoctorService
             return hospital.Id;
         }
 
-        public async Task<bool> RemoveAsync(int id, string userId)
+        public async Task<bool> RemoveAsync(int id, string userId, string token)
         {
             var doctor = await context.Doctors.FindAsync(id);
 
@@ -274,9 +282,17 @@ namespace HealthSystem.Admins.Services.DoctorService
                 }
             }
 
-            var response = await httpClient.GetAsync($"http://localhost:5046/api/Appointment/DeleteAllByDoctorId?doctorId={id}");
-            var response2 = await httpClient.GetAsync($"http://localhost:5046/api/Service/DeleteAllByDoctorId?doctorId={id}");
-            await httpClient.GetAsync($"http://localhost:5196/api/Authentication/DeleteFromRole?userId={doctor.UserId}&role={"Doctor"}");
+            var request1 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5046/api/Appointment/DeleteAllByDoctorId?doctorId={id}");
+            request1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await httpClient.SendAsync(request1);
+            
+            var request2 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5046/api/Service/DeleteAllByDoctorId?doctorId={id}");
+            request2.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response2 = await httpClient.SendAsync(request2);
+            
+            var request3 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5196/api/Authentication/DeleteFromRole?userId={doctor.UserId}&role=Doctor");
+            request3.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response3 = await httpClient.SendAsync(request3);
 
             context.Doctors.Remove(doctor);
             await context.SaveChangesAsync();

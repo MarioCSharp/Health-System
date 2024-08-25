@@ -28,18 +28,7 @@
                         HorizontalOptions="FillAndExpand"
                         Margin="0,0,0,10"
                         />
-
-            <Entry Placeholder="ИД на здравен проблем" 
-                   Keyboard="Numeric" 
-                   Text="{Binding Problem.HealthIssueId}" 
-                   FontSize="16"
-                   BackgroundColor="White"
-                   TextColor="#333333"
-                   HeightRequest="50"
-                   VerticalOptions="Start"
-                   HorizontalOptions="FillAndExpand"
-                   Margin="0,0,0,10"
-                   />
+            
             <CollectionView ItemsSource="{Binding Categories}" 
                             SelectionMode="Single"
                             SelectionChanged="OnCategorySelected">

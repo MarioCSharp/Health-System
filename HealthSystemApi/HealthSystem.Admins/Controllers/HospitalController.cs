@@ -40,7 +40,11 @@ namespace HealthSystem.Admins.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Remove([FromQuery] int id)
         {
-            var result = await hospitalService.RemoveAsync(id);
+            var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+            var token = authHeader?.StartsWith("Bearer ") == true ? authHeader.Substring("Bearer ".Length).Trim() : null;
+
+            var result = await hospitalService.RemoveAsync(id, token);
 
             if (result)
             {
