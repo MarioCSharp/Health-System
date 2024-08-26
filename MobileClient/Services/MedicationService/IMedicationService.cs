@@ -9,5 +9,6 @@ namespace HealthProject.Services.MedicationService
         Task<MedicationDetailsModel> DetailsAsync(int id);
         Task DeleteAsync(int id);
         Task<List<MedicationScheduleModel>> SchedulesAsync(string userId);
+        Task<List<MedicationDisplayModel>> GetUsersValidMedications();
     }
 }

@@ -3,16 +3,45 @@ using CommunityToolkit.Mvvm.Input;
 using HealthProject.Services.AuthenticationService;
 using System.Windows.Input;
 using HealthProject.Views;
+using System.Collections.ObjectModel;
+using HealthProject.Models;
+using HealthProject.Services.AppointmentService;
+using HealthProject.Services.MedicationService;
+
 namespace HealthProject.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject
     {
         private IAuthenticationService authenticationService;
+        private IAppointmentService appointmentService;
+        private IMedicationService medicationService;
 
-        public MainPageViewModel(IAuthenticationService authenticationService)
+        [ObservableProperty]
+        private ObservableCollection<AppointmentModel> appointments;
+
+        [ObservableProperty]
+        private ObservableCollection<MedicationDisplayModel> validMedications;
+
+        public MainPageViewModel(IAuthenticationService authenticationService,
+                                 IAppointmentService appointmentService,
+                                 IMedicationService medicationService)
         {
             EnterCommand = new AsyncRelayCommand(EnterAsync);
+
             this.authenticationService = authenticationService;
+            this.appointmentService = appointmentService;
+            this.medicationService = medicationService;
+
+            var auth = authenticationService.IsAuthenticated().Result;
+
+            if (!auth.IsAuthenticated)
+            {
+                Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
+            }
+
+            LoadNextAppointments();
+            LoadValidMedications();
         }
         public ICommand EnterCommand { get; }
 
@@ -28,6 +57,20 @@ namespace HealthProject.ViewModels
             {
                 await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
             }
+        }
+
+        public async void LoadNextAppointments()
+        {
+            var nextAppointments = await appointmentService.GetUsersNextAppointments();
+
+            Appointments = new ObservableCollection<AppointmentModel>(nextAppointments);
+        }
+
+        public async void LoadValidMedications()
+        {
+            var validMedications = await medicationService.GetUsersValidMedications();
+
+            ValidMedications = new ObservableCollection<MedicationDisplayModel>(validMedications);
         }
     }
 }

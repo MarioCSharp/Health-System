@@ -217,6 +217,26 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return result;
         }
 
+        public async Task<List<AppointmentModel>> GetUsersNextAppointments(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new List<AppointmentModel>();
+            }
+
+            return await context.Bookings
+                .Where(x => x.UserId == userId && x.Date > DateTime.Now)
+                .Select(x => new AppointmentModel()
+                {
+                    Id = x.Id,
+                    ServiceName = x.Service.Name,
+                    DoctorName = x.DoctorName,
+                    Date = x.Date.ToString("dd/MM/yyyy HH:mm")
+                })
+                .OrderBy(x => x.Date)
+                .Take(3).ToListAsync();
+        }
+
         public async Task<(bool, IFormFile)> HasPrescriptionAsync(int appointmentId)
         {
             var appointment = await context.Bookings.FindAsync(appointmentId);

@@ -6,5 +6,6 @@ namespace HealthProject.Services.AppointmentService
     {
         Task<List<AppointmentModel>> GetUserAppointmentsAsync(string userId);
         Task<List<PrescriptionDisplayModel>> GetUserPrescriptions(string userId);
+        Task<List<AppointmentModel>> GetUsersNextAppointments();
     }
 }

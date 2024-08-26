@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 using Plugin.LocalNotification;
+using System.Net.Http.Headers;
 
 namespace HealthProject.Services.MedicationService
 {
@@ -141,6 +142,41 @@ namespace HealthProject.Services.MedicationService
             }
 
             return new MedicationDetailsModel();
+        }
+
+        public async Task<List<MedicationDisplayModel>> GetUsersValidMedications()
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"{_baseAddress}:5115/api/Medication/GetUsersValidMedications");
+
+                var token = await SecureStorage.GetAsync("auth_token");
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await _httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var medications = System.Text.Json.JsonSerializer.Deserialize<List<MedicationDisplayModel>>(responseBody, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return medications ?? new List<MedicationDisplayModel>();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new List<MedicationDisplayModel>();
         }
 
         public async Task<List<MedicationScheduleModel>> SchedulesAsync(string userId)

@@ -124,5 +124,23 @@ namespace HealthSystem.HealthCare.Services.MedicationService
                     Days = medication.MedicationSchedule.Days
                 }).ToListAsync();
         }
+
+        public async Task<List<MedicationDisplayModel>> GetUsersValidMedications(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new List<MedicationDisplayModel>();
+            }
+
+            return await context.Medications
+                .Where(x => x.UserId == userId && x.StartDate <= DateTime.Now && x.EndDate > DateTime.Now)
+                .Select(x => new MedicationDisplayModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Dose = x.Dose,
+                    Type = x.Type
+                }).Take(3).ToListAsync();
+        }
     }
 }

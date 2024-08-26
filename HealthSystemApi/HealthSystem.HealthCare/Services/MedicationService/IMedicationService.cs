@@ -9,5 +9,6 @@ namespace HealthSystem.HealthCare.Services.MedicationService
         Task<MedicationDetailsModel> DetailsAsync(int id);
         Task<List<MedicationDisplayModel>> AllByUser(string userId);
         Task<List<MedicationScheduleModel>> GetUserScheduleAsync(string userId);
+        Task<List<MedicationDisplayModel>> GetUsersValidMedications(string userId);
     }
 }

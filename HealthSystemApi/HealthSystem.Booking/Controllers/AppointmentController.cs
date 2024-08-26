@@ -146,5 +146,14 @@ namespace HealthSystem.Booking.Controllers
 
             return Ok(result.DoctorId);
         }
+
+        [HttpGet("GetUsersNextAppointments")]
+        [Authorize]
+        public async Task<IActionResult> GetUsersNextAppointments()
+        {
+            var nextAppointmets = await appointmentService.GetUsersNextAppointments(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty);
+
+            return Ok(nextAppointmets);
+        }
     }
 }

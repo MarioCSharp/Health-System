@@ -1,5 +1,6 @@
 ﻿using HealthProject.Models;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace HealthProject.Services.AppointmentService
@@ -102,6 +103,38 @@ namespace HealthProject.Services.AppointmentService
             }
 
             return new List<PrescriptionDisplayModel>();
+        }
+
+        public async Task<List<AppointmentModel>> GetUsersNextAppointments()
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"{_baseAddress}:5046/api/Appointment/GetUsersNextAppointments");
+
+                var token = await SecureStorage.GetAsync("auth_token"); 
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await _httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var prescriptions = JsonSerializer.Deserialize<List<AppointmentModel>>(responseBody, _jsonSerializerOptions);
+
+                return prescriptions ?? new List<AppointmentModel>();
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return new List<AppointmentModel>();
         }
 
         private void CheckInternetConnection()

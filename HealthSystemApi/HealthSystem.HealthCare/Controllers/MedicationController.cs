@@ -1,6 +1,8 @@
 ﻿using HealthSystem.HealthCare.Models;
 using HealthSystem.HealthCare.Services.MedicationService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HealthSystem.HealthCare.Controllers
 {
@@ -55,6 +57,15 @@ namespace HealthSystem.HealthCare.Controllers
         public async Task<IActionResult> GetSchedule([FromQuery] string userId)
         {
             return Ok(await medicationService.GetUserScheduleAsync(userId));
+        }
+
+        [HttpGet("GetUsersValidMedications")]
+        [Authorize]
+        public async Task<IActionResult> GetUsersValidMedications()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+
+            return Ok(await medicationService.GetUsersValidMedications(userId));
         }
     }
 }

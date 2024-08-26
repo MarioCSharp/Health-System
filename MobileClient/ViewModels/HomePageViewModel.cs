@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using HealthProject.Views;
 using HealthProject.Services.AuthenticationService;
+
 namespace HealthProject.ViewModels
 {
     public partial class HomePageViewModel : ObservableObject

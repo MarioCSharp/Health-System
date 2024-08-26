@@ -16,5 +16,6 @@ namespace HealthSystem.Booking.Services.AppointmentService
         Task<(string, List<BookingDisplayModel>)> GetUserAppointments(string userId);
         Task<List<PrescriptionDisplayModel>> GetUserPrescriptions(string userId);
         Task<AppointmentReturnModel> GetAppointment(int id);
+        Task<List<AppointmentModel>> GetUsersNextAppointments(string userId);
     }
 }
