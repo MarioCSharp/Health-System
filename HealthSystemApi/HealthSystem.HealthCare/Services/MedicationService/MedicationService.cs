@@ -36,7 +36,6 @@ namespace HealthSystem.HealthCare.Services.MedicationService
                 Type = medicationModel.Type,
                 EndDate = medicationModel.EndDate,
                 StartDate = medicationModel.StartDate,
-                HealthIssueId = medicationModel.HealthIssueId,
                 Note = medicationModel.Note,
                 Dose = medicationModel.Dose,
                 UserId = medicationModel.UserId,
@@ -113,7 +112,6 @@ namespace HealthSystem.HealthCare.Services.MedicationService
                 {
                     Id = medication.Id,
                     Name = medication.Name,
-                    HealthIssueName = medication.HealthIssue.Name ?? string.Empty,
                     Dose = medication.Dose,
                     Type = medication.Type,
                     Note = medication.Note,

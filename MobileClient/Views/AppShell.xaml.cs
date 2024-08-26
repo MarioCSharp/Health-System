@@ -30,7 +30,6 @@ namespace HealthProject.Views
             Routing.RegisterRoute(nameof(MedicationAddPage), typeof(MedicationAddPage));
             Routing.RegisterRoute(nameof(MedicationDetailsPage), typeof(MedicationDetailsPage));
             Routing.RegisterRoute(nameof(MedicationViewPage), typeof(MedicationViewPage));
-            Routing.RegisterRoute(nameof(LogbookViewPage), typeof(LogbookViewPage));
             Routing.RegisterRoute(nameof(LogbookAddPage), typeof(LogbookAddPage));
             Routing.RegisterRoute(nameof(LogbookEditPage), typeof(LogbookEditPage));
             Routing.RegisterRoute(nameof(AddRatingPage), typeof(AddRatingPage));

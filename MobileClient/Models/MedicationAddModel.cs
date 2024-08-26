@@ -2,8 +2,6 @@
 {
     public class MedicationAddModel
     {
-        public int HealthIssueId { get; set; }
-
         public string? Name { get; set; }
 
         public int Dose { get; set; }

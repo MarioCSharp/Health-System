@@ -68,7 +68,7 @@
         <ShellContent
         Title="Амбулаторни листове"
         ContentTemplate="{DataTemplate local:MyPrescriptionsPage}"
-        Route="LogbookViewPage"/>
+        Route="MyPrescriptionsPage"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Записи">

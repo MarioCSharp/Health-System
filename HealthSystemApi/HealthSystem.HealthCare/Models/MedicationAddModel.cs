@@ -4,7 +4,6 @@ namespace HealthSystem.HealthCare.Models
 {
     public class MedicationAddModel
     {
-        public int HealthIssueId { get; set; }
         public string? Name { get; set; }
         [Required]
         public int Dose { get; set; }

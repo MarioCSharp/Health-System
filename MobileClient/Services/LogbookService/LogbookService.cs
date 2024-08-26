@@ -43,7 +43,6 @@ namespace HealthProject.Services.LogbookService
             }
 
             form.Add(new StringContent(model.Type ?? ""), "Type");
-            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
             form.Add(new StringContent(model.Note ?? ""), "Note");
             form.Add(new StringContent(model.UserId ?? ""), "UserId");
             form.Add(new StringContent(model.Date.ToString("dd/MM/yyyy HH:mm")), "Date");
@@ -87,8 +86,6 @@ namespace HealthProject.Services.LogbookService
             }
 
             form.Add(new StringContent(model.Type), "Type");
-            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
-            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
             form.Add(new StringContent(model.Note), "Note");
             form.Add(new StringContent(model.UserId), "UserId");
             form.Add(new StringContent(model.Date.ToString("dd/MM/yyyy mm:HH")), "Date");

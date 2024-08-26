@@ -32,10 +32,6 @@
                    HorizontalOptions="Center" 
                    VerticalOptions="CenterAndExpand" />
 
-            <Label Text="ИД на ЗП:" Style="{StaticResource LabelStyle}" />
-            <Entry Placeholder="Въведате ИД на ЗП" Style="{StaticResource EntryStyle}" 
-                   Text="{Binding Medication.HealthIssueId}"  />
-
             <Label Text="Име на лекарството:" Style="{StaticResource LabelStyle}" />
             <Entry Placeholder="Въведате името на лекарството" Style="{StaticResource EntryStyle}" 
                    Text="{Binding Medication.Name}"  />

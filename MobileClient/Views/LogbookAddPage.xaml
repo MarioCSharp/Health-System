@@ -4,7 +4,6 @@
 
     <ScrollView>
         <StackLayout Padding="10">
-            <!-- Frequency Picker -->
             <Picker x:Name="FrequencyPicker" Title="Choose Measurement" SelectedIndexChanged="FrequencyPicker_SelectedIndexChanged">
                 <Picker.Items>
                     <x:String>Температура</x:String>
@@ -23,14 +22,9 @@
                     <x:String>Пиков поток</x:String>
                 </Picker.Items>
             </Picker>
+            
+            <Editor x:Name="Notes" Placeholder="Бележки" />
 
-            <!-- Health Issue ID -->
-            <Entry x:Name="HealthIssueId" Placeholder="Health Issue ID" Keyboard="Numeric" />
-
-            <!-- Notes -->
-            <Editor x:Name="Notes" Placeholder="Notes" />
-
-            <!-- Dynamic Inputs Based on Selection -->
             <StackLayout x:Name="Temperature" IsVisible="False">
                 <Label Text="Температура (°C)" />
                 <Entry x:Name="TemperatureInput" Keyboard="Numeric" />

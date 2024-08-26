@@ -18,7 +18,7 @@ namespace HealthProject.ViewModels
             this.logbookService = logbookService;
         }
 
-        public async Task AddAsync(List<int> values, List<string> factors, string notes, int hId, string type)
+        public async Task AddAsync(List<int> values, List<string> factors, string notes, string type)
         {
             var authToken = await authenticationService.IsAuthenticated();
 
@@ -33,7 +33,6 @@ namespace HealthProject.ViewModels
                 Values = values,
                 Factors = factors,
                 Note = notes,
-                HealthIssueId = hId,
                 Date = DateTime.Now,
                 Type = type,
                 UserId = authToken.UserId
@@ -43,7 +42,7 @@ namespace HealthProject.ViewModels
 
             if (result) 
             {
-                await Shell.Current.GoToAsync($"//{nameof(LogbookViewPage)}");
+                await Shell.Current.GoToAsync($"///{nameof(LogbookViewPage)}");
             }
         }
     }

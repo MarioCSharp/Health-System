@@ -21,7 +21,6 @@ namespace HealthSystem.HealthCare.Services.LogbookService
                 Type = model.Type,
                 Date = model.Date,
                 Factors = model.Factors,
-                HealthIssueId = model.HealthIssueId,
                 Note = model.Note,
                 UserId = model.UserId,
                 Values = model.Values
@@ -69,7 +68,6 @@ namespace HealthSystem.HealthCare.Services.LogbookService
             log.Type = model.Type;
             log.Values = model.Values;
             log.Note = model.Note;
-            log.HealthIssueId = model.HealthIssueId;
 
             await context.SaveChangesAsync();
 
@@ -92,7 +90,6 @@ namespace HealthSystem.HealthCare.Services.LogbookService
                 Type = log.Type,
                 Note = log.Note,
                 Factors = log.Factors,
-                HealthIssueId = log.HealthIssueId,
                 Values = log.Values
             };
         }

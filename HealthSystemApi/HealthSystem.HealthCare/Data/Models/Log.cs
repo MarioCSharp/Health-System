@@ -11,10 +11,6 @@ namespace HealthSystem.HealthCare.Data.Models
         [Required]
         public string? Type { get; set; }
 
-        public int HealthIssueId { get; set; }
-        [ForeignKey(nameof(HealthIssueId))]
-        public HealthIssue? HealthIssue { get; set; }
-
         [Required]
         public List<int> Values { get; set; } = new List<int>();
 

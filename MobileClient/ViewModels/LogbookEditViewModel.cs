@@ -19,7 +19,7 @@ namespace HealthProject.ViewModels
             Log = log;
         }
 
-        public async Task EditAsync(List<int> values, List<string> factors, string notes, int hId, string type)
+        public async Task EditAsync(List<int> values, List<string> factors, string notes, string type)
         {
             var log = new LogAddModel()
             {
@@ -27,7 +27,6 @@ namespace HealthProject.ViewModels
                 Values = values,
                 Factors = factors,
                 Note = notes,
-                HealthIssueId = hId,
                 Type = type
             };
 

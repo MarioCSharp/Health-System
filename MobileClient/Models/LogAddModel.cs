@@ -6,8 +6,6 @@
 
         public string? Type { get; set; }
 
-        public int HealthIssueId { get; set; }
-
         public List<int> Values { get; set; } = new List<int>();
 
         public List<string> Factors { get; set; } = new List<string>();

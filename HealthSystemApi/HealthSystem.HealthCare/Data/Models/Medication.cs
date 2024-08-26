@@ -8,10 +8,6 @@ namespace HealthSystem.HealthCare.Data.Models
         [Key]
         public int Id { get; set; }
 
-        public int HealthIssueId { get; set; }
-        [ForeignKey(nameof(HealthIssueId))]
-        public HealthIssue? HealthIssue { get; set; }
-
         public string? Name { get; set; }
 
         [Required]

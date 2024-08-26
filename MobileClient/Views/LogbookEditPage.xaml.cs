@@ -48,7 +48,6 @@ public partial class LogbookEditPage : ContentPage
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-        var hId = int.Parse(HealthIssueId.Text);
         var notes = Notes.Text;
 
         var values = new List<int>();
@@ -272,6 +271,6 @@ public partial class LogbookEditPage : ContentPage
                 break;
         }
 
-        await viewModel.EditAsync(values, factors, notes, hId, type);
+        await viewModel.EditAsync(values, factors, notes, type);
     }
 }

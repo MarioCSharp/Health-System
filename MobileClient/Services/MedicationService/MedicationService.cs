@@ -55,7 +55,6 @@ namespace HealthProject.Services.MedicationService
             form.Add(new StringContent(model.Take.ToString()), "Take");
             form.Add(new StringContent(model.SkipCount.ToString()), "SkipCount");
             form.Add(new StringContent(model.Rest.ToString()), "Rest");
-            form.Add(new StringContent(model.HealthIssueId.ToString()), "HealthIssueId");
             form.Add(new StringContent(model.UserId ?? string.Empty), "UserId");
 
             var response = await _httpClient.PostAsync($"{_baseAddress}:5115/api/Medication/Add", form);

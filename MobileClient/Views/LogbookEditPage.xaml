@@ -5,9 +5,6 @@
              Title="LogbookEditPage">
     <ScrollView>
         <VerticalStackLayout Padding="10">
-            <Label Text="ИД на ЗП:" Style="{StaticResource LabelStyle}" />
-            <Entry x:Name="HealthIssueId" Keyboard="Numeric" Placeholder="Въведате ИД на ЗП" Style="{StaticResource EntryStyle}" />
-
             <Picker x:Name="FrequencyPicker" 
             Title="Избери запис"
             SelectedIndexChanged="FrequencyPicker_SelectedIndexChanged">

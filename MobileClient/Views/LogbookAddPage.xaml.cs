@@ -34,12 +34,6 @@ public partial class LogbookAddPage : ContentPage
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-        if (!int.TryParse(HealthIssueId.Text, out var hId))
-        {
-            await DisplayAlert("Error", "Please enter a valid health issue ID.", "OK");
-            return;
-        }
-
         var notes = Notes.Text;
         var values = new List<int>();
         var factors = new List<string>();
@@ -109,7 +103,7 @@ public partial class LogbookAddPage : ContentPage
 
         var type = GetMeasurementType(FrequencyPicker.SelectedIndex);
 
-        await viewModel.AddAsync(values, factors, notes, hId, type);
+        await viewModel.AddAsync(values, factors, notes, type);
     }
 
     private string GetPickerSelection(Picker picker)

@@ -11,9 +11,6 @@ namespace HealthSystem.HealthCare.Models
         [FromForm(Name = "Type")]
         public string? Type { get; set; }
 
-        [FromForm(Name = "HealthIssueId")]
-        public int HealthIssueId { get; set; }
-
         [Required]
         [FromForm(Name = "Values")]
         public List<int> Values { get; set; } = new List<int>();
