@@ -1,29 +1,93 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.MainPage"
-             xmlns:local="clr-namespace:HealthProject.ViewModels">
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             BackgroundColor="#59bdf7">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Label
-                Text="Добре дошли!"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <Label
-                Text="За да продължите влезте в акаунта си."
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2" />
+        <ScrollView Grid.Row="0" Scrolled="OnScrollViewScrolled">
+            <VerticalStackLayout
+                Padding="30,0"
+                Spacing="25">
 
-            <Button
-                x:Name="CounterBtn"
-                Text="Влизане" 
-                HorizontalOptions="Fill"
-                Command="{Binding EnterCommand}"/>
-        </VerticalStackLayout>
-    </ScrollView>
+                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout>
+                        <Label Text="Следващи лекарства" FontAttributes="Bold" />
+                        <Image Source="medication_placeholder.png" HeightRequest="100" />
+                        <Label Text="Нямаш валидни лекарства" HorizontalTextAlignment="Center" />
+                        <Button Text="Виж своите лекарства" HorizontalOptions="End" />
+                    </VerticalStackLayout>
+                </Frame>
 
+                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                    <VerticalStackLayout>
+                        <Label Text="Слеващи записани часове" FontAttributes="Bold" />
+                        <Image Source="next_medications_placeholder.png" HeightRequest="100" />
+                        <Label Text="You have no upcoming medications!" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1" 
+              Padding="20" 
+              BackgroundColor="#327ce3"
+              HeightRequest="100"
+              ColumnSpacing="10"
+              x:Name="FooterGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Frame Grid.Column="0" BackgroundColor="Transparent" HasShadow="False" Padding="0">
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <Image Source="icon1.png" HeightRequest="20" WidthRequest="20" />
+                    <Label Text="Button 1" HorizontalTextAlignment="Center" TextColor="White"/>
+                </VerticalStackLayout>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Button1Command}" />
+                </Frame.GestureRecognizers>
+            </Frame>
+
+            <Frame Grid.Column="1" BackgroundColor="Transparent" HasShadow="False" Padding="0">
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <Image Source="icon2.png" HeightRequest="20" WidthRequest="20" />
+                    <Label Text="Button 2" HorizontalTextAlignment="Center" TextColor="White"/>
+                </VerticalStackLayout>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Button2Command}" />
+                </Frame.GestureRecognizers>
+            </Frame>
+
+            <Frame Grid.Column="2" BackgroundColor="Transparent" HasShadow="False" Padding="0">
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <Image Source="icon3.png" HeightRequest="20" WidthRequest="20" />
+                    <Label Text="Button 3" HorizontalTextAlignment="Center" TextColor="White"/>
+                </VerticalStackLayout>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Button3Command}" />
+                </Frame.GestureRecognizers>
+            </Frame>
+
+            <Frame Grid.Column="3" BackgroundColor="Transparent" HasShadow="False" Padding="0">
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <Image Source="icon4.png" HeightRequest="20" WidthRequest="20" />
+                    <Label Text="Button 4" HorizontalTextAlignment="Center" TextColor="White"/>
+                </VerticalStackLayout>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Button4Command}" />
+                </Frame.GestureRecognizers>
+            </Frame>
+
+        </Grid>
+    </Grid>
 </ContentPage>

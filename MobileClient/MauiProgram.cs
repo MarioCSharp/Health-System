@@ -39,8 +39,6 @@ namespace HealthProject
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<MainPage>();
-            builder.Services.AddTransient<AddHospitalPage>();
-            builder.Services.AddTransient<AddDoctorPage>();
             builder.Services.AddTransient<DocumentAddPage>();
             builder.Services.AddTransient<DocumentViewPage>();
             builder.Services.AddTransient<DocumentDetailsPage>();
@@ -93,9 +91,7 @@ namespace HealthProject
             builder.Services.AddTransient<IDiagnosisService, DiagnosisService>();
             builder.Services.AddTransient<HospitalDetailsPage>();
             builder.Services.AddTransient<MyPrescriptionsPage>();
-            builder.Services.AddTransient<EditDoctorInfo>();
             builder.Services.AddTransient<DoctorDetailsPage>();
-            builder.Services.AddTransient<AddServicePage>();
             builder.Services.AddTransient<ServiceDetailsPage>();
             builder.Services.AddTransient<BookingPage>();
             builder.Services.AddTransient<BookingViewModel>();

@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:HealthProject.ViewModels"
-             x:Class="HealthProject.Views.DiagnosisPredictionPage"
-             Title="Diagnosis Prediction">
+             xmlns:vm="clr-namespace:HealthProject.ViewModels"
+             x:Class="HealthProject.Views.DiagnosisPredictionPage">
 
-    <VerticalStackLayout Padding="10" Spacing="10">
-        <Entry x:Name="SymptomEntry" 
-               Placeholder="Въведи симптом"
-               Text="{Binding SymptomInput}" />
+    <StackLayout Padding="10" Spacing="10">
+        <Label Text="Enter Symptoms (space or comma-separated):" FontAttributes="Bold" />
 
-        <Button Text="Добави симптома"
-                Command="{Binding AddSymptomCommand}"
-                CommandParameter="{Binding Text, Source={x:Reference SymptomEntry}}" />
+        <Entry Placeholder="e.g., Headache Fever Cough"
+               Text="{Binding SymptomsInput}" />
 
-        <CollectionView ItemsSource="{Binding Symptoms}">
+        <Button Text="Submit Symptoms"
+                Command="{Binding SubmitSymptomsAsyncCommand}"
+                HorizontalOptions="Center" />
+
+        <Label Text="Diagnosis Prediction:" FontAttributes="Bold" />
+        <Label Text="{Binding DiagnosisResult}" />
+
+        <Label Text="Recommended Doctors:" FontAttributes="Bold" />
+        <CollectionView ItemsSource="{Binding RecommendedDoctors}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding .}" />
+                    <StackLayout>
+                        <Label Text="{Binding FullName}" FontAttributes="Bold" />
+                        <Label Text="{Binding Specialization}" />
+                    </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
-        <Button Text="Изпрати симптомите"
-                Command="{Binding SubmitSymptomsCommand}"/>
-
-        <Label Text="{Binding PredictionResult}" 
-               FontSize="Medium" 
-               TextColor="Blue"
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    </StackLayout>
 </ContentPage>

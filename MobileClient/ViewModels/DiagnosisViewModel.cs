@@ -1,63 +1,84 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Input;
 using HealthProject.Models;
 using HealthProject.Services.DiagnosisService;
-using System.Collections.ObjectModel;
 
 namespace HealthProject.ViewModels
 {
-    public partial class DiagnosisViewModel : ObservableObject
+    public class DiagnosisViewModel : INotifyPropertyChanged
     {
         private readonly IDiagnosisService diagnosisService;
+        private string symptomsInput;
+        private string diagnosisResult; 
+        private ObservableCollection<DoctorModel> recommendedDoctors;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public DiagnosisViewModel(IDiagnosisService diagnosisService)
         {
             this.diagnosisService = diagnosisService;
-            Symptoms = new ObservableCollection<string>();
             RecommendedDoctors = new ObservableCollection<DoctorModel>();
-            SymptomsInput = new SymptomsInput();
+
+            SubmitSymptomsAsyncCommand = new Command(async () => await SubmitSymptomsAsync());
         }
 
-        [ObservableProperty]
-        private ObservableCollection<string> symptoms;
-
-        [ObservableProperty]
-        private SymptomsInput symptomsInput;
-
-        [ObservableProperty]
-        private ObservableCollection<DoctorModel> recommendedDoctors;
-
-        [RelayCommand]
-        private void AddSymptom(string symptom)
+        public string SymptomsInput
         {
-            if (!string.IsNullOrWhiteSpace(symptom))
+            get => symptomsInput;
+            set
             {
-                Symptoms.Add(symptom);
-                SymptomsInput.SymptomInput = "";
-                SymptomsInput.PredictionResult = "";
+                symptomsInput = value;
+                OnPropertyChanged(nameof(SymptomsInput));
             }
         }
 
-        [RelayCommand]
+        public string DiagnosisResult
+        {
+            get => diagnosisResult;
+            set
+            {
+                diagnosisResult = value;
+                OnPropertyChanged(nameof(DiagnosisResult));
+            }
+        }
+
+        public ObservableCollection<DoctorModel> RecommendedDoctors
+        {
+            get => recommendedDoctors;
+            set
+            {
+                recommendedDoctors = value;
+                OnPropertyChanged(nameof(RecommendedDoctors));
+            }
+        }
+
+        public ICommand SubmitSymptomsAsyncCommand { get; }
+
         private async Task SubmitSymptomsAsync()
         {
-            if (Symptoms.Any())
+            if (!string.IsNullOrEmpty(SymptomsInput))
             {
-                var prediction = await diagnosisService.GetPrediction(Symptoms.ToList());
+                var symptomsList = SymptomsInput.Split(", ", StringSplitOptions.RemoveEmptyEntries)
+                                                .Select(s => s.Trim())
+                                                .ToList();
 
-                SymptomsInput.PredictionResult = prediction.Prediction ?? "Error!";
+                var prediction = await diagnosisService.GetPrediction(symptomsList);
+
+                SymptomsInput = string.Join(", ", symptomsList);
+                DiagnosisResult = prediction?.Prediction ?? "Error!"; 
                 RecommendedDoctors = new ObservableCollection<DoctorModel>(prediction.RecommendedDoctors);
             }
             else
             {
-                SymptomsInput.PredictionResult = "Please add at least one symptom.";
+                SymptomsInput = "Please enter symptoms before submitting.";
+                DiagnosisResult = string.Empty; 
             }
         }
-    }
 
-    public class SymptomsInput
-    {
-        public string? SymptomInput { get; set; } = "";
-        public string? PredictionResult { get; set; } = "";
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

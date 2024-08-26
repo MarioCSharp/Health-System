@@ -31,9 +31,4 @@ public partial class HospitalDetailsPage : ContentPage
         this.doctorService = doctorService;
         this.authenticationService = authenticationService;
     }
-
-    private async void OnAddDoctorClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync($"//{nameof(AddDoctorPage)}");
-    }
 }

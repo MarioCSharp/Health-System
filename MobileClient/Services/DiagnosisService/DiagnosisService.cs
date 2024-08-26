@@ -70,6 +70,11 @@ namespace HealthProject.Services.DiagnosisService
                     {
                         response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Doctor/GetTopDoctorsWithSpecialization?specialization={doc.Key}&top={doc.Value}");
 
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            continue;
+                        }
+
                         var responsesDoctors = JsonConvert.DeserializeObject<List<DoctorModel>>(responseContent);
 
                         recommendedDoctors.AddRange(responsesDoctors);
