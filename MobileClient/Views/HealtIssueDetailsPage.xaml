@@ -5,7 +5,6 @@
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="HealtIssueDetailsPage">
     <ContentPage.Resources>
-        <!-- Define styles for reuse -->
         <Style x:Key="HeaderLabelStyle" TargetType="Label">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="FontAttributes" Value="Bold" />

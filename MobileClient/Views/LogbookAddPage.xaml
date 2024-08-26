@@ -4,7 +4,7 @@
 
     <ScrollView>
         <StackLayout Padding="10">
-            <Picker x:Name="FrequencyPicker" Title="Choose Measurement" SelectedIndexChanged="FrequencyPicker_SelectedIndexChanged">
+            <Picker x:Name="FrequencyPicker" Title="Избери показател" SelectedIndexChanged="FrequencyPicker_SelectedIndexChanged">
                 <Picker.Items>
                     <x:String>Температура</x:String>
                     <x:String>Кръвно налягане</x:String>
@@ -31,13 +31,13 @@
             </StackLayout>
 
             <StackLayout x:Name="BloodPressure" IsVisible="False">
-                <Label Text="Systolic" />
+                <Label Text="Систоличен" />
                 <Entry x:Name="SystolicInput" Keyboard="Numeric" />
-                <Label Text="Diastolic" />
+                <Label Text="Диастоличен" />
                 <Entry x:Name="DiastolicInput" Keyboard="Numeric" />
-                <Label Text="Pulse" />
+                <Label Text="Пулсе" />
                 <Entry x:Name="PulseInput" Keyboard="Numeric" />
-                <Label Text="Position" />
+                <Label Text="Позиция" />
                 <Picker x:Name="PositionPicker">
                     <Picker.Items>
                         <x:String>Седнал</x:String>
@@ -45,7 +45,7 @@
                         <x:String>Прав</x:String>
                     </Picker.Items>
                 </Picker>
-                <Label Text="Site" />
+                <Label Text="Страна" />
                 <Picker x:Name="SitePicker">
                     <Picker.Items>
                         <x:String>Лява ръка</x:String>
@@ -63,47 +63,47 @@
             </StackLayout>
 
             <StackLayout x:Name="BloodSugar" IsVisible="False">
-                <Label Text="Blood Sugar (mg/dL)" />
+                <Label Text="Кръвна захар (mg/dL)" />
                 <Entry x:Name="BloodSugarInput" Keyboard="Numeric" />
             </StackLayout>
 
             <StackLayout x:Name="Weight" IsVisible="False">
-                <Label Text="Weight (kg)" />
+                <Label Text="Тегло (kg)" />
                 <Entry x:Name="WeightInput" Keyboard="Numeric" />
             </StackLayout>
 
             <StackLayout x:Name="Height" IsVisible="False">
-                <Label Text="Height (cm)" />
+                <Label Text="Височина (cm)" />
                 <Entry x:Name="HeightInput" Keyboard="Numeric" />
             </StackLayout>
 
             <StackLayout x:Name="Ketones" IsVisible="False">
-                <Label Text="Ketones (mmol/L)" />
+                <Label Text="Кетони (mmol/L)" />
                 <Entry x:Name="KetonesInput" Keyboard="Numeric" />
             </StackLayout>
 
             <StackLayout x:Name="Hydration" IsVisible="False">
-                <Label Text="Hydration (%)" />
+                <Label Text="Хидрация (%)" />
                 <Entry x:Name="HydrationInput" Keyboard="Numeric" />
             </StackLayout>
 
             <StackLayout x:Name="UrinePh" IsVisible="False">
-                <Label Text="Urine pH" />
+                <Label Text="Урина pH" />
                 <Entry x:Name="UrinePhInput" Keyboard="Numeric" />
             </StackLayout>
 
             <StackLayout x:Name="OxygenSaturation" IsVisible="False">
-                <Label Text="Oxygen Saturation (%)" />
+                <Label Text="Насищане с кислород (%)" />
                 <Entry x:Name="OxygenSaturationInput" Keyboard="Numeric" />
             </StackLayout>
 
             <StackLayout x:Name="RespiratoryRate" IsVisible="False">
-                <Label Text="Respiratory Rate (breaths/min)" />
+                <Label Text="Дихателна честота (breaths/min)" />
                 <Entry x:Name="RespiratoryRateInput" Keyboard="Numeric" />
             </StackLayout>
 
             <StackLayout x:Name="Menstruation" IsVisible="False">
-                <Label Text="Flow" />
+                <Label Text="Поток" />
                 <Picker x:Name="FlowPicker">
                     <Picker.Items>
                         <x:String>Лек</x:String>
@@ -111,7 +111,7 @@
                         <x:String>Обилен</x:String>
                     </Picker.Items>
                 </Picker>
-                <Label Text="Color" />
+                <Label Text="Цвят" />
                 <Picker x:Name="ColorPicker">
                     <Picker.Items>
                         <x:String>Светло червено</x:String>
@@ -120,7 +120,7 @@
                         <x:String>Черен</x:String>
                     </Picker.Items>
                 </Picker>
-                <Label Text="Consistency" />
+                <Label Text="Консистенция" />
                 <Picker x:Name="ConsistencyPicker">
                     <Picker.Items>
                         <x:String>Воден</x:String>
@@ -131,7 +131,7 @@
             </StackLayout>
 
             <StackLayout x:Name="Cholesterol" IsVisible="False">
-                <Label Text="Total Cholesterol (mg/dL)" />
+                <Label Text="Общ холестерол (mg/dL)" />
                 <Entry x:Name="CholesterolInput" Keyboard="Numeric" />
                 <Label Text="HDL (mg/dL)" />
                 <Entry x:Name="HDLInput" Keyboard="Numeric" />
@@ -147,11 +147,11 @@
             </StackLayout>
 
             <StackLayout x:Name="PeakFlow" IsVisible="False">
-                <Label Text="Peak Flow (L/min)" />
+                <Label Text="Пиков поток (L/min)" />
                 <Entry x:Name="PeakFlowInput" Keyboard="Numeric" />
             </StackLayout>
 
-            <Button Text="Save" Clicked="Button_Clicked" />
+            <Button Text="Запиши" Clicked="Button_Clicked" />
         </StackLayout>
     </ScrollView>
 </ContentPage>

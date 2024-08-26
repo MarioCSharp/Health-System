@@ -48,20 +48,17 @@
         <ScrollView>
             <StackLayout Style="{StaticResource ContentPaddingStyle}">
 
-                <!-- Document Information -->
                 <Label Text="{Binding Document.Type}" Style="{StaticResource HeaderLabelStyle}" />
                 <Label Text="{Binding Document.Title}" Style="{StaticResource SubHeaderLabelStyle}" />
                 <Label Text="{Binding Document.Notes}" Style="{StaticResource SubHeaderLabelStyle}" />
                 <Label Text="{Binding Document.HealthIssueName}" Style="{StaticResource SubHeaderLabelStyle}" />
 
-                <!-- File Section -->
                 <Label Text="Файл" Style="{StaticResource HeaderLabelStyle}" />
                 <Button Text="Изтегляне" Style="{StaticResource ButtonStyle}" Clicked="OnDownloadDocument"/>
 
             </StackLayout>
         </ScrollView>
 
-        <!-- Floating Edit Button -->
         <Button Text="✎" Style="{StaticResource FloatingButtonStyle}"/>
     </Grid>
 </ContentPage>

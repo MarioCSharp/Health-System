@@ -37,7 +37,6 @@
     <Grid BackgroundColor="White">
         <StackLayout Padding="10" Margin="0,0,0,70">
 
-            <!-- Medication List -->
             <CollectionView ItemsSource="{Binding Medications}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

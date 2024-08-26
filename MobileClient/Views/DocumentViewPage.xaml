@@ -9,7 +9,6 @@
     <ContentPage.Content>
         <StackLayout Padding="20" Spacing="15">
 
-            <!-- Larger Click Area for the Add Document Button -->
             <Frame Padding="10" Margin="0,10" BackgroundColor="Transparent" HasShadow="False">
                 <Button Text="Добави документ" 
                         Command="{Binding AddDocumentCommand}"

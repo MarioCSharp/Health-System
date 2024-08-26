@@ -7,7 +7,6 @@
              x:Name="RootPage"
              Shell.NavBarIsVisible="True">
     <ContentPage.Resources>
-        <!-- Define styles for reuse -->
         <Style x:Key="HeaderLabelStyle" TargetType="Label">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="FontAttributes" Value="Bold" />
@@ -52,7 +51,6 @@
         <ScrollView>
             <StackLayout Style="{StaticResource ContentPaddingStyle}">
 
-                <!-- Hospital Information Section -->
                 <Frame Style="{StaticResource CardFrameStyle}">
                     <StackLayout>
                         <Label Text="{Binding Hospital.HospitalName}" Style="{StaticResource HeaderLabelStyle}" />
@@ -61,7 +59,6 @@
                     </StackLayout>
                 </Frame>
 
-                <!-- Doctors Section -->
                 <Label Text="Специалисти" Style="{StaticResource HeaderLabelStyle}" />
 
                 <CollectionView ItemsSource="{Binding Doctors}" x:Name="DoctorsCollectionView" SelectionMode="None">
@@ -86,8 +83,5 @@
 
             </StackLayout>
         </ScrollView>
-
-        <!-- Add Doctor Button -->
-        <Button IsVisible="{Binding IsAdmin}" Text="Add Doctor" Style="{StaticResource ButtonStyle}" Clicked="OnAddDoctorClicked"/>
     </Grid>
 </ContentPage>

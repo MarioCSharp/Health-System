@@ -10,7 +10,7 @@
         <Grid>
             <Label FontSize="32" 
                    FontAttributes="Bold"
-                   Text="Logbook"
+                   Text="Записи"
                    HorizontalOptions="Center"/>
 
             <CollectionView ItemsSource="{Binding Logbook}" Margin="10, 70">
@@ -23,7 +23,6 @@
                                HasShadow="True" 
                                BackgroundColor="White">
                             <Grid>
-                                <!-- Logbook Details (left side) -->
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -41,7 +40,6 @@
                                            TextColor="Gray"/>
                                 </StackLayout>
 
-                                <!-- Delete Icon (right side) -->
                                 <ImageButton Source="recycle_bin.png" 
                                              BackgroundColor="Transparent"
                                              Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"

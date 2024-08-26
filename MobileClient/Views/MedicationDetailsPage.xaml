@@ -58,9 +58,6 @@
                         <Label Text="{Binding Medication.EndDate}" Style="{StaticResource SubHeaderLabelStyle}" />
                     </StackLayout>
                 </Frame>
-
-                <Label Text="Симптоми" Style="{StaticResource HeaderLabelStyle}" />
-
             </StackLayout>
         </ScrollView>
         <Button Text="Edit" Style="{StaticResource ButtonStyle}"/>
