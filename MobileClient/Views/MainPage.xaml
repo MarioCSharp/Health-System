@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.MainPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             BackgroundColor="#59bdf7">
+             BackgroundColor="White">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -11,36 +11,65 @@
         </Grid.RowDefinitions>
 
         <ScrollView Grid.Row="0" Scrolled="OnScrollViewScrolled">
-            <VerticalStackLayout
-                Padding="30,0"
-                Spacing="25">
+            <VerticalStackLayout Padding="30,0" Spacing="25">
 
-                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                <!-- Medications Frame -->
+                <Frame BackgroundColor="#59bdf7" CornerRadius="10" Padding="15">
                     <VerticalStackLayout>
                         <Label Text="Следващи лекарства" FontAttributes="Bold" />
-                        <Image Source="medication_placeholder.png" HeightRequest="100" />
-                        <Label Text="Нямаш валидни лекарства" HorizontalTextAlignment="Center" />
+
+                        <CollectionView ItemsSource="{Binding ValidMedications}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Name}" />
+                                        <Label Text="{Binding Dose}" />
+                                        <Label Text="{Binding Type}" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Image Source="medication_placeholder.png" HeightRequest="100" />
+                                    <Label Text="Нямаш валидни лекарства" HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+
                         <Button Text="Виж своите лекарства" HorizontalOptions="End" />
                     </VerticalStackLayout>
                 </Frame>
 
-                <Frame BackgroundColor="White" CornerRadius="10" Padding="15">
+                <!-- Appointments Frame -->
+                <Frame BackgroundColor="#59bdf7" CornerRadius="10" Padding="15">
                     <VerticalStackLayout>
                         <Label Text="Слеващи записани часове" FontAttributes="Bold" />
-                        <Image Source="next_medications_placeholder.png" HeightRequest="100" />
-                        <Label Text="You have no upcoming medications!" HorizontalTextAlignment="Center" />
+
+                        <CollectionView ItemsSource="{Binding Appointments}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Date, StringFormat='{0:dd MMM yyyy HH:mm}'}" />
+                                        <Label Text="{Binding DoctorName}" />
+                                        <Label Text="{Binding ServiceName}" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Image Source="next_medications_placeholder.png" HeightRequest="100" />
+                                    <Label Text="You have no upcoming appointments!" HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
                     </VerticalStackLayout>
                 </Frame>
 
             </VerticalStackLayout>
         </ScrollView>
 
-        <Grid Grid.Row="1" 
-              Padding="20" 
-              BackgroundColor="#327ce3"
-              HeightRequest="100"
-              ColumnSpacing="10"
-              x:Name="FooterGrid">
+        <!-- Footer Grid -->
+        <Grid Grid.Row="1" Padding="20" BackgroundColor="#327ce3" HeightRequest="100" ColumnSpacing="10" x:Name="FooterGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -48,6 +77,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
+            <!-- Buttons in the Footer -->
             <Frame Grid.Column="0" BackgroundColor="Transparent" HasShadow="False" Padding="0">
                 <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                     <Image Source="icon1.png" HeightRequest="20" WidthRequest="20" />

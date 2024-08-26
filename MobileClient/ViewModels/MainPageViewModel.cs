@@ -32,16 +32,7 @@ namespace HealthProject.ViewModels
             this.appointmentService = appointmentService;
             this.medicationService = medicationService;
 
-            var auth = authenticationService.IsAuthenticated().Result;
-
-            if (!auth.IsAuthenticated)
-            {
-                Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
-                return;
-            }
-
-            LoadNextAppointments();
-            LoadValidMedications();
+            LoadResources();
         }
         public ICommand EnterCommand { get; }
 
@@ -71,6 +62,20 @@ namespace HealthProject.ViewModels
             var validMedications = await medicationService.GetUsersValidMedications();
 
             ValidMedications = new ObservableCollection<MedicationDisplayModel>(validMedications);
+        }
+
+        public async void LoadResources()
+        {
+            var auth = await authenticationService.IsAuthenticated();
+
+            if (!auth.IsAuthenticated)
+            {
+                Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return;
+            }
+
+            LoadNextAppointments();
+            LoadValidMedications();
         }
     }
 }

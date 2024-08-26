@@ -166,12 +166,12 @@ namespace HealthSystem.Booking.Services.AppointmentService
             var apps = context.Bookings
                 .Where(x => x.UserId == userId)
                 .Include(x => x.Service);
-            
+
             var result = new List<BookingDisplayModel>();
 
             var userName = "";
 
-            foreach (var appointment in apps) 
+            foreach (var appointment in apps)
             {
                 if (string.IsNullOrEmpty(userName))
                 {
@@ -226,15 +226,16 @@ namespace HealthSystem.Booking.Services.AppointmentService
 
             return await context.Bookings
                 .Where(x => x.UserId == userId && x.Date > DateTime.Now)
-                .Select(x => new AppointmentModel()
+                .OrderBy(x => x.Date)
+                .Take(3)
+                .Select(x => new AppointmentModel
                 {
                     Id = x.Id,
                     ServiceName = x.Service.Name,
                     DoctorName = x.DoctorName,
                     Date = x.Date.ToString("dd/MM/yyyy HH:mm")
                 })
-                .OrderBy(x => x.Date)
-                .Take(3).ToListAsync();
+                .ToListAsync();
         }
 
         public async Task<(bool, IFormFile)> HasPrescriptionAsync(int appointmentId)
@@ -269,7 +270,7 @@ namespace HealthSystem.Booking.Services.AppointmentService
         {
             var appointment = await context.Bookings.FindAsync(model.AppointmentId);
 
-            if (appointment == null) 
+            if (appointment == null)
             {
                 return (false, null);
             }
@@ -303,7 +304,7 @@ namespace HealthSystem.Booking.Services.AppointmentService
             gfx.DrawString("АМБУЛАТОРЕН ЛИСТ", titleFont, XBrushes.Black, new XRect(0, yPoint, page.Width, 20), XStringFormats.Center);
             yPoint += 30;
 
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 20); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 20);
             gfx.DrawString("Здравно заведение:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
 
             yPoint += 25;
@@ -311,34 +312,34 @@ namespace HealthSystem.Booking.Services.AppointmentService
             gfx.DrawString("Отделение:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
 
             yPoint += 25;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 60); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 60);
             gfx.DrawString($"Име на пациента: {model.FullName}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString($"Дата на раждане: {model.DateOfBirth}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 20, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString($"ЕГН: {model.EGN}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 35, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString($"Адрес: {model.Address}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 50, page.Width, 15), XStringFormats.TopLeft);
 
             yPoint += 65;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40);
             gfx.DrawString("Оплаквания:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Complaints, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40);
             gfx.DrawString("Диагноза:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Diagnosis, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40);
             gfx.DrawString("Състояние:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Conditions, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40);
             gfx.DrawString("Текущ статус:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Status, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 40);
             gfx.DrawString("Терапия:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString(model.Therapy, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
@@ -348,19 +349,19 @@ namespace HealthSystem.Booking.Services.AppointmentService
             gfx.DrawString(model.Tests, normalFont, XBrushes.Black, new XRect(marginLeft + 15, yPoint + 20, page.Width - 100, 15), XStringFormats.TopLeft);
 
             yPoint += 45;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30);
             gfx.DrawString($"Име на лекаря: {model.DoctorName}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
             gfx.DrawString($"УИН: {model.UIN}", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 20, page.Width, 15), XStringFormats.TopLeft);
 
             yPoint += 35;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30);
             gfx.DrawString("Подпис на лекаря:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
-            gfx.DrawLine(linePen, marginLeft + 100, yPoint + 20, page.Width - marginLeft - 20, yPoint + 20); 
+            gfx.DrawLine(linePen, marginLeft + 100, yPoint + 20, page.Width - marginLeft - 20, yPoint + 20);
 
             yPoint += 35;
-            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30); 
+            gfx.DrawRectangle(linePen, marginLeft, yPoint, page.Width - 80, 30);
             gfx.DrawString("Подпис на пациента:", normalFont, XBrushes.Black, new XRect(marginLeft + 5, yPoint + 5, page.Width, 15), XStringFormats.TopLeft);
-            gfx.DrawLine(linePen, marginLeft + 100, yPoint + 20, page.Width - marginLeft - 20, yPoint + 20); 
+            gfx.DrawLine(linePen, marginLeft + 100, yPoint + 20, page.Width - marginLeft - 20, yPoint + 20);
 
             MemoryStream stream = new MemoryStream();
             document.Save(stream, false);

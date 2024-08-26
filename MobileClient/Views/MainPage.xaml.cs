@@ -4,10 +4,11 @@ namespace HealthProject.Views
 {
     public partial class MainPage : ContentPage
     {
+        private MainPageViewModel mainPageViewModel;
         public MainPage(MainPageViewModel mainPageViewModel)
         {
             InitializeComponent();
-            BindingContext = mainPageViewModel;
+            BindingContext = this.mainPageViewModel = mainPageViewModel;
         }
 
         private double _lastScrollY = 0;
@@ -34,8 +35,13 @@ namespace HealthProject.Views
                 }
             }
 
-            // Update last scroll position
             _lastScrollY = currentScrollY;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            this.mainPageViewModel.LoadResources();
         }
     }
 }

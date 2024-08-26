@@ -134,13 +134,14 @@ namespace HealthSystem.HealthCare.Services.MedicationService
 
             return await context.Medications
                 .Where(x => x.UserId == userId && x.StartDate <= DateTime.Now && x.EndDate > DateTime.Now)
+                .Take(3)
                 .Select(x => new MedicationDisplayModel
                 {
                     Id = x.Id,
                     Name = x.Name,
                     Dose = x.Dose,
                     Type = x.Type
-                }).Take(3).ToListAsync();
+                }).ToListAsync();
         }
     }
 }

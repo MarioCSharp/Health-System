@@ -30,27 +30,37 @@ namespace HealthProject.Services.AuthenticationService
         {
             CheckInternetConnection();
 
-            var token = await SecureStorage.Default.GetAsync("auth_token");
-
-            if (token is null)
+            try
             {
-                return new AuthenticationModel() { IsAuthenticated = false };
+                var token = await SecureStorage.Default.GetAsync("auth_token");
+
+                if (token is null)
+                {
+                    return new AuthenticationModel() { IsAuthenticated = false };
+                }
+
+                var request = new HttpRequestMessage(HttpMethod.Get, $"{_baseAddress}:5196/api/Authentication/IsAuthenticated");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                var authModel = await response.Content.ReadFromJsonAsync<AuthenticationModel>(_jsonSerializerOptions);
+
+                if (!authModel.IsAuthenticated)
+                {
+                    SecureStorage.Default.Remove("auth_token");
+                }
+
+                return authModel;
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception as needed
+                Debug.WriteLine($"Error retrieving token: {ex.Message}");
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_baseAddress}:5196/api/Authentication/IsAuthenticated");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await _httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-
-            var authModel = await response.Content.ReadFromJsonAsync<AuthenticationModel>(_jsonSerializerOptions);
-
-            if (!authModel.IsAuthenticated)
-            {
-                SecureStorage.Default.Remove("auth_token");
-            }
-
-            return authModel;
+            return new AuthenticationModel() { IsAuthenticated = false };
         }
 
         public async Task Login(LoginModel loginModel)
