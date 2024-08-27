@@ -119,7 +119,7 @@
         </ScrollView>
 
         <!-- Footer Grid -->
-        <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="70" ColumnSpacing="10" x:Name="FooterGrid">
+        <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" ColumnSpacing="7" x:Name="FooterGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -130,30 +130,42 @@
             <!-- Footer Buttons -->
             <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                    <Image Source="icon1.png" Style="{StaticResource FooterImageStyle}" />
-                    <Label Text="Button 1" Style="{StaticResource FooterLabelStyle}" />
+                    <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
                 </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnMedicineButtonClicked" />
+                </Grid.GestureRecognizers>
             </Grid>
 
             <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                    <Image Source="icon2.png" Style="{StaticResource FooterImageStyle}" />
-                    <Label Text="Button 2" Style="{StaticResource FooterLabelStyle}" />
+                    <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
                 </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnRecordsButtonClicked" />
+                </Grid.GestureRecognizers>
             </Grid>
 
             <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                    <Image Source="icon3.png" Style="{StaticResource FooterImageStyle}" />
-                    <Label Text="Button 3" Style="{StaticResource FooterLabelStyle}" />
+                    <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
                 </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnDocumentsButtonClicked" />
+                </Grid.GestureRecognizers>
             </Grid>
 
             <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                    <Image Source="icon4.png" Style="{StaticResource FooterImageStyle}" />
-                    <Label Text="Button 4" Style="{StaticResource FooterLabelStyle}" />
+                    <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
                 </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
+                </Grid.GestureRecognizers>
             </Grid>
 
         </Grid>

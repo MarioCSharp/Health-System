@@ -44,7 +44,7 @@
                                            TextColor="Gray"/>
                                 </StackLayout>
 
-                                <ImageButton Source="delete_icon.png" 
+                                <ImageButton Source="recycle_bin.png" 
                                              BackgroundColor="Transparent"
                                              Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteMedicationCommand}"
                                              CommandParameter="{Binding Id}"
