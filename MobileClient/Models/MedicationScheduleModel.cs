@@ -4,8 +4,6 @@
     {
         public int Id { get; set; }
 
-        public string HealthIssueName { get; set; }
-
         public string? Name { get; set; }
 
         public int Dose { get; set; }
@@ -27,5 +25,7 @@
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        public string FormattedTimes => string.Join(", ", Times.Select(t => t.ToString(@"hh\:mm")));
     }
 }

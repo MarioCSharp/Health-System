@@ -1,30 +1,68 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:HealthProject.ViewModels"
-             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
              x:Class="HealthProject.Views.MedicationSchedulePage"
              Title="Medication Schedule">
-    <VerticalStackLayout>
-        <syncfusion:SfCalendar x:Name="calendar"
-                               VerticalOptions="Start"
-                               HorizontalOptions="FillAndExpand"
-                               SelectionChanged="OnDateSelected"/>
 
-        <CollectionView ItemsSource="{Binding FilteredMedications}">
+    <!-- Define the outer grid with three rows: 
+         1. Calendar navigation 
+         2. Calendar itself 
+         3. Medications list -->
+    <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*">
+
+        <!-- Calendar Navigation Grid -->
+        <Grid x:Name="calendarNavigationGrid"
+              RowDefinitions="Auto"
+              ColumnDefinitions="Auto, *, Auto"
+              Grid.Row="0"
+              Padding="10">
+            <Button Text="Back" 
+                    HorizontalOptions="Start" 
+                    Clicked="OnPreviousMonthClicked" />
+
+            <Label x:Name="monthYearLabel"
+                   Grid.Column="1"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontAttributes="Bold"
+                   FontSize="Large"
+                   Margin="0, 5"/>
+
+            <Button Text=">" 
+                    Grid.Column="2"
+                    HorizontalOptions="End" 
+                    Clicked="OnNextMonthClicked" />
+        </Grid>
+
+        <!-- Calendar Grid -->
+        <Grid x:Name="calendarGrid"
+              RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
+              ColumnDefinitions="*, *, *, *, *, *, *"
+              Grid.Row="1"
+              Padding="10">
+        </Grid>
+
+        <!-- Medications CollectionView -->
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding FilteredMedications}"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout>
-                        <Label Text="{Binding Name}" FontAttributes="Bold" />
-                        <Label Text="{Binding HealthIssueName}" FontAttributes="Bold" />
-                        <Label Text="{Binding Dose}" FontAttributes="Bold" />
-                        <Label Text="{Binding Type}" FontAttributes="Bold" />
-                        <Label Text="{Binding StartDate}" FontAttributes="Bold" />
-                        <Label Text="{Binding EndDate}" FontAttributes="Bold" />
-                        <Label Text="{Binding Times}" />
-                    </StackLayout>
+                    <Frame Padding="10" Margin="5" BorderColor="LightGray" CornerRadius="5">
+                        <StackLayout>
+                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="Medium"/>
+                            <Label Text="{Binding HealthIssueName}" FontAttributes="Italic"/>
+                            <Label Text="{Binding Dose, StringFormat='Dose: {0} mg'}" />
+                            <Label Text="{Binding Type}" />
+                            <Label Text="{Binding StartDate, StringFormat='Start: {0:dd/MM/yyyy}'}" />
+                            <Label Text="{Binding EndDate, StringFormat='End: {0:dd/MM/yyyy}'}" />
+                            <Label Text="{Binding FormatedTimes, StringFormat='Times: {0:hh\\:mm}'}" />
+                        </StackLayout>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+
+    </Grid>
 </ContentPage>

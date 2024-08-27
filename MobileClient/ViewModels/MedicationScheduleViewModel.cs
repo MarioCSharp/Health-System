@@ -52,7 +52,6 @@ namespace HealthProject.ViewModels
             if (Medications == null) return;
 
             var filtered = Medications.Where(m => ShouldShowMedication(m, SelectedDate)).ToList();
-
             FilteredMedications = new ObservableCollection<MedicationScheduleModel>(filtered);
         }
 
