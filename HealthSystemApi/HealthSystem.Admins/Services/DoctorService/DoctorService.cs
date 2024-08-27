@@ -232,6 +232,16 @@ namespace HealthSystem.Admins.Services.DoctorService
             };
         }
 
+        public async Task<List<DoctorRatingDisplayModel>> GetDoctorRatings(int doctorId)
+        => await context.DoctorRatings
+                .Where(x => x.DoctorId == doctorId)
+                .Select(x => new DoctorRatingDisplayModel()
+                {
+                    Id = x.Id,
+                    Rating = x.Rating,
+                    Comment = x.Comment
+                }).ToListAsync();
+
         public async Task<List<DoctorModel>> GetTopDoctorsWithSpecialization(string specialization, int top)
         {
             return await context.Doctors

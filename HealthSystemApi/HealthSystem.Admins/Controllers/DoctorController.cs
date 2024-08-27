@@ -120,5 +120,12 @@ namespace HealthSystem.Admins.Controllers
         {
             return Ok(await doctorService.GetTopDoctorsWithSpecialization(specialization, top));
         }
+
+        [HttpGet("GetDoctorRatings")]
+        [Authorize(Roles = "Administrator,Director")]
+        public async Task<IActionResult> GetDoctorRatings([FromQuery] int doctorId)
+        {
+            return Ok(new { Ratings = await doctorService.GetDoctorRatings(doctorId) });
+        }
     }
 }

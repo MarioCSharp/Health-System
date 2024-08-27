@@ -19,6 +19,7 @@ import AllUsersComponent from "./AllUsersComponent";
 import AllAppointments from "./AllAppointments";
 import PastAppointmentsList from "./PastAppointmentsList";
 import AllNextAppointmentsList from "./AllNextAppointments";
+import DoctorCommentsComponent from "./DoctorCommentsComponent";
 
 const App: React.FC = () => (
   <Router>
@@ -59,6 +60,10 @@ const App: React.FC = () => (
           <Route path="/hospitals" element={<AllHospitalsComponents />} />
           <Route path="/users" element={<AllUsersComponent />} />
           <Route path="/appointments" element={<AllAppointments />} />
+          <Route
+            path="/doctor/comments/:doctorId"
+            element={<DoctorCommentsComponent />}
+          />
         </Route>
 
         <Route path="*" element={<NotFound />} />

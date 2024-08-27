@@ -110,6 +110,10 @@ function DoctorsInMyHosptail() {
     navigate(`/doctors/${hospitalId}`);
   };
 
+  const redirectToComments = (doctorId: number) => {
+    navigate(`/doctor/comments/${hospitalId}`);
+  };
+
   useEffect(() => {
     getDoctors();
     getHospitalIdByDirector();
@@ -129,6 +133,13 @@ function DoctorsInMyHosptail() {
                 {doctor.fullName} | {doctor.specialization}
               </span>
               <div>
+                <a
+                  className="btn btn-primary btn-sm"
+                  style={{ marginRight: "2px" }}
+                  onClick={() => redirectToComments(doctor.id)}
+                >
+                  Оценки
+                </a>
                 <a
                   className="btn btn-primary btn-sm"
                   style={{ marginRight: "2px" }}
