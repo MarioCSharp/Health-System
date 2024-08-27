@@ -3,76 +3,85 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.MedicationViewPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             Title="Medications">
+             Title="Medications"
+             BackgroundColor="#fff">
 
-    <ContentPage.Resources>
-        <Style x:Key="MedicationLabelStyle" TargetType="Label">
-            <Setter Property="FontSize" Value="18" />
-            <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="TextColor" Value="#34495e" />
-            <Setter Property="VerticalOptions" Value="Center" />
-            <Setter Property="Margin" Value="5,0" />
-        </Style>
-        <Style x:Key="MedicationFrameStyle" TargetType="Frame">
-            <Setter Property="CornerRadius" Value="15" />
-            <Setter Property="BorderColor" Value="#007ACC" />
-            <Setter Property="BackgroundColor" Value="White" />
-            <Setter Property="HasShadow" Value="True" />
-            <Setter Property="Padding" Value="15" />
-            <Setter Property="Margin" Value="10,5" />
-        </Style>
-        <Style x:Key="FloatingButtonStyle" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="#007ACC" />
-            <Setter Property="TextColor" Value="White" />
-            <Setter Property="FontSize" Value="24" />
-            <Setter Property="CornerRadius" Value="30" />
-            <Setter Property="HeightRequest" Value="60" />
-            <Setter Property="WidthRequest" Value="60" />
-            <Setter Property="HorizontalOptions" Value="End" />
-            <Setter Property="VerticalOptions" Value="End" />
-            <Setter Property="Margin" Value="25" />
-        </Style>
-    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Label FontSize="32" 
+                   FontAttributes="Bold"
+                   Text="Medications"
+                   HorizontalOptions="Center"/>
 
-    <Grid BackgroundColor="White">
-        <StackLayout Padding="10" Margin="0,0,0,70">
-
-            <CollectionView ItemsSource="{Binding Medications}">
+            <CollectionView ItemsSource="{Binding Medications}" Margin="10, 70">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.RightItems>
-                                <SwipeItems Mode="Reveal">
-                                    <SwipeItem Text="Delete" 
-                                       BackgroundColor="#e74c3c" 
-                                       Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteMedicationCommand}"
-                                       CommandParameter="{Binding Id}" 
-                                       IconImageSource="delete_icon.png" />
-                                </SwipeItems>
-                            </SwipeView.RightItems>
+                        <Frame CornerRadius="10" 
+                               BorderColor="#007ACC" 
+                               Margin="10,5" 
+                               Padding="10" 
+                               HasShadow="True" 
+                               BackgroundColor="White">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                            <Frame Style="{StaticResource MedicationFrameStyle}">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RedirectToDetailsPageCommand}"
-                                        CommandParameter="{Binding Id}" />
-                                </Frame.GestureRecognizers>
-
-                                <StackLayout>
-                                    <Label Text="{Binding Name}" Style="{StaticResource MedicationLabelStyle}" />
-                                    <Label Text="{Binding Dose}" Style="{StaticResource MedicationLabelStyle}" />
-                                    <Label Text="{Binding Type}" Style="{StaticResource MedicationLabelStyle}" />
+                                <StackLayout Grid.Column="0">
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           TextColor="Black"/>
+                                    <Label Text="{Binding Dose}" 
+                                           FontSize="16" 
+                                           VerticalOptions="Center"
+                                           TextColor="Gray"/>
+                                    <Label Text="{Binding Type}" 
+                                           FontSize="16" 
+                                           VerticalOptions="Center"
+                                           TextColor="Gray"/>
                                 </StackLayout>
 
-                            </Frame>
-                        </SwipeView>
+                                <ImageButton Source="delete_icon.png" 
+                                             BackgroundColor="Transparent"
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteMedicationCommand}"
+                                             CommandParameter="{Binding Id}"
+                                             HeightRequest="24"
+                                             WidthRequest="24"
+                                             HorizontalOptions="End"
+                                             VerticalOptions="Center"
+                                             Grid.Column="1"
+                                             Margin="10,0,0,0"/>
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RedirectToDetailsPageCommand}"
+                                                      CommandParameter="{Binding Id}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </StackLayout>
 
-        <!-- Floating Add Button -->
-        <Button Text="+" 
-                Command="{Binding RedirectToAddPageCommand}"
-                Style="{StaticResource FloatingButtonStyle}" />
-    </Grid>
+            <!-- Floating Action Button -->
+            <Button Text="＋" 
+                    Command="{Binding RedirectToAddPageCommand}"
+                    BackgroundColor="#007ACC"
+                    TextColor="White"
+                    FontSize="24"
+                    CornerRadius="30"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    Margin="20">
+                <Button.Triggers>
+                    <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                        <Setter Property="BackgroundColor" Value="#005999"/>
+                    </Trigger>
+                </Button.Triggers>
+            </Button>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

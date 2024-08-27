@@ -212,7 +212,7 @@
             <DatePicker Date="{Binding Medication.StartDate}" />
 
             <Label Text="Крайна дата на приемане:" FontSize="Medium" />
-            <DatePicker Date="{Binding Medication.End}" />
+            <DatePicker Date="{Binding Medication.EndDate}" />
 
             <Label Text="Бележки:" Style="{StaticResource LabelStyle}" />
             <Entry Placeholder="Бележки" Style="{StaticResource EntryStyle}" 

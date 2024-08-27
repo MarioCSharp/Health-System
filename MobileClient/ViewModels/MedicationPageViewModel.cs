@@ -35,7 +35,7 @@ namespace HealthProject.ViewModels
         public ICommand RedirectToDetailsPageCommand { get; }
         public ICommand DeleteMedicationCommand { get; }
 
-        public async void LoadMedications()
+        public async Task LoadMedications()
         {
             var authToken = await authenticationService.IsAuthenticated();
 
@@ -97,6 +97,7 @@ namespace HealthProject.ViewModels
             if (parameter is int id)
             {
                 await medicationService.DeleteAsync(id);
+                await LoadMedications();
                 await Shell.Current.GoToAsync($"//{nameof(MedicationViewPage)}");
             }
         }

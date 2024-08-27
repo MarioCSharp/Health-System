@@ -20,6 +20,8 @@ namespace HealthProject.ViewModels
             this.medicationService = medicationService;
             this.authenticationService = authenticationService;
             this.Medication = new MedicationAddModel();
+            Medication.EndDate = DateTime.Now;
+            Medication.StartDate = DateTime.Now;
         }
 
         public async Task AddAsync(List<TimeSpan> times, int skipCount, List<DayOfWeek> days, int take, int rest)
