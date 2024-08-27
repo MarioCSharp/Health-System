@@ -20,6 +20,11 @@ namespace HealthSystem.Admins.Controllers
         [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Add([FromQuery] DoctorAddModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await doctorService.AddAsync(model, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
 
             return result ? Ok(new { Success = result }) : BadRequest();
