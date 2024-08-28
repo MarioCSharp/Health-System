@@ -28,6 +28,9 @@ function Navigation() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+          <a className="navbar-brand" href="/my-calendar">
+            Моят календар
+          </a>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">

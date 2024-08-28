@@ -20,6 +20,7 @@ import AllAppointments from "./AllAppointments";
 import PastAppointmentsList from "./PastAppointmentsList";
 import AllNextAppointmentsList from "./AllNextAppointments";
 import DoctorCommentsComponent from "./DoctorCommentsComponent";
+import MyCalendarComponent from "./MyCalendarComponent";
 
 const App: React.FC = () => (
   <Router>
@@ -64,6 +65,7 @@ const App: React.FC = () => (
             path="/doctor/comments/:doctorId"
             element={<DoctorCommentsComponent />}
           />
+          <Route path="/my-calendar" element={<MyCalendarComponent />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

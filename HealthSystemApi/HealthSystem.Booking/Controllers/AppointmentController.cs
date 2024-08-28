@@ -88,7 +88,7 @@ namespace HealthSystem.Booking.Controllers
         }
 
         [HttpGet("GetAppointments")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator,Director,Doctor")]
         public async Task<IActionResult> GetAppointments([FromQuery] int id)
         {
             var apps = await appointmentService.GetDoctorAppointments(id);

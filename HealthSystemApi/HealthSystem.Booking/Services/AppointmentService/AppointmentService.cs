@@ -4,6 +4,7 @@ using HealthSystem.Booking.Models;
 using Microsoft.EntityFrameworkCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
+using System.Linq;
 
 namespace HealthSystem.Booking.Services.AppointmentService
 {
@@ -77,31 +78,29 @@ namespace HealthSystem.Booking.Services.AppointmentService
 
         public async Task<(string, List<BookingDisplayModel>)> GetDoctorAppointments(int doctorId)
         {
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctor?id={doctorId}");
-
-            if (!doctorResponse.IsSuccessStatusCode)
-            {
-                return ("", new List<BookingDisplayModel>());
-            }
-
-            var doctor = await doctorResponse.Content.ReadFromJsonAsync<DoctorModel>();
-
-            if (doctor == null)
-            {
-                return ("", new List<BookingDisplayModel>());
-            }
-
             var apps = await context.Bookings
-                .Where(x => x.DoctorId == doctorId)
-                .Select(x => new BookingDisplayModel
-                {
-                    Id = x.Id,
-                    Date = x.Date.ToString("dd/MM/yyyy HH:mm"),
-                    Name = x.PatientName,
-                    ServiceName = x.Service.Name
-                }).ToListAsync();
+                    .Where(x => x.DoctorId == doctorId).Include(x => x.Service).ToListAsync();
 
-            return (doctor.FullName ?? "", apps);
+            var result = new List<BookingDisplayModel>();
+            var doctorName = string.Empty;
+
+            foreach (var app in apps)
+            {
+                if (string.IsNullOrEmpty(doctorName))
+                {
+                    doctorName = app.DoctorName;
+                }
+
+                result.Add(new BookingDisplayModel()
+                {
+                    Id = app.Id,
+                    ServiceName = app.Service.Name,
+                    Date = app.Date.ToString("dd/MM/yyyy HH:mm"),
+                    Name = app.PatientName,
+                });
+            }
+
+            return (doctorName ?? "", result);
         }
 
         public async Task<List<AppointmentPatientModel>> GetNextAppointmentsByDoctorUserId(string userId)
