@@ -28,8 +28,11 @@ function Navigation() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <a className="navbar-brand" href="/my-calendar">
+          <a className="nav-item" href="/my-calendar">
             Моят календар
+          </a>
+          <a className="nav-item" href="/laboratory/mine">
+            Моята лаборатория
           </a>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto">

@@ -2,6 +2,7 @@ import FeedbackComponent from "./FeedbackComponent";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import PrescriptionComponent from "./PrescriptionComponent";
+import RecipeAddComponent from "./RecipeAddComponent";
 
 interface Appointment {
   id: number;
@@ -20,6 +21,8 @@ function PastAppointmentsList() {
   const [selectedPrescriptionId, setSelectedPrescriptionId] = useState<
     number | null
   >(null);
+
+  const [selectedRecipe, setSelectedRecipe] = useState<number | null>();
 
   const navigate = useNavigate();
 
@@ -73,6 +76,12 @@ function PastAppointmentsList() {
     );
   };
 
+  const handleAddRecipeClick = (appointmentId: number) => {
+    setSelectedRecipe((prev) =>
+      prev === appointmentId ? null : appointmentId
+    );
+  };
+
   return (
     <div className="col-md-7 mx-md-3 mb-4">
       <ul className="list-group">
@@ -101,6 +110,12 @@ function PastAppointmentsList() {
                   >
                     Обратна връзка
                   </button>
+                  <button
+                    className="btn btn-primary btn-sm mr-2"
+                    onClick={() => handleAddRecipeClick(appointment.id)}
+                  >
+                    Добави рецепта
+                  </button>
                 </div>
               </div>
               {selectedPrescriptionId === appointment.id && (
@@ -109,6 +124,7 @@ function PastAppointmentsList() {
               {selectedFeedbackId === appointment.id && (
                 <FeedbackComponent appointmentId={String(appointment.id)} />
               )}
+              {selectedRecipe === appointment.id && <RecipeAddComponent />}
             </li>
           ))
         ) : (

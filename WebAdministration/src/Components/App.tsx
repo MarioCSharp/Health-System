@@ -21,6 +21,9 @@ import PastAppointmentsList from "./PastAppointmentsList";
 import AllNextAppointmentsList from "./AllNextAppointments";
 import DoctorCommentsComponent from "./DoctorCommentsComponent";
 import MyCalendarComponent from "./MyCalendarComponent";
+import LaboratoryResultsComponent from "./LaboratoryResultsComponent";
+import LaboratoryAddComponent from "./LaboratoryAddComponent";
+import RecipeByEgnComponent from "./RecipeByEgnComponent";
 
 const App: React.FC = () => (
   <Router>
@@ -66,6 +69,12 @@ const App: React.FC = () => (
             element={<DoctorCommentsComponent />}
           />
           <Route path="/my-calendar" element={<MyCalendarComponent />} />
+          <Route
+            path="/laboratory/mine"
+            element={<LaboratoryResultsComponent />}
+          />
+          <Route path="/laboratory/add" element={<LaboratoryAddComponent />} />
+          <Route path="/recipes" element={<RecipeByEgnComponent />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
