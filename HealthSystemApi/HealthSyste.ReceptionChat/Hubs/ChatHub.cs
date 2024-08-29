@@ -11,7 +11,7 @@ namespace HealthSystem.ReceptionChat.Hubs
         private static readonly ConcurrentDictionary<string, List<string>> RoomMessages =
             new ConcurrentDictionary<string, List<string>>();
 
-        public async Task JoinUserRoom(int hospitalId, int userId)
+        public async Task JoinUserRoom(int hospitalId, string userId)
         {
             string roomName = $"Hospital_{hospitalId}_User_{userId}";
             AddRoom(hospitalId, roomName);
@@ -27,10 +27,8 @@ namespace HealthSystem.ReceptionChat.Hubs
 
         public async Task SendMessageToRoom(string roomName, string message)
         {
-            // Store the message in memory
             AddMessageToRoom(roomName, message);
 
-            // Send the message to the group
             await Clients.Group(roomName).SendAsync("MessageReceived", message);
         }
 

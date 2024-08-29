@@ -39,7 +39,7 @@ namespace HealthProject.ViewModels
         {
             if (parameter is int id)
             {
-                await Shell.Current.GoToAsync($"ReceptionChatPage?id={id}");
+                await Shell.Current.GoToAsync($"ReceptionChatPage?hospitalId={id}");
                 return;
             }
         }

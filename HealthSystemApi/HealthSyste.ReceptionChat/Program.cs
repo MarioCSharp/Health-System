@@ -23,22 +23,30 @@ namespace HealthSyste.ReceptionChat
 
             builder.Services.AddSignalR();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder.WithOrigins("http://localhost:5173") // Allow your frontend origin
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowCredentials(); // Allow credentials
+                });
+            });
+
             var app = builder.Build();
 
-            if (!app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                app.UseHsts();
-                app.UseHttpsRedirection();
             }
 
-            app.UseAuthorization().UseCors(options =>
-            {
-                options.AllowAnyHeader();
-                options.AllowAnyMethod();
-                options.AllowAnyOrigin();
-            });
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            app.UseCors("AllowSpecificOrigin");
 
             app.MapHub<ChatHub>("/chat");
 

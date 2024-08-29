@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import RecepcionistChatComponent from "./RecepcionistChatComponent";
 
+// Define the type for room objects if rooms are objects with a 'key' property
+interface Room {
+  key: string; // Adjust based on the actual structure
+}
+
 const RecepcionistHomePage = () => {
   const [rooms, setRooms] = useState<string[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<string>("");
@@ -18,7 +23,8 @@ const RecepcionistHomePage = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        setRooms(data.rooms);
+        console.log(data.rooms); // Log the rooms data to inspect its structure
+        setRooms(data.rooms.map((room: Room) => room.key)); // Explicitly type 'room' as 'Room'
       } else {
         console.error("Failed to fetch rooms");
       }

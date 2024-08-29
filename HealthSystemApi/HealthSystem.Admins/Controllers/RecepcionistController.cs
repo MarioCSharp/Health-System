@@ -24,7 +24,6 @@ namespace HealthSystem.Admins.Controllers
         }
 
         [HttpGet("GetHospitalId")]
-        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> GetHospitalId([FromQuery] string userId)
         {
             var result = await recepcionistService.GetHospitalIdAsync(userId);

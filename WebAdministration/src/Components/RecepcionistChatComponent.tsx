@@ -15,6 +15,9 @@ const RecepcionistChatComponent: React.FC<RecepcionistChatComponentProps> = ({
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
+    // Debugging log: Starting connection setup
+    console.log("Setting up SignalR connection...");
+
     const fetchRoomMessages = async () => {
       const token = localStorage.getItem("token");
       try {
@@ -29,6 +32,7 @@ const RecepcionistChatComponent: React.FC<RecepcionistChatComponentProps> = ({
         if (response.ok) {
           const data: string[] = await response.json();
           setMessages(data);
+          console.log("Fetched initial messages:", data);
         } else {
           console.error("Failed to fetch room messages");
         }
@@ -40,7 +44,7 @@ const RecepcionistChatComponent: React.FC<RecepcionistChatComponentProps> = ({
     fetchRoomMessages();
 
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("http://192.168.0.104:5091/chat", {
+      .withUrl("http://localhost:5091/chat", {
         accessTokenFactory: () => {
           const token = localStorage.getItem("token");
           if (!token) throw new Error("No access token available");
@@ -50,30 +54,38 @@ const RecepcionistChatComponent: React.FC<RecepcionistChatComponentProps> = ({
       .withAutomaticReconnect()
       .build();
 
-    setConnection(newConnection);
-
     newConnection
       .start()
       .then(() => {
         console.log("Connected to SignalR");
+        setConnection(newConnection);
 
-        newConnection.on("MessageReceived", (message: string) => {
-          setMessages((prevMessages) => [...prevMessages, message]);
+        // Listening for incoming messages
+        newConnection.on("MessageReceived", (receivedMessage: string) => {
+          console.log("New message received:", receivedMessage);
+          setMessages((prevMessages) => [...prevMessages, receivedMessage]);
         });
       })
-      .catch((err) => console.log("Error connecting to SignalR: ", err));
+      .catch((err) => console.error("Error connecting to SignalR: ", err));
 
     return () => {
       if (newConnection) {
-        newConnection.stop();
+        newConnection
+          .stop()
+          .then(() => console.log("SignalR connection stopped"));
       }
     };
   }, [roomName]);
 
   const sendMessage = async () => {
-    if (connection && message) {
-      await connection.invoke("SendMessageToRoom", roomName, message);
-      setMessage("");
+    if (connection && message.trim()) {
+      try {
+        console.log("Sending message:", message);
+        await connection.invoke("SendMessageToRoom", roomName, message);
+        setMessage("");
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
     }
   };
 
@@ -86,6 +98,9 @@ const RecepcionistChatComponent: React.FC<RecepcionistChatComponentProps> = ({
           placeholder="Enter your message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") sendMessage();
+          }}
         />
         <button className="btn btn-primary" onClick={sendMessage}>
           Send Message

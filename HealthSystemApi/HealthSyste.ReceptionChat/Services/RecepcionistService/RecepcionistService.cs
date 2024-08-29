@@ -17,7 +17,7 @@ namespace HealthSyste.ReceptionChat.Services.RecepcionistService
 
         public async Task<List<RoomDisplayModel>> GetMyRooms(string userId)
         {
-            if (!string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userId))
             {
                 return new List<RoomDisplayModel>();
             }
