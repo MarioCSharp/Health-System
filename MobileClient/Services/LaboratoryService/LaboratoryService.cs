@@ -1,7 +1,7 @@
 ﻿using HealthProject.Models;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text.Json;
-using Windows.System;
 
 namespace HealthProject.Services.LaboratoryService
 {
@@ -32,15 +32,29 @@ namespace HealthProject.Services.LaboratoryService
 
             try
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5250/api/LaboratoryResult/TryGetFile?id={userNameId}&pass={pass}");
+                var token = await SecureStorage.Default.GetAsync("auth_token");
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    Console.WriteLine("Authorization token is missing.");
+                    return new LaboratoryReturnModel();
+                }
+
+                var request = new HttpRequestMessage(HttpMethod.Get, $"{_baseAddress}:5250/api/LaboratoryResult/TryGetFile?id={userNameId}&pass={pass}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await _httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var medications = System.Text.Json.JsonSerializer.Deserialize<LaboratoryReturnModel>(responseBody, _jsonSerializerOptions);
+                var responseData = JsonSerializer.Deserialize<byte[]>(responseBody, _jsonSerializerOptions);
+
+                var model = new LaboratoryReturnModel();
+                model.File = responseData;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return medications ?? new LaboratoryReturnModel();
+                    return model ?? new LaboratoryReturnModel();
                 }
             }
             catch (HttpRequestException e)

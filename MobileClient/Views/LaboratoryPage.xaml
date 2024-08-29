@@ -1,12 +1,47 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
              x:Class="HealthProject.Views.LaboratoryPage"
              Title="LaboratoryPage">
-    <VerticalStackLayout>
+    
+    <VerticalStackLayout Padding="20">
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="Laboratory Results"
+            FontSize="24"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <Entry 
+            Placeholder="Username"
+            Text="{Binding UserName}"
+            VerticalOptions="Center" 
+            HorizontalOptions="FillAndExpand" />
+
+        <Entry 
+            Placeholder="Password"
+            Text="{Binding Password}"
+            IsPassword="True"
+            VerticalOptions="Center" 
+            HorizontalOptions="FillAndExpand" />
+
+        <Button 
+            Text="Check Results"
+            Command="{Binding CheckResultsCommand}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Label 
+            Text="{Binding Message}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            IsVisible="{Binding IsMessageVisible}" />
+
+        <Button 
+            Text="Download File"
+            Command="{Binding DownloadFileCommand}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            IsEnabled="{Binding IsMessageVisible}" />
     </VerticalStackLayout>
 </ContentPage>

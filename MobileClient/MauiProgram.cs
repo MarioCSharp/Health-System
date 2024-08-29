@@ -15,6 +15,7 @@ using HealthProject.Services.LogbookService;
 using Syncfusion.Maui.Core.Hosting;
 using HealthProject.Services.DiagnosisService;
 using Plugin.LocalNotification;
+using HealthProject.Services.LaboratoryService;
 
 namespace HealthProject
 {
@@ -68,6 +69,7 @@ namespace HealthProject
             builder.Services.AddTransient<MyPrescriptionsViewModel>();
             builder.Services.AddTransient<DiagnosisViewModel>();
             builder.Services.AddTransient<AddRatingViewModel>();
+            builder.Services.AddTransient<LaboratoryViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IServiceService, ServiceService>();
@@ -79,6 +81,7 @@ namespace HealthProject
             builder.Services.AddHttpClient<IAppointmentService, AppointmentService>();
             builder.Services.AddHttpClient<ILogbookService, LogbookService>();
             builder.Services.AddHttpClient<IDiagnosisService, DiagnosisService>();
+            builder.Services.AddHttpClient<ILaboratoryService, LaboratoryService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
@@ -89,6 +92,7 @@ namespace HealthProject
             builder.Services.AddTransient<IAppointmentService, AppointmentService>();
             builder.Services.AddTransient<ILogbookService, LogbookService>();
             builder.Services.AddTransient<IDiagnosisService, DiagnosisService>();
+            builder.Services.AddTransient<ILaboratoryService, LaboratoryService>();
             builder.Services.AddTransient<HospitalDetailsPage>();
             builder.Services.AddTransient<MyPrescriptionsPage>();
             builder.Services.AddTransient<DoctorDetailsPage>();
@@ -111,6 +115,7 @@ namespace HealthProject
             builder.Services.AddTransient<MedicationSchedulePage>();
             builder.Services.AddTransient<DiagnosisPredictionPage>();
             builder.Services.AddTransient<AddRatingPage>();
+            builder.Services.AddTransient<LaboratoryPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

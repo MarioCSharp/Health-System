@@ -32,7 +32,7 @@ namespace HealthSystem.Results.Controllers
         {
             var result = await laboratoryResultService.GetFileAsync(id, pass);
              
-            return Ok(new { File = result });
+            return Ok(result);
         }
 
         [HttpPost("AddFile")]
