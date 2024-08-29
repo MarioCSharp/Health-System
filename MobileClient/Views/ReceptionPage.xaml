@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HealthProject.Views.HomePage"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             Shell.NavBarIsVisible="True">
+    <ContentPage.Content>
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Hospitals}"
+                        Margin="0,10,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <Frame CornerRadius="15" 
+                               BorderColor="#007ACC" 
+                               Margin="0,5" 
+                               Padding="15" 
+                               HasShadow="True" 
+                               BackgroundColor="#F9F9F9">
+                                <StackLayout>
+                                    <Label Text="{Binding HospitalName}" 
+                                       FontSize="22" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="#333333"/>
+
+                                    <Button Text="Свържи се с рецепция" Command="{Binding ConnectToReceptionChatCommand}" CommandParameter="{Binding Id}"></Button>
+                                </StackLayout>
+
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

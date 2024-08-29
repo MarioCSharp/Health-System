@@ -14,5 +14,6 @@ namespace HealthSystem.Admins.Data
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<DoctorInfo> DoctorsInfo { get; set; }
         public DbSet<DoctorRating> DoctorRatings { get; set; }
+        public DbSet<Recepcionist> Recepcionists { get; set; }
     }
 }

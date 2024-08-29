@@ -1,36 +1,32 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
+using HealthProject.Services.AuthenticationService;
 using HealthProject.Services.HospitalService;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using HealthProject.Views;
-using HealthProject.Services.AuthenticationService;
 
 namespace HealthProject.ViewModels
 {
-    public partial class HomePageViewModel : ObservableObject
+    public partial class ReceptionViewModel : ObservableObject
     {
         [ObservableProperty]
         private ObservableCollection<HospitalModel> hospitals;
 
         private IHospitalService hospitalService;
         private IAuthenticationService authenticationService;
-
-        public HomePageViewModel(IHospitalService hospitalService,
-                                 IAuthenticationService authenticationService)
+        public ReceptionViewModel(IHospitalService hospitalService,
+                                  IAuthenticationService authenticationService)
         {
             this.hospitalService = hospitalService;
             this.authenticationService = authenticationService;
 
-            NavigateToHospitalDetailCommand = new AsyncRelayCommand<object>(DetailsAsync);
+            ConnectToReceptionChatCommand = new AsyncRelayCommand<object>(ConnectAsync);
 
             LoadHospitals();
         }
 
-        public ICommand DeleteHospitalCommand { get; }
-        public ICommand NavigateToHospitalDetailCommand { get; }
+        public ICommand ConnectToReceptionChatCommand { get; }
 
         public async void LoadHospitals()
         {
@@ -39,14 +35,12 @@ namespace HealthProject.ViewModels
             Hospitals = new ObservableCollection<HospitalModel>(hospitalModels);
         }
 
-        public async Task DetailsAsync(object parameter)
+        public async Task ConnectAsync(object parameter)
         {
             if (parameter is int id)
             {
-                var hospital = await hospitalService.Details(id);
-                var hospitalJson = JsonConvert.SerializeObject(hospital);
-                var encodedHospitalJson = Uri.EscapeDataString(hospitalJson);
-                await Shell.Current.GoToAsync($"{nameof(HospitalDetailsPage)}?hospitalJson={encodedHospitalJson}");
+                await Shell.Current.GoToAsync($"ReceptionChatPage?id={id}");
+                return;
             }
         }
     }

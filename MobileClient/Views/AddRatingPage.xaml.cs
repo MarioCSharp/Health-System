@@ -1,6 +1,5 @@
 using HealthProject.Services.DoctorService;
 using HealthProject.ViewModels;
-using Syncfusion.Maui.Core.Carousel;
 
 namespace HealthProject.Views;
 

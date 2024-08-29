@@ -85,6 +85,13 @@
         Route="DiagnosisPredictionPage"/>
     </FlyoutItem>
 
+    <FlyoutItem Title="Рецепция">
+        <ShellContent
+        Title="Рецепция"
+        ContentTemplate="{DataTemplate local:ReceptionPage}"
+        Route="ReceptionPage"/>
+    </FlyoutItem>
+
     <FlyoutItem Title="Лаборатория">
         <ShellContent
         Title="Лаборатория"

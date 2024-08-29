@@ -1,0 +1,6 @@
+@HealthSyste.ReceptionChat_HostAddress = http://0.0.0.0:5091
+
+GET {{HealthSyste.ReceptionChat_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
