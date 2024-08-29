@@ -1,9 +1,13 @@
+using HealthProject.ViewModels;
+
 namespace HealthProject.Views;
 
 public partial class ReceptionPage : ContentPage
 {
-	public ReceptionPage()
+	public ReceptionPage(ReceptionViewModel viewModel)
 	{
 		InitializeComponent();
+
+		BindingContext = viewModel;
 	}
 }

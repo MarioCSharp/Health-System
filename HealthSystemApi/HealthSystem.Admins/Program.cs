@@ -4,6 +4,7 @@ using HealthSystem.Admins.Services.HospitalService;
 using Microsoft.EntityFrameworkCore;
 using HealthSystemCommon.Infrastructure;
 using HealthSystem.Admins.Models;
+using HealthSystem.Admins.Services.RecepcionistService;
 
 namespace HealthSystem.Admins
 {
@@ -22,6 +23,7 @@ namespace HealthSystem.Admins
 
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
+            builder.Services.AddTransient<IRecepcionistService, RecepcionistService>();
 
             builder.Services.AddTokenAuthentication(builder.Configuration);
             

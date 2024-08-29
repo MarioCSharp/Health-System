@@ -70,6 +70,8 @@ namespace HealthProject
             builder.Services.AddTransient<DiagnosisViewModel>();
             builder.Services.AddTransient<AddRatingViewModel>();
             builder.Services.AddTransient<LaboratoryViewModel>();
+            builder.Services.AddTransient<ReceptionChatViewModel>();
+            builder.Services.AddTransient<ReceptionViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IServiceService, ServiceService>();
@@ -116,6 +118,8 @@ namespace HealthProject
             builder.Services.AddTransient<DiagnosisPredictionPage>();
             builder.Services.AddTransient<AddRatingPage>();
             builder.Services.AddTransient<LaboratoryPage>();
+            builder.Services.AddTransient<ReceptionChatPage>();
+            builder.Services.AddTransient<ReceptionPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

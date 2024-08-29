@@ -1,5 +1,6 @@
 using HealthSyste.ReceptionChat.Services.RecepcionistService;
 using HealthSystem.ReceptionChat.Hubs;
+using HealthSystemCommon.Infrastructure;
 
 namespace HealthSyste.ReceptionChat
 {
@@ -15,6 +16,10 @@ namespace HealthSyste.ReceptionChat
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddTransient<IRecepcionistService, RecepcionistService>();
+            builder.Services.AddSingleton<ChatHub>();
+            builder.Services.AddHttpClient();
+
+            builder.Services.AddTokenAuthentication(builder.Configuration);
 
             builder.Services.AddSignalR();
 
@@ -28,7 +33,12 @@ namespace HealthSyste.ReceptionChat
                 app.UseHttpsRedirection();
             }
 
-            app.UseAuthorization();
+            app.UseAuthorization().UseCors(options =>
+            {
+                options.AllowAnyHeader();
+                options.AllowAnyMethod();
+                options.AllowAnyOrigin();
+            });
 
             app.MapHub<ChatHub>("/chat");
 

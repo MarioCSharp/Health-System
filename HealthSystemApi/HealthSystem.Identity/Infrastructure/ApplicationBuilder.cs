@@ -29,10 +29,12 @@ namespace HealthSystem.Identity.Infrastructure
                     var admin = new IdentityRole("Administrator");
                     var director = new IdentityRole("Director");
                     var doctor = new IdentityRole("Doctor");
+                    var recepcionist = new IdentityRole("Recepcionist");
 
                     await roleManager.CreateAsync(admin);
                     await roleManager.CreateAsync(director);
                     await roleManager.CreateAsync(doctor);
+                    await roleManager.CreateAsync(recepcionist);
 
                     const string adminEmail = "mario_petkov2007@abv.bg";
                     const string adminPassword = "Admin@123";

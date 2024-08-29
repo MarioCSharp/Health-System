@@ -158,7 +158,7 @@ namespace HealthSystem.Identity.Controllers
             return Ok(user.FullName);
         }
 
-        [HttpGet("PutToRole")]
+        [HttpGet("PutToRole")] // Add more security
         public async Task<IActionResult> PutToRole([FromQuery] string userId, string role)
         {
             var user = await context.Users.FindAsync(userId);

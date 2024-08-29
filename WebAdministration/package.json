@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
     "bootstrap": "^5.3.3",
     "moment": "^2.30.1",
     "react": "^18.2.0",

@@ -3,6 +3,7 @@ using HealthSystem.Admins.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthSystem.Admins.Migrations
 {
     [DbContext(typeof(AdminsDbContext))]
-    partial class AdminsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240829120704_recepcionistsAdded")]
+    partial class recepcionistsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import AdminHomePage from "./AdminHomePage";
 import DoctorHomePage from "./DoctorHomePage";
 import DirectorHomePage from "./DirectorHomePage";
+import RecepcionistHomePage from "./RecepcionistHomePage";
 
 function Home() {
   const role = localStorage.getItem("role");
@@ -17,6 +18,9 @@ function Home() {
       break;
     case "Director":
       content = <DirectorHomePage />;
+      break;
+    case "Recepcionist":
+      content = <RecepcionistHomePage />;
       break;
     default:
       <Navigate to="/not-found" replace />;

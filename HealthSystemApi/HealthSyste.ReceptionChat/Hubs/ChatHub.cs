@@ -8,6 +8,9 @@ namespace HealthSystem.ReceptionChat.Hubs
         private static readonly ConcurrentDictionary<int, HashSet<string>> HospitalRooms =
             new ConcurrentDictionary<int, HashSet<string>>();
 
+        private static readonly ConcurrentDictionary<string, List<string>> RoomMessages =
+            new ConcurrentDictionary<string, List<string>>();
+
         public async Task JoinUserRoom(int hospitalId, int userId)
         {
             string roomName = $"Hospital_{hospitalId}_User_{userId}";
@@ -22,10 +25,12 @@ namespace HealthSystem.ReceptionChat.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
         }
 
-        public async Task SendMessage(int hospitalId, int userId, string message)
+        public async Task SendMessageToRoom(string roomName, string message)
         {
-            string roomName = $"Hospital_{hospitalId}_User_{userId}";
-            Console.WriteLine($"Message to {roomName}: {message}");
+            // Store the message in memory
+            AddMessageToRoom(roomName, message);
+
+            // Send the message to the group
             await Clients.Group(roomName).SendAsync("MessageReceived", message);
         }
 
@@ -38,10 +43,25 @@ namespace HealthSystem.ReceptionChat.Hubs
             return Enumerable.Empty<string>();
         }
 
+        public IEnumerable<string> GetMessagesForRoom(string roomName)
+        {
+            if (RoomMessages.TryGetValue(roomName, out var messages))
+            {
+                return messages;
+            }
+            return Enumerable.Empty<string>();
+        }
+
         private void AddRoom(int hospitalId, string roomName)
         {
             var rooms = HospitalRooms.GetOrAdd(hospitalId, _ => new HashSet<string>());
             rooms.Add(roomName);
+        }
+
+        private void AddMessageToRoom(string roomName, string message)
+        {
+            var messages = RoomMessages.GetOrAdd(roomName, _ => new List<string>());
+            messages.Add(message);
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
