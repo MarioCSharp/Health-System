@@ -20,12 +20,17 @@ namespace HealthSystem.Results.Controllers
         [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> AddRecipe([FromForm] IssueRecipeModel model)
         {
-            var result = await recipeService.AddRecipeService(model);
+            if (model.FormFile == null || model == null)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            var result = await recipeService.AddRecipeService(model, model.FormFile);
 
             return result ? Ok() : BadRequest();    
         }
 
-        [HttpPost("GetRecipies")]
+        [HttpGet("GetRecipies")]
         [Authorize]
         public async Task<IActionResult> GetRecipies([FromQuery] string EGN)
         {

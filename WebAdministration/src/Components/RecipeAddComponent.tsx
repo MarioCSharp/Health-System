@@ -16,10 +16,15 @@ function RecipeAddComponent() {
     if (!selectedFile || !egn || !patientName || !doctorName) return;
 
     const formData = new FormData();
-    formData.append("File", selectedFile);
+    formData.append("FormFile", selectedFile);
     formData.append("PatientEGN", egn);
     formData.append("PatientName", patientName);
     formData.append("DoctorName", doctorName);
+
+    // Log form data
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
 
     const token = localStorage.getItem("token");
 
@@ -36,7 +41,10 @@ function RecipeAddComponent() {
       );
 
       if (response.ok) {
+        console.log("Recipe added successfully");
       } else {
+        const errorData = await response.text();
+        console.error("Error response from server:", errorData);
         throw new Error("There was an error adding the recipe");
       }
     } catch (error) {

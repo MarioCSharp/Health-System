@@ -2,12 +2,13 @@
 {
     public class IssueRecipeModel
     {
-        public byte[] File { get; set; }
+        public string? DoctorName { get; set; }
 
         public string? PatientEGN { get; set; }
 
-        public string? PatientName { get; set; }
+        public byte[]? File { get; set; } 
 
-        public string? DoctorName { get; set; }
+        public string? PatientName { get; set; }
+        public IFormFile FormFile { get; set; }
     }
 }

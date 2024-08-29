@@ -14,13 +14,20 @@ namespace HealthSystem.Results.Services.RecipeService
             this.context = context;
         }
 
-        public async Task<bool> AddRecipeService(IssueRecipeModel model)
+        public async Task<bool> AddRecipeService(IssueRecipeModel model, IFormFile File)
         {
+            byte[] fileBytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                await File.CopyToAsync(memoryStream);
+                fileBytes = memoryStream.ToArray();
+            }
+
             var recipe = new IssuedRecipe()
             {
                 DoctorName = model.DoctorName,
                 EGN = model.PatientEGN,
-                File = model.File,
+                File = fileBytes, 
                 PatientName = model.PatientName
             };
 

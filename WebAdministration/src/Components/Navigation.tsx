@@ -28,11 +28,22 @@ function Navigation() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <a className="nav-item" href="/my-calendar">
+          <a
+            className="nav-item text-white"
+            style={{ marginRight: "15px" }}
+            href="/my-calendar"
+          >
             Моят календар
           </a>
-          <a className="nav-item" href="/laboratory/mine">
+          <a
+            className="nav-item text-white"
+            style={{ marginRight: "15px" }}
+            href="/laboratory/mine"
+          >
             Моята лаборатория
+          </a>
+          <a className="nav-item text-white" href="/recipes">
+            Електронна рецепта
           </a>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto">
