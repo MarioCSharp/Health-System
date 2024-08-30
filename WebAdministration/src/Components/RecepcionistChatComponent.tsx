@@ -109,7 +109,7 @@ const RecepcionistChatComponent: React.FC<RecepcionistChatComponentProps> = ({
         <input
           type="text"
           className="form-control"
-          placeholder="Enter your message"
+          placeholder="Въведи своето съобщение"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
@@ -117,11 +117,11 @@ const RecepcionistChatComponent: React.FC<RecepcionistChatComponentProps> = ({
           }}
         />
         <button className="btn btn-primary" onClick={sendMessage}>
-          Send Message
+          Изпрати съобщение
         </button>
       </div>
       <div>
-        <h4>Chat Messages</h4>
+        <h4>Съобщения</h4>
         <ul className="list-group">
           {messages.map((msg, index) => (
             <li key={index} className="list-group-item">

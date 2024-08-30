@@ -63,6 +63,20 @@ namespace HealthSystem.ReceptionChat.Hubs
             messages.Add((message, name));
         }
 
+        public async Task DeleteRoom(int hospitalId, string roomName)
+        {
+            if (HospitalRooms.TryGetValue(hospitalId, out var rooms) && rooms.Remove(roomName))
+            {
+                RoomMessages.TryRemove(roomName, out _);
+
+                await Clients.Group(roomName).SendAsync("RoomDeleted", roomName);
+
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
+
+                await Clients.All.SendAsync("RoomDeleted", roomName);
+            }
+        }
+
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             await base.OnDisconnectedAsync(exception);

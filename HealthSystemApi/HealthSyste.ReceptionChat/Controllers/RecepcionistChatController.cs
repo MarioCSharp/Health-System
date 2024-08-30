@@ -63,6 +63,15 @@ namespace HealthSyste.ReceptionChat.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("DeleteRoom")]
+        [Authorize(Roles = "Recepcionist")]
+        public async Task<IActionResult> DeleteRoom([FromQuery] string roomName, int hospitalId)
+        {
+            await _chatHub.DeleteRoom(hospitalId, roomName);
+
+            return Ok();
+        }
     }
 
     public class SendMessageModel

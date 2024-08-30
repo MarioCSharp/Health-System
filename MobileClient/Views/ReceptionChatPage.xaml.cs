@@ -50,6 +50,15 @@ public partial class ReceptionChatPage : ContentPage
             });
         });
 
+        _connection.On<string>("RoomDeleted", roomName =>
+        {
+            Dispatcher.Dispatch(async () =>
+            {
+                await DisplayAlert("Стаята е изтрита", "Чат стаята беше изтрита. Ще бъдете препратени към страницата с рецепция.", "OK");
+                await Shell.Current.GoToAsync($"//{nameof(ReceptionPage)}"); 
+            });
+        });
+
         Task.Run(async () =>
         {
             await StartConnectionAsync();
@@ -69,7 +78,7 @@ public partial class ReceptionChatPage : ContentPage
         }
     }
 
-    private async void IsAuthenticated()
+    private async Task IsAuthenticated()
     {
         var auth = await authenticationService.IsAuthenticated();
 
@@ -92,6 +101,8 @@ public partial class ReceptionChatPage : ContentPage
             await Task.Delay(100);
         }
 
+        await IsAuthenticated();
+
         if (hospitalId > 0 && !string.IsNullOrEmpty(userId) && _connection.State == HubConnectionState.Connected)
         {
             try
@@ -110,7 +121,7 @@ public partial class ReceptionChatPage : ContentPage
         }
     }
 
-    private async void OnCounterClicked(object sender, EventArgs e)
+    private async void OnSendMessageClicked(object sender, EventArgs e)
     {
         if (!string.IsNullOrEmpty(myChatMessage.Text) && _connection.State == HubConnectionState.Connected)
         {
