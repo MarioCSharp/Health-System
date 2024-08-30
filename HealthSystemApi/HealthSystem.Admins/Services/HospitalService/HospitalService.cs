@@ -22,7 +22,7 @@ namespace HealthSystem.Admins.Services.HospitalService
             this.httpClient = httpClient;
         }
 
-        public async Task<bool> AddAsync(HospitalAddModel model)
+        public async Task<bool> AddAsync(HospitalAddModel model, string token)
         {
             var hospital = new Hospital()
             {
@@ -35,7 +35,12 @@ namespace HealthSystem.Admins.Services.HospitalService
             await context.Hospitals.AddAsync(hospital);
             await context.SaveChangesAsync();
 
-            var response = await httpClient.GetAsync($"http://localhost:5196/api/Authentication/PutToRole?userId={model.OwnerId}&role={"Director"}");
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
+            $"http://localhost:5196/api/Authentication/PutToRole?userId={model.OwnerId}&role=Director");
+
+            httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await httpClient.SendAsync(httpRequestMessage);
 
             return await context.Hospitals.ContainsAsync(hospital);
         }

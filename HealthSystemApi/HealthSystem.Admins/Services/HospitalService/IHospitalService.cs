@@ -4,7 +4,7 @@ namespace HealthSystem.Admins.Services.HospitalService
 {
     public interface IHospitalService
     {
-        Task<bool> AddAsync(HospitalAddModel model);
+        Task<bool> AddAsync(HospitalAddModel model, string token);
         Task<bool> RemoveAsync(int id, string token);
         Task<List<HospitalModel>> AllAsync();
         Task<HospitalDetailsModel> HospitalDetails(int id);

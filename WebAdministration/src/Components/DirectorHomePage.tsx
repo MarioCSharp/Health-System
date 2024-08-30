@@ -1,5 +1,6 @@
 import DoctorsInMyHosptail from "./DoctorsInMyHosptail";
 import MyHospitalComponent from "./MyHospitalComponent";
+import MyRecepcionistsComponent from "./MyRecepcionistsComponent";
 
 function DirectorHomePage() {
   return (
@@ -8,6 +9,7 @@ function DirectorHomePage() {
         <div className="row">
           <MyHospitalComponent></MyHospitalComponent>
           <DoctorsInMyHosptail></DoctorsInMyHosptail>
+          <MyRecepcionistsComponent></MyRecepcionistsComponent>
         </div>
       </div>
     </>

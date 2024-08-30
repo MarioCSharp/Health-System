@@ -24,6 +24,8 @@ import MyCalendarComponent from "./MyCalendarComponent";
 import LaboratoryResultsComponent from "./LaboratoryResultsComponent";
 import LaboratoryAddComponent from "./LaboratoryAddComponent";
 import RecipeByEgnComponent from "./RecipeByEgnComponent";
+import AllMyRecepcionistsPage from "./AllMyRecepcionistsPage";
+import AddRecepcionistComponent from "./AddRecepcionistComponent";
 
 const App: React.FC = () => (
   <Router>
@@ -75,6 +77,14 @@ const App: React.FC = () => (
           />
           <Route path="/laboratory/add" element={<LaboratoryAddComponent />} />
           <Route path="/recipes" element={<RecipeByEgnComponent />} />
+          <Route
+            path="/recepcionists/all"
+            element={<AllMyRecepcionistsPage />}
+          />
+          <Route
+            path="/recepcionists/add"
+            element={<AddRecepcionistComponent />}
+          />
         </Route>
 
         <Route path="*" element={<NotFound />} />

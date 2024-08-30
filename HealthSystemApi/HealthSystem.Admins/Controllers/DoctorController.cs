@@ -25,7 +25,15 @@ namespace HealthSystem.Admins.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await doctorService.AddAsync(model, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty);
+            var authHeader = Request.Headers["Authorization"].ToString();
+            var token = authHeader.StartsWith("Bearer ") ? authHeader.Substring("Bearer ".Length).Trim() : string.Empty;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
+
+            var result = await doctorService.AddAsync(model, User.IsInRole("Director") ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty, token);
 
             return result ? Ok(new { Success = result }) : BadRequest();
         }

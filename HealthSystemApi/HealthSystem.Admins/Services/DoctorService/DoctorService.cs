@@ -17,7 +17,7 @@ namespace HealthSystem.Admins.Services.DoctorService
             this.httpClient = httpClient;
         }
 
-        public async Task<bool> AddAsync(DoctorAddModel model, string userId)
+        public async Task<bool> AddAsync(DoctorAddModel model, string userId, string token)
         {
             if (!string.IsNullOrEmpty(userId))
             {
@@ -56,10 +56,20 @@ namespace HealthSystem.Admins.Services.DoctorService
                 FullName = model.FullName
             };
 
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
+            $"http://localhost:5196/api/Authentication/PutToRole?userId={model.UserId}&role=Doctor");
+
+            httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await httpClient.SendAsync(httpRequestMessage);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
             await context.DoctorsInfo.AddAsync(doctorInfo);
             await context.SaveChangesAsync();
-
-            var response = await httpClient.GetAsync($"http://localhost:5196/api/Authentication/PutToRole?userId={model.UserId}&role={"Doctor"}");
 
             return await context.Doctors.ContainsAsync(doctor);
         }
@@ -100,7 +110,7 @@ namespace HealthSystem.Admins.Services.DoctorService
                 await context.DoctorRatings.AddAsync(doctoRating);
                 await context.SaveChangesAsync();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -295,11 +305,11 @@ namespace HealthSystem.Admins.Services.DoctorService
             var request1 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5046/api/Appointment/DeleteAllByDoctorId?doctorId={id}");
             request1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await httpClient.SendAsync(request1);
-            
+
             var request2 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5046/api/Service/DeleteAllByDoctorId?doctorId={id}");
             request2.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response2 = await httpClient.SendAsync(request2);
-            
+
             var request3 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5196/api/Authentication/DeleteFromRole?userId={doctor.UserId}&role=Doctor");
             request3.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response3 = await httpClient.SendAsync(request3);

@@ -110,7 +110,7 @@ namespace HealthSystem.Identity.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return Ok(new { IsAuthenticated = true, UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)});
+                return Ok(new { IsAuthenticated = true, UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) });
             }
 
             return Ok(new { IsAuthenticated = false });
@@ -159,35 +159,23 @@ namespace HealthSystem.Identity.Controllers
         }
 
         [HttpGet("PutToRole")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> PutToRole([FromQuery] string userId, string role)
         {
-            var currentUser = await context.Users.FindAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = await context.Users.FindAsync(userId);
 
-            if (currentUser is null)
+            if (user is null)
             {
                 return BadRequest();
             }
 
-            var currentUserRoles = await userManager.GetRolesAsync(currentUser);
+            await userManager.AddToRoleAsync(user, role);
 
-            if (currentUserRoles.Contains("Administrator") || currentUserRoles.Contains("Director"))
-            {
-                var user = await context.Users.FindAsync(userId);
-
-                if (user is null)
-                {
-                    return BadRequest();
-                }
-
-                await userManager.AddToRoleAsync(user, role);
-
-                return Ok();
-            }
-
-            return BadRequest();
+            return Ok();
         }
 
         [HttpGet("DeleteFromRole")]
+        [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> DeleteFromRole([FromQuery] string userId, string role)
         {
             var user = await context.Users.FindAsync(userId);

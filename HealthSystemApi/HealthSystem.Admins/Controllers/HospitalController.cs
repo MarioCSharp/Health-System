@@ -2,6 +2,7 @@
 using HealthSystem.Admins.Services.HospitalService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
 namespace HealthSystem.Admins.Controllers
@@ -26,7 +27,15 @@ namespace HealthSystem.Admins.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await hospitalService.AddAsync(model);
+            var authHeader = Request.Headers["Authorization"].ToString();
+            var token = authHeader.StartsWith("Bearer ") ? authHeader.Substring("Bearer ".Length).Trim() : string.Empty;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
+
+            var result = await hospitalService.AddAsync(model, token);
 
             if (result)
             {
@@ -104,6 +113,24 @@ namespace HealthSystem.Admins.Controllers
             var hospital = await hospitalService.GetHospitalByToken(token);
 
             return Ok(new { Hospital = hospital });
+        }
+
+        [HttpGet("GetDirectorHospitalId")]
+        [Authorize(Roles = "Director")]
+        public async Task<IActionResult> GetDirectorHospitalId()
+        {
+            var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+            var token = authHeader?.StartsWith("Bearer ") == true ? authHeader.Substring("Bearer ".Length).Trim() : null;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
+
+            var hospital = await hospitalService.GetHospitalByToken(token);
+
+            return Ok(new { HospitalId = hospital.Id });
         }
     }
 }
