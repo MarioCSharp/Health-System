@@ -5,6 +5,6 @@ namespace HealthSyste.ReceptionChat.Services.RecepcionistService
     public interface IRecepcionistService
     {
         Task<List<RoomDisplayModel>> GetMyRooms(string userId);
-        Task<List<string>> GetRoomMessages(string roomName);
+        Task<List<(string, string)>> GetRoomMessages(string roomName);
     }
 }

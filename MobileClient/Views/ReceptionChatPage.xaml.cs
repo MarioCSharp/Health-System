@@ -12,6 +12,7 @@ public partial class ReceptionChatPage : ContentPage
     private readonly HubConnection _connection;
     private IAuthenticationService authenticationService;
     private string userId;
+    private string userName;
 
     public int HospitalId
     {
@@ -36,23 +37,22 @@ public partial class ReceptionChatPage : ContentPage
 
         IsAuthenticated();
 
-        // Use the appropriate URL depending on whether you're using HTTP or HTTPS
         _connection = new HubConnectionBuilder()
-            .WithUrl("http://10.0.2.2:5091/chat") // Update this to https://10.0.2.2:7067/chat if using HTTPS
-            .WithAutomaticReconnect() // Automatically reconnect if the connection drops
+            .WithUrl("http://10.0.2.2:5091/chat") 
+            .WithAutomaticReconnect() 
             .Build();
 
-        _connection.On<string>("MessageReceived", (message) =>
+        _connection.On<string, string>("MessageReceived", (message, senderName) =>
         {
             Dispatcher.Dispatch(() =>
             {
-                chatMessages.Text += $"{Environment.NewLine}{message}";
+                chatMessages.Text += $"{Environment.NewLine}{senderName}: {message}";
             });
         });
 
         Task.Run(async () =>
         {
-            await StartConnectionAsync(); // Start the connection asynchronously
+            await StartConnectionAsync();
         });
     }
 
@@ -79,6 +79,10 @@ public partial class ReceptionChatPage : ContentPage
         }
 
         this.userId = auth.UserId ?? "invalid";
+
+        var name = await authenticationService.GetUserName(userId);
+
+        this.userName = name;
     }
 
     private async Task JoinUserRoomAsync()
@@ -111,7 +115,7 @@ public partial class ReceptionChatPage : ContentPage
         if (!string.IsNullOrEmpty(myChatMessage.Text) && _connection.State == HubConnectionState.Connected)
         {
             string roomName = $"Hospital_{hospitalId}_User_{userId}";
-            await _connection.InvokeAsync("SendMessageToRoom", roomName, myChatMessage.Text);
+            await _connection.InvokeAsync("SendMessageToRoom", roomName, myChatMessage.Text, userName);
             myChatMessage.Text = string.Empty;
         }
         else

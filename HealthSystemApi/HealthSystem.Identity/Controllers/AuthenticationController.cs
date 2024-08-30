@@ -155,17 +155,36 @@ namespace HealthSystem.Identity.Controllers
         {
             var user = await context.Users.FindAsync(userId);
 
-            return Ok(user.FullName);
+            return Ok(user.FullName ?? "Unknown");
         }
 
-        [HttpGet("PutToRole")] // Add more security
+        [HttpGet("PutToRole")]
         public async Task<IActionResult> PutToRole([FromQuery] string userId, string role)
         {
-            var user = await context.Users.FindAsync(userId);
+            var currentUser = await context.Users.FindAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            await userManager.AddToRoleAsync(user, role);
+            if (currentUser is null)
+            {
+                return BadRequest();
+            }
 
-            return Ok();
+            var currentUserRoles = await userManager.GetRolesAsync(currentUser);
+
+            if (currentUserRoles.Contains("Administrator") || currentUserRoles.Contains("Director"))
+            {
+                var user = await context.Users.FindAsync(userId);
+
+                if (user is null)
+                {
+                    return BadRequest();
+                }
+
+                await userManager.AddToRoleAsync(user, role);
+
+                return Ok();
+            }
+
+            return BadRequest();
         }
 
         [HttpGet("DeleteFromRole")]

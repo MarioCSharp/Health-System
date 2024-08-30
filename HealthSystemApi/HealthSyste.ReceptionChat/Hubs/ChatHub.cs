@@ -8,8 +8,8 @@ namespace HealthSystem.ReceptionChat.Hubs
         private static readonly ConcurrentDictionary<int, HashSet<string>> HospitalRooms =
             new ConcurrentDictionary<int, HashSet<string>>();
 
-        private static readonly ConcurrentDictionary<string, List<string>> RoomMessages =
-            new ConcurrentDictionary<string, List<string>>();
+        private static readonly ConcurrentDictionary<string, List<(string, string)>> RoomMessages =
+            new ConcurrentDictionary<string, List<(string, string)>>();
 
         public async Task JoinUserRoom(int hospitalId, string userId)
         {
@@ -18,18 +18,16 @@ namespace HealthSystem.ReceptionChat.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
         }
 
-        public async Task JoinReceptionistRoom(int hospitalId, int userId)
+        public async Task JoinReceptionistRoom(string roomName)
         {
-            string roomName = $"Hospital_{hospitalId}_User_{userId}";
-            AddRoom(hospitalId, roomName);
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
         }
 
-        public async Task SendMessageToRoom(string roomName, string message)
+        public async Task SendMessageToRoom(string roomName, string message, string name)
         {
-            AddMessageToRoom(roomName, message);
+            AddMessageToRoom(roomName, message, name);
 
-            await Clients.Group(roomName).SendAsync("MessageReceived", message);
+            await Clients.Group(roomName).SendAsync("MessageReceived", message, name);
         }
 
         public IEnumerable<string> GetRoomsForHospital(int hospitalId)
@@ -38,28 +36,31 @@ namespace HealthSystem.ReceptionChat.Hubs
             {
                 return rooms;
             }
+
             return Enumerable.Empty<string>();
         }
 
-        public IEnumerable<string> GetMessagesForRoom(string roomName)
+        public IEnumerable<(string, string)> GetMessagesForRoom(string roomName)
         {
             if (RoomMessages.TryGetValue(roomName, out var messages))
             {
                 return messages;
             }
-            return Enumerable.Empty<string>();
+
+            return Enumerable.Empty<(string, string)>();
         }
 
         private void AddRoom(int hospitalId, string roomName)
         {
             var rooms = HospitalRooms.GetOrAdd(hospitalId, _ => new HashSet<string>());
             rooms.Add(roomName);
+            Clients.All.SendAsync("RoomCreated", roomName);
         }
 
-        private void AddMessageToRoom(string roomName, string message)
+        private void AddMessageToRoom(string roomName, string message, string name)
         {
-            var messages = RoomMessages.GetOrAdd(roomName, _ => new List<string>());
-            messages.Add(message);
+            var messages = RoomMessages.GetOrAdd(roomName, _ => new List<(string, string)>());
+            messages.Add((message, name));
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)

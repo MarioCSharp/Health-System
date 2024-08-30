@@ -39,7 +39,7 @@ namespace HealthSyste.ReceptionChat.Controllers
                 return BadRequest("Invalid room name or message");
             }
 
-            await _chatHub.SendMessageToRoom(model.RoomName, model.Message);
+            await _chatHub.SendMessageToRoom(model.RoomName, model.Message, model.Name ?? "Unknown");
 
             return Ok();
         }
@@ -50,13 +50,31 @@ namespace HealthSyste.ReceptionChat.Controllers
         {
             var messages = await recepcionistService.GetRoomMessages(roomName);
 
-            return Ok(messages);
+            var result = new List<MessageDisplayModel>();
+
+            foreach (var message in messages) 
+            {
+                result.Add(new MessageDisplayModel()
+                {
+                    SentByUserName = message.Item2,
+                    Message = message.Item1
+                });
+            }
+
+            return Ok(result);
         }
     }
 
     public class SendMessageModel
     {
         public string? RoomName { get; set; }
+        public string? Message { get; set; }
+        public string? Name { get; set; }
+    }
+
+    public class MessageDisplayModel
+    {
+        public string? SentByUserName { get; set; }
         public string? Message { get; set; }
     }
 }

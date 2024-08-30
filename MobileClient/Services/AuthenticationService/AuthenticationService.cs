@@ -128,6 +128,32 @@ namespace HealthProject.Services.AuthenticationService
             SecureStorage.Default.Remove("auth_token");
         }
 
+        public async Task<string> GetUserName(string userId)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_baseAddress}:5196/api/Authentication/GetNameByUserId?userId={userId}");
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                return responseBody ?? "Unknown";
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return "Unknown";
+        }
+
+
         private string ToQueryString(RegisterModel registerModel)
         {
             var properties = from p in registerModel.GetType().GetProperties()

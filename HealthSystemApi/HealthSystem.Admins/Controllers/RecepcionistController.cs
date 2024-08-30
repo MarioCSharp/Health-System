@@ -1,6 +1,7 @@
 ﻿using HealthSystem.Admins.Services.RecepcionistService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HealthSystem.Admins.Controllers
 {
@@ -29,6 +30,16 @@ namespace HealthSystem.Admins.Controllers
             var result = await recepcionistService.GetHospitalIdAsync(userId);
 
             return Ok(result);
+        }
+
+        [HttpGet("GetHospitalAndUserId")]
+        [Authorize(Roles = "Recepcionist")]
+        public async Task<IActionResult> GetHospitalAndUserId()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var hospitalId = await recepcionistService.GetHospitalIdAsync(userId);
+
+            return Ok(new {UserId = userId, HospitalId = hospitalId });
         }
     }
 }

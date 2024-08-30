@@ -7,5 +7,6 @@ namespace HealthProject.Services.AuthenticationService
         Task Register(RegisterModel registerModel);
         Task Login(LoginModel registerModel);
         Task<AuthenticationModel> IsAuthenticated();
+        Task<string> GetUserName(string userId);
     }
 }

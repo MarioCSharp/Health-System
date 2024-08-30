@@ -46,7 +46,7 @@ namespace HealthSyste.ReceptionChat.Services.RecepcionistService
             return roomDisplayModels;
         }
 
-        public Task<List<string>> GetRoomMessages(string roomName)
+        public Task<List<(string, string)>> GetRoomMessages(string roomName)
         {
             var messages = chatHub.GetMessagesForRoom(roomName);
             return Task.FromResult(messages.ToList());
