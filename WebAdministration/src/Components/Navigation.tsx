@@ -1,12 +1,21 @@
 import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function Navigation() {
+  const [role, setRole] = useState<string>("");
+
+  useEffect(() => {
+    const userRole = localStorage.getItem("role");
+    setRole(userRole!);
+  }, []);
+
   const logout = () => {
     const token = localStorage.getItem("token");
 
     if (token) {
       localStorage.removeItem("token");
-      <Navigate to={"/login"}></Navigate>;
+      localStorage.removeItem("role");
+      window.location.href = "/login";
     }
   };
 
@@ -15,7 +24,7 @@ function Navigation() {
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            MedCare Administration
+            MedCare Администрация
           </a>
           <button
             className="navbar-toggler"
@@ -28,30 +37,42 @@ function Navigation() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <a
-            className="nav-item text-white"
-            style={{ marginRight: "15px" }}
-            href="/my-calendar"
-          >
-            Моят календар
-          </a>
-          <a
-            className="nav-item text-white"
-            style={{ marginRight: "15px" }}
-            href="/laboratory/mine"
-          >
-            Моята лаборатория
-          </a>
-          <a className="nav-item text-white" href="/recipes">
-            Електронна рецепта
-          </a>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto">
+              {role === "Doctor" && (
+                <>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link text-white"
+                      style={{ marginRight: "15px" }}
+                      href="/my-calendar"
+                    >
+                      Моят календар
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link text-white"
+                      style={{ marginRight: "15px" }}
+                      href="/laboratory/mine"
+                    >
+                      Моята лаборатория
+                    </a>
+                  </li>
+                </>
+              )}
+              <li className="nav-item">
+                <a className="nav-link text-white" href="/recipes">
+                  Електронна рецепта
+                </a>
+              </li>
+            </ul>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <a
-                  href=""
+                  href="#"
                   className="nav-link"
-                  onClick={() => logout()}
+                  onClick={logout}
                   style={{ color: "white" }}
                 >
                   Излизане

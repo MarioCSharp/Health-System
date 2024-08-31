@@ -75,14 +75,16 @@ const RecipeByEgnComponent: React.FC = () => {
     <div className="container mt-5">
       <div className="card shadow-sm">
         <div className="card-body">
-          <h1 className="card-title text-center mb-4">Get Recipes by EGN</h1>
+          <h1 className="card-title text-center mb-4">
+            Електронна рецепта по ЕГН
+          </h1>
           <div className="form-group">
             <input
               type="text"
               className="form-control"
               value={egn}
               onChange={(e) => setEgn(e.target.value)}
-              placeholder="Enter EGN"
+              placeholder="Въведи ЕГН"
             />
           </div>
           <div className="text-center">
@@ -91,7 +93,7 @@ const RecipeByEgnComponent: React.FC = () => {
               onClick={handleFetchRecipes}
               disabled={loading}
             >
-              {loading ? "Loading..." : "Fetch Recipes"}
+              {loading ? "Зареждане..." : "Зареди рецепти"}
             </button>
           </div>
           {error && <div className="alert alert-danger mt-3">{error}</div>}
@@ -107,17 +109,17 @@ const RecipeByEgnComponent: React.FC = () => {
               >
                 <div>
                   <p className="mb-1">
-                    <strong>Patient Name:</strong> {recipe.patientName}
+                    <strong>Пациент:</strong> {recipe.patientName}
                   </p>
                   <p className="mb-1">
-                    <strong>Doctor Name:</strong> {recipe.doctorName}
+                    <strong>Доктор:</strong> {recipe.doctorName}
                   </p>
                 </div>
                 <button
                   className="btn btn-outline-primary"
                   onClick={() => handleDownload(recipe.id)}
                 >
-                  Download
+                  Изтегли
                 </button>
               </li>
             ))}
