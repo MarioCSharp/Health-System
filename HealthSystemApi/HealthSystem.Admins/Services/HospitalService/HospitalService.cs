@@ -188,7 +188,7 @@ namespace HealthSystem.Admins.Services.HospitalService
 
         public async Task<bool> RemoveAsync(int id, string token)
         {
-            var hospital = new Hospital() { Id = id };
+            var hospital = await context.Hospitals.FindAsync(id);
 
             var doctors = await context.Doctors.Where(x => x.HospitalId == id).ToListAsync();
 
@@ -197,10 +197,22 @@ namespace HealthSystem.Admins.Services.HospitalService
                 await doctorService.RemoveAsync(doctor.Id, hospital.OwnerId, token);
             }
 
-            context.Hospitals.Remove(hospital);
-            await context.SaveChangesAsync();
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
+            $"http://localhost:5196/api/Authentication/DeleteFromRole?userId={hospital.OwnerId}&role=Director");
 
-            return !await context.Hospitals.AnyAsync(x => x.Id == id);
+            httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await httpClient.SendAsync(httpRequestMessage);
+
+            if (response.IsSuccessStatusCode)
+            {
+                context.Hospitals.Remove(hospital);
+                await context.SaveChangesAsync();
+
+                return !await context.Hospitals.AnyAsync(x => x.Id == id);
+            }
+
+            return false;
         }
     }
 }

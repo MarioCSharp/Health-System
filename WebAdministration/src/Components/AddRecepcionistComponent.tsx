@@ -43,7 +43,7 @@ function AddRecepcionistComponent() {
   const getHospitalId = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5025/api/Doctor/GetDoctorHospital`,
+        `http://localhost:5025/api/Hospital/GetDirectorHospitalId`,
         {
           method: "GET",
           headers: {
@@ -68,13 +68,12 @@ function AddRecepcionistComponent() {
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
     try {
       const form = new FormData();
-
-      form.append("Name", name);
-      form.append("UserId", selectedUserId);
-      form.append("HospitalId", hospitalId);
+      form.append("userId", selectedUserId);
+      form.append("hospitalId", hospitalId.toString());
+      form.append("name", name);
 
       const response = await fetch(
         `http://localhost:5025/api/Recepcionist/Add`,

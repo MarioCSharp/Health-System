@@ -18,7 +18,7 @@ namespace HealthSystem.Admins.Controllers
 
         [HttpPost("Add")]
         [Authorize(Roles = "Director")]
-        public async Task<IActionResult> Add([FromForm] string userId, int hospitalId, string name)
+        public async Task<IActionResult> Add([FromForm] string userId, [FromForm] int hospitalId, [FromForm] string name)
         {
             var authHeader = Request.Headers["Authorization"].ToString();
             var token = authHeader.StartsWith("Bearer ") ? authHeader.Substring("Bearer ".Length).Trim() : string.Empty;

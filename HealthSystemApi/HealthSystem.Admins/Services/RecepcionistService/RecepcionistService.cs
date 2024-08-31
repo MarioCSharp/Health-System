@@ -32,10 +32,15 @@ namespace HealthSystem.Admins.Services.RecepcionistService
 
             var response = await httpClient.SendAsync(httpRequestMessage);
 
-            await context.Recepcionists.AddAsync(recepcionist);
-            await context.SaveChangesAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                await context.Recepcionists.AddAsync(recepcionist);
+                await context.SaveChangesAsync();
 
-            return await context.Recepcionists.ContainsAsync(recepcionist);
+                return await context.Recepcionists.ContainsAsync(recepcionist);
+            }
+
+            return false;
         }
 
         public async Task Delete(int id, string token)
