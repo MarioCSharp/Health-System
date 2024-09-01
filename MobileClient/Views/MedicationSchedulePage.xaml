@@ -4,13 +4,8 @@
              x:Class="HealthProject.Views.MedicationSchedulePage"
              Title="Medication Schedule">
 
-    <!-- Define the outer grid with three rows: 
-         1. Calendar navigation 
-         2. Calendar itself 
-         3. Medications list -->
     <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*">
 
-        <!-- Calendar Navigation Grid -->
         <Grid x:Name="calendarNavigationGrid"
               RowDefinitions="Auto"
               ColumnDefinitions="Auto, *, Auto"
@@ -34,7 +29,6 @@
                     Clicked="OnNextMonthClicked" />
         </Grid>
 
-        <!-- Calendar Grid -->
         <Grid x:Name="calendarGrid"
               RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
               ColumnDefinitions="*, *, *, *, *, *, *"
@@ -42,7 +36,6 @@
               Padding="10">
         </Grid>
 
-        <!-- Medications CollectionView -->
         <CollectionView Grid.Row="2"
                         ItemsSource="{Binding FilteredMedications}"
                         VerticalOptions="FillAndExpand"
@@ -53,11 +46,17 @@
                         <StackLayout>
                             <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="Medium"/>
                             <Label Text="{Binding HealthIssueName}" FontAttributes="Italic"/>
-                            <Label Text="{Binding Dose, StringFormat='Dose: {0} mg'}" />
-                            <Label Text="{Binding Type}" />
-                            <Label Text="{Binding StartDate, StringFormat='Start: {0:dd/MM/yyyy}'}" />
-                            <Label Text="{Binding EndDate, StringFormat='End: {0:dd/MM/yyyy}'}" />
-                            <Label Text="{Binding FormatedTimes, StringFormat='Times: {0:hh\\:mm}'}" />
+                            <Label>
+                                <Label.Text>
+                                    <MultiBinding StringFormat="Доза: {0} {1}">
+                                        <Binding Path="Dose" />
+                                        <Binding Path="Type" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                            <Label Text="{Binding StartDate, StringFormat='Начало: {0:dd/MM/yyyy}'}" />
+                            <Label Text="{Binding EndDate, StringFormat='Край: {0:dd/MM/yyyy}'}" />
+                            <Label Text="{Binding FormattedTimes}" />
                         </StackLayout>
                     </Frame>
                 </DataTemplate>

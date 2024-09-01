@@ -107,22 +107,22 @@ function AddRecepcionistComponent() {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Add Receptionist</h2>
+      <h2 className="mb-4">Добавяне на рецепционист</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Име:</label>
           <input
             type="text"
             className="form-control"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter receptionist's name"
+            placeholder="Въведи име на рецепционистта"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="user">Select User:</label>
+          <label htmlFor="user">Избери потребител:</label>
           <select
             className="form-control"
             id="user"
@@ -130,7 +130,7 @@ function AddRecepcionistComponent() {
             onChange={(e) => setSelectedUserId(e.target.value)}
             required
           >
-            <option value="">Select a user</option>
+            <option value="">Избери потребител</option>
             {users.map((user) => (
               <option key={user.id} value={user.id}>
                 {user.fullName} ({user.email})
@@ -139,7 +139,7 @@ function AddRecepcionistComponent() {
           </select>
         </div>
         <button type="submit" className="btn btn-primary">
-          Add Receptionist
+          Добавяне
         </button>
       </form>
     </div>

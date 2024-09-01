@@ -2,7 +2,6 @@
 using HealthSystem.Booking.Data.Models;
 using HealthSystem.Booking.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http;
 
 namespace HealthSystem.Booking.Services.ServiceService
 {
@@ -116,6 +115,11 @@ namespace HealthSystem.Booking.Services.ServiceService
             {
                 var d = await context.Services.FindAsync(model.ServiceId);
 
+                if (d is null)
+                {
+                    return false;
+                }
+
                 model.DoctorId = d.DoctorId;
             }
 
@@ -201,6 +205,11 @@ namespace HealthSystem.Booking.Services.ServiceService
         public async Task<ServiceDetailsModel> DetailsAsync(int id)
         {
             var service = await context.Services.FindAsync(id);
+
+            if (service is null)
+            {
+                return new ServiceDetailsModel();
+            }
 
             return new ServiceDetailsModel()
             {

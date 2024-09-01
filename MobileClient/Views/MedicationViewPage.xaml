@@ -10,7 +10,7 @@
         <Grid>
             <Label FontSize="32" 
                    FontAttributes="Bold"
-                   Text="Medications"
+                   Text="Лекарства"
                    HorizontalOptions="Center"/>
 
             <CollectionView ItemsSource="{Binding Medications}" Margin="10, 70">

@@ -12,23 +12,20 @@ namespace HealthProject.Views
         public MedicationSchedulePage(MedicationScheduleViewModel viewModel)
         {
             InitializeComponent();
-            Title = "Лекарства";
+            Title = "График за лекарства";
             BindingContext = this.viewModel = viewModel;
 
             currentDate = DateTime.Today;
-            selectedDate = DateTime.Today;  // Default selected date is today
+            selectedDate = DateTime.Today; 
             DisplayCalendar(currentDate);
         }
 
         private void DisplayCalendar(DateTime date)
         {
-            // Update the month-year label
             monthYearLabel.Text = date.ToString("MMMM yyyy", CultureInfo.InvariantCulture);
 
-            // Clear previous calendar days
             calendarGrid.Children.Clear();
 
-            // Add day labels
             string[] daysOfWeek = new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
             for (int i = 0; i < 7; i++)
             {
@@ -42,12 +39,10 @@ namespace HealthProject.Views
                 Grid.SetRow(dayLabel, 0);
             }
 
-            // Get the first day of the month
             DateTime firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
             int daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
             int startDayOfWeek = (int)firstDayOfMonth.DayOfWeek;
 
-            // Add day buttons to the grid
             for (int day = 1; day <= daysInMonth; day++)
             {
                 int row = (day + startDayOfWeek - 1) / 7 + 1;
@@ -86,7 +81,7 @@ namespace HealthProject.Views
             if (sender is Button button && button.CommandParameter is DateTime date)
             {
                 selectedDate = date;
-                DisplayCalendar(currentDate); // Refresh the calendar to update selected date color
+                DisplayCalendar(currentDate); 
                 viewModel.OnDateSelected(date);
             }
         }

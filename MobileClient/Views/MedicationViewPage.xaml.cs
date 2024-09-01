@@ -9,6 +9,7 @@ public partial class MedicationViewPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = this.viewModel = viewModel;
+        Title = "Лекарства";
 	}
 
     protected override void OnAppearing()
