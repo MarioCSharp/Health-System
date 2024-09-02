@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSystem.Tests", "Healt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSystem.Results", "HealthSystem.Results\HealthSystem.Results.csproj", "{68D328B0-A95D-4D97-AD55-C45E7F522983}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSyste.ReceptionChat", "HealthSyste.ReceptionChat\HealthSyste.ReceptionChat.csproj", "{EDB3ED2B-07A4-4E5D-956A-3CF79EC07145}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSyste.ReceptionChat", "HealthSyste.ReceptionChat\HealthSyste.ReceptionChat.csproj", "{EDB3ED2B-07A4-4E5D-956A-3CF79EC07145}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthSystem.Pharmacy", "HealthSystem.Pharmacy\HealthSystem.Pharmacy.csproj", "{A7EEE42A-F057-48DC-93F3-DE9438555C85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,6 +197,22 @@ Global
 		{EDB3ED2B-07A4-4E5D-956A-3CF79EC07145}.Release|x64.Build.0 = Release|Any CPU
 		{EDB3ED2B-07A4-4E5D-956A-3CF79EC07145}.Release|x86.ActiveCfg = Release|Any CPU
 		{EDB3ED2B-07A4-4E5D-956A-3CF79EC07145}.Release|x86.Build.0 = Release|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Debug|x64.Build.0 = Debug|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Debug|x86.Build.0 = Debug|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Release|ARM64.Build.0 = Release|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Release|x64.ActiveCfg = Release|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Release|x64.Build.0 = Release|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Release|x86.ActiveCfg = Release|Any CPU
+		{A7EEE42A-F057-48DC-93F3-DE9438555C85}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
