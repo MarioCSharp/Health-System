@@ -133,47 +133,6 @@ namespace HealthProject.Services.ProblemService
             return new List<ProblemDisplayModel>();
         }
 
-        private void CheckInternetConnection()
-        {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-            {
-                Debug.WriteLine("--- No internet access");
-            }
-        }
-
-        private string ToQueryString(object model)
-        {
-            var properties = from p in model.GetType().GetProperties()
-                             let value = p.GetValue(model, null)
-                             where value != null
-                             from param in (value is System.Collections.IEnumerable && !(value is string)
-                                            ? (value as System.Collections.IEnumerable).Cast<object>()
-                                            : new List<object> { value })
-                             select p.Name + "=" + WebUtility.UrlEncode(param.ToString());
-
-            return string.Join("&", properties.ToArray());
-        }
-
-        public string ToQueryString(ProblemAddModel problemAddModel, SymptomAddModel symptomAddModel)
-        {
-            var problemQueryString = ToQueryString(problemAddModel);
-            var symptomQueryString = ToQueryString(symptomAddModel);
-
-            var combinedQueryString = problemQueryString;
-            if (!string.IsNullOrEmpty(symptomQueryString))
-            {
-                combinedQueryString += "&" + symptomQueryString;
-            }
-
-            if (!string.IsNullOrEmpty(combinedQueryString))
-            {
-                combinedQueryString = "?" + combinedQueryString;
-            }
-
-            Console.WriteLine($"Combined Query String: {combinedQueryString}");
-            return combinedQueryString;
-        }
-
         public async Task<List<SymptomCategoryDisplayModel>> GetSymptomsCategories()
         {
             CheckInternetConnection();
@@ -230,6 +189,47 @@ namespace HealthProject.Services.ProblemService
             }
 
             return new List<SymptomSubCategoryDisplayModel>();
+        }
+
+        private void CheckInternetConnection()
+        {
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                Debug.WriteLine("--- No internet access");
+            }
+        }
+
+        private string ToQueryString(object model)
+        {
+            var properties = from p in model.GetType().GetProperties()
+                             let value = p.GetValue(model, null)
+                             where value != null
+                             from param in (value is System.Collections.IEnumerable && !(value is string)
+                                            ? (value as System.Collections.IEnumerable).Cast<object>()
+                                            : new List<object> { value })
+                             select p.Name + "=" + WebUtility.UrlEncode(param.ToString());
+
+            return string.Join("&", properties.ToArray());
+        }
+
+        public string ToQueryString(ProblemAddModel problemAddModel, SymptomAddModel symptomAddModel)
+        {
+            var problemQueryString = ToQueryString(problemAddModel);
+            var symptomQueryString = ToQueryString(symptomAddModel);
+
+            var combinedQueryString = problemQueryString;
+            if (!string.IsNullOrEmpty(symptomQueryString))
+            {
+                combinedQueryString += "&" + symptomQueryString;
+            }
+
+            if (!string.IsNullOrEmpty(combinedQueryString))
+            {
+                combinedQueryString = "?" + combinedQueryString;
+            }
+
+            Console.WriteLine($"Combined Query String: {combinedQueryString}");
+            return combinedQueryString;
         }
     }
 }

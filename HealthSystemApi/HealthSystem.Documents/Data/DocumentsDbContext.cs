@@ -10,5 +10,6 @@ namespace HealthSystem.Documents.Data
         }
 
         public DbSet<Document> Documents { get; set; }
+        public DbSet<Reminder> Reminders { get; set; }
     }
 }

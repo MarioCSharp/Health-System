@@ -60,7 +60,6 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Floating Action Button -->
             <Button Text="＋" 
                     Command="{Binding RedirectToAdd}"
                     BackgroundColor="#007ACC"

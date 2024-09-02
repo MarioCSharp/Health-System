@@ -16,6 +16,7 @@ using Syncfusion.Maui.Core.Hosting;
 using HealthProject.Services.DiagnosisService;
 using Plugin.LocalNotification;
 using HealthProject.Services.LaboratoryService;
+using HealthProject.Services.ReminderService;
 
 namespace HealthProject
 {
@@ -72,6 +73,8 @@ namespace HealthProject
             builder.Services.AddTransient<LaboratoryViewModel>();
             builder.Services.AddTransient<ReceptionChatViewModel>();
             builder.Services.AddTransient<ReceptionViewModel>();
+            builder.Services.AddTransient<ReminderAddViewModel>();
+            builder.Services.AddTransient<ReminderViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IServiceService, ServiceService>();
@@ -84,6 +87,7 @@ namespace HealthProject
             builder.Services.AddHttpClient<ILogbookService, LogbookService>();
             builder.Services.AddHttpClient<IDiagnosisService, DiagnosisService>();
             builder.Services.AddHttpClient<ILaboratoryService, LaboratoryService>();
+            builder.Services.AddHttpClient<IReminderService, ReminderService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
@@ -95,6 +99,7 @@ namespace HealthProject
             builder.Services.AddTransient<ILogbookService, LogbookService>();
             builder.Services.AddTransient<IDiagnosisService, DiagnosisService>();
             builder.Services.AddTransient<ILaboratoryService, LaboratoryService>();
+            builder.Services.AddTransient<IReminderService, ReminderService>();
             builder.Services.AddTransient<HospitalDetailsPage>();
             builder.Services.AddTransient<MyPrescriptionsPage>();
             builder.Services.AddTransient<DoctorDetailsPage>();
@@ -120,6 +125,8 @@ namespace HealthProject
             builder.Services.AddTransient<LaboratoryPage>();
             builder.Services.AddTransient<ReceptionChatPage>();
             builder.Services.AddTransient<ReceptionPage>();
+            builder.Services.AddTransient<RemindersAddPage>();
+            builder.Services.AddTransient<RemindersViewPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

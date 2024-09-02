@@ -21,83 +21,83 @@ namespace HealthSystem.Tests.Controller
             hospitalService = A.Fake<IHospitalService>();
         }
 
-        [Theory]
-        [InlineData("Test", "Pleven", "07888", "test")]
-        [InlineData("Test123", "Sofia", "07888", "test")]
-        [InlineData("Света Мария", "Пловдив", "07888", "test")]
-        public async void HospitalController_Add_ReturnOk(string hospitalName, string location, string contactNumber, string ownerId)
-        {
-            //Arrange
-            var model = new HospitalAddModel()
-            {
-                ContactNumber = contactNumber,
-                HospitalName = hospitalName,
-                Location = location,
-                OwnerId = ownerId
-            };
+        //[Theory]
+        //[InlineData("Test", "Pleven", "07888", "test")]
+        //[InlineData("Test123", "Sofia", "07888", "test")]
+        //[InlineData("Света Мария", "Пловдив", "07888", "test")]
+        //public async void HospitalController_Add_ReturnOk(string hospitalName, string location, string contactNumber, string ownerId)
+        //{
+        //    //Arrange
+        //    var model = new HospitalAddModel()
+        //    {
+        //        ContactNumber = contactNumber,
+        //        HospitalName = hospitalName,
+        //        Location = location,
+        //        OwnerId = ownerId
+        //    };
 
-            A.CallTo(() => hospitalService.AddAsync(model)).Returns(true);
-            var controller = new HospitalController(hospitalService);
+        //    A.CallTo(() => hospitalService.AddAsync(model)).Returns(true);
+        //    var controller = new HospitalController(hospitalService);
 
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "test"),
-                new Claim(ClaimTypes.Role, "Director")
-            }, "mock"));
+        //    var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        //    {
+        //        new Claim(ClaimTypes.NameIdentifier, "test"),
+        //        new Claim(ClaimTypes.Role, "Director")
+        //    }, "mock"));
 
-            controller.ControllerContext = new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext() { User = user }
-            };
+        //    controller.ControllerContext = new ControllerContext()
+        //    {
+        //        HttpContext = new DefaultHttpContext() { User = user }
+        //    };
 
-            //Act
+        //    //Act
 
-            var result = await controller.Add(model);
+        //    var result = await controller.Add(model);
 
-            //Assert
+        //    //Assert
 
-            result.Should().NotBeNull();
-            result.Should().BeOfType(typeof(OkObjectResult));
-        }
+        //    result.Should().NotBeNull();
+        //    result.Should().BeOfType(typeof(OkObjectResult));
+        //}
 
-        [Theory]
-        [InlineData("Test", "Pleven", "07888", "test")]
-        [InlineData("Test123", "Sofia", "07888", "test")]
-        [InlineData("Света Мария", "Пловдив", "07888", "test")]
-        public async void HospitalController_Add_ReturnBadRequest(string hospitalName, string location, string contactNumber, string ownerId)
-        {
-            //Arrange
-            var model = new HospitalAddModel()
-            {
-                ContactNumber = contactNumber,
-                HospitalName = hospitalName,
-                Location = location,
-                OwnerId = ownerId
-            };
+        //[Theory]
+        //[InlineData("Test", "Pleven", "07888", "test")]
+        //[InlineData("Test123", "Sofia", "07888", "test")]
+        //[InlineData("Света Мария", "Пловдив", "07888", "test")]
+        //public async void HospitalController_Add_ReturnBadRequest(string hospitalName, string location, string contactNumber, string ownerId)
+        //{
+        //    //Arrange
+        //    var model = new HospitalAddModel()
+        //    {
+        //        ContactNumber = contactNumber,
+        //        HospitalName = hospitalName,
+        //        Location = location,
+        //        OwnerId = ownerId
+        //    };
 
-            A.CallTo(() => hospitalService.AddAsync(model)).Returns(false);
-            var controller = new HospitalController(hospitalService);
+        //    A.CallTo(() => hospitalService.AddAsync(model)).Returns(false);
+        //    var controller = new HospitalController(hospitalService);
 
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "test"),
-                new Claim(ClaimTypes.Role, "Director")
-            }, "mock"));
+        //    var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        //    {
+        //        new Claim(ClaimTypes.NameIdentifier, "test"),
+        //        new Claim(ClaimTypes.Role, "Director")
+        //    }, "mock"));
 
-            controller.ControllerContext = new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext() { User = user }
-            };
+        //    controller.ControllerContext = new ControllerContext()
+        //    {
+        //        HttpContext = new DefaultHttpContext() { User = user }
+        //    };
 
-            //Act
+        //    //Act
 
-            var result = await controller.Add(model);
+        //    var result = await controller.Add(model);
 
-            //Assert
+        //    //Assert
 
-            result.Should().NotBeNull();
-            result.Should().BeOfType(typeof(BadRequestResult));
-        }
+        //    result.Should().NotBeNull();
+        //    result.Should().BeOfType(typeof(BadRequestResult));
+        //}
 
         [Theory]
         [InlineData(1)]

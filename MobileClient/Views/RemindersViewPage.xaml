@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HealthProject.Views.RemindersViewPage"
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             BackgroundColor="#fff"
+             Title="RemindersViewPage">
+    <ContentPage.Content>
+        <Grid>
+            <Label FontSize="32" 
+               FontAttributes="Bold"
+               Text="Записи"
+               HorizontalOptions="Center"/>
+
+            <CollectionView ItemsSource="{Binding Reminders}" Margin="10, 70">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="10" 
+                           BorderColor="#007ACC" 
+                           Margin="10,5" 
+                           Padding="10" 
+                           HasShadow="True" 
+                           BackgroundColor="White">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout Grid.Column="0">
+                                    <Label Text="{Binding Name}" 
+                                       FontSize="18" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                    <Label Text="{Binding Type}" 
+                                       FontSize="18" 
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                    <Label Text="{Binding RemindDate, StringFormat='{0:MMM dd, yyyy}'}" 
+                                       FontSize="16" 
+                                       VerticalOptions="Center"
+                                       TextColor="Gray"/>
+                                </StackLayout>
+
+                                <ImageButton Source="recycle_bin.png" 
+                                         BackgroundColor="Transparent"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteReminderCommand}"
+                                         CommandParameter="{Binding Id}"
+                                         HeightRequest="24"
+                                         WidthRequest="24"
+                                         HorizontalOptions="End"
+                                         VerticalOptions="Center"
+                                         Grid.Column="1"
+                                         Margin="10,0,0,0"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="＋" 
+                Command="{Binding RedirectToAddCommand}"
+                BackgroundColor="#007ACC"
+                TextColor="White"
+                FontSize="24"
+                CornerRadius="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="20">
+                <Button.Triggers>
+                    <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                        <Setter Property="BackgroundColor" Value="#005999"/>
+                    </Trigger>
+                </Button.Triggers>
+            </Button>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

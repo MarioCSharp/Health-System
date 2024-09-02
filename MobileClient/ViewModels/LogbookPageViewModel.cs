@@ -73,6 +73,7 @@ namespace HealthProject.ViewModels
             if (parameter is int id)
             {
                 await logbookService.DeleteAsync(id);
+                LaodLog();
                 await Shell.Current.GoToAsync($"//{nameof(LogbookViewPage)}");
             }
         }

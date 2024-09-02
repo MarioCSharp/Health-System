@@ -48,14 +48,14 @@
                             <Label Text="{Binding HealthIssueName}" FontAttributes="Italic"/>
                             <Label>
                                 <Label.Text>
-                                    <MultiBinding StringFormat="Доза: {0} {1}">
+                                    <MultiBinding StringFormat="Dose: {0} {1}">
                                         <Binding Path="Dose" />
                                         <Binding Path="Type" />
                                     </MultiBinding>
                                 </Label.Text>
                             </Label>
-                            <Label Text="{Binding StartDate, StringFormat='Начало: {0:dd/MM/yyyy}'}" />
-                            <Label Text="{Binding EndDate, StringFormat='Край: {0:dd/MM/yyyy}'}" />
+                            <Label Text="{Binding StartDate, StringFormat='Start: {0:dd/MM/yyyy}'}" />
+                            <Label Text="{Binding EndDate, StringFormat='End: {0:dd/MM/yyyy}'}" />
                             <Label Text="{Binding FormattedTimes}" />
                         </StackLayout>
                     </Frame>

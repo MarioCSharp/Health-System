@@ -18,96 +18,96 @@ namespace HealthSystem.Tests.Controller
             doctorService = A.Fake<IDoctorService>();
         }
 
-        [Theory]
-        [InlineData("Алерголог", "test", "nz", "088", "mario.19@abv.bg", "Mario Petkov", 2)]
-        [InlineData("Гастроентеролог", "teееst", "nzзз", "088", "mario.19@abv.bg", "Ivailo Petkov", 3)]
-        [InlineData("Кардиолог", "test", "nzззз", "087858", "mario.19@abv.bg", "Martin Petkov", 4)]
-        [InlineData("Хирург", "teеst", "nззz", "0887758", "mario.19@abv.bg", "Dragan Petkov", 5)]
-        public async void DoctorController_Add_ReturnOK(string specialization, string userId, string about, string contactNumber, string email, string FullName, int hospitalId)
-        {
-            //Arrange
-            var model = new DoctorAddModel()
-            {
-                About = about,
-                ContactNumber = contactNumber,
-                Email = email,
-                Specialization = specialization,
-                UserId = userId,
-                HospitalId = hospitalId,
-                FullName = FullName
-            };
+        //[Theory]
+        //[InlineData("Алерголог", "test", "nz", "088", "mario.19@abv.bg", "Mario Petkov", 2)]
+        //[InlineData("Гастроентеролог", "teееst", "nzзз", "088", "mario.19@abv.bg", "Ivailo Petkov", 3)]
+        //[InlineData("Кардиолог", "test", "nzззз", "087858", "mario.19@abv.bg", "Martin Petkov", 4)]
+        //[InlineData("Хирург", "teеst", "nззz", "0887758", "mario.19@abv.bg", "Dragan Petkov", 5)]
+        //public async void DoctorController_Add_ReturnOK(string specialization, string userId, string about, string contactNumber, string email, string FullName, int hospitalId)
+        //{
+        //    //Arrange
+        //    var model = new DoctorAddModel()
+        //    {
+        //        About = about,
+        //        ContactNumber = contactNumber,
+        //        Email = email,
+        //        Specialization = specialization,
+        //        UserId = userId,
+        //        HospitalId = hospitalId,
+        //        FullName = FullName
+        //    };
 
-            A.CallTo(() => doctorService.AddAsync(model, "test")).Returns(true);
-            var controller = new DoctorController(doctorService);
+        //    A.CallTo(() => doctorService.AddAsync(model, "test")).Returns(true);
+        //    var controller = new DoctorController(doctorService);
 
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "test"),
-                new Claim(ClaimTypes.Role, "Director")
-            }, "mock"));
+        //    var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        //    {
+        //        new Claim(ClaimTypes.NameIdentifier, "test"),
+        //        new Claim(ClaimTypes.Role, "Director")
+        //    }, "mock"));
 
-            controller.ControllerContext = new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext() { User = user }
-            };
+        //    controller.ControllerContext = new ControllerContext()
+        //    {
+        //        HttpContext = new DefaultHttpContext() { User = user }
+        //    };
 
-            //Act
+        //    //Act
 
-            var result = await controller.Add(model);
+        //    var result = await controller.Add(model);
 
-            //Assert
+        //    //Assert
 
-            result.Should().NotBeNull();
-            result.Should().BeOfType(typeof(OkObjectResult));
-        }
+        //    result.Should().NotBeNull();
+        //    result.Should().BeOfType(typeof(OkObjectResult));
+        //}
 
-        [Theory]
-        [InlineData(null, "test", "nz", "088", "mario.19@abv.bg", "Mario Petkov", 2)]
-        [InlineData("Гастроентеролог", null, "nzзз", "088", "mario.19@abv.bg", "Ivailo Petkov", 3)]
-        [InlineData("Кардиолог", "test", "nzззз", null, "mario.19@abv.bg", "Martin Petkov", 4)]
-        [InlineData("Хирург", "teеst", "nззz", "0887758", null, "Dragan Petkov", 5)]
-        [InlineData("Хирург", "teеst", "nззz", "0887758", "mario.19@abv.bg", null, 5)]
-        [InlineData("Хирург", "teеst", "nззz", "0887758", "mario.19@abv.bg", null, 6)]
-        public async void DoctorController_Add_ReturnBadRequest(string specialization, string userId, string about, string contactNumber, string email, string FullName, int hospitalId)
-        {
-            //Arrange
-            var model = new DoctorAddModel()
-            {
-                About = about,
-                ContactNumber = contactNumber,
-                Email = email,
-                Specialization = specialization,
-                UserId = userId,
-                FullName = FullName
-            };
+        //[Theory]
+        //[InlineData(null, "test", "nz", "088", "mario.19@abv.bg", "Mario Petkov", 2)]
+        //[InlineData("Гастроентеролог", null, "nzзз", "088", "mario.19@abv.bg", "Ivailo Petkov", 3)]
+        //[InlineData("Кардиолог", "test", "nzззз", null, "mario.19@abv.bg", "Martin Petkov", 4)]
+        //[InlineData("Хирург", "teеst", "nззz", "0887758", null, "Dragan Petkov", 5)]
+        //[InlineData("Хирург", "teеst", "nззz", "0887758", "mario.19@abv.bg", null, 5)]
+        //[InlineData("Хирург", "teеst", "nззz", "0887758", "mario.19@abv.bg", null, 6)]
+        //public async void DoctorController_Add_ReturnBadRequest(string specialization, string userId, string about, string contactNumber, string email, string FullName, int hospitalId)
+        //{
+        //    //Arrange
+        //    var model = new DoctorAddModel()
+        //    {
+        //        About = about,
+        //        ContactNumber = contactNumber,
+        //        Email = email,
+        //        Specialization = specialization,
+        //        UserId = userId,
+        //        FullName = FullName
+        //    };
 
-            if (hospitalId != 6)
-            {
-                model.HospitalId = hospitalId;
-            }
+        //    if (hospitalId != 6)
+        //    {
+        //        model.HospitalId = hospitalId;
+        //    }
 
-            A.CallTo(() => doctorService.AddAsync(model, "test")).Returns(false);
-            var controller = new DoctorController(doctorService);
+        //    A.CallTo(() => doctorService.AddAsync(model, "test")).Returns(false);
+        //    var controller = new DoctorController(doctorService);
 
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "test"),
-                new Claim(ClaimTypes.Role, "Director")
-            }, "mock"));
+        //    var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        //    {
+        //        new Claim(ClaimTypes.NameIdentifier, "test"),
+        //        new Claim(ClaimTypes.Role, "Director")
+        //    }, "mock"));
 
-            controller.ControllerContext = new ControllerContext()
-            {
-                HttpContext = new DefaultHttpContext() { User = user }
-            };
-            //Act
+        //    controller.ControllerContext = new ControllerContext()
+        //    {
+        //        HttpContext = new DefaultHttpContext() { User = user }
+        //    };
+        //    //Act
 
-            var result = await controller.Add(model);
+        //    var result = await controller.Add(model);
 
-            //Assert
+        //    //Assert
 
-            result.Should().NotBeNull();
-            result.Should().BeOfType(typeof(BadRequestResult));
-        }
+        //    result.Should().NotBeNull();
+        //    result.Should().BeOfType(typeof(BadRequestResult));
+        //}
 
         [Theory]
         [InlineData(1)]

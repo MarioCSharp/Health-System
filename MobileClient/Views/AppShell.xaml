@@ -98,6 +98,12 @@
         ContentTemplate="{DataTemplate local:LaboratoryPage}"
         Route="LaboratoryPage"/>
     </FlyoutItem>
+    <FlyoutItem Title="Напомняния">
+        <ShellContent
+        Title="Напомняния"
+        ContentTemplate="{DataTemplate local:RemindersViewPage}"
+        Route="RemindersViewPage"/>
+    </FlyoutItem>
 
     <FlyoutItem Title="Автентикация">
         <Tab>
