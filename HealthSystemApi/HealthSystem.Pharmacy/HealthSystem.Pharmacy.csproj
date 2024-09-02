@@ -19,8 +19,4 @@
     <ProjectReference Include="..\HealthSystemCommon\HealthSystemCommon.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

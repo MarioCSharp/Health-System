@@ -14,6 +14,9 @@ namespace HealthSystem.Pharmacy.Data
         public DbSet<Medication> Medications { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderMedication> OrderMedications { get; set; }
+        public DbSet<UserCart> UserCarts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Pharmacist> Pharmacists { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +34,21 @@ namespace HealthSystem.Pharmacy.Data
                 .HasOne(om => om.Medication)
                 .WithMany()
                 .HasForeignKey(om => om.MedicationId);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.UserCart)
+                .WithMany(uc => uc.CartItems)
+                .HasForeignKey(ci => ci.UserCartId);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Medication)
+                .WithMany()
+                .HasForeignKey(ci => ci.MedicationId);
+
+            modelBuilder.Entity<UserCart>()
+                .HasOne(uc => uc.Pharmacy)
+                .WithMany()
+                .HasForeignKey(uc => uc.PharmacyId);
         }
     }
 }

@@ -3,22 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HealthSystem.Pharmacy.Data.Models
 {
-    public class Medication
+    public class Pharmacist
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public string? MedicationName { get; set; }
+        public string? Name { get; set; }
 
         [Required]
-        public int MedicationQuantity { get; set; }
+        public string? Email { get; set; }
 
         [Required]
-        public float MedicationPrice { get; set; }
-
-        [Required]
-        public byte[]? Image { get; set; }
+        public string? UserId { get; set; }
 
         [Required]
         public int PharmacyId { get; set; }
