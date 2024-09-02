@@ -19,6 +19,7 @@ namespace HealthProject.ViewModels
             this.reminderService = reminderService;
 
             Reminder = new ReminderAddModel();
+            Reminder.RemindTime = DateTime.Now;
 
             SubmitCommand = new AsyncRelayCommand(AddAsync);
         }

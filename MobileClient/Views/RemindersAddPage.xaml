@@ -57,7 +57,7 @@
                    AutomationProperties.Name="Location Entry" />
 
                     <Label Text="Дата на напомняне:" FontSize="Medium" />
-                    <DatePicker Date="{Binding Reminder.RemindDate}" />
+                    <DatePicker Date="{Binding Reminder.RemindTime}" />
 
                     <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" 
                     Command="{Binding SubmitCommand}" 

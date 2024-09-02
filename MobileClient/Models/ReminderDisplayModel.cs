@@ -10,6 +10,6 @@
 
         public string? DateAdded { get; set; }
 
-        public string? RemindDate { get; set; }
+        public string? ReminderDate { get; set; }
     }
 }

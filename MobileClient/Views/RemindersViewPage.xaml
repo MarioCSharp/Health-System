@@ -9,7 +9,7 @@
         <Grid>
             <Label FontSize="32" 
                FontAttributes="Bold"
-               Text="Записи"
+               Text="Напомняния"
                HorizontalOptions="Center"/>
 
             <CollectionView ItemsSource="{Binding Reminders}" Margin="10, 70">
@@ -38,7 +38,7 @@
                                        FontAttributes="Bold"
                                        VerticalOptions="Center"
                                        TextColor="Black"/>
-                                    <Label Text="{Binding RemindDate, StringFormat='{0:MMM dd, yyyy}'}" 
+                                    <Label Text="{Binding ReminderDate, StringFormat='{0:MMM dd, yyyy}'}" 
                                        FontSize="16" 
                                        VerticalOptions="Center"
                                        TextColor="Gray"/>

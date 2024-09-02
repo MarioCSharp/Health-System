@@ -47,7 +47,7 @@ namespace HealthProject.Services.ReminderService
 
                 form.Add(new StringContent(model.Type ?? string.Empty), "Type");
                 form.Add(new StringContent(model.Name ?? string.Empty), "Name");
-                form.Add(new StringContent(model.RemindTime.ToString("o")), "RemindDate");
+                form.Add(new StringContent(model.RemindTime.ToString("o")), "RemindTime");
 
                 message.Content = form;
 
