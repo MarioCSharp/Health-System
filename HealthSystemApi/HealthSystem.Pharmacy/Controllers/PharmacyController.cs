@@ -52,7 +52,7 @@ namespace HealthSystem.Pharmacy.Controllers
         [Authorize]
         public async Task<IActionResult> Details([FromQuery] int id)
         {
-            var result = await pharmacyService.DetailsAsync();
+            var result = await pharmacyService.DetailsAsync(id);
 
             return result is not null ? Ok(result) : BadRequest();
         }
@@ -61,7 +61,15 @@ namespace HealthSystem.Pharmacy.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
-            var result = await pharmacyService.DeleteAsync(id);
+            var authHeader = Request.Headers["Authorization"].ToString();
+            var token = authHeader.StartsWith("Bearer ") ? authHeader.Substring("Bearer ".Length).Trim() : string.Empty;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
+
+            var result = await pharmacyService.DeleteAsync(id, token);
 
             return result ? Ok(result) : BadRequest();
         }

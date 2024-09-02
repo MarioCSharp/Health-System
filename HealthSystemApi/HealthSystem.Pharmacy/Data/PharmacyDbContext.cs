@@ -17,6 +17,7 @@ namespace HealthSystem.Pharmacy.Data
         public DbSet<UserCart> UserCarts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Pharmacist> Pharmacists { get; set; }
+        public DbSet<PharmacyOwner> PharmacyOwners { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

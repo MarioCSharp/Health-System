@@ -6,8 +6,8 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
     {
         Task<bool> AddAsync(PharmacyAddModel model, string token);
         Task<List<PharmacyModel>> AllAsync();
-        Task<PharmacyModel> DetailsAsync();
-        Task<bool> DeleteAsync(int id);
+        Task<PharmacyModel> DetailsAsync(int id);
+        Task<bool> DeleteAsync(int id, string token);
         Task<bool> EditAsync(PharmacyEditModel model, string userId);
     }
 }
