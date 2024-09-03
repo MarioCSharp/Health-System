@@ -1,4 +1,5 @@
 import HospitalsList from "./HospitalsList";
+import PharmaciesComponent from "./PharmaciesComponent";
 import UsersList from "./UsersList";
 
 function AdminHomePage() {
@@ -8,6 +9,7 @@ function AdminHomePage() {
         <div className="row">
           <HospitalsList></HospitalsList>
           <UsersList></UsersList>
+          <PharmaciesComponent></PharmaciesComponent>
         </div>
       </div>
     </>

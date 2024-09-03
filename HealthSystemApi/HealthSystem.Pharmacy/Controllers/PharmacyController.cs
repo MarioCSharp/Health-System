@@ -83,9 +83,18 @@ namespace HealthSystem.Pharmacy.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await pharmacyService.EditAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var result = await pharmacyService.EditAsync(model, User.IsInRole("Administrator") ? "Administrator" : userId ?? string.Empty);
 
             return result ? Ok(result) : BadRequest();
+        }
+
+        [HttpGet("GetMyPharmacy")]
+        [Authorize(Roles = "PharmacyOwner")]
+        public async Task<IActionResult> GetMyPharmacy()
+        {
+            return Ok(await pharmacyService.GetPharmacyByUserIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
     }
 }

@@ -159,7 +159,7 @@ namespace HealthSystem.Identity.Controllers
         }
 
         [HttpGet("PutToRole")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator,Director,PharmacyOwner")]
         public async Task<IActionResult> PutToRole([FromQuery] string userId, string role)
         {
             var user = await context.Users.FindAsync(userId);
@@ -175,7 +175,7 @@ namespace HealthSystem.Identity.Controllers
         }
 
         [HttpGet("DeleteFromRole")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator,Director,PharmacyOwner")]
         public async Task<IActionResult> DeleteFromRole([FromQuery] string userId, string role)
         {
             var user = await context.Users.FindAsync(userId);

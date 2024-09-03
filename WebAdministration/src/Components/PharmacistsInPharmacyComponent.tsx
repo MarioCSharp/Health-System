@@ -29,6 +29,7 @@ function PharmacistsInPharmacyComponent() {
 
       if (response.ok) {
         const data = await response.json();
+
         setPharmacists(data);
       } else {
         throw new Error("There was an error loading the pharmacists");
@@ -49,7 +50,7 @@ function PharmacistsInPharmacyComponent() {
   const handleDelete = async (pharmacistId: number) => {
     try {
       const response = await fetch(
-        `http://localhost:5171/api/Pharmacist/Delete?id=${pharmacistId}`,
+        `http://localhost:5171/api/Pharmacist/Delete?pharmacistId=${pharmacistId}`,
         {
           method: "GET",
           headers: {

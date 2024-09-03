@@ -1,5 +1,7 @@
+import MyPharmacyComponent from "./MyPharmacyComponent";
+
 function PharmacyOwnerHomePage() {
-  return <div>PharmacyOwnerHomePage</div>;
+  return <MyPharmacyComponent />;
 }
 
 export default PharmacyOwnerHomePage;

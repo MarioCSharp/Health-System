@@ -1,7 +1,6 @@
 ﻿using HealthSystem.Pharmacy.Data;
 using HealthSystem.Pharmacy.Models.Pharmacy;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http;
 
 namespace HealthSystem.Pharmacy.Services.PharmacyService
 {
@@ -76,13 +75,12 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             {
                 await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Medications WHERE PharmacyId = {id}");
                 await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Pharmacists WHERE PharmacyId = {id}");
-                await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM PharmacyOwners WHERE PharmacyId = {id}");
                 await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM UserCarts WHERE PharmacyId = {id}");
 
                 context.Pharmacies.Remove(pharmacy);
                 await context.SaveChangesAsync();
 
-                return await context.Pharmacies.ContainsAsync(pharmacy);
+                return !await context.Pharmacies.ContainsAsync(pharmacy);
             }
 
             return false;
@@ -115,7 +113,12 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
 
             var pharmacy = await context.Pharmacies.FindAsync(model.Id);
 
-            if (pharmacy is null || pharmacy.OwnerUserId != userId)
+            if (pharmacy is null)
+            {
+                return false;
+            }
+
+            if (pharmacy.OwnerUserId != userId && userId != "Administrator")
             {
                 return false;
             }
@@ -126,6 +129,24 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<PharmacyModel> GetPharmacyByUserIdAsync(string userId)
+        {
+            var pharmacy = await context.Pharmacies.FirstOrDefaultAsync(p => p.OwnerUserId == userId);
+
+            if (pharmacy is null)
+            {
+                return new PharmacyModel();
+            }
+
+            return new PharmacyModel()
+            {
+                Id = pharmacy.Id,
+                Name = pharmacy.Name,
+                Location = pharmacy.Location,
+                ContactNumber = pharmacy.ContactNumber
+            };
         }
     }
 }

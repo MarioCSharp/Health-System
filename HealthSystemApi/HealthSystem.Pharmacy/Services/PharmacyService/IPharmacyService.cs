@@ -9,5 +9,6 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
         Task<PharmacyModel> DetailsAsync(int id);
         Task<bool> DeleteAsync(int id, string token);
         Task<bool> EditAsync(PharmacyEditModel model, string userId);
+        Task<PharmacyModel> GetPharmacyByUserIdAsync(string userId);
     }
 }

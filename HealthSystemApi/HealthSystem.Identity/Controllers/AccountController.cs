@@ -20,7 +20,7 @@ namespace HealthSystem.Identity.Controllers
         }
 
         [HttpGet("GetAccountsWithNoRoles")]
-        [Authorize(Roles = "Administrator,Director")]
+        [Authorize(Roles = "Administrator,Director,PharmacyOwner")]
         public async Task<IActionResult> GetAccountsWithNoRoles()
         {
             var users = await accountService.GetAccountsAsync();

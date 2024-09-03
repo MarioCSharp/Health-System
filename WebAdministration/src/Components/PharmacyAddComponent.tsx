@@ -62,7 +62,6 @@ function PharmacyAddComponent() {
       const response = await fetch(`http://localhost:5171/api/Pharmacy/Add`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: form,

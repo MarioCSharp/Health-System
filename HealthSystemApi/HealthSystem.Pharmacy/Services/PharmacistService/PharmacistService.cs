@@ -44,14 +44,14 @@ namespace HealthSystem.Pharmacy.Services.PharmacistService
                 {
                     Name = model.Name,
                     Email = model.Email,
-                    UserId = userId,
+                    UserId = model.UserId,
                     PharmacyId = pharmacy.Id
                 };
 
-                await context.Pharmacies.AddAsync(pharmacy);
+                await context.Pharmacists.AddAsync(pharmacist);
                 await context.SaveChangesAsync();
 
-                return await context.Pharmacies.ContainsAsync(pharmacy);
+                return await context.Pharmacists.ContainsAsync(pharmacist);
             }
 
             return false;
@@ -90,7 +90,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacistService
                 context.Pharmacists.Remove(pharmacist);
                 await context.SaveChangesAsync();
 
-                return await context.Pharmacists.ContainsAsync(pharmacist);
+                return !await context.Pharmacists.ContainsAsync(pharmacist);
             }
 
             return false;
