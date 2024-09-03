@@ -2,6 +2,7 @@
 using HealthSystem.Pharmacy.Services.OrderService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HealthSystem.Pharmacy.Controllers
 {
@@ -20,7 +21,14 @@ namespace HealthSystem.Pharmacy.Controllers
         [Authorize]
         public async Task<IActionResult> SubmitOrder([FromForm] SubmitOrderModel model)
         {
-            var result = await orderService.SubmitOrderAsync(model);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+            {
+                return BadRequest();
+            }
+
+            var result = await orderService.SubmitOrderAsync(model, userId);
 
             return result ? Ok(result) : BadRequest();
         }
