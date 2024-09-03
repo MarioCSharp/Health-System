@@ -48,7 +48,7 @@ const PharmaciesComponent: React.FC = () => {
       const response = await fetch(
         `http://localhost:5171/api/Pharmacy/Delete?id=${pharmacyId}`,
         {
-          method: "DELETE",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

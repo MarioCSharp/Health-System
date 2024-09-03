@@ -96,5 +96,14 @@ namespace HealthSystem.Pharmacy.Controllers
         {
             return Ok(await pharmacyService.GetPharmacyByUserIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
+
+        [HttpGet("GetMyPharmacyId")]
+        [Authorize(Roles = "PharmacyOwner,Pharmacist")]
+        public async Task<IActionResult> GetMyPharmacyId()
+        {
+            var pharmacy = await pharmacyService.GetPharmacyByUserIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Ok(pharmacy.Id);
+        }
     }
 }

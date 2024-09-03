@@ -2,6 +2,7 @@
 using HealthSystem.Pharmacy.Services.MedicationService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HealthSystem.Pharmacy.Controllers
 {
@@ -48,6 +49,15 @@ namespace HealthSystem.Pharmacy.Controllers
             return Ok(result);
         }
 
+        [HttpGet("Delete")]
+        [Authorize(Roles = "PharmacyOwner,Pharmacist")]
+        public async Task<IActionResult> Delete([FromQuery] int medicationId)
+        {
+            var result = await medicationService.DeleteAsync(medicationId);
+
+            return Ok(result);
+        }
+
         [HttpPost("Edit")]
         [Authorize(Roles = "PharmacyOwner,Pharmacist")]
         public async Task<IActionResult> Edit([FromForm] MedicationEditModel model)
@@ -60,6 +70,15 @@ namespace HealthSystem.Pharmacy.Controllers
             var result = await medicationService.EditAsync(model);
 
             return result ? Ok(result) : BadRequest();
+        }
+
+        [HttpGet("GetMyMedications")]
+        [Authorize(Roles = "PharmacyOwner,Pharmacist")]
+        public async Task<IActionResult> GetMyMedications()
+        {
+            var result = await medicationService.GetMedications(User.FindFirstValue(ClaimTypes.NameIdentifier), User.IsInRole("Pharmacist") ? "Pharmacist" : "PharmacyOwner");
+
+            return Ok(result);
         }
     }
 }

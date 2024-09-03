@@ -9,5 +9,7 @@
         public float Price { get; set; }
 
         public byte[]? Image { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

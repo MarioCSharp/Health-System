@@ -2,6 +2,7 @@
 using HealthSystem.Pharmacy.Data.Models;
 using HealthSystem.Pharmacy.Models.Medication;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace HealthSystem.Pharmacy.Services.MedicationService
 {
@@ -64,6 +65,21 @@ namespace HealthSystem.Pharmacy.Services.MedicationService
                 }).ToListAsync();
         }
 
+        public async Task<bool> DeleteAsync(int medicationId)
+        {
+            var medication = await context.Medications.FindAsync(medicationId);
+
+            if (medication is null)
+            {
+                return false;
+            }
+
+            context.Medications.Remove(medication);
+            await context.SaveChangesAsync();
+
+            return !await context.Medications.ContainsAsync(medication);
+        }
+
         public async Task<bool> EditAsync(MedicationEditModel model)
         {
             var medication = await context.Medications.FindAsync(model.Id);
@@ -85,6 +101,35 @@ namespace HealthSystem.Pharmacy.Services.MedicationService
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<List<MedicationDisplayModel>> GetMedications(string userId, string role)
+        {
+            var pharmacyId = 0;
+
+            if (role == "Pharmacist")
+            {
+                var pharmacist = await context.Pharmacists.FirstOrDefaultAsync(x => x.UserId == userId);
+
+                pharmacyId = pharmacist.PharmacyId;
+            }
+            else
+            {
+                var pharmacy = await context.Pharmacies.FirstOrDefaultAsync(x => x.OwnerUserId == userId);
+
+                pharmacyId = pharmacy.Id;
+            }
+
+            return await context.Medications
+                .Where(x => x.PharmacyId == pharmacyId)
+                .Select(x => new MedicationDisplayModel()
+                {
+                    Id = x.Id,
+                    Name = x.MedicationName,
+                    Image = x.Image,
+                    Price = x.MedicationPrice,
+                    Quantity = x.MedicationQuantity
+                }).ToListAsync();
         }
     }
 }
