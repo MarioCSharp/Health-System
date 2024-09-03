@@ -50,6 +50,10 @@ namespace HealthSystem.Pharmacy.Data
                 .HasOne(uc => uc.Pharmacy)
                 .WithMany()
                 .HasForeignKey(uc => uc.PharmacyId);
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Status)
+                .HasConversion<string>();
         }
     }
 }

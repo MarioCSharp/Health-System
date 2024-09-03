@@ -10,6 +10,10 @@ namespace HealthSystem.Pharmacy.Models.Order
 
         public string? PhoneNumber { get; set; }
 
+        public string? Status { get; set; }
+
+        public float TotalPrice { get; set; }
+
         public List<CartItemModel> CartItems { get; set; } = new List<CartItemModel>();
     }
 }

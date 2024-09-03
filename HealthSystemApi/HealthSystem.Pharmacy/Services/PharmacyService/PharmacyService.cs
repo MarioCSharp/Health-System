@@ -131,22 +131,49 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             return true;
         }
 
-        public async Task<PharmacyModel> GetPharmacyByUserIdAsync(string userId)
+        public async Task<PharmacyModel> GetPharmacyByUserIdAsync(string userId, string role)
         {
-            var pharmacy = await context.Pharmacies.FirstOrDefaultAsync(p => p.OwnerUserId == userId);
-
-            if (pharmacy is null)
+            if (role == "PharmacyOwner")
             {
-                return new PharmacyModel();
+                var pharmacy = await context.Pharmacies.FirstOrDefaultAsync(p => p.OwnerUserId == userId);
+
+                if (pharmacy is null)
+                {
+                    return new PharmacyModel();
+                }
+
+                return new PharmacyModel()
+                {
+                    Id = pharmacy.Id,
+                    Name = pharmacy.Name,
+                    Location = pharmacy.Location,
+                    ContactNumber = pharmacy.ContactNumber
+                };
             }
-
-            return new PharmacyModel()
+            else
             {
-                Id = pharmacy.Id,
-                Name = pharmacy.Name,
-                Location = pharmacy.Location,
-                ContactNumber = pharmacy.ContactNumber
-            };
+                var pharmacist = await context.Pharmacists.FirstOrDefaultAsync(p => p.UserId == userId);
+
+                if (pharmacist is null)
+                {
+                    return new PharmacyModel();
+                }
+
+                var pharmacy = await context.Pharmacies.FindAsync(pharmacist.PharmacyId);
+
+                if (pharmacy is null)
+                {
+                    return new PharmacyModel();
+                }
+
+                return new PharmacyModel()
+                {
+                    Id = pharmacy.Id,
+                    Name = pharmacy.Name,
+                    Location = pharmacy.Location,
+                    ContactNumber = pharmacy.ContactNumber
+                };
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ using HealthProject.Services.DiagnosisService;
 using Plugin.LocalNotification;
 using HealthProject.Services.LaboratoryService;
 using HealthProject.Services.ReminderService;
+using HealthProject.Services.PharmacyService;
 
 namespace HealthProject
 {
@@ -75,6 +76,7 @@ namespace HealthProject
             builder.Services.AddTransient<ReceptionViewModel>();
             builder.Services.AddTransient<ReminderAddViewModel>();
             builder.Services.AddTransient<ReminderViewModel>();
+            builder.Services.AddTransient<PharmaciesViewPage>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IServiceService, ServiceService>();
@@ -88,6 +90,7 @@ namespace HealthProject
             builder.Services.AddHttpClient<IDiagnosisService, DiagnosisService>();
             builder.Services.AddHttpClient<ILaboratoryService, LaboratoryService>();
             builder.Services.AddHttpClient<IReminderService, ReminderService>();
+            builder.Services.AddHttpClient<IPharmacyService, PharmacyService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
@@ -100,6 +103,7 @@ namespace HealthProject
             builder.Services.AddTransient<IDiagnosisService, DiagnosisService>();
             builder.Services.AddTransient<ILaboratoryService, LaboratoryService>();
             builder.Services.AddTransient<IReminderService, ReminderService>();
+            builder.Services.AddTransient<IPharmacyService, PharmacyService>();
             builder.Services.AddTransient<HospitalDetailsPage>();
             builder.Services.AddTransient<MyPrescriptionsPage>();
             builder.Services.AddTransient<DoctorDetailsPage>();
@@ -127,6 +131,7 @@ namespace HealthProject
             builder.Services.AddTransient<ReceptionPage>();
             builder.Services.AddTransient<RemindersAddPage>();
             builder.Services.AddTransient<RemindersViewPage>();
+            builder.Services.AddTransient<PharmaciesViewPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

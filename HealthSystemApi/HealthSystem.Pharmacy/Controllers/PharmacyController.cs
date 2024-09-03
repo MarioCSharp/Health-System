@@ -94,14 +94,18 @@ namespace HealthSystem.Pharmacy.Controllers
         [Authorize(Roles = "PharmacyOwner")]
         public async Task<IActionResult> GetMyPharmacy()
         {
-            return Ok(await pharmacyService.GetPharmacyByUserIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            return Ok(await pharmacyService
+                .GetPharmacyByUserIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier),
+                User.IsInRole("PharmacyOwner") ? "PharmacyOwner" : "Pharmacist"));
         }
 
         [HttpGet("GetMyPharmacyId")]
         [Authorize(Roles = "PharmacyOwner,Pharmacist")]
         public async Task<IActionResult> GetMyPharmacyId()
         {
-            var pharmacy = await pharmacyService.GetPharmacyByUserIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var pharmacy = await pharmacyService
+                .GetPharmacyByUserIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier),
+                User.IsInRole("PharmacyOwner") ? "PharmacyOwner" : "Pharmacist");
 
             return Ok(pharmacy.Id);
         }

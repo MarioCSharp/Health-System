@@ -14,7 +14,7 @@ interface MedicationEditModel {
   name: string;
   price: number;
   quantity: number;
-  image?: File | null; // Allow image to be optional in the edit model
+  image?: File | null;
 }
 
 function MedicationsInPharmacyComponent() {

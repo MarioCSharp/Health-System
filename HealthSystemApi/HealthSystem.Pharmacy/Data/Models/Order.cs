@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HealthSystem.Pharmacy.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HealthSystem.Pharmacy.Data.Models
@@ -24,6 +25,9 @@ namespace HealthSystem.Pharmacy.Data.Models
         public int PharmacyId { get; set; }
         [ForeignKey(nameof(PharmacyId))]
         public Pharmacy? Pharmacy { get; set; }
+
+        [Required]
+        public OrderStatus Status { get; set; } = OrderStatus.Placed;
 
         public virtual ICollection<OrderMedication> OrderMedications { get; set; } = new HashSet<OrderMedication>();
     }

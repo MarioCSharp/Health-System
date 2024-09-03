@@ -34,10 +34,19 @@ namespace HealthSystem.Pharmacy.Controllers
         }
 
         [HttpGet("AllOrdersInPharmacy")]
-        [Authorize(Roles = "Pharmacist")]
+        [Authorize(Roles = "PharmacyOwner,Pharmacist")]
         public async Task<IActionResult> AllOrdersInPharmacy([FromQuery] int pharmacyId)
         {
             var result = await orderService.OrdersInPharmacyAsync(pharmacyId);
+
+            return Ok(result);
+        }
+
+        [HttpGet("ChangeStatus")]
+        [Authorize(Roles = "PharmacyOwner,Pharmacist")]
+        public async Task<IActionResult> ChangeStatus([FromQuery] int orderId, string newStatus)
+        {
+            var result = await orderService.ChangeStatus(orderId, newStatus);
 
             return Ok(result);
         }

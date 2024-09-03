@@ -1,4 +1,5 @@
 ﻿using HealthSystem.Pharmacy.Data;
+using HealthSystem.Pharmacy.Data.Enums;
 using HealthSystem.Pharmacy.Data.Models;
 using HealthSystem.Pharmacy.Models.Cart;
 using HealthSystem.Pharmacy.Models.Order;
@@ -15,6 +16,22 @@ namespace HealthSystem.Pharmacy.Services.OrderService
             this.context = context;
         }
 
+        public async Task<bool> ChangeStatus(int orderId, string status)
+        {
+            var order = await context.Orders.FindAsync(orderId);
+
+            if (order is null)
+            {
+                return false;
+            }
+
+            order.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), status, true); ;
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<List<OrderDisplayModel>> OrdersInPharmacyAsync(int pharmacyId)
         {
             return await context.Orders
@@ -26,6 +43,8 @@ namespace HealthSystem.Pharmacy.Services.OrderService
                     Location = o.Location,
                     Name = o.Name,
                     PhoneNumber = o.PhoneNumber,
+                    Status = o.Status.ToString(),
+                    TotalPrice = o.OrderMedications.Sum(x => x.Medication.MedicationPrice),
                     CartItems = o.OrderMedications.Select(m => new CartItemModel()
                     {
                         Id = m.OrderId,
