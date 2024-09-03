@@ -14,6 +14,7 @@ interface MedicationEditModel {
   name: string;
   price: number;
   quantity: number;
+  image?: File | null; // Allow image to be optional in the edit model
 }
 
 function MedicationsInPharmacyComponent() {
@@ -23,6 +24,7 @@ function MedicationsInPharmacyComponent() {
   const [addQuantityValues, setAddQuantityValues] = useState<{
     [key: number]: number;
   }>({});
+  const [imageFile, setImageFile] = useState<File | null>(null); // State for the selected image file
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
@@ -57,7 +59,10 @@ function MedicationsInPharmacyComponent() {
 
   const renderImage = (image: Uint8Array | null) => {
     if (image) {
-      const base64String = btoa(String.fromCharCode(...new Uint8Array(image)));
+      const binaryString = Array.from(image)
+        .map((byte) => String.fromCharCode(byte))
+        .join("");
+      const base64String = btoa(binaryString);
       return (
         <img src={`data:image/jpeg;base64,${base64String}`} alt="Medication" />
       );
@@ -72,7 +77,9 @@ function MedicationsInPharmacyComponent() {
       name: medication.name || "",
       price: medication.price,
       quantity: medication.quantity,
+      image: null,
     });
+    setImageFile(null);
   };
 
   const handleDelete = async (medicationId: number) => {
@@ -149,15 +156,24 @@ function MedicationsInPharmacyComponent() {
     }
   };
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setImageFile(event.target.files[0]); // Store the selected image file
+    }
+  };
+
   const handleSaveEdit = async () => {
     if (!editMedication) return;
 
     try {
       const formData = new FormData();
-      formData.append("id", editMedication.id.toString());
-      formData.append("name", editMedication.name);
-      formData.append("price", editMedication.price.toString());
-      formData.append("quantity", editMedication.quantity.toString());
+      formData.append("Id", editMedication.id.toString());
+      formData.append("Name", editMedication.name);
+      formData.append("Price", editMedication.price.toString());
+      formData.append("Quantity", editMedication.quantity.toString());
+      if (imageFile) {
+        formData.append("Image", imageFile); // Append the image file if available
+      }
 
       const response = await fetch(
         `http://localhost:5171/api/Medication/Edit`,
@@ -173,6 +189,7 @@ function MedicationsInPharmacyComponent() {
       if (response.ok) {
         getMedications();
         setEditMedication(null);
+        setImageFile(null);
       } else {
         alert("Failed to save changes. Please try again.");
       }
@@ -184,6 +201,7 @@ function MedicationsInPharmacyComponent() {
 
   const handleCancelEdit = () => {
     setEditMedication(null);
+    setImageFile(null); // Reset the image file on cancel
   };
 
   return (
@@ -311,6 +329,21 @@ function MedicationsInPharmacyComponent() {
                               parseInt(e.target.value)
                             )
                           }
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor={`image-${medication.id}`}
+                          className="form-label"
+                        >
+                          Изображение
+                        </label>
+                        <input
+                          type="file"
+                          className="form-control"
+                          id={`image-${medication.id}`}
+                          accept="image/*"
+                          onChange={handleImageChange}
                         />
                       </div>
                       <button

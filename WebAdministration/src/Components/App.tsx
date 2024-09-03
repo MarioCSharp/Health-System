@@ -100,7 +100,7 @@ const App: React.FC = () => (
             element={<PharmacistAddComponent />}
           />
           <Route path="/pharmacies" element={<AllPharmaciesComponent />} />
-          <Route path="/medication/ad" element={<MedicationAddPage />} />
+          <Route path="/medication/add" element={<MedicationAddPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

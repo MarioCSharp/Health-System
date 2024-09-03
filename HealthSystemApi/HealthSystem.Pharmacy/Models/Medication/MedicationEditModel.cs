@@ -8,6 +8,8 @@
 
         public float Price { get; set; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

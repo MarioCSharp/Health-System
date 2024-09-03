@@ -91,11 +91,15 @@ namespace HealthSystem.Pharmacy.Services.MedicationService
 
             medication.MedicationPrice = model.Price;
             medication.MedicationName = model.Name;
+            medication.MedicationQuantity = model.Quantity;
 
-            using (var stream = new MemoryStream())
+            if (model.Image is not null)
             {
-                await model.Image.CopyToAsync(stream);
-                medication.Image = stream.ToArray();
+                using (var stream = new MemoryStream())
+                {
+                    await model.Image.CopyToAsync(stream);
+                    medication.Image = stream.ToArray();
+                }
             }
 
             await context.SaveChangesAsync();
