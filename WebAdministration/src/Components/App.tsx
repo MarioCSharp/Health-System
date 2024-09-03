@@ -26,6 +26,8 @@ import LaboratoryAddComponent from "./LaboratoryAddComponent";
 import RecipeByEgnComponent from "./RecipeByEgnComponent";
 import AllMyRecepcionistsPage from "./AllMyRecepcionistsPage";
 import AddRecepcionistComponent from "./AddRecepcionistComponent";
+import PharmacyAddComponent from "./PharmacyAddComponent";
+import PharmacistsInPharmacyComponent from "./PharmacistsInPharmacyComponent";
 
 const App: React.FC = () => (
   <Router>
@@ -84,6 +86,11 @@ const App: React.FC = () => (
           <Route
             path="/recepcionists/add"
             element={<AddRecepcionistComponent />}
+          />
+          <Route path="/pharmacy/add" element={<PharmacyAddComponent />} />
+          <Route
+            path="/pharmacists/:pharmacyId"
+            element={<PharmacistsInPharmacyComponent />}
           />
         </Route>
 

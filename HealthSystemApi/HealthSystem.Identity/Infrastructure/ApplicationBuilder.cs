@@ -30,11 +30,15 @@ namespace HealthSystem.Identity.Infrastructure
                     var director = new IdentityRole("Director");
                     var doctor = new IdentityRole("Doctor");
                     var recepcionist = new IdentityRole("Recepcionist");
+                    var pharmacyOwner = new IdentityRole("PharmacyOwner");
+                    var pharmacist = new IdentityRole("Pharmacist");
 
                     await roleManager.CreateAsync(admin);
                     await roleManager.CreateAsync(director);
                     await roleManager.CreateAsync(doctor);
                     await roleManager.CreateAsync(recepcionist);
+                    await roleManager.CreateAsync(pharmacyOwner);
+                    await roleManager.CreateAsync(pharmacist);
 
                     const string adminEmail = "mario_petkov2007@abv.bg";
                     const string adminPassword = "Admin@123";
