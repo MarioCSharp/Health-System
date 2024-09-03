@@ -92,6 +92,10 @@ const App: React.FC = () => (
             path="/pharmacists/:pharmacyId"
             element={<PharmacistsInPharmacyComponent />}
           />
+          <Route
+            path="/pharmacist/add/:pharmacyId"
+            element={<PharmacyAddComponent />}
+          />
         </Route>
 
         <Route path="*" element={<NotFound />} />

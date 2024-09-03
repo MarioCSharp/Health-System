@@ -97,7 +97,7 @@ function PharmaciesComponent() {
                   style={{ marginRight: "2px" }}
                   onClick={() => redirectToPharmacists(pharmacy.id)}
                 >
-                  Фармацефти
+                  Фармацевти
                 </a>
                 <a
                   className="btn btn-warning btn-sm mr-2"

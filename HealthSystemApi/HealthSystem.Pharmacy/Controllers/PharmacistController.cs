@@ -52,7 +52,7 @@ namespace HealthSystem.Pharmacy.Controllers
         {
             var result = await pharmacistService.AllByPharmacyId(pharmacyId);
 
-            return result is not null ? Ok(true) : BadRequest();
+            return result is not null ? Ok(result) : BadRequest();
         }
 
         [HttpGet("Delete")]
