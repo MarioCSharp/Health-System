@@ -1,6 +1,6 @@
-﻿namespace HealthSystem.Pharmacy.Models.Cart
+﻿namespace HealthProject.Models
 {
-    public class CartDisplayModel
+    public class CartModel
     {
         public int Id { get; set; }
 

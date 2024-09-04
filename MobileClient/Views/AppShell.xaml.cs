@@ -31,6 +31,7 @@ namespace HealthProject.Views
             Routing.RegisterRoute(nameof(AddRatingPage), typeof(AddRatingPage));
             Routing.RegisterRoute(nameof(ReceptionChatPage), typeof(ReceptionChatPage));
             Routing.RegisterRoute(nameof(RemindersAddPage), typeof(RemindersAddPage));
+            Routing.RegisterRoute(nameof(PharmacyProductsPage), typeof(PharmacyProductsPage));
         }
     }
 }

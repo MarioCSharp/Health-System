@@ -65,7 +65,7 @@ function OrdersInMyPharmacyComponent() {
   const getOrders = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5171/api/Orders/AllOrdersInPharmacy?pharmacyId=${pharmacyId}`,
+        `http://localhost:5171/api/Order/AllOrdersInPharmacy?pharmacyId=${pharmacyId}`,
         {
           method: "GET",
           headers: {
@@ -78,6 +78,8 @@ function OrdersInMyPharmacyComponent() {
       if (response.ok) {
         const data = await response.json();
         setOrders(data);
+
+        console.log(orders);
       } else {
         throw new Error("There was an error loading the orders.");
       }
@@ -89,7 +91,7 @@ function OrdersInMyPharmacyComponent() {
   const changeOrderStatus = async (orderId: number, newStatus: OrderStatus) => {
     try {
       const response = await fetch(
-        `http://localhost:5171/api/Orders/ChangeStatus?orderId=${orderId}&newStatus=${newStatus}`,
+        `http://localhost:5171/api/Order/ChangeStatus?orderId=${orderId}&newStatus=${newStatus}`,
         {
           method: "GET",
           headers: {
@@ -186,7 +188,7 @@ function OrdersInMyPharmacyComponent() {
                       }
                     >
                       {Object.values(OrderStatus).map((status) => (
-                        <option key={status} value={status}>
+                        <option key={`${order.id}-${status}`} value={status}>
                           {status}
                         </option>
                       ))}
@@ -213,7 +215,7 @@ function OrdersInMyPharmacyComponent() {
                   <td colSpan={7}>
                     <ul>
                       {order.cartItems.map((item) => (
-                        <li key={item.id}>
+                        <li key={`${order.id}-${item.id}`}>
                           <strong>{item.itemName}</strong> - $
                           {item.itemPrice.toFixed(2)} (Кол: {item.quantity})
                         </li>

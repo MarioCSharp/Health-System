@@ -76,7 +76,8 @@ namespace HealthProject
             builder.Services.AddTransient<ReceptionViewModel>();
             builder.Services.AddTransient<ReminderAddViewModel>();
             builder.Services.AddTransient<ReminderViewModel>();
-            builder.Services.AddTransient<PharmaciesViewPage>();
+            builder.Services.AddTransient<PharmaciesViewModel>();
+            builder.Services.AddTransient<PharmacyProductsViewModel>();
             builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>();
             builder.Services.AddHttpClient<IHospitalService, HospitalService>();
             builder.Services.AddHttpClient<IServiceService, ServiceService>();
@@ -132,6 +133,7 @@ namespace HealthProject
             builder.Services.AddTransient<RemindersAddPage>();
             builder.Services.AddTransient<RemindersViewPage>();
             builder.Services.AddTransient<PharmaciesViewPage>();
+            builder.Services.AddTransient<PharmacyProductsPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

@@ -85,6 +85,13 @@
         Route="DiagnosisPredictionPage"/>
     </FlyoutItem>
 
+    <FlyoutItem Title="Онлайн аптека">
+        <ShellContent
+        Title="Онлайн аптека"
+        ContentTemplate="{DataTemplate local:PharmaciesViewPage}"
+        Route="PharmaciesViewPage"/>
+    </FlyoutItem>
+
     <FlyoutItem Title="Рецепция">
         <ShellContent
         Title="Рецепция"
@@ -98,6 +105,7 @@
         ContentTemplate="{DataTemplate local:LaboratoryPage}"
         Route="LaboratoryPage"/>
     </FlyoutItem>
+    
     <FlyoutItem Title="Напомняния">
         <ShellContent
         Title="Напомняния"

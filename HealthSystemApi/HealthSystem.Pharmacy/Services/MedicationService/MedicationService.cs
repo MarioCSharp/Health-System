@@ -61,7 +61,8 @@ namespace HealthSystem.Pharmacy.Services.MedicationService
                     Id = x.Id,
                     Image = x.Image,
                     Name = x.MedicationName,
-                    Price = x.MedicationPrice
+                    Price = x.MedicationPrice,
+                    Quantity = x.MedicationQuantity
                 }).ToListAsync();
         }
 

@@ -1,3 +1,4 @@
+using HealthProject.Models;
 using HealthProject.ViewModels;
 
 namespace HealthProject.Views;
@@ -15,5 +16,7 @@ public partial class PharmaciesViewPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
+		viewModel.LoadPharmacies();
     }
+
 }

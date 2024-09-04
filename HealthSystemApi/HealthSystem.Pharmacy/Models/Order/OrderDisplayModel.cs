@@ -4,6 +4,8 @@ namespace HealthSystem.Pharmacy.Models.Order
 {
     public class OrderDisplayModel
     {
+        public int Id { get; set; }
+
         public string? Location { get; set; }
 
         public string? Name { get; set; }

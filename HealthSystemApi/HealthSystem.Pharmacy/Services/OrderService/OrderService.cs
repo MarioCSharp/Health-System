@@ -40,6 +40,7 @@ namespace HealthSystem.Pharmacy.Services.OrderService
                 .Where(o => o.PharmacyId == pharmacyId)
                 .Select(o => new OrderDisplayModel
                 {
+                    Id = o.Id,
                     Location = o.Location,
                     Name = o.Name,
                     PhoneNumber = o.PhoneNumber,
@@ -70,7 +71,10 @@ namespace HealthSystem.Pharmacy.Services.OrderService
             var order = new Order()
             {
                 UserId = userId,
-                PharmacyId = userCart.PharmacyId
+                PharmacyId = userCart.PharmacyId,
+                Location = model.Location,
+                Name = model.Name,
+                PhoneNumber = model.PhoneNumber
             };
 
             foreach (var item in userCart.CartItems)
@@ -94,6 +98,8 @@ namespace HealthSystem.Pharmacy.Services.OrderService
                 order.OrderMedications.Add(orderMedication);
                 medication.MedicationQuantity -= item.Quantity;
             }
+
+            userCart.CartItems.Clear();
 
             await context.Orders.AddAsync(order);
             await context.SaveChangesAsync();

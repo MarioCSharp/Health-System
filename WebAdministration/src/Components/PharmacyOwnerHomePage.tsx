@@ -1,5 +1,6 @@
 import MedicationsInPharmacyComponent from "./MedicationsInPharmacyComponent";
 import MyPharmacyComponent from "./MyPharmacyComponent";
+import OrdersInMyPharmacyComponent from "./OrdersInMyPharmacyComponent";
 
 function PharmacyOwnerHomePage() {
   return (
@@ -8,6 +9,7 @@ function PharmacyOwnerHomePage() {
         <div className="row">
           <MyPharmacyComponent />
           <MedicationsInPharmacyComponent></MedicationsInPharmacyComponent>
+          <OrdersInMyPharmacyComponent></OrdersInMyPharmacyComponent>
         </div>
       </div>
     </>

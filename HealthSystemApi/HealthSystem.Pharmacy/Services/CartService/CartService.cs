@@ -16,17 +16,29 @@ namespace HealthSystem.Pharmacy.Services.CartService
 
         public async Task<bool> AddToCartAsync(AddToCartModel model)
         {
-            var cartItem = new CartItem()
-            {
-                MedicationId = model.MedicationId,
-                Quantity = model.Quantity,
-                UserCartId = model.UserCartId,
-            };  
+            var cartItem = await context.CartItems
+                .FirstOrDefaultAsync(x => x.MedicationId == model.MedicationId && x.UserCartId == model.UserCartId);
 
-            await context.CartItems.AddAsync(cartItem);
+            if (cartItem is null)
+            {
+                var newCartItem = new CartItem()
+                {
+                    MedicationId = model.MedicationId,
+                    Quantity = model.Quantity,
+                    UserCartId = model.UserCartId,
+                };
+
+                await context.CartItems.AddAsync(newCartItem);
+                await context.SaveChangesAsync();
+
+                return await context.CartItems.ContainsAsync(newCartItem);
+            }
+
+            cartItem.Quantity += model.Quantity;
+
             await context.SaveChangesAsync();
 
-            return await context.CartItems.ContainsAsync(cartItem);
+            return true;
         }
 
         public async Task<CartDisplayModel> GetUserCartAsync(int pharmacyId, string userId)
@@ -60,13 +72,14 @@ namespace HealthSystem.Pharmacy.Services.CartService
                 ItemImage = x.Medication.Image,
                 ItemName = x.Medication.MedicationName,
                 ItemPrice = x.Medication.MedicationPrice,
-                Quantity = x.Medication.MedicationQuantity
+                Quantity = x.Quantity
             }).ToList();
 
             return new CartDisplayModel()
             {
+                Id = userCart.Id,
                 CartItems = items,
-                TotalPrice = items.Sum(x => x.ItemPrice)
+                TotalPrice = items.Sum(x => x.ItemPrice * x.Quantity)
             };
         }
 

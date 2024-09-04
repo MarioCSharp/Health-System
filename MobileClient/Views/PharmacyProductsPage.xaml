@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HealthProject.ViewModels"
+             x:Class="HealthProject.Views.PharmacyProductsPage"
+             Title="Pharmacy Products">
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Button Text="Your Cart" Command="{Binding ToggleOrderFormCommand}" Grid.Row="0" />
+
+        <StackLayout Grid.Row="1" IsVisible="{Binding IsOrderFormVisible}" Spacing="10">
+            <CollectionView ItemsSource="{Binding UserCart.CartItems}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" Margin="5">
+                            <HorizontalStackLayout>
+                                <Image Source="{Binding ItemImage}" HeightRequest="50" WidthRequest="50" />
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding ItemName}" FontAttributes="Bold" />
+                                    <Label Text="{Binding ItemPrice, StringFormat='Price: {0:C}'}" />
+                                    <Label Text="{Binding Quantity, StringFormat='Qty: {0}'}" />
+                                </VerticalStackLayout>
+                                <Button Text="Remove"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=RemoveFromCartCommand}"
+                                CommandParameter="{Binding Id}" />
+                            </HorizontalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label Text="{Binding UserCart.TotalPrice, StringFormat='Total: {0:C}'}" FontAttributes="Bold" HorizontalOptions="End" />
+            <Entry Placeholder="Name" Text="{Binding UserName}" />
+            <Entry Placeholder="Location" Text="{Binding UserLocation}" />
+            <Entry Placeholder="Phone Number" Text="{Binding UserPhoneNumber}" Keyboard="Telephone" />
+            <Button Text="Submit Order" Command="{Binding SubmitOrderCommand}" />
+        </StackLayout>
+
+        <CollectionView Grid.Row="2" ItemsSource="{Binding PharmacyProducts}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5">
+                        <VerticalStackLayout>
+                            <Image Source="{Binding Image}" HeightRequest="100" WidthRequest="100" />
+                            <Label Text="{Binding Name}" FontAttributes="Bold" />
+                            <Label Text="{Binding Price, StringFormat='Price: {0:C}'}" />
+                            <Label Text="{Binding Quantity, StringFormat='In Stock: {0}'}" />
+
+                            <HorizontalStackLayout Spacing="10">
+                                <Entry Placeholder="Qty" Keyboard="Numeric" WidthRequest="50" Text="{Binding UserEnteredQuantity}"/>
+                                <Button Text="Add to Cart"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=AddToCartCommand}"
+                                CommandParameter="{Binding AddToCartParameter}" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
