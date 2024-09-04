@@ -14,7 +14,7 @@ interface Order {
   status: OrderStatus;
   name: string;
   location: string;
-  contactNumber: string;
+  phoneNumber: string;
   totalPrice: number;
   cartItems: CartItem[];
 }
@@ -79,7 +79,7 @@ function OrdersInMyPharmacyComponent() {
         const data = await response.json();
         setOrders(data);
 
-        console.log(orders);
+        console.log(data);
       } else {
         throw new Error("There was an error loading the orders.");
       }
@@ -197,8 +197,8 @@ function OrdersInMyPharmacyComponent() {
                 </td>
                 <td>{order.name}</td>
                 <td>{order.location}</td>
-                <td>{order.contactNumber}</td>
-                <td>${order.totalPrice.toFixed(2)}</td>
+                <td>{order.phoneNumber}</td>
+                <td>{order.totalPrice.toFixed(2)} лв</td>
                 <td>
                   <button
                     className="btn btn-primary"
@@ -216,7 +216,7 @@ function OrdersInMyPharmacyComponent() {
                     <ul>
                       {order.cartItems.map((item) => (
                         <li key={`${order.id}-${item.id}`}>
-                          <strong>{item.itemName}</strong> - $
+                          <strong>{item.itemName}</strong> - лв
                           {item.itemPrice.toFixed(2)} (Кол: {item.quantity})
                         </li>
                       ))}

@@ -95,7 +95,7 @@ namespace HealthSystem.Pharmacy.Services.CartService
             context.CartItems.Remove(cartItem);
             await context.SaveChangesAsync();
 
-            return await context.CartItems.ContainsAsync(cartItem);
+            return !await context.CartItems.ContainsAsync(cartItem);
         }
     }
 }

@@ -1,5 +1,11 @@
+import RecipeByEgnComponent from "./RecipeByEgnComponent";
+
 function PharmacistHomePage() {
-  return <div>PharmacistHomePage</div>;
+  return (
+    <>
+      <RecipeByEgnComponent />
+    </>
+  );
 }
 
 export default PharmacistHomePage;

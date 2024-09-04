@@ -61,11 +61,25 @@ function Navigation() {
                   </li>
                 </>
               )}
-              <li className="nav-item">
-                <a className="nav-link text-white" href="/recipes">
-                  Електронна рецепта
-                </a>
-              </li>
+              {(role === "Pharmacist" || role === "PharmacyOwner") && (
+                <>
+                  <li className="nav-item">
+                    <a className="nav-link text-white" href="/orders">
+                      Поръчки
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link text-white" href="/medications">
+                      Лекарства
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link text-white" href="/recipes">
+                      Електронна рецепта
+                    </a>
+                  </li>
+                </>
+              )}
             </ul>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">

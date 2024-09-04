@@ -5,7 +5,7 @@ interface MedicationDisplayModel {
   id: number;
   name: string | null;
   price: number;
-  image: Uint8Array | null;
+  image: string | null;
   quantity: number;
 }
 
@@ -45,6 +45,8 @@ function MedicationsInPharmacyComponent() {
       if (response.ok) {
         const data = await response.json();
         setMedications(data);
+
+        console.log(data);
       } else {
         throw new Error("Error loading the medications!");
       }
@@ -57,15 +59,9 @@ function MedicationsInPharmacyComponent() {
     getMedications();
   }, []);
 
-  const renderImage = (image: Uint8Array | null) => {
+  const renderImage = (image: string | null) => {
     if (image) {
-      const binaryString = Array.from(image)
-        .map((byte) => String.fromCharCode(byte))
-        .join("");
-      const base64String = btoa(binaryString);
-      return (
-        <img src={`data:image/jpeg;base64,${base64String}`} alt="Medication" />
-      );
+      return <img src={`data:image/jpeg;base64,${image}`} alt="Medication" />;
     } else {
       return <span>No Image Available</span>;
     }
@@ -96,12 +92,12 @@ function MedicationsInPharmacyComponent() {
       );
 
       if (!response.ok) {
-        throw new Error("There was an error deleting the pharmacy");
+        throw new Error("There was an error deleting the medication");
       }
       getMedications();
     } catch (error) {
-      console.error("Error deleting pharmacy:", error);
-      alert("Failed to delete pharmacy. Please try again.");
+      console.error("Error deleting medication:", error);
+      alert("Failed to delete medication. Please try again.");
     }
   };
 
@@ -137,7 +133,7 @@ function MedicationsInPharmacyComponent() {
   };
 
   const handleAddNew = () => {
-    navigate(`/medication/add`);
+    navigate("/medication/add");
   };
 
   const handleQuantityChange = (medicationId: number, value: number) => {
@@ -206,7 +202,7 @@ function MedicationsInPharmacyComponent() {
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">Medications List</h1>
+      <h1 className="text-center mb-4">Лекарства</h1>
       <div className="d-flex justify-content-end mb-3">
         <button className="btn btn-primary" onClick={handleAddNew}>
           Добави ново лекарство
@@ -230,7 +226,7 @@ function MedicationsInPharmacyComponent() {
               <tr>
                 <th scope="row">{medication.id}</th>
                 <td>{medication.name}</td>
-                <td>${medication.price.toFixed(2)}</td>
+                <td>{medication.price.toFixed(2)} лв</td>
                 <td>{medication.quantity}</td>
                 <td>{renderImage(medication.image)}</td>
                 <td>

@@ -31,6 +31,8 @@ import PharmacistsInPharmacyComponent from "./PharmacistsInPharmacyComponent";
 import AllPharmaciesComponent from "./AllPharmaciesComponent";
 import PharmacistAddComponent from "./PharmacistAddComponent";
 import MedicationAddPage from "./MedicationAddPage";
+import MedicationsInPharmacyComponent from "./MedicationsInPharmacyComponent";
+import OrdersInMyPharmacyComponent from "./OrdersInMyPharmacyComponent";
 
 const App: React.FC = () => (
   <Router>
@@ -101,6 +103,11 @@ const App: React.FC = () => (
           />
           <Route path="/pharmacies" element={<AllPharmaciesComponent />} />
           <Route path="/medication/add" element={<MedicationAddPage />} />
+          <Route
+            path="/medications"
+            element={<MedicationsInPharmacyComponent />}
+          />
+          <Route path="/orders" element={<OrdersInMyPharmacyComponent />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

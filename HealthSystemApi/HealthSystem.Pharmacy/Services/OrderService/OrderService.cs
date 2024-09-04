@@ -45,14 +45,14 @@ namespace HealthSystem.Pharmacy.Services.OrderService
                     Name = o.Name,
                     PhoneNumber = o.PhoneNumber,
                     Status = o.Status.ToString(),
-                    TotalPrice = o.OrderMedications.Sum(x => x.Medication.MedicationPrice),
+                    TotalPrice = o.OrderMedications.Sum(x => x.Medication.MedicationPrice * x.Quantity),
                     CartItems = o.OrderMedications.Select(m => new CartItemModel()
                     {
                         Id = m.OrderId,
                         ItemPrice = m.Medication.MedicationPrice,
                         ItemImage = m.Medication.Image,
                         ItemName = m.Medication.MedicationName,
-                        Quantity = m.Medication.MedicationQuantity
+                        Quantity = m.Quantity
                     }).ToList()
                 }).ToListAsync();
         }

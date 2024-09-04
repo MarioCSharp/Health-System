@@ -8,8 +8,6 @@ function PharmacyOwnerHomePage() {
       <div className="container">
         <div className="row">
           <MyPharmacyComponent />
-          <MedicationsInPharmacyComponent></MedicationsInPharmacyComponent>
-          <OrdersInMyPharmacyComponent></OrdersInMyPharmacyComponent>
         </div>
       </div>
     </>
