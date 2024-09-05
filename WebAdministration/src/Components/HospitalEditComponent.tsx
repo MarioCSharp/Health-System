@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   id: string;
@@ -7,15 +7,17 @@ interface User {
   email: string;
 }
 
-function HospitalEditComponent() {
-  const { hospitalId } = useParams<{ hospitalId: string }>();
+interface HospitalEditComponentProps {
+  hospitalId: number;
+}
+
+function HospitalEditComponent({ hospitalId }: HospitalEditComponentProps) {
   const [hospitalName, setHospitalName] = useState<string>("");
   const [hospitalLocation, setHospitalLocation] = useState<string>("");
   const [hospitalContactNumber, setHospitalContactNumber] =
     useState<string>("");
   const [selectedUserId, setSelectedUserId] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
-
   const token = localStorage.getItem("token");
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -82,14 +84,14 @@ function HospitalEditComponent() {
   useEffect(() => {
     getUsersWithNoRoles();
     getHospitalInfo();
-  }, []);
+  }, [hospitalId]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     // Create a FormData object to handle form submission
     const formData = new FormData();
-    formData.append("Id", hospitalId!);
+    formData.append("Id", hospitalId.toString());
     formData.append("HospitalName", hospitalName);
     formData.append("HospitalLocation", hospitalLocation);
     formData.append("HospitalContactNumber", hospitalContactNumber);

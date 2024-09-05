@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import PharmacyEditComponent from "./PharmacyEditComponent";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEdit,
+  faTrash,
+  faUser,
+  faMapMarkerAlt,
+  faPlus,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
+import { Spinner } from "react-bootstrap";
 
 // Define a Pharmacy interface for typing
 interface Pharmacy {
@@ -13,8 +23,8 @@ interface Pharmacy {
 const PharmaciesComponent: React.FC = () => {
   const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
   const [editingPharmacy, setEditingPharmacy] = useState<Pharmacy | null>(null);
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
-
   const navigate = useNavigate();
 
   const getPharmacies = async (): Promise<void> => {
@@ -36,6 +46,8 @@ const PharmaciesComponent: React.FC = () => {
     } catch (error) {
       console.error("Error fetching pharmacies:", error);
       alert("Failed to fetch pharmacies. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,64 +98,84 @@ const PharmaciesComponent: React.FC = () => {
 
   return (
     <div className="col-md-6 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Аптеки</h3>
-        {pharmacies.length > 0 ? (
-          pharmacies.map((pharmacy) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={pharmacy.id}
-            >
-              <span>
-                {pharmacy.name} | {pharmacy.location}
-              </span>
-              <div>
-                <button
-                  className="btn btn-primary btn-sm"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => redirectToPharmacists(pharmacy.id)}
-                >
-                  Фармацевти
-                </button>
-                <button
-                  className="btn btn-warning btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => handleEdit(pharmacy)}
-                >
-                  Редактирай
-                </button>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(pharmacy.id)}
-                >
-                  Изтрий
-                </button>
-              </div>
-              {editingPharmacy && editingPharmacy.id === pharmacy.id && (
-                <PharmacyEditComponent pharmacy={editingPharmacy} />
-              )}
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No pharmacies found</div>
+      <div className="card shadow-lg rounded-3 border-0">
+        <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h3 className="mb-0">
+            <FontAwesomeIcon icon={faUsers} /> Аптеки
+          </h3>
+        </div>
+        <div className="card-body">
+          {loading ? (
+            <div className="text-center">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
             </div>
-          </div>
-        )}
-        <li className="list-group-item">
+          ) : pharmacies.length > 0 ? (
+            <ul className="list-group list-group-flush">
+              {pharmacies.map((pharmacy) => (
+                <li
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                  key={pharmacy.id}
+                >
+                  <div className="d-flex align-items-center">
+                    <FontAwesomeIcon
+                      icon={faMapMarkerAlt}
+                      className="text-primary me-3"
+                    />
+                    <span>
+                      <strong>{pharmacy.name}</strong>
+                      <br />
+                      <small className="text-muted">{pharmacy.location}</small>
+                    </span>
+                  </div>
+                  <div>
+                    <button
+                      className="btn btn-outline-primary btn-sm me-2"
+                      onClick={() => redirectToPharmacists(pharmacy.id)}
+                    >
+                      <FontAwesomeIcon icon={faUser} /> Фармацевти
+                    </button>
+                    <button
+                      className="btn btn-outline-warning btn-sm me-2"
+                      onClick={() => handleEdit(pharmacy)}
+                    >
+                      <FontAwesomeIcon icon={faEdit} /> Редактирай
+                    </button>
+                    <button
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={() => handleDelete(pharmacy.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} /> Изтрий
+                    </button>
+                  </div>
+                  {editingPharmacy && editingPharmacy.id === pharmacy.id && (
+                    <PharmacyEditComponent pharmacy={editingPharmacy} />
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="alert alert-warning" role="alert">
+              No pharmacies found.
+            </div>
+          )}
+        </div>
+        <div className="card-footer text-center">
           <button
-            className="btn btn-link"
+            className="btn btn-outline-info me-2"
             onClick={redirectToAddPharmacy}
-            style={{ marginRight: "14px" }}
           >
-            Добави аптека
+            <FontAwesomeIcon icon={faPlus} /> Добави аптека
           </button>
-          <button className="btn btn-link" onClick={redirectToAllPharmacies}>
-            Виж всички
+          <button
+            className="btn btn-outline-info"
+            onClick={redirectToAllPharmacies}
+          >
+            <FontAwesomeIcon icon={faUsers} /> Виж всички
           </button>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   );
 };

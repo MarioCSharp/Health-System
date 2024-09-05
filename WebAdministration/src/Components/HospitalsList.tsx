@@ -1,5 +1,17 @@
-import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHospital,
+  faEdit,
+  faTrashAlt,
+  faList,
+  faUserMd,
+} from "@fortawesome/free-solid-svg-icons";
+import HospitalAddComponent from "./HospitalAddComponent";
+import DoctorsDisplayPage from "./DoctorsDisplayPage";
+import HospitalEditComponent from "./HospitalEditComponent";
+import { Spinner } from "react-bootstrap";
 
 interface Hospital {
   id: number;
@@ -8,9 +20,13 @@ interface Hospital {
 
 function HospitalsList() {
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
+  const [allHospitals, setAllHospitals] = useState<Hospital[]>([]);
   const [error, setError] = useState(false);
-  const navigate = useNavigate();
-
+  const [showAddHospital, setShowAddHospital] = useState(false);
+  const [activeHospitalId, setActiveHospitalId] = useState<number | null>(null);
+  const [showEdit, setShowEdit] = useState(false);
+  const [showDoctors, setShowDoctors] = useState(false);
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
   const getHospitals = async () => {
@@ -19,12 +35,14 @@ function HospitalsList() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        setHospitals(data.hospitals.slice(0, 5));
+        setAllHospitals(data.hospitals);
+        setHospitals(data.hospitals.slice(0, 5)); // Show only the first 5 initially
       } else {
         throw new Error(
           "You are either not authorized or there is a problem in the system!"
@@ -34,6 +52,8 @@ function HospitalsList() {
       console.log("There was an error", error);
       setHospitals([]);
       setError(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,11 +72,8 @@ function HospitalsList() {
 
       if (response.ok) {
         const data = await response.json();
-
-        const result = data.success;
-
-        if (result) {
-          getHospitals();
+        if (data.success) {
+          getHospitals(); // Refresh the list after removal
         } else {
           throw new Error(
             "You are either not authorized or there is a problem in the system!"
@@ -78,20 +95,25 @@ function HospitalsList() {
     getHospitals();
   }, []);
 
-  const redirectToDoctors = (hospitalId: number) => {
-    navigate(`/doctors/${hospitalId}`);
+  const toggleDoctors = (hospitalId: number) => {
+    setActiveHospitalId(hospitalId);
+    setShowDoctors((prevState) =>
+      hospitalId === activeHospitalId ? !prevState : true
+    );
+    setShowEdit(false); // Ensure the Edit section is hidden when showing doctors
   };
 
-  const redirectToEdit = (hospitalId: number) => {
-    navigate(`/hospital/edit/${hospitalId}`);
+  const toggleEdit = (hospitalId: number) => {
+    setActiveHospitalId(hospitalId);
+    setShowEdit((prevState) =>
+      hospitalId === activeHospitalId ? !prevState : true
+    );
+    setShowDoctors(false); // Ensure the Doctors section is hidden when showing edit form
   };
 
-  const redirectToAdd = () => {
-    navigate(`/hospital/add`);
-  };
-
-  const redirectToAll = () => {
-    navigate(`/hospitals`);
+  const showAllHospitals = () => {
+    setHospitals(allHospitals);
+    setShowAddHospital(false); // Hide add form when showing all
   };
 
   if (error) {
@@ -99,57 +121,85 @@ function HospitalsList() {
   }
 
   return (
-    <div className="col-md-4 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Клиники</h3>
-        {hospitals.length > 0 ? (
-          hospitals.map((hospital) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={hospital.id}
-            >
-              <span>{hospital.hospitalName}</span>
-              <div>
-                <a
-                  className="btn btn-primary btn-sm"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => redirectToDoctors(hospital.id)}
-                >
-                  Доктори
-                </a>
-                <a
-                  className="btn btn-warning btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => redirectToEdit(hospital.id)}
-                >
-                  Редактирай
-                </a>
-                <a
-                  className="btn btn-danger btn-sm"
-                  onClick={() => removeHospital(hospital.id)}
-                >
-                  Изтрий
-                </a>
-              </div>
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No hospitals found</div>
+    <div className="col-md-6 mx-md-3 mb-4">
+      <div className="card shadow-lg rounded-3 border-0">
+        <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h3 className="mb-0">
+            <FontAwesomeIcon icon={faHospital} /> Клиники
+          </h3>
+        </div>
+        <div className="card-body">
+          {loading ? (
+            <div className="text-center">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Зареждане...</span>
+              </Spinner>
             </div>
-          </div>
-        )}
-        <li className="list-group-item">
-          <a href="" onClick={() => redirectToAdd()}>
-            Добави болница
-          </a>
-          ㅤㅤ
-          <a href="" onClick={() => redirectToAll()}>
-            Виж всички
-          </a>
-        </li>
-      </ul>
+          ) : hospitals.length > 0 ? (
+            <ul className="list-group list-group-flush">
+              {hospitals.map((hospital) => (
+                <li
+                  className="list-group-item d-flex justify-content-between align-items-center border-0 shadow-sm mb-2"
+                  key={hospital.id}
+                >
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="fw-bold">{hospital.hospitalName}</span>
+                    <div>
+                      <button
+                        className="btn btn-outline-primary btn-sm me-2"
+                        onClick={() => toggleDoctors(hospital.id)}
+                      >
+                        <FontAwesomeIcon icon={faUserMd} /> Доктори
+                      </button>
+                      <button
+                        className="btn btn-outline-warning btn-sm me-2"
+                        onClick={() => toggleEdit(hospital.id)}
+                      >
+                        <FontAwesomeIcon icon={faEdit} /> Редактирай
+                      </button>
+                      <button
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => removeHospital(hospital.id)}
+                      >
+                        <FontAwesomeIcon icon={faTrashAlt} /> Изтрий
+                      </button>
+                    </div>
+                  </div>
+
+                  {activeHospitalId === hospital.id && showDoctors && (
+                    <div className="mt-3">
+                      <h5>Доктори в {hospital.hospitalName}</h5>
+                      <DoctorsDisplayPage hospitalId={hospital.id} />
+                    </div>
+                  )}
+                  {activeHospitalId === hospital.id && showEdit && (
+                    <div className="mt-3">
+                      <HospitalEditComponent hospitalId={hospital.id} />
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="alert alert-warning" role="alert">
+              No hospitals found.
+            </div>
+          )}
+        </div>
+        <div className="card-footer text-center">
+          <button
+            className="btn btn-outline-info"
+            onClick={() => setShowAddHospital(!showAddHospital)}
+          >
+            <FontAwesomeIcon icon={faList} />{" "}
+            {showAddHospital ? "Скрий формата" : "Добави болница"}
+          </button>
+          <button className="btn btn-outline-info" onClick={showAllHospitals}>
+            <FontAwesomeIcon icon={faList} /> Виж всички
+          </button>
+        </div>
+        {showAddHospital && <HospitalAddComponent />}
+      </div>
     </div>
   );
 }

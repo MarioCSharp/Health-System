@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrashAlt,
+  faUserMd,
+  faCog,
+  faClipboardList,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Doctor {
   id: number;
@@ -9,12 +16,16 @@ interface Doctor {
   specialization: string;
 }
 
-function DoctorsDisplayPage() {
-  const { hospitalId } = useParams<{ hospitalId: string }>();
+interface DoctorsDisplayPageProps {
+  hospitalId: number;
+}
+
+const DoctorsDisplayPage: React.FC<DoctorsDisplayPageProps> = ({
+  hospitalId,
+}) => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [error, setError] = useState(false);
   const token = localStorage.getItem("token");
-
   const navigate = useNavigate();
 
   const getDoctors = async () => {
@@ -47,10 +58,10 @@ function DoctorsDisplayPage() {
 
   useEffect(() => {
     getDoctors();
-  }, []);
+  }, [hospitalId]);
 
   if (error) {
-    return <Navigate to="not-found" replace />;
+    return <div>There was an error loading the doctors.</div>;
   }
 
   const deleteDoctor = async (id: number) => {
@@ -67,7 +78,7 @@ function DoctorsDisplayPage() {
       );
 
       if (response.ok) {
-        getDoctors();
+        getDoctors(); // Refetch doctors after deletion
       } else {
         throw new Error(
           "You are either not authorized or there is a problem in the system!"
@@ -80,55 +91,39 @@ function DoctorsDisplayPage() {
     }
   };
 
-  const redirectToAppointments = (id: number) => {
-    navigate(`/doctor/appointments/${id}`);
-  };
-
-  const redirectToServices = (id: number) => {
-    navigate(`/doctor/services/${id}`);
-  };
-  const redirecToAddDoctor = () => {
-    navigate(`/doctor/add/${hospitalId}`);
-  };
-
-  if (error) {
-    return <Navigate to="not-found" replace />;
-  }
-
   return (
-    <div className="col-md-4 mx-md-3 mb-4">
+    <div className="col-md-8 mx-md-3 mb-4">
       <ul className="list-group">
-        <h3>Доктори</h3>
         {doctors.length > 0 ? (
           doctors.map((doctor) => (
             <li
-              className="list-group-item d-flex justify-content-between align-items-center"
+              className="list-group-item d-flex justify-content-between align-items-center border-0 shadow-sm mb-2"
               key={doctor.id}
             >
-              <span>
-                {doctor.fullName} | {doctor.email} | {doctor.specialization}
-              </span>
+              <div className="d-flex flex-column">
+                <span className="fw-bold">{doctor.fullName}</span>
+                <span>{doctor.email}</span>
+                <span className="text-muted">{doctor.specialization}</span>
+              </div>
               <div>
-                <a
-                  className="btn btn-primary btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => redirectToAppointments(doctor.id)}
+                <button
+                  className="btn btn-primary btn-sm me-2"
+                  onClick={() => navigate(`/doctor/appointments/${doctor.id}`)}
                 >
-                  Часове
-                </a>
-                <a
-                  className="btn btn-warning btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => redirectToServices(doctor.id)}
+                  <FontAwesomeIcon icon={faClipboardList} /> Часове
+                </button>
+                <button
+                  className="btn btn-warning btn-sm me-2"
+                  onClick={() => navigate(`/doctor/services/${doctor.id}`)}
                 >
-                  Услуги
-                </a>
-                <a
+                  <FontAwesomeIcon icon={faCog} /> Услуги
+                </button>
+                <button
                   className="btn btn-danger btn-sm"
                   onClick={() => deleteDoctor(doctor.id)}
                 >
-                  Изтрий
-                </a>
+                  <FontAwesomeIcon icon={faTrashAlt} /> Изтрий
+                </button>
               </div>
             </li>
           ))
@@ -139,14 +134,9 @@ function DoctorsDisplayPage() {
             </div>
           </div>
         )}
-        <li className="list-group-item">
-          <a href="" onClick={() => redirecToAddDoctor()}>
-            Добави доктор
-          </a>
-        </li>
       </ul>
     </div>
   );
-}
+};
 
 export default DoctorsDisplayPage;
