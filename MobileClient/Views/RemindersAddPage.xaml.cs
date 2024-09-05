@@ -8,6 +8,8 @@ public partial class RemindersAddPage : ContentPage
 	{
 		InitializeComponent();
 
+		Title = "Напомняния";
+
 		BindingContext = viewModel;
 	}
 }

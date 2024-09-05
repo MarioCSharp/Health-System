@@ -25,13 +25,13 @@
             </Grid.ColumnDefinitions>
 
             <Entry x:Name="myChatMessage"
-                   Placeholder="Type your message"
+                   Placeholder="Съобщение"
                    FontSize="14"
                    Grid.Column="0"
                    VerticalOptions="Center" />
 
             <Button x:Name="sendButton"
-                    Text="Send"
+                    Text="Изпрати"
                     Clicked="OnSendMessageClicked"
                     Grid.Column="1"
                     VerticalOptions="Center"

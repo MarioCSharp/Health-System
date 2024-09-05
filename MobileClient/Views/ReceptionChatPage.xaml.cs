@@ -35,6 +35,8 @@ public partial class ReceptionChatPage : ContentPage
 
         this.authenticationService = authenticationService;
 
+        Title = "Чат с рецепция";
+
         IsAuthenticated();
 
         _connection = new HubConnectionBuilder()

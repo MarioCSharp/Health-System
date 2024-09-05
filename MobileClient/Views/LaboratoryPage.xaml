@@ -7,26 +7,26 @@
     
     <VerticalStackLayout Padding="20">
         <Label 
-            Text="Laboratory Results"
+            Text="Лабораторни резултати"
             FontSize="24"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
         <Entry 
-            Placeholder="Username"
+            Placeholder="Потребителско ИД"
             Text="{Binding UserName}"
             VerticalOptions="Center" 
             HorizontalOptions="FillAndExpand" />
 
         <Entry 
-            Placeholder="Password"
+            Placeholder="Парола"
             Text="{Binding Password}"
             IsPassword="True"
             VerticalOptions="Center" 
             HorizontalOptions="FillAndExpand" />
 
         <Button 
-            Text="Check Results"
+            Text="Провери резултати"
             Command="{Binding CheckResultsCommand}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
@@ -38,7 +38,7 @@
             IsVisible="{Binding IsMessageVisible}" />
 
         <Button 
-            Text="Download File"
+            Text="Изтегли файл"
             Command="{Binding DownloadFileCommand}"
             VerticalOptions="Center" 
             HorizontalOptions="Center"

@@ -43,7 +43,7 @@ namespace HealthProject.ViewModels
             IsMessageVisible = false;
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
             {
-                Message = "Please enter both username and password.";
+                Message = "Моля въведете и потребителското ид и паролата!";
                 IsMessageVisible = true;
                 return;
             }
@@ -54,11 +54,11 @@ namespace HealthProject.ViewModels
             {
                 _downloadedFile = result.File;
                 _downloadedFilePath = await saveFileService.SaveFileAsync(_downloadedFile, "lab_result.pdf");
-                Message = "File is ready for download.";
+                Message = "Резултатите са готови за проверка.";
             }
             else
             {
-                Message = "No file found or incorrect credentials.";
+                Message = "Няма намерен файл!";
                 _downloadedFile = null;
             }
 
@@ -73,7 +73,7 @@ namespace HealthProject.ViewModels
             }
             else
             {
-                Message = "No file available for download.";
+                Message = "Няма намерен файл за изтегляне!";
                 IsMessageVisible = true;
             }
         }

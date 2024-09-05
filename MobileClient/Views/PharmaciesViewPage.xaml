@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:HealthProject.ViewModels">
     <VerticalStackLayout Padding="10">
         <Label 
-            Text="Available Pharmacies"
+            Text="Аптеки"
             FontSize="24"
             HorizontalOptions="Center"
             VerticalOptions="Start"

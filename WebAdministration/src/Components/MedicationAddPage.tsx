@@ -91,14 +91,14 @@ function MedicationAddPage() {
       <h2>Add Medication</h2>
       {error && <Alert variant="danger">{error}</Alert>}
       {success && (
-        <Alert variant="success">Medication added successfully!</Alert>
+        <Alert variant="success">Лекарството е добавено успешно!</Alert>
       )}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="medicationName">
-          <Form.Label>Medication Name</Form.Label>
+          <Form.Label>Име на лекарството</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter medication name"
+            placeholder="Въведи името на лекарството"
             value={medicationName}
             onChange={(e) => setMedicationName(e.target.value)}
             required
@@ -106,10 +106,10 @@ function MedicationAddPage() {
         </Form.Group>
 
         <Form.Group controlId="medicationQuantity">
-          <Form.Label>Medication Quantity</Form.Label>
+          <Form.Label>Количество на лекарството</Form.Label>
           <Form.Control
             type="number"
-            placeholder="Enter medication quantity"
+            placeholder="Въведи количество на лекарството"
             value={medicationQuantity}
             onChange={(e) => setMedicationQuantity(parseInt(e.target.value))}
             required
@@ -117,10 +117,10 @@ function MedicationAddPage() {
         </Form.Group>
 
         <Form.Group controlId="medicationPrice">
-          <Form.Label>Medication Price</Form.Label>
+          <Form.Label>Цена на лекарството</Form.Label>
           <Form.Control
             type="number"
-            placeholder="Enter medication price"
+            placeholder="Въведи цена на лекарството"
             step="0.01"
             value={medicationPrice}
             onChange={(e) => setMedicationPrice(parseFloat(e.target.value))}
@@ -129,12 +129,12 @@ function MedicationAddPage() {
         </Form.Group>
 
         <Form.Group controlId="image">
-          <Form.Label>Medication Image</Form.Label>
+          <Form.Label>Снимка на лекарството</Form.Label>
           <Form.Control type="file" onChange={handleImageChange} required />
         </Form.Group>
 
         <Button variant="primary" type="submit" className="mt-3">
-          Add Medication
+          Добави лекарство
         </Button>
       </Form>
     </Container>

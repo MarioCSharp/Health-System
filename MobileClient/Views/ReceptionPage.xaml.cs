@@ -9,6 +9,8 @@ public partial class ReceptionPage : ContentPage
 	{
 		InitializeComponent();
 
+		Title = "Валидни рецепции";
+
 		BindingContext = _viewModel = viewModel;
 	}
 

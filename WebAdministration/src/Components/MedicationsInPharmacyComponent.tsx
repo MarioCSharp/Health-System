@@ -60,8 +60,20 @@ function MedicationsInPharmacyComponent() {
   }, []);
 
   const renderImage = (image: string | null) => {
+    const imageStyle: React.CSSProperties = {
+      width: "100px",
+      height: "100px",
+      objectFit: "cover" as React.CSSProperties["objectFit"], // Correctly type the objectFit property
+    };
+
     if (image) {
-      return <img src={`data:image/jpeg;base64,${image}`} alt="Medication" />;
+      return (
+        <img
+          src={`data:image/jpeg;base64,${image}`}
+          alt="Medication"
+          style={imageStyle}
+        />
+      );
     } else {
       return <span>No Image Available</span>;
     }

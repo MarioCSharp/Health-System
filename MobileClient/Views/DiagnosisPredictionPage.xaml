@@ -5,19 +5,19 @@
              x:Class="HealthProject.Views.DiagnosisPredictionPage">
 
     <StackLayout Padding="10" Spacing="10">
-        <Label Text="Enter Symptoms (space or comma-separated):" FontAttributes="Bold" />
+        <Label Text="Въведете симптоми:" FontAttributes="Bold" />
 
-        <Entry Placeholder="e.g., Headache Fever Cough"
+        <Entry Placeholder="Кашлица, Главоболие и тн."
                Text="{Binding SymptomsInput}" />
 
-        <Button Text="Submit Symptoms"
+        <Button Text="Изпрати"
                 Command="{Binding SubmitSymptomsAsyncCommand}"
                 HorizontalOptions="Center" />
 
-        <Label Text="Diagnosis Prediction:" FontAttributes="Bold" />
+        <Label Text="Прогноза:" FontAttributes="Bold" />
         <Label Text="{Binding DiagnosisResult}" />
 
-        <Label Text="Recommended Doctors:" FontAttributes="Bold" />
+        <Label Text="Препоръчани специалисти:" FontAttributes="Bold" />
         <CollectionView ItemsSource="{Binding RecommendedDoctors}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
