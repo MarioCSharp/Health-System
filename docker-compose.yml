@@ -132,7 +132,7 @@ services:
   results:
     build:
       context: ./HealthSystemApi
-      dockerfile: HealthSystem.Problems/Dockerfile
+      dockerfile: HealthSystem.Results/Dockerfile
     ports:
       - "5250:80"
     environment:
