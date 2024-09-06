@@ -62,10 +62,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Documents;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+      - ENCRYPTION_ENV_PATH=/app/data-encryption.env
     networks:
       - healthsystem-network
     volumes:
       - ./.aspnet/documents/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+      - D:/MedCare/Health-System/data-encryption.env:/app/data-encryption.env
 
   healthcare:
     build:
@@ -76,10 +78,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.HealthCare;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+      - ENCRYPTION_ENV_PATH=/app/data-encryption.env
     networks:
       - healthsystem-network
     volumes:
       - ./.aspnet/healthcare/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+      - D:/MedCare/Health-System/data-encryption.env:/app/data-encryption.env
 
   identity:
     build:
@@ -104,10 +108,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Pharmacy;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+      - ENCRYPTION_ENV_PATH=/app/data-encryption.env
     networks:
       - healthsystem-network
     volumes:
       - ./.aspnet/pharmacy/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+      - D:/MedCare/Health-System/data-encryption.env:/app/data-encryption.env
 
   problems:
     build:
@@ -132,10 +138,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Results;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+      - ENCRYPTION_ENV_PATH=/app/data-encryption.env
     networks:
       - healthsystem-network
     volumes:
       - ./.aspnet/results/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+      - D:/MedCare/Health-System/data-encryption.env:/app/data-encryption.env
 
 networks:
   healthsystem-network:

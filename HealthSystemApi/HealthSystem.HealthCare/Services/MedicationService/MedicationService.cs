@@ -16,7 +16,6 @@ namespace HealthSystem.HealthCare.Services.MedicationService
 
         public async Task<bool> AddAsync(MedicationAddModel medicationModel)
         {
-
             var schedule = new MedicationSchedule()
             {
                 Days = medicationModel.Days,

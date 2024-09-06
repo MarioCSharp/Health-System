@@ -1,4 +1,5 @@
 ﻿using HealthSystem.Pharmacy.Data.Models;
+using HealthSystem.Pharmacy.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystem.Pharmacy.Data
@@ -22,6 +23,8 @@ namespace HealthSystem.Pharmacy.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            var encryptionConverter = new EncryptionConverter();
 
             modelBuilder.Entity<OrderMedication>()
                 .HasKey(om => new { om.OrderId, om.MedicationId });
@@ -54,6 +57,18 @@ namespace HealthSystem.Pharmacy.Data
             modelBuilder.Entity<Order>()
                 .Property(o => o.Status)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.Property(e => e.Location)
+                      .HasConversion(encryptionConverter);
+
+                entity.Property(e => e.PhoneNumber)
+                      .HasConversion(encryptionConverter);
+
+                entity.Property(e => e.Name)
+                      .HasConversion(encryptionConverter);
+            });
         }
     }
 }
