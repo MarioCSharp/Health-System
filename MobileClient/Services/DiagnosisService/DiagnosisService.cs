@@ -35,7 +35,7 @@ namespace HealthProject.Services.DiagnosisService
                 var jsonContent = JsonConvert.SerializeObject(requestBody);
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await _httpClient.PostAsync($"{_baseAddress}:8080/predict", content);
+                HttpResponseMessage response = await _httpClient.PostAsync($"{_baseAddress}:8000/predict", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -51,6 +51,11 @@ namespace HealthProject.Services.DiagnosisService
 
                     foreach (var prediction in predictions)
                     {
+                        if (prediction.Probability < 0.2)
+                        {
+                            continue;
+                        }
+
                         sb.AppendLine($"---Прогноза {count++}---");
                         sb.AppendLine($"Диагноза: {prediction.Diagnosis}\n Предпазване: {prediction.Prevention}\n Точност: {prediction.Probability * 100}%");
 

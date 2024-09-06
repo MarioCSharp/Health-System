@@ -26,6 +26,12 @@ namespace HealthSystem.Identity
 
             builder.Services.AddAuthorization();
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5196);
+            });
+
             builder.Services.AddIdentityApiEndpoints<User>().AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IdentityDbContext>().AddRoles<IdentityRole>();
 

@@ -19,6 +19,12 @@ namespace HealthSyste.ReceptionChat
             builder.Services.AddSingleton<ChatHub>();
             builder.Services.AddHttpClient();
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5091);
+            });
+
             builder.Services.AddTokenAuthentication(builder.Configuration);
 
             builder.Services.AddSignalR();
@@ -27,10 +33,10 @@ namespace HealthSyste.ReceptionChat
             {
                 options.AddPolicy("AllowSpecificOrigin", builder =>
                 {
-                    builder.WithOrigins("http://localhost:5173") // Allow your frontend origin
+                    builder.WithOrigins("http://localhost:5173") 
                            .AllowAnyHeader()
                            .AllowAnyMethod()
-                           .AllowCredentials(); // Allow credentials
+                           .AllowCredentials(); 
                 });
             });
 

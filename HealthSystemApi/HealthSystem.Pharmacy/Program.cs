@@ -1,4 +1,5 @@
 using HealthSystem.Pharmacy.Data;
+using HealthSystem.Pharmacy.Infrastructure;
 using HealthSystem.Pharmacy.Services.CartService;
 using HealthSystem.Pharmacy.Services.MedicationService;
 using HealthSystem.Pharmacy.Services.OrderService;
@@ -23,6 +24,12 @@ namespace HealthSystem.Pharmacy
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<PharmacyDbContext>(options => options.UseSqlServer(connectionString));
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5171);
+            });
+
             builder.Services.AddTokenAuthentication(builder.Configuration);
 
             builder.Services.AddHttpClient();
@@ -41,16 +48,18 @@ namespace HealthSystem.Pharmacy
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection().UseCors(options =>
+            app.UseCors(options =>
             {
                 options.AllowAnyHeader();
                 options.AllowAnyMethod();
                 options.AllowAnyOrigin();
-            }); ;
+            });
 
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.Initialize();
 
             app.Run();
         }

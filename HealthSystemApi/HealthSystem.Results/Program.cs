@@ -1,4 +1,5 @@
 using HealthSystem.Results.Data;
+using HealthSystem.Results.Infrastructure;
 using HealthSystem.Results.Services.LaboratoryResultService;
 using HealthSystem.Results.Services.RecipeService;
 using HealthSystemCommon.Infrastructure;
@@ -18,6 +19,12 @@ namespace HealthSystem.Results
 
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ResultsDbContext>(options => options.UseSqlServer(connectionString));
+
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5250);
+            });
 
             builder.Services.AddTransient<ILaboratoryResultService, LaboratoryResultService>();
             builder.Services.AddTransient<IRecipeService, RecipeService>();
@@ -42,6 +49,8 @@ namespace HealthSystem.Results
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.Initialize();
 
             app.Run();
         }

@@ -20,6 +20,12 @@ namespace HealthProject.Views
             DisplayCalendar(currentDate);
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            viewModel.LoadMedications();
+        }
+
         private void DisplayCalendar(DateTime date)
         {
             monthYearLabel.Text = date.ToString("MMMM yyyy", CultureInfo.InvariantCulture);

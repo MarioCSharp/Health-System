@@ -36,10 +36,10 @@ namespace HealthSystem.Booking.Services.ServiceService
 
         public async Task<(string, List<ServiceModel>)> AllByIdAsync(int id)
         {
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctor?id={id}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctor?id={id}");
             var doctor = await doctorResponse.Content.ReadFromJsonAsync<DoctorModel>();
 
-            var doctorNameResponse = await httpClient.GetAsync($"http://localhost:5196/api/Authentication/GetNameByUserId?userId={doctor.UserId}");
+            var doctorNameResponse = await httpClient.GetAsync($"http://identity/api/Authentication/GetNameByUserId?userId={doctor.UserId}");
             var doctorName = await doctorNameResponse.Content.ReadFromJsonAsync<string>();
 
             var services = await context.Services.Where(x => x.DoctorId == id)
@@ -68,7 +68,7 @@ namespace HealthSystem.Booking.Services.ServiceService
 
         public async Task<List<ServiceModel>> AllByUserIdAsync(string userId)
         {
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
             var doctor = await doctorResponse.Content.ReadFromJsonAsync<DoctorModel>();
 
             return await context.Services
@@ -160,13 +160,13 @@ namespace HealthSystem.Booking.Services.ServiceService
 
             var dateTime = new DateTime(model.Year, model.Month, model.Day, hour, minute, 0);
 
-            var patientNameResponse = await httpClient.GetAsync($"http://localhost:5196/api/Authentication/GetNameByUserId?userId={model.UserId}");
+            var patientNameResponse = await httpClient.GetAsync($"http://identity/api/Authentication/GetNameByUserId?userId={model.UserId}");
             var patientName = await patientNameResponse.Content.ReadFromJsonAsync<string>();
 
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctor?id={model.DoctorId}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctor?id={model.DoctorId}");
             var doctor = await doctorResponse.Content.ReadFromJsonAsync<DoctorModel>();
 
-            var doctorNameResponse = await httpClient.GetAsync($"http://localhost:5196/api/Authentication/GetNameByUserId?userId={doctor.UserId}");
+            var doctorNameResponse = await httpClient.GetAsync($"http://identity/api/Authentication/GetNameByUserId?userId={doctor.UserId}");
             var doctorName = await doctorNameResponse.Content.ReadFromJsonAsync<string>();
 
             var booking = new Data.Models.Booking()

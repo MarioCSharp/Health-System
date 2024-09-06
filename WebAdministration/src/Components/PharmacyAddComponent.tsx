@@ -51,7 +51,9 @@ function PharmacyAddComponent() {
     getUsersWithNoRoles();
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent the form from submitting and reloading the page.
+
     const form = new FormData();
     form.append("PharmacyName", pharmacyName);
     form.append("Location", location);
@@ -64,11 +66,11 @@ function PharmacyAddComponent() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: form,
+        body: form, // No need to manually set Content-Type here.
       });
 
       if (response.ok) {
-        navigate("/");
+        navigate("/"); // Navigate back to the main page on success.
       } else {
         throw new Error("There was an error adding the pharmacy");
       }

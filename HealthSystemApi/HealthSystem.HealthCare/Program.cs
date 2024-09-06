@@ -5,6 +5,7 @@ using HealthSystem.HealthCare.Services.MedicationService;
 using Microsoft.EntityFrameworkCore;
 
 using HealthSystemCommon.Infrastructure;
+using HealthSystem.HealthCare.Infrastructure;
 
 namespace HealthSystem.HealthCare
 {
@@ -20,6 +21,12 @@ namespace HealthSystem.HealthCare
 
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<HealthCareDbContext>(options => options.UseSqlServer(connectionString));
+
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5115);
+            });
 
             builder.Services.AddTransient<IHealthIssueService, HealthIssueService>();
             builder.Services.AddTransient<IMedicationService, MedicationService>();
@@ -46,6 +53,8 @@ namespace HealthSystem.HealthCare
 
 
             app.MapControllers();
+
+            app.Initialize();
 
             app.Run();
         }

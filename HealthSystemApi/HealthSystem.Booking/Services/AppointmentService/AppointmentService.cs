@@ -22,7 +22,7 @@ namespace HealthSystem.Booking.Services.AppointmentService
 
         public async Task<bool> AddComment(AppointmentCommentAddModel model, string userId)
         {
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
 
             if (!doctorResponse.IsSuccessStatusCode)
             {
@@ -105,7 +105,7 @@ namespace HealthSystem.Booking.Services.AppointmentService
 
         public async Task<List<AppointmentPatientModel>> GetNextAppointmentsByDoctorUserId(string userId)
         {
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
 
             if (!doctorResponse.IsSuccessStatusCode)
             {
@@ -133,7 +133,7 @@ namespace HealthSystem.Booking.Services.AppointmentService
 
         public async Task<List<AppointmentPatientModel>> GetPastAppointmentsByDoctorUserId(string userId)
         {
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
 
             if (!doctorResponse.IsSuccessStatusCode)
             {
@@ -274,7 +274,7 @@ namespace HealthSystem.Booking.Services.AppointmentService
                 return (false, null);
             }
 
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
 
             if (!doctorResponse.IsSuccessStatusCode)
             {
@@ -385,7 +385,7 @@ namespace HealthSystem.Booking.Services.AppointmentService
 
         public async Task<bool> Remove(int id, string userId)
         {
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Doctor/GetDoctorByUserId?userId={userId}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
 
             if (!doctorResponse.IsSuccessStatusCode)
             {

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using HealthSystemCommon.Infrastructure;
 using HealthSystem.Admins.Models;
 using HealthSystem.Admins.Services.RecepcionistService;
+using HealthSystem.Admins.Infrastructure;
 
 namespace HealthSystem.Admins
 {
@@ -20,6 +21,12 @@ namespace HealthSystem.Admins
 
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AdminsDbContext>(options => options.UseSqlServer(connectionString));
+
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5025);
+            });
 
             builder.Services.AddTransient<IHospitalService, HospitalService>();
             builder.Services.AddTransient<IDoctorService, DoctorService>();
@@ -71,6 +78,8 @@ namespace HealthSystem.Admins
 
 
             app.MapControllers();
+
+            app.Initialize();
 
             app.Run();
         }

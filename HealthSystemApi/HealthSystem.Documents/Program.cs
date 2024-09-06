@@ -3,6 +3,7 @@ using HealthSystem.Documents.Data;
 using HealthSystem.Documents.Services.DocumentService;
 using Microsoft.EntityFrameworkCore;
 using HealthSystem.Documents.Services.ReminderService;
+using HealthSystem.Documents.Infrastructure;
 
 namespace HealthSystem.Documents
 {
@@ -18,6 +19,12 @@ namespace HealthSystem.Documents
 
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<DocumentsDbContext>(options => options.UseSqlServer(connectionString));
+
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5256);
+            });
 
             builder.Services.AddTransient<IDocumentService, DocumentService>();
             builder.Services.AddTransient<IReminderService, ReminderService>();
@@ -43,6 +50,8 @@ namespace HealthSystem.Documents
 
 
             app.MapControllers();
+
+            app.Initialize();
 
             app.Run();
         }

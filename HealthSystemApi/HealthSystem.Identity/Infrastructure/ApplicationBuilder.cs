@@ -1,5 +1,7 @@
-﻿using HealthSystem.Identity.Data.Models;
+﻿using HealthSystem.Identity.Data;
+using HealthSystem.Identity.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystem.Identity.Infrastructure
 {
@@ -10,7 +12,22 @@ namespace HealthSystem.Identity.Infrastructure
             using var serviceScope = app.ApplicationServices.CreateScope();
             var services = serviceScope.ServiceProvider;
 
+            MigrateDatabase(app);
             SeedAdministrator(services);
+        }
+        public static void MigrateDatabase(IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var context = services.GetRequiredService<IdentityDbContext>();
+
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
 
         public static void SeedAdministrator(IServiceProvider services)

@@ -57,7 +57,7 @@ namespace HealthSystem.Admins.Services.DoctorService
             };
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-            $"http://localhost:5196/api/Authentication/PutToRole?userId={model.UserId}&role=Doctor");
+            $"http://identity/api/Authentication/PutToRole?userId={model.UserId}&role=Doctor");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -76,7 +76,7 @@ namespace HealthSystem.Admins.Services.DoctorService
 
         public async Task<bool> AddRating(float rating, string comment, int doctorId, int appointmentId, string userId)
         {
-            var response = await httpClient.GetAsync($"http://localhost:5046/api/Appointment/GetAppointment?id={appointmentId}");
+            var response = await httpClient.GetAsync($"http://booking/api/Appointment/GetAppointment?id={appointmentId}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -302,15 +302,15 @@ namespace HealthSystem.Admins.Services.DoctorService
                 }
             }
 
-            var request1 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5046/api/Appointment/DeleteAllByDoctorId?doctorId={id}");
+            var request1 = new HttpRequestMessage(HttpMethod.Get, $"http://booking/api/Appointment/DeleteAllByDoctorId?doctorId={id}");
             request1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await httpClient.SendAsync(request1);
 
-            var request2 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5046/api/Service/DeleteAllByDoctorId?doctorId={id}");
+            var request2 = new HttpRequestMessage(HttpMethod.Get, $"http://booking/api/Service/DeleteAllByDoctorId?doctorId={id}");
             request2.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response2 = await httpClient.SendAsync(request2);
 
-            var request3 = new HttpRequestMessage(HttpMethod.Get, $"http://localhost:5196/api/Authentication/DeleteFromRole?userId={doctor.UserId}&role=Doctor");
+            var request3 = new HttpRequestMessage(HttpMethod.Get, $"http://identity/api/Authentication/DeleteFromRole?userId={doctor.UserId}&role=Doctor");
             request3.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response3 = await httpClient.SendAsync(request3);
 

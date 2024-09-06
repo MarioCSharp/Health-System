@@ -26,7 +26,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             };
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-                $"http://localhost:5196/api/Authentication/PutToRole?userId={model.OwnerUserId}&role=PharmacyOwner");
+                $"http://identity/api/Authentication/PutToRole?userId={model.OwnerUserId}&role=PharmacyOwner");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -65,7 +65,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             }
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-               $"http://localhost:5196/api/Authentication/DeleteFromRole?userId={pharmacy.OwnerUserId}&role=PharmacyOwner");
+               $"http://identity/api/Authentication/DeleteFromRole?userId={pharmacy.OwnerUserId}&role=PharmacyOwner");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 

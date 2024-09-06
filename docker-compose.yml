@@ -1,0 +1,146 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - healthsystem-network
+    volumes:
+      - sqlserver_data:/var/opt/mssql  # Persist database data
+
+  receptionchat:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSyste.ReceptionChat/Dockerfile
+    ports:
+      - "5091:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/receptionchat/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  admins:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSystem.Admins/Dockerfile
+    ports:
+      - "5025:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Admins;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/admins/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  booking:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSystem.Booking/Dockerfile
+    ports:
+      - "5046:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Booking;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/booking/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  documents:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSystem.Documents/Dockerfile
+    ports:
+      - "5256:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Documents;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/documents/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  healthcare:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSystem.HealthCare/Dockerfile
+    ports:
+      - "5115:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.HealthCare;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/healthcare/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  identity:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSystem.Identity/Dockerfile
+    ports:
+      - "5196:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Identity;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  pharmacy:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSystem.Pharmacy/Dockerfile
+    ports:
+      - "5171:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Pharmacy;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/pharmacy/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  problems:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSystem.Problems/Dockerfile
+    ports:
+      - "5098:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Problems;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/problems/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  results:
+    build:
+      context: ./HealthSystemApi
+      dockerfile: HealthSystem.Problems/Dockerfile
+    ports:
+      - "5250:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HealthSystem.Results;User Id=sa;Password=YourStrong@Passw0rd;MultipleActiveResultSets=true;Encrypt=False
+    networks:
+      - healthsystem-network
+    volumes:
+      - ./.aspnet/results/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+networks:
+  healthsystem-network:
+    driver: bridge
+
+volumes:
+  sqlserver_data:
+    driver: local

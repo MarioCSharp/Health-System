@@ -5,7 +5,6 @@ import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Home from "./Home";
 import NotFound from "./NotFound";
-import DoctorsDisplayPage from "./DoctorsDisplayPage";
 import AppointmentsComponent from "./AppointmentsComponent";
 import DoctorAppointments from "./DoctorAppointments";
 import DoctorServicesComponent from "./DoctorServicesComponent";
@@ -41,7 +40,6 @@ const App: React.FC = () => (
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<ProtectedRoute />}>
           <Route path="/" element={<Home />} />
-          <Route path="/doctors/:hospitalId" element={<DoctorsDisplayPage />} />
           <Route path="/appointments/:id" element={<AppointmentsComponent />} />
           <Route path="/past-appointments" element={<PastAppointmentsList />} />
           <Route
@@ -64,10 +62,6 @@ const App: React.FC = () => (
           <Route
             path="/doctor/add/:hospitalId"
             element={<DoctorAddComponent />}
-          />
-          <Route
-            path="/hospital/edit/:hospitalId"
-            element={<HospitalEditComponent />}
           />
           <Route path="/hospital/add" element={<HospitalAddComponent />} />
           <Route path="/hospitals" element={<AllHospitalsComponents />} />

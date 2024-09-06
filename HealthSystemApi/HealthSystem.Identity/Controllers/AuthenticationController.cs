@@ -21,6 +21,7 @@ namespace HealthSystem.Identity.Controllers
         private IdentityDbContext context;
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
+        private RoleManager<IdentityRole> roleManager;
         private IIdentityService authenticationService;
 
         private string _secretKey = "MedCare?Authentication?Secret?Token";  // You shouldn`t store this here!
@@ -162,6 +163,15 @@ namespace HealthSystem.Identity.Controllers
         [Authorize(Roles = "Administrator,Director,PharmacyOwner")]
         public async Task<IActionResult> PutToRole([FromQuery] string userId, string role)
         {
+            var containsRole = await context.Roles.AnyAsync(x => x.Name == role);
+
+            if (!containsRole)
+            {
+                var newRole = new IdentityRole(role);
+
+                await roleManager.CreateAsync(newRole);
+            }
+
             var user = await context.Users.FindAsync(userId);
 
             if (user is null)

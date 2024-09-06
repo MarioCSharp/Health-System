@@ -32,7 +32,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacistService
             }
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-                $"http://localhost:5196/api/Authentication/PutToRole?userId={model.UserId}&role=Pharmacist");
+                $"http://identity/api/Authentication/PutToRole?userId={model.UserId}&role=Pharmacist");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -79,7 +79,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacistService
             }
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-               $"http://localhost:5196/api/Authentication/DeleteFromRole?userId={pharmacist.UserId}&role=Pharmacist");
+               $"http://identity/api/Authentication/DeleteFromRole?userId={pharmacist.UserId}&role=Pharmacist");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 

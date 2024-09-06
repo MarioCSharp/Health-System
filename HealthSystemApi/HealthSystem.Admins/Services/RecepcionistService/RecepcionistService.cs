@@ -26,7 +26,7 @@ namespace HealthSystem.Admins.Services.RecepcionistService
             };
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-                $"http://localhost:5196/api/Authentication/PutToRole?userId={recepcionist.UserId}&role=Recepcionist");
+                $"http://identity/api/Authentication/PutToRole?userId={recepcionist.UserId}&role=Recepcionist");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -53,7 +53,7 @@ namespace HealthSystem.Admins.Services.RecepcionistService
             }
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-                $"http://localhost:5196/api/Authentication/DeleteFromRole?userId={recepcionist.UserId}&role=Recepcionist");
+                $"http://identity/api/Authentication/DeleteFromRole?userId={recepcionist.UserId}&role=Recepcionist");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 

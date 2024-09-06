@@ -36,7 +36,7 @@ namespace HealthSystem.Admins.Services.HospitalService
             await context.SaveChangesAsync();
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-            $"http://localhost:5196/api/Authentication/PutToRole?userId={model.OwnerId}&role=Director");
+            $"http://identity/api/Authentication/PutToRole?userId={model.OwnerId}&role=Director");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -198,7 +198,7 @@ namespace HealthSystem.Admins.Services.HospitalService
             }
 
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-            $"http://localhost:5196/api/Authentication/DeleteFromRole?userId={hospital.OwnerId}&role=Director");
+            $"http://identity/api/Authentication/DeleteFromRole?userId={hospital.OwnerId}&role=Director");
 
             httpRequestMessage.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 

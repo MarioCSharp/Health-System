@@ -3,6 +3,7 @@ using HealthSystem.Booking.Data;
 using HealthSystem.Booking.Services.AppointmentService;
 using HealthSystem.Booking.Services.ServiceService;
 using Microsoft.EntityFrameworkCore;
+using HealthSystem.Booking.Infrastructure;
 
 namespace HealthSystem.Booking
 {
@@ -19,6 +20,11 @@ namespace HealthSystem.Booking
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<BookingDbContext>(options => options.UseSqlServer(connectionString));
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5046);
+            });
 
             builder.Services.AddTransient<IAppointmentService, AppointmentService>();
             builder.Services.AddTransient<IServiceService, ServiceService>();
@@ -60,6 +66,8 @@ namespace HealthSystem.Booking
 
 
             app.MapControllers();
+
+            app.Initialize();
 
             app.Run();
         }

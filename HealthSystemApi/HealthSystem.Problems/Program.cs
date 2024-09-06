@@ -19,6 +19,12 @@ namespace HealthSystem.Problems
             string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ProblemsDbContext>(options => options.UseSqlServer(connectionString));
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(80);
+                options.ListenAnyIP(5098);
+            });
+
             builder.Services.AddTransient<IProblemService, ProblemService>();
 
             builder.Services.AddTokenAuthentication(builder.Configuration);
@@ -42,6 +48,8 @@ namespace HealthSystem.Problems
 
 
             app.MapControllers();
+
+            app.Initialize();
 
             app.Run();
         }
