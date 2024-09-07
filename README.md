@@ -106,35 +106,14 @@ The MedCare project is organized into four main components:
 git clone https://github.com/MarioCSharp/Health-System
 ```
 
-### Web API Setup
+### Web API and Web Administration Setup
 
-1. Navigate to the ASP.NET API directory and restore dependencies:
-
-   ```bash
-   cd HealthSystemApi
-   dotnet restore
-   ```
-
-2. Configure the database connection in `appsettings.json`.
-
-3. Run the API:
+1. Navigate to the HealthSystem directory and run:
 
    ```bash
-   dotnet run
+   docker-compose up -d
    ```
-
-4. Navigate to the FastAPI directory and set up a virtual environment:
-
-   ```bash
-   cd MachineLearningApi
-   ```
-
-5. Run the FastAPI server:
-
-   ```bash
-   uvicorn main:app --reload
-   ```
-
+   
 ### Mobile Client Setup
 
 1. Navigate to the .NET MAUI directory:
@@ -151,25 +130,9 @@ git clone https://github.com/MarioCSharp/Health-System
    dotnet run
    ```
 
-### Web Administration Setup
-
-1. Navigate to the React directory:
-
-   ```bash
-   cd WebAdministration
-   npm install
-   ```
-
-2. Run the React application:
-
-   ```bash
-   npm run dev
-   ```
-
 ### Database Setup
 
 1. Create and configure the database according to the settings in `appsettings.json`.
-2. Run any necessary migrations to set up the schema.
 
 ## Usage
 
@@ -182,7 +145,7 @@ git clone https://github.com/MarioCSharp/Health-System
 API documentation is available via Swagger for the ASP.NET API and via automatically generated docs in FastAPI.
 
 - **ASP.NET API**: Different port for every microservice.
-- **FastAPI**: Access `https://localhost:8080/docs` for documentation.
+- **FastAPI**: Access `https://localhost:8000/docs` for documentation.
 
 ### Reporting Issues
 
