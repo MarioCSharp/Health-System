@@ -67,7 +67,7 @@ services:
       - healthsystem-network
     volumes:
       - ./.aspnet/documents/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
-      - D:/MedCare/Health-System/data-encryption.env:/app/data-encryption.env
+      - ./data-encryption.env:/app/data-encryption.env
 
   healthcare:
     build:
@@ -83,7 +83,7 @@ services:
       - healthsystem-network
     volumes:
       - ./.aspnet/healthcare/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
-      - D:/MedCare/Health-System/data-encryption.env:/app/data-encryption.env
+      - ./data-encryption.env:/app/data-encryption.env
 
   identity:
     build:
@@ -113,7 +113,7 @@ services:
       - healthsystem-network
     volumes:
       - ./.aspnet/pharmacy/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
-      - D:/MedCare/Health-System/data-encryption.env:/app/data-encryption.env
+      - ./data-encryption.env:/app/data-encryption.env
 
   problems:
     build:
@@ -143,7 +143,7 @@ services:
       - healthsystem-network
     volumes:
       - ./.aspnet/results/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
-      - D:/MedCare/Health-System/data-encryption.env:/app/data-encryption.env
+      - ./data-encryption.env:/app/data-encryption.env
 
 networks:
   healthsystem-network:
