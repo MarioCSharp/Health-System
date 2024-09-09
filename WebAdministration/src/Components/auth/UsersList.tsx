@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faClock, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { Spinner } from "react-bootstrap"; // Optional: for loading state
+import { Spinner } from "react-bootstrap";
 
 interface User {
   id: string;

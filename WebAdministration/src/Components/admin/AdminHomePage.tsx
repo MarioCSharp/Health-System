@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import HospitalsList from "./HospitalsList";
-import PharmaciesComponent from "./PharmaciesComponent";
-import UsersList from "./UsersList";
+import HospitalsList from "../hospital/HospitalsList";
+import UsersList from "../auth/UsersList";
+import PharmaciesComponent from "../pharmacy/PharmaciesComponent";
 
 const AdminHomePage: React.FC = () => {
   // State to manage the active component

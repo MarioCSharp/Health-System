@@ -137,6 +137,41 @@ namespace HealthProject.Services.PharmacyService
             return new List<PharmacyProductDisplayModel>();
         }
 
+        public async Task<bool> GetMedicationsByEGNAsync(string EGN, int cartId)
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, $"{_baseAddress}:5171/api/Order/GetOrderByEGN?EGN={EGN}&userCartId={cartId}");
+
+                var token = await SecureStorage.GetAsync("auth_token");
+
+                message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await _httpClient.SendAsync(message);
+                response.EnsureSuccessStatusCode();
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<bool>(responseBody, _jsonSerializerOptions);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return result;
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+
+            return false;
+        }
+
         public async Task<CartModel> GetUserCart(int pharmacyId)
         {
             CheckInternetConnection();

@@ -1,6 +1,6 @@
+import NextAppointmentsList from "../appointments/NextAppointmentsList";
+import PastAppointmentsList from "../appointments/PastAppointmentsList";
 import MyServicesComponent from "./MyServicesComponent";
-import NextAppointmentsList from "./NextAppointmentsList";
-import PastAppointmentsList from "./PastAppointmentsList";
 
 function DoctorHomePage() {
   return (

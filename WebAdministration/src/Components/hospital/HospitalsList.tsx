@@ -9,9 +9,9 @@ import {
   faUserMd,
 } from "@fortawesome/free-solid-svg-icons";
 import HospitalAddComponent from "./HospitalAddComponent";
-import DoctorsDisplayPage from "./DoctorsDisplayPage";
 import HospitalEditComponent from "./HospitalEditComponent";
 import { Spinner } from "react-bootstrap";
+import DoctorsDisplayPage from "../doctor/DoctorsDisplayPage";
 
 interface Hospital {
   id: number;

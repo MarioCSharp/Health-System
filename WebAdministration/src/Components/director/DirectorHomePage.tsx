@@ -1,6 +1,6 @@
-import DoctorsInMyHosptail from "./DoctorsInMyHosptail";
+import DoctorsInMyHosptail from "../doctor/DoctorsInMyHosptail";
+import MyRecepcionistsComponent from "../hospital/MyRecepcionistsComponent";
 import MyHospitalComponent from "./MyHospitalComponent";
-import MyRecepcionistsComponent from "./MyRecepcionistsComponent";
 
 function DirectorHomePage() {
   return (

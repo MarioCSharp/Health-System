@@ -10,5 +10,6 @@ namespace HealthProject.Services.PharmacyService
         Task<bool> AddToCart(int medcicationId, int userCartId, int quantity);
         Task<bool> RemoveFromCart(int cartItemId);
         Task<bool> SubmitOrder(SubmitOrderModel model);
+        Task<bool> GetMedicationsByEGNAsync(string EGN, int cartId);
     }
 }

@@ -1,10 +1,10 @@
 import { Navigate } from "react-router-dom";
-import AdminHomePage from "./AdminHomePage";
-import DoctorHomePage from "./DoctorHomePage";
-import DirectorHomePage from "./DirectorHomePage";
-import RecepcionistHomePage from "./RecepcionistHomePage";
-import PharmacyOwnerHomePage from "./PharmacyOwnerHomePage";
-import PharmacistHomePage from "./PharmacistHomePage";
+import AdminHomePage from "../admin/AdminHomePage";
+import DoctorHomePage from "../doctor/DoctorHomePage";
+import DirectorHomePage from "../director/DirectorHomePage";
+import RecepcionistHomePage from "../hospital/RecepcionistHomePage";
+import PharmacyOwnerHomePage from "../pharmacy/PharmacyOwnerHomePage";
+import PharmacistHomePage from "../pharmacy/PharmacistHomePage";
 
 function Home() {
   const role = localStorage.getItem("role");

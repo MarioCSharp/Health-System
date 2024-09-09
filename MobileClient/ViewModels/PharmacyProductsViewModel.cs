@@ -22,6 +22,9 @@ namespace HealthProject.ViewModels
         private readonly IPharmacyService pharmacyService;
 
         [ObservableProperty]
+        private string eGN;
+
+        [ObservableProperty]
         private string userName;
 
         [ObservableProperty]
@@ -33,10 +36,14 @@ namespace HealthProject.ViewModels
         [ObservableProperty]
         private bool isOrderFormVisible;
 
+        [ObservableProperty]
+        private bool AddingByEGNMessage;
+
         public ICommand AddToCartCommand { get; }
         public ICommand ToggleOrderFormCommand { get; }
         public ICommand SubmitOrderCommand { get; }
         public ICommand RemoveFromCartCommand { get; }
+        public ICommand GetMedicationsInStockCommand { get; }
 
         public PharmacyProductsViewModel(IPharmacyService pharmacyService)
         {
@@ -46,6 +53,7 @@ namespace HealthProject.ViewModels
             ToggleOrderFormCommand = new RelayCommand(ToggleOrderForm);
             SubmitOrderCommand = new AsyncRelayCommand(SubmitOrder);
             RemoveFromCartCommand = new AsyncRelayCommand<int>(async (cartItemId) => await RemoveFromCart(cartItemId));
+            GetMedicationsInStockCommand = new AsyncRelayCommand(GetMedicationsByEGNAsync);
         }
 
         partial void OnPharmacyIdChanged(int value)
@@ -72,6 +80,16 @@ namespace HealthProject.ViewModels
         private async Task AddToCart(PharmacyProductDisplayModel product, int quantity)
         {
             var success = await pharmacyService.AddToCart(product.Id, UserCart.Id, product.UserEnteredQuantity);
+
+            if (success)
+            {
+                GetUserCart();
+            }
+        }
+
+        private async Task GetMedicationsByEGNAsync()
+        {
+            var success = await pharmacyService.GetMedicationsByEGNAsync(EGN, UserCart.Id);
 
             if (success)
             {

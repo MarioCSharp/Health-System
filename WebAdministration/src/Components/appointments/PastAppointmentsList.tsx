@@ -1,8 +1,8 @@
-import FeedbackComponent from "./FeedbackComponent";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import PrescriptionComponent from "./PrescriptionComponent";
-import RecipeAddComponent from "./RecipeAddComponent";
+import PrescriptionComponent from "../doctor/PrescriptionComponent";
+import FeedbackComponent from "../doctor/FeedbackComponent";
+import RecipeAddComponent from "../doctor/RecipeAddComponent";
 
 interface Appointment {
   id: number;

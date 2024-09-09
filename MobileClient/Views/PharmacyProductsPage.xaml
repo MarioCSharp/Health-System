@@ -20,7 +20,10 @@
         </Grid.RowDefinitions>
 
         <Button Text="Твоята количка" Command="{Binding ToggleOrderFormCommand}" Grid.Row="0" />
-
+        <Label Text="Поръчай от рецепта" FontAttributes="Bold" HorizontalOptions="End" />
+        <Entry Placeholder="ЕГН" Text="{Binding EGN}" />
+        <Button Text="Покажи валидни артукули" Command="{Binding GetMedicationsInStockCommand}" />
+        <Label Text="{Binding AddingByEGNMessage}"  />
         <StackLayout Grid.Row="1" IsVisible="{Binding IsOrderFormVisible}" Spacing="10">
             <CollectionView ItemsSource="{Binding UserCart.CartItems}">
                 <CollectionView.ItemTemplate>

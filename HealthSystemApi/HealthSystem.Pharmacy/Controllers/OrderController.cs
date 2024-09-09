@@ -57,7 +57,7 @@ namespace HealthSystem.Pharmacy.Controllers
         {
             var result = await orderService.GetOrderByEGNAsync(EGN, userCartId);
 
-            return result ? Ok() : BadRequest();
+            return result ? Ok(result) : BadRequest();
         }
     }
 }
