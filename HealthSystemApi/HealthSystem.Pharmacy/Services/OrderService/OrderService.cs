@@ -4,16 +4,19 @@ using HealthSystem.Pharmacy.Data.Models;
 using HealthSystem.Pharmacy.Models.Cart;
 using HealthSystem.Pharmacy.Models.Order;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 
 namespace HealthSystem.Pharmacy.Services.OrderService
 {
     public class OrderService : IOrderService
     {
         private PharmacyDbContext context;
+        private HttpClient httpClient;
 
-        public OrderService(PharmacyDbContext context)
+        public OrderService(PharmacyDbContext context, HttpClient httpClient)
         {
             this.context = context;
+            this.httpClient = httpClient;
         }
 
         public async Task<bool> ChangeStatus(int orderId, string status)
@@ -28,6 +31,64 @@ namespace HealthSystem.Pharmacy.Services.OrderService
             order.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), status, true); ;
 
             await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> GetOrderByEGNAsync(string egn, int cartId)
+        {
+            var cart = await context.UserCarts.FindAsync(cartId);
+
+            if (cart is null)
+            {
+                return false;
+            }
+
+            var doctorResponse = await httpClient.GetAsync($"http://results/api/Recipe/GeLastRecipe?EGN={egn}");
+
+            if (!doctorResponse.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+            var fileStream = await doctorResponse.Content.ReadAsStreamAsync();
+            var contentType = doctorResponse.Content.Headers.ContentType?.ToString();
+            var fileName = doctorResponse.Content.Headers.ContentDisposition?.FileName ?? "downloadedFile";
+
+            using (var reader = new StreamReader(fileStream))
+            {
+                string line;
+
+                while ((line = await reader.ReadLineAsync()) != null)
+                {
+                    var splitLine = line.Split('-');
+
+                    var medicationName = splitLine[0];
+
+                    var meds = await context.Medications
+                        .Include(x => x.Pharmacy)
+                        .Where(x => x.MedicationName == medicationName && x.PharmacyId == cart.Id)
+                        .ToListAsync();
+
+                    if (meds is null)
+                    {
+                        continue;
+                    }
+
+                    foreach (var medication in meds)
+                    {
+                        var cartItem = new CartItem()
+                        {
+                            MedicationId = medication.Id,
+                            UserCartId = cartId,
+                            Quantity = 1
+                        };
+
+                        await context.CartItems.AddAsync(cartItem);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }
 
             return true;
         }
@@ -106,5 +167,12 @@ namespace HealthSystem.Pharmacy.Services.OrderService
 
             return await context.Orders.ContainsAsync(order);
         }
+    }
+
+    public class RecipeDisplayModel
+    {
+        public int Id { get; set; }
+        public string? PatientName { get; set; }
+        public string? DoctorName { get; set; }
     }
 }

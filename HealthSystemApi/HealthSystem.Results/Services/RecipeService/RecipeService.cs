@@ -37,6 +37,26 @@ namespace HealthSystem.Results.Services.RecipeService
             return await context.IssuedRecipes.ContainsAsync(recipe);
         }
 
+        public async Task<IFormFile> GetLastRecipe(string EGN)
+        {
+            var recipe = await context.IssuedRecipes.LastOrDefaultAsync(r => r.EGN == EGN);
+
+            if (recipe == null)
+            {
+                return null;
+            }
+
+            var stream = new MemoryStream(recipe.File);
+
+            var formFile = new FormFile(stream, 0, recipe.File.Length, "file", "Рецепта")
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "application/pdf"
+            };
+
+            return formFile;
+        }
+
         public async Task<IFormFile> GetRecipeFileAsync(int recipeId)
         {
             var recipe = await context.IssuedRecipes.FindAsync(recipeId);

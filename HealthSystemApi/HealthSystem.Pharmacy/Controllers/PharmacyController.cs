@@ -11,7 +11,6 @@ namespace HealthSystem.Pharmacy.Controllers
     public class PharmacyController : ControllerBase
     {
         private IPharmacyService pharmacyService;
-
         public PharmacyController(IPharmacyService pharmacyService)
         {
             this.pharmacyService = pharmacyService;

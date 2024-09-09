@@ -72,7 +72,7 @@ function RecipeAddComponent() {
         value={doctorName}
         onChange={(e) => setDoctorName(e.target.value)}
       />
-      <input type="file" onChange={handleFileChange} />
+      <input type="file" accept=".txt" onChange={handleFileChange} />
       <button className="btn btn-success btn-sm" onClick={handleSubmit}>
         Submit Recipe
       </button>

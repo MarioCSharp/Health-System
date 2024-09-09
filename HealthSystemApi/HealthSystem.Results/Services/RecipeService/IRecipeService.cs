@@ -7,5 +7,6 @@ namespace HealthSystem.Results.Services.RecipeService
         Task<bool> AddRecipeService(IssueRecipeModel model, IFormFile file);
         Task<List<RecipeDisplayModel>> GetRecipiesAsync(string egn);
         Task<IFormFile> GetRecipeFileAsync(int recipeId);
+        Task<IFormFile> GetLastRecipe(string EGN);
     }
 }

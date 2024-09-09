@@ -39,6 +39,15 @@ namespace HealthSystem.Results.Controllers
             return Ok(new { Recipes = result });
         }
 
+        [HttpGet("GeLastRecipe")]
+        [Authorize]
+        public async Task<IActionResult> GeLasttRecipe([FromQuery] string EGN)
+        {
+            var file = await recipeService.GetLastRecipe(EGN);
+
+            return File(file.OpenReadStream(), file.ContentType, file.FileName);
+        }
+
         [HttpGet("DownloadRecipe")]
         [Authorize]
         public async Task<IActionResult> DownloadRecipe([FromQuery] int recipeId)

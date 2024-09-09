@@ -50,5 +50,14 @@ namespace HealthSystem.Pharmacy.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("GetOrderByEGN")]
+        [Authorize]
+        public async Task<IActionResult> GetOrderByEGN([FromQuery] string EGN, int userCartId)
+        {
+            var result = await orderService.GetOrderByEGNAsync(EGN, userCartId);
+
+            return result ? Ok() : BadRequest();
+        }
     }
 }
