@@ -1,5 +1,4 @@
 ﻿using HealthSystem.HealthCare.Data.Models;
-using HealthSystem.HealthCare.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystem.HealthCare.Data
@@ -14,6 +13,5 @@ namespace HealthSystem.HealthCare.Data
         public DbSet<MedicationSchedule> MedicationSchedules { get; set; }
         public DbSet<HealthIssue> HealthIssues { get; set; }
         public DbSet<Log> Logs { get; set; }
-
     }
 }

@@ -3,7 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.ReceptionPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             Shell.NavBarIsVisible="True">
+             Title="Hospitals"
+             Shell.NavBarIsVisible="True"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Define a subtle background for the frames -->
+            <Color x:Key="FrameBackgroundColor">#FFFFFF</Color>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <Grid Padding="20">
             <Grid.RowDefinitions>
@@ -11,30 +34,45 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <!-- Title -->
+            <Label Grid.Row="0"
+                   Text="Избери рецепция"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="{DynamicResource PrimaryTextColor}"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" />
+
+            <!-- Hospitals List -->
             <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Hospitals}"
-                        Margin="0,10,0,0">
+                            ItemsSource="{Binding Hospitals}"
+                            Margin="0,20,0,0"
+                            SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
                             <Frame CornerRadius="15" 
-                               BorderColor="#007ACC" 
-                               Margin="0,5" 
-                               Padding="15" 
-                               HasShadow="True" 
-                               BackgroundColor="#F9F9F9">
+                                   BorderColor="{DynamicResource PrimaryColor}" 
+                                   Margin="0,5" 
+                                   Padding="15" 
+                                   HasShadow="True"
+                                   BackgroundColor="{StaticResource FrameBackgroundColor}">
                                 <StackLayout>
+                                    <!-- Hospital Name -->
                                     <Label Text="{Binding HospitalName}" 
-                                       FontSize="22" 
-                                       FontAttributes="Bold"
-                                       VerticalOptions="Center"
-                                       TextColor="#333333"/>
+                                           FontSize="24" 
+                                           FontAttributes="Bold"
+                                           TextColor="#007ACC"
+                                           HorizontalOptions="StartAndExpand"
+                                           VerticalOptions="Center" />
 
+                                    <!-- Contact Reception Button -->
                                     <Button Text="Свържи се с рецепция"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ConnectToReceptionChatCommand}"
-                                    CommandParameter="{Binding Id}" />
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ConnectToReceptionChatCommand}"
+                                            CommandParameter="{Binding Id}"
+                                            HorizontalOptions="FillAndExpand"
+                                            VerticalOptions="Center" />
                                 </StackLayout>
-
                             </Frame>
                         </SwipeView>
                     </DataTemplate>

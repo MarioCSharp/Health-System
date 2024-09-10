@@ -37,7 +37,7 @@ namespace HealthProject.ViewModels
         private bool isOrderFormVisible;
 
         [ObservableProperty]
-        private bool AddingByEGNMessage;
+        private bool addingByEGNMessage;
 
         public ICommand AddToCartCommand { get; }
         public ICommand ToggleOrderFormCommand { get; }

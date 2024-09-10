@@ -49,8 +49,6 @@ namespace HealthProject
             builder.Services.AddTransient<LoginPageViewModel>();
             builder.Services.AddTransient<HomePageViewModel>();
             builder.Services.AddTransient<MainPageViewModel>();
-            builder.Services.AddTransient<AddHospitalViewModel>();
-            builder.Services.AddTransient<AddDoctorPageViewModel>();
             builder.Services.AddTransient<HealthIssueAddViewModel>();
             builder.Services.AddTransient<HealthIssuePageViewModel>();
             builder.Services.AddTransient<HealtIssueDetailsViewModel>();

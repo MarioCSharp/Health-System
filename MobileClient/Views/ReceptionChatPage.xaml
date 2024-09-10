@@ -2,36 +2,61 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.ReceptionChatPage"
-             Title="Reception Chat">
-    <Grid Padding="10" RowSpacing="5">
+             Title="Reception Chat"
+             BackgroundColor="#f9f9f9">
+
+    <Grid Padding="15" RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ScrollView Grid.Row="0">
+        <ScrollView Grid.Row="0"
+                    Margin="0,0,0,10"
+                    BackgroundColor="#ffffff"
+                    Padding="15"
+                    VerticalScrollBarVisibility="Always">
             <VerticalStackLayout x:Name="chatMessagesLayout"
-                                 Padding="10">
+                                 Spacing="10">
                 <Label x:Name="chatMessages"
-                       FontSize="14"
-                       HorizontalOptions="Start" />
+                       FontSize="16"
+                       TextColor="#333333"
+                       HorizontalOptions="Start"
+                       LineBreakMode="WordWrap" />
             </VerticalStackLayout>
         </ScrollView>
 
-        <Grid Grid.Row="1" Padding="5,10">
+        <Grid Grid.Row="1"
+              Padding="10,15"
+              BackgroundColor="#ffffff"
+              RowSpacing="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Entry x:Name="myChatMessage"
-                   Placeholder="Съобщение"
-                   FontSize="14"
-                   Grid.Column="0"
-                   VerticalOptions="Center" />
+                   Placeholder="Type a message..."
+                   FontSize="16"
+                   PlaceholderColor="#aaaaaa"
+                   BackgroundColor="#f2f2f2"
+                   TextColor="#333333"
+                   HeightRequest="50"
+                   Margin="0,0,10,0"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Center"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center" />
 
             <Button x:Name="sendButton"
-                    Text="Изпрати"
+                    Text="Send"
+                    FontSize="16"
+                    BackgroundColor="#007bff"
+                    TextColor="White"
+                    CornerRadius="25"
+                    Padding="15,0"
+                    WidthRequest="100"
+                    HeightRequest="50"
                     Clicked="OnSendMessageClicked"
                     Grid.Column="1"
                     VerticalOptions="Center"

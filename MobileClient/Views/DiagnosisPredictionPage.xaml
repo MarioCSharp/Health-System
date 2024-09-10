@@ -1,32 +1,74 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:HealthProject.ViewModels"
-             x:Class="HealthProject.Views.DiagnosisPredictionPage">
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             x:Class="HealthProject.Views.DiagnosisPredictionPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
 
-    <StackLayout Padding="10" Spacing="10">
-        <Label Text="Въведете симптоми:" FontAttributes="Bold" />
+    <ContentPage.Resources>
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
+        </Style>
+        <Style x:Key="NormalLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextColor" Value="{DynamicResource SecondaryTextColor}" />
+        </Style>
+        <Style x:Key="SubmitButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="{DynamicResource ButtonBackgroundColor}" />
+            <Setter Property="TextColor" Value="{DynamicResource ButtonTextColor}" />
+            <Setter Property="CornerRadius" Value="25" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style x:Key="CardStyle" TargetType="Frame">
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="BackgroundColor" Value="{DynamicResource CardBackgroundColor}" />
+        </Style>
+    </ContentPage.Resources>
 
-        <Entry Placeholder="Кашлица, Главоболие и тн."
-               Text="{Binding SymptomsInput}" />
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            <Label Text="Въведете симптоми:" Style="{StaticResource HeaderLabelStyle}" />
 
-        <Button Text="Изпрати"
-                Command="{Binding SubmitSymptomsAsyncCommand}"
-                HorizontalOptions="Center" />
+            <Entry Placeholder="Кашлица, Главоболие и тн."
+                   Text="{Binding SymptomsInput}"
+                   BackgroundColor="{DynamicResource EntryBackgroundColor}"
+                   PlaceholderColor="{DynamicResource EntryPlaceholderColor}" />
 
-        <Label Text="Прогноза:" FontAttributes="Bold" />
-        <Label Text="{Binding DiagnosisResult}" />
+            <Button Text="Изпрати"
+                    Command="{Binding SubmitSymptomsAsyncCommand}"
+                    Style="{StaticResource SubmitButtonStyle}"
+                    HorizontalOptions="Center" />
 
-        <Label Text="Препоръчани специалисти:" FontAttributes="Bold" />
-        <CollectionView ItemsSource="{Binding RecommendedDoctors}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <Label Text="{Binding FullName}" FontAttributes="Bold" />
-                        <Label Text="{Binding Specialization}" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </StackLayout>
+            <Label Text="Прогноза:" Style="{StaticResource HeaderLabelStyle}" />
+            <Label Text="{Binding DiagnosisResult, Mode=TwoWay, FallbackValue='No result yet'}" 
+                   Style="{StaticResource NormalLabelStyle}" />
+
+            <Label Text="Препоръчани специалисти:" Style="{StaticResource HeaderLabelStyle}" />
+
+            <!-- CollectionView for recommended doctors with EmptyView -->
+            <CollectionView ItemsSource="{Binding RecommendedDoctors}">
+                <CollectionView.EmptyView>
+                    <Label Text="Няма препоръчани специалисти."
+                           Style="{StaticResource NormalLabelStyle}" 
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Style="{StaticResource CardStyle}">
+                            <StackLayout>
+                                <Label Text="{Binding FullName}" Style="{StaticResource HeaderLabelStyle}" />
+                                <Label Text="{Binding Specialization}" Style="{StaticResource NormalLabelStyle}" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

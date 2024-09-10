@@ -51,7 +51,7 @@ namespace HealthProject.Services.DiagnosisService
 
                     foreach (var prediction in predictions)
                     {
-                        if (prediction.Probability < 0.2)
+                        if (prediction.Probability < 0.1)
                         {
                             continue;
                         }

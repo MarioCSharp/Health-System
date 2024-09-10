@@ -4,31 +4,58 @@
              xmlns:vm="clr-namespace:HealthProject.ViewModels"
              x:Class="HealthProject.Views.PharmacyProductsPage"
              xmlns:converters="clr-namespace:HealthProject.Converters"
-             Title="Pharmacy Products">
+             Title="Pharmacy Products"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="12,6" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+            <Style TargetType="Frame">
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="CornerRadius" Value="15" />
+                <Setter Property="Margin" Value="5,10" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <Grid Padding="10">
+
+    <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Button Text="Твоята количка" Command="{Binding ToggleOrderFormCommand}" Grid.Row="0" />
-        <Label Text="Поръчай от рецепта" FontAttributes="Bold" HorizontalOptions="End" />
-        <Entry Placeholder="ЕГН" Text="{Binding EGN}" />
-        <Button Text="Покажи валидни артукули" Command="{Binding GetMedicationsInStockCommand}" />
-        <Label Text="{Binding AddingByEGNMessage}"  />
-        <StackLayout Grid.Row="1" IsVisible="{Binding IsOrderFormVisible}" Spacing="10">
+        <!-- Top Section -->
+        <HorizontalStackLayout Grid.Row="0" Spacing="10" HorizontalOptions="FillAndExpand">
+            <Button Text="🛒 Твоята количка" Command="{Binding ToggleOrderFormCommand}" />
+            <Button Text="Покажи валидни артикули" Command="{Binding GetMedicationsInStockCommand}" />
+        </HorizontalStackLayout>
+
+        <!-- EGN Entry and Order Section -->
+        <HorizontalStackLayout Grid.Row="1" Spacing="10" VerticalOptions="CenterAndExpand">
+            <Entry Placeholder="ЕГН" Text="{Binding EGN}" HorizontalOptions="FillAndExpand" />
+        </HorizontalStackLayout>
+
+        <!-- Cart Section (Visibility Controlled) -->
+        <StackLayout Grid.Row="1" IsVisible="{Binding IsOrderFormVisible}" Spacing="10" Padding="10" BackgroundColor="#F9F9F9">
             <CollectionView ItemsSource="{Binding UserCart.CartItems}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Padding="10" Margin="5">
+                        <Frame Padding="10" Margin="5" BackgroundColor="#FFFFFF">
                             <HorizontalStackLayout>
                                 <Image Source="{Binding ItemImage, Converter={StaticResource ByteArrayToImageSourceConverter}}" HeightRequest="50" WidthRequest="50" />
                                 <VerticalStackLayout>
@@ -37,8 +64,8 @@
                                     <Label Text="{Binding Quantity, StringFormat='Qty: {0}'}" />
                                 </VerticalStackLayout>
                                 <Button Text="Премахни"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=RemoveFromCartCommand}"
-                                CommandParameter="{Binding Id}" />
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=RemoveFromCartCommand}"
+                                        CommandParameter="{Binding Id}" />
                             </HorizontalStackLayout>
                         </Frame>
                     </DataTemplate>
@@ -51,21 +78,19 @@
             <Button Text="Завърши поръчка" Command="{Binding SubmitOrderCommand}" />
         </StackLayout>
 
-        <CollectionView Grid.Row="2" ItemsSource="{Binding PharmacyProducts}">
+        <!-- Product List -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding PharmacyProducts}" Margin="0,20,0,0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" Margin="5">
-                        <VerticalStackLayout>
-                            <Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageSourceConverter}}" HeightRequest="50" WidthRequest="50" />
-                            <Label Text="{Binding Name}" FontAttributes="Bold" />
-                            <Label Text="{Binding Price, StringFormat='Цена: {0:C}'}" />
-                            <Label Text="{Binding Quantity, StringFormat='Валидно количество: {0}'}" />
-
-                            <HorizontalStackLayout Spacing="10">
-                                <Entry Placeholder="Qty" Keyboard="Numeric" WidthRequest="50" Text="{Binding UserEnteredQuantity}"/>
-                                <Button Text="Добави в количка"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=AddToCartCommand}"
-                                CommandParameter="{Binding AddToCartParameter}" />
+                    <Frame>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageSourceConverter}}" HeightRequest="100" WidthRequest="100" Aspect="AspectFill"/>
+                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16"/>
+                            <Label Text="{Binding Price, StringFormat='Цена: {0:C}'}" FontSize="14" />
+                            <Label Text="{Binding Quantity, StringFormat='Валидно количество: {0}'}" FontSize="14" />
+                            <HorizontalStackLayout Spacing="15">
+                                <Entry Placeholder="Qty" Keyboard="Numeric" WidthRequest="50" Text="{Binding UserEnteredQuantity}" />
+                                <Button Text="➕ Добави в количка" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=AddToCartCommand}" CommandParameter="{Binding AddToCartParameter}" />
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Frame>

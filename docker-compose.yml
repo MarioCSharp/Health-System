@@ -38,6 +38,8 @@ services:
       - healthsystem-network
     volumes:
       - ./.aspnet/admins/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+    depends_on:
+      - sqlserver
 
   booking:
     build:
@@ -52,6 +54,8 @@ services:
       - healthsystem-network
     volumes:
       - ./.aspnet/booking/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+    depends_on:
+      - sqlserver
 
   documents:
     build:
@@ -68,6 +72,8 @@ services:
     volumes:
       - ./.aspnet/documents/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
       - ./data-encryption.env:/app/data-encryption.env
+    depends_on:
+      - sqlserver
 
   healthcare:
     build:
@@ -84,6 +90,8 @@ services:
     volumes:
       - ./.aspnet/healthcare/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
       - ./data-encryption.env:/app/data-encryption.env
+    depends_on:
+      - sqlserver
 
   identity:
     build:
@@ -98,6 +106,8 @@ services:
       - healthsystem-network
     volumes:
       - ./.aspnet/identity/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+    depends_on:
+      - sqlserver
 
   pharmacy:
     build:
@@ -114,6 +124,8 @@ services:
     volumes:
       - ./.aspnet/pharmacy/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
       - ./data-encryption.env:/app/data-encryption.env
+    depends_on:
+      - sqlserver
 
   problems:
     build:
@@ -128,6 +140,8 @@ services:
       - healthsystem-network
     volumes:
       - ./.aspnet/problems/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+    depends_on:
+      - sqlserver
 
   results:
     build:
@@ -144,6 +158,8 @@ services:
     volumes:
       - ./.aspnet/results/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
       - ./data-encryption.env:/app/data-encryption.env
+    depends_on:
+      - sqlserver
 
 networks:
   healthsystem-network:

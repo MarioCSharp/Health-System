@@ -66,8 +66,10 @@ namespace HealthProject.ViewModels
                 var prediction = await diagnosisService.GetPrediction(symptomsList);
 
                 SymptomsInput = string.Join(", ", symptomsList);
-                DiagnosisResult = prediction?.Prediction ?? "Error!"; 
-                RecommendedDoctors = new ObservableCollection<DoctorModel>(prediction.RecommendedDoctors);
+                DiagnosisResult = prediction?.Prediction ?? "Error!";
+                RecommendedDoctors = new ObservableCollection<DoctorModel>(prediction.RecommendedDoctors.Where(x => x.Id != 0));
+
+                OnPropertyChanged(nameof(DiagnosisResult));  
             }
             else
             {
