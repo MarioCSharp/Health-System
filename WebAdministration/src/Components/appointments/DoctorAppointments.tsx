@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap
 
 interface Appointment {
   id: number;
@@ -82,37 +85,49 @@ function DoctorAppointments() {
   };
 
   return (
-    <div className="col-md-4 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Записани часове на {doctorFullName}</h3>
-        {appointments && appointments.length > 0 ? (
-          appointments.map((appointment) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={appointment.id}
-            >
-              <span>
-                {appointment.date} | {appointment.serviceName} |{" "}
-                {appointment.name}
-              </span>
-              <div>
-                <a
-                  className="btn btn-danger btn-sm"
-                  onClick={() => deleteAppointment(appointment.id)}
+    <div className="container mt-4">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <h3 className="mb-4 text-center">
+            Записани часове на {doctorFullName}
+          </h3>
+          <ul className="list-group">
+            {appointments && appointments.length > 0 ? (
+              appointments.map((appointment) => (
+                <li
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                  key={appointment.id}
                 >
-                  Изтрий
-                </a>
+                  <div>
+                    <strong>{appointment.date}</strong>
+                    <span className="mx-2">|</span>
+                    <span>{appointment.serviceName}</span>
+                    <span className="mx-2">|</span>
+                    <span>{appointment.name}</span>
+                  </div>
+                  <div>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => deleteAppointment(appointment.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} className="mr-1" />
+                      Изтрий
+                    </button>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <div className="col-12">
+                <div className="card mb-3">
+                  <div className="card-body p-2 text-center">
+                    <p>No appointments found</p>
+                  </div>
+                </div>
               </div>
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No appointments found</div>
-            </div>
-          </div>
-        )}
-      </ul>
+            )}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

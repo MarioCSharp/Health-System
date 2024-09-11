@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPlus, faList } from "@fortawesome/free-solid-svg-icons";
 
 interface Recepcionist {
   id: number;
@@ -27,8 +29,7 @@ function MyRecepcionistsComponent() {
 
       if (response.ok) {
         const data = await response.json();
-
-        setRecepcionists(data.recepcionists.slice(0, 5));
+        setRecepcionists(data.recepcionists);
       } else {
         throw new Error("Failed loading the recepcionists!");
       }
@@ -73,46 +74,37 @@ function MyRecepcionistsComponent() {
 
   return (
     <div className="col-md-6 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Рецепционисти</h3>
-        {recepcionists.length > 0 ? (
-          recepcionists.map((recepcionist) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={recepcionist.id}
-            >
-              <span>{recepcionist.name}</span>
-              <div>
-                <a
-                  className="btn btn-danger btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => handleDelete(recepcionist.id)}
-                >
-                  Изтрий
-                </a>
-              </div>
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">Няма намерени рецепционисти</div>
+      <h3 className="mb-4">Рецепционисти</h3>
+      {recepcionists.length > 0 ? (
+        recepcionists.map((recepcionist) => (
+          <div className="card mb-3" key={recepcionist.id}>
+            <div className="card-body d-flex justify-content-between align-items-center">
+              <h5 className="mb-0">{recepcionist.name}</h5>
+              <button
+                className="btn btn-outline-danger btn-sm"
+                onClick={() => handleDelete(recepcionist.id)}
+              >
+                <FontAwesomeIcon icon={faTrash} className="me-1" />
+                Изтрий
+              </button>
             </div>
           </div>
-        )}
-        <li className="list-group-item">
-          <a
-            href=""
-            onClick={() => redirectToAddRecepcionists()}
-            style={{ marginRight: "7px" }}
-          >
-            Добави рецепционист
-          </a>
-          <a href="" onClick={() => redirectToAllRecepcionists()}>
-            Виж всички
-          </a>
-        </li>
-      </ul>
+        ))
+      ) : (
+        <div className="alert alert-warning text-center">
+          Няма намерени рецепционисти
+        </div>
+      )}
+
+      <div className="d-flex justify-content-between mt-3">
+        <button
+          className="btn btn-primary"
+          onClick={redirectToAddRecepcionists}
+        >
+          <FontAwesomeIcon icon={faPlus} className="me-1" />
+          Добави рецепционист
+        </button>
+      </div>
     </div>
   );
 }

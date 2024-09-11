@@ -1,4 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUserPlus,
+  faEnvelope,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface User {
   id: string;
@@ -6,7 +13,7 @@ interface User {
   email: string;
 }
 
-function AddRecepcionistComponent() {
+function AddReceptionistComponent() {
   const token = localStorage.getItem("token");
   const [users, setUsers] = useState<User[]>([]);
   const [hospitalId, setHospitalId] = useState<string>("");
@@ -72,7 +79,7 @@ function AddRecepcionistComponent() {
     try {
       const form = new FormData();
       form.append("userId", selectedUserId);
-      form.append("hospitalId", hospitalId.toString());
+      form.append("hospitalId", hospitalId);
       form.append("name", name);
 
       const response = await fetch(
@@ -107,22 +114,28 @@ function AddRecepcionistComponent() {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">Добавяне на рецепционист</h2>
+      <h2 className="text-primary mb-4">
+        <FontAwesomeIcon icon={faUserPlus} /> Добавяне на рецепционист
+      </h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Име:</label>
+        <div className="form-group mb-3">
+          <label htmlFor="name" className="form-label">
+            <FontAwesomeIcon icon={faUser} /> Име:
+          </label>
           <input
             type="text"
             className="form-control"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Въведи име на рецепционистта"
+            placeholder="Въведи име на рецепционист"
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="user">Избери потребител:</label>
+        <div className="form-group mb-3">
+          <label htmlFor="user" className="form-label">
+            <FontAwesomeIcon icon={faEnvelope} /> Избери потребител:
+          </label>
           <select
             className="form-control"
             id="user"
@@ -138,12 +151,12 @@ function AddRecepcionistComponent() {
             ))}
           </select>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Добавяне
+        <button type="submit" className="btn btn-primary mt-3">
+          <FontAwesomeIcon icon={faUserPlus} /> Добавяне
         </button>
       </form>
     </div>
   );
 }
 
-export default AddRecepcionistComponent;
+export default AddReceptionistComponent;

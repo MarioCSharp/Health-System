@@ -4,10 +4,8 @@ import UsersList from "../auth/UsersList";
 import PharmaciesComponent from "../pharmacy/PharmaciesComponent";
 
 const AdminHomePage: React.FC = () => {
-  // State to manage the active component
   const [activeComponent, setActiveComponent] = useState<string>("hospitals");
 
-  // Function to render the active component based on state
   const renderComponent = () => {
     switch (activeComponent) {
       case "hospitals":
@@ -24,7 +22,6 @@ const AdminHomePage: React.FC = () => {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Sidebar */}
         <nav className="col-md-2 col-lg-1 bg-light d-flex flex-column align-items-center py-4 vh-100">
           <ul className="nav flex-column text-center w-100">
             <li className="nav-item mb-4">

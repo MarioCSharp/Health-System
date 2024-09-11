@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faComments,
+  faStethoscope,
+  faClock,
+  faTrash,
+  faPlus,
+  faList,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Doctor {
   id: number;
@@ -13,7 +22,6 @@ function DoctorsInMyHosptail() {
   const [hospitalId, setHospitalId] = useState<number | null>();
 
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
 
   const getDoctors = async () => {
@@ -31,8 +39,7 @@ function DoctorsInMyHosptail() {
 
       if (response.ok) {
         const data = await response.json();
-
-        setDoctors(data.doctors.slice(0, 5));
+        setDoctors(data.doctors); // Display top 5 doctors
       } else {
         throw new Error("There was an error loading the doctors");
       }
@@ -58,7 +65,6 @@ function DoctorsInMyHosptail() {
 
       if (response.ok) {
         const data = await response.json();
-
         setHospitalId(data.hospitalId);
       } else {
         throw new Error("There was an error getting the hospital id.");
@@ -121,68 +127,58 @@ function DoctorsInMyHosptail() {
 
   return (
     <div className="col-md-6 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Доктори</h3>
-        {doctors.length > 0 ? (
-          doctors.map((doctor) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={doctor.id}
-            >
-              <span>
-                {doctor.fullName} | {doctor.specialization}
-              </span>
+      <h3 className="mb-4">Доктори</h3>
+      {doctors.length > 0 ? (
+        doctors.map((doctor) => (
+          <div className="card mb-3" key={doctor.id}>
+            <div className="card-body d-flex justify-content-between align-items-center">
               <div>
-                <a
-                  className="btn btn-primary btn-sm"
-                  style={{ marginRight: "2px" }}
+                <h5 className="mb-0">{doctor.fullName}</h5>
+                <small className="text-muted">{doctor.specialization}</small>
+              </div>
+              <div>
+                <button
+                  className="btn btn-outline-info btn-sm me-2"
                   onClick={() => redirectToComments(doctor.id)}
                 >
+                  <FontAwesomeIcon icon={faComments} className="me-1" />
                   Оценки
-                </a>
-                <a
-                  className="btn btn-primary btn-sm"
-                  style={{ marginRight: "2px" }}
+                </button>
+                <button
+                  className="btn btn-outline-info btn-sm me-2"
                   onClick={() => redirectToServices(doctor.id)}
                 >
+                  <FontAwesomeIcon icon={faStethoscope} className="me-1" />
                   Услуги
-                </a>
-                <a
-                  className="btn btn-warning btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
+                </button>
+                <button
+                  className="btn btn-outline-warning btn-sm me-2"
                   onClick={() => redirectToAppointments(doctor.id)}
                 >
+                  <FontAwesomeIcon icon={faClock} className="me-1" />
                   Часове
-                </a>
-                <a
-                  className="btn btn-danger btn-sm"
+                </button>
+                <button
+                  className="btn btn-outline-danger btn-sm"
                   onClick={() => removeDoctor(doctor.id)}
                 >
+                  <FontAwesomeIcon icon={faTrash} className="me-1" />
                   Изтрий
-                </a>
+                </button>
               </div>
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No doctors found</div>
             </div>
           </div>
-        )}
-        <li className="list-group-item">
-          <a
-            href=""
-            onClick={() => redirectToAdd()}
-            style={{ marginRight: "10px" }}
-          >
-            Добави доктор
-          </a>
-          <a href="" onClick={() => redirectToAll()}>
-            Виж всички
-          </a>
-        </li>
-      </ul>
+        ))
+      ) : (
+        <div className="alert alert-warning text-center">No doctors found</div>
+      )}
+
+      <div className="d-flex justify-content-between mt-3">
+        <button className="btn btn-primary" onClick={redirectToAdd}>
+          <FontAwesomeIcon icon={faPlus} className="me-1" />
+          Добави доктор
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import MyHospitalEditComponent from "./MyHospitalEditComponent";
 import MyHospitalDetailsComponent from "./MyHospitalDetailsComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEdit,
+  faInfoCircle,
+  faHospital,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Hospital {
   id: number;
@@ -34,7 +40,6 @@ function MyHospitalComponent() {
 
       if (response.ok) {
         const data = await response.json();
-
         setHospital(data.hospital);
       } else {
         throw new Error("There was an error searching for your hospital");
@@ -63,36 +68,54 @@ function MyHospitalComponent() {
 
   return (
     <div className="col-md-5 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Моята болница</h3>
-        <li className="list-group-item d-flex flex-column">
-          <div className="d-flex justify-content-between align-items-center">
-            {hospital?.hospitalName}
-            <div>
-              <a
-                className="btn btn-primary"
-                onClick={() => handleHospitalDetailsClick(Number(hospital?.id))}
-                style={{ marginRight: "2px" }}
-              >
-                Информация
-              </a>
-              <a
-                className="btn btn-warning"
-                onClick={() => handleHospitalEditClick(Number(hospital?.id))}
-              >
-                Редактирай
-              </a>
+      <div className="card shadow-lg">
+        <div className="card-header bg-primary text-white d-flex align-items-center">
+          <FontAwesomeIcon icon={faHospital} className="me-2" />
+          <h5 className="mb-0">Моята болница</h5>
+        </div>
+        <div className="card-body">
+          {hospital ? (
+            <>
+              <h4 className="card-title text-center mb-4">
+                {hospital.hospitalName}
+              </h4>
+              <div className="d-flex justify-content-center mb-3">
+                <button
+                  className="btn btn-outline-info me-2"
+                  onClick={() =>
+                    handleHospitalDetailsClick(Number(hospital.id))
+                  }
+                >
+                  <FontAwesomeIcon icon={faInfoCircle} className="me-1" />
+                  Информация
+                </button>
+                <button
+                  className="btn btn-outline-warning"
+                  onClick={() => handleHospitalEditClick(Number(hospital.id))}
+                >
+                  <FontAwesomeIcon icon={faEdit} className="me-1" />
+                  Редактирай
+                </button>
+              </div>
+              {selectedDetailsHospitalId === hospital.id && (
+                <MyHospitalDetailsComponent hospitalId={String(hospital.id)} />
+              )}
+              {selectedEditHospitalId === hospital.id && (
+                <MyHospitalEditComponent hospitalId={String(hospital.id)} />
+              )}
+            </>
+          ) : (
+            <div className="text-center text-muted">
+              Зареждане на болницата...
             </div>
+          )}
+        </div>
+        {error && (
+          <div className="card-footer text-danger text-center">
+            Грешка при зареждане на болницата!
           </div>
-          {selectedDetailsHospitalId === hospital?.id && (
-            <MyHospitalDetailsComponent hospitalId={String(hospital.id)} />
-          )}
-          {selectedEditHospitalId === hospital?.id && (
-            <MyHospitalEditComponent hospitalId={String(hospital.id)} />
-          )}
-        </li>
-        {error && <li className="list-group-item text-danger">Грешка!</li>}
-      </ul>
+        )}
+      </div>
     </div>
   );
 }

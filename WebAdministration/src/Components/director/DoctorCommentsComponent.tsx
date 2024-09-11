@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faStar,
+  faChevronDown,
+  faChevronUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Comment {
   id: number;
@@ -49,36 +55,50 @@ function DoctorCommentsComponent() {
   };
 
   return (
-    <div className="col-md-4 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Оценки на доктор #{doctorId}</h3>
-        {comments.length > 0 ? (
-          comments.map((comment) => (
-            <li className="list-group-item" key={comment.id}>
+    <div className="col-md-6 mx-md-3 mb-4">
+      <h3 className="mb-4">Оценки на доктор #{doctorId}</h3>
+      {comments.length > 0 ? (
+        comments.map((comment) => (
+          <div className="card mb-3" key={comment.id}>
+            <div className="card-body">
               <div className="d-flex justify-content-between align-items-center">
-                <span>{comment.rating} от 5</span>
+                <div className="d-flex align-items-center">
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    className="text-warning me-2"
+                  />
+                  <span>{comment.rating} от 5</span>
+                </div>
                 <button
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-outline-primary btn-sm"
                   onClick={() => toggleCommentVisibility(comment.id)}
                 >
-                  Виж коментар
+                  {visibleCommentId === comment.id ? (
+                    <>
+                      Скрий коментар{" "}
+                      <FontAwesomeIcon icon={faChevronUp} className="ms-1" />
+                    </>
+                  ) : (
+                    <>
+                      Виж коментар{" "}
+                      <FontAwesomeIcon icon={faChevronDown} className="ms-1" />
+                    </>
+                  )}
                 </button>
               </div>
               {visibleCommentId === comment.id && (
-                <div className="mt-2">
+                <div className="mt-3">
                   <p className="mb-0">{comment.comment}</p>
                 </div>
               )}
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No ratings found</div>
             </div>
           </div>
-        )}
-      </ul>
+        ))
+      ) : (
+        <div className="alert alert-warning text-center">
+          Няма намерени оценки
+        </div>
+      )}
     </div>
   );
 }
