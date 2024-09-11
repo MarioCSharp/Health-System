@@ -6,11 +6,22 @@ services:
       SA_PASSWORD: "YourStrong@Passw0rd"
       ACCEPT_EULA: "Y"
     ports:
-      - "1433:1433"
+      - "1434:1434"
     networks:
       - healthsystem-network
     volumes:
       - sqlserver_data:/var/opt/mssql  # Persist database data
+      
+  webadministration:
+    build:
+      context: ./WebAdministration
+      dockerfile: Dockerfile
+    container_name: webadministration_c
+    ports:
+      - '5173:5173'  
+    stdin_open: true
+    tty: true
+    
 
   receptionchat:
     build:
