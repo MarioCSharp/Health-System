@@ -56,72 +56,86 @@ function ServiceAddComponent() {
   }
 
   return (
-    <div className="container">
-      <h2>Добавяне на услуга</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">
-            Име на услугата
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+    <div className="container mt-5">
+      <div className="card shadow-sm border-0 rounded-lg">
+        <div className="card-header bg-light">
+          <h2 className="text-center text-muted">Добавяне на услуга</h2>
         </div>
-        <div className="mb-3">
-          <label htmlFor="price" className="form-label">
-            Цена на услугата
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
-          />
+        <div className="card-body p-4">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="name" className="form-label fw-bold">
+                Име на услугата
+              </label>
+              <input
+                type="text"
+                className="form-control form-control-lg shadow-sm rounded"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                style={{ borderColor: "#ccd0d5" }}
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="price" className="form-label fw-bold">
+                Цена на услугата
+              </label>
+              <input
+                type="number"
+                className="form-control form-control-lg shadow-sm rounded"
+                id="price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+                style={{ borderColor: "#ccd0d5" }}
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="description" className="form-label fw-bold">
+                Описание на услугата
+              </label>
+              <textarea
+                className="form-control form-control-lg shadow-sm rounded"
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                style={{ borderColor: "#ccd0d5", minHeight: "100px" }}
+              ></textarea>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="location" className="form-label fw-bold">
+                Локация на услугата
+              </label>
+              <input
+                type="text"
+                className="form-control form-control-lg shadow-sm rounded"
+                id="location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                required
+                style={{ borderColor: "#ccd0d5" }}
+              />
+            </div>
+            {error && (
+              <div className="mb-3 text-danger">
+                There was an error processing your request.
+              </div>
+            )}
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg w-100 shadow-sm"
+              style={{
+                backgroundColor: "#007bff",
+                borderColor: "#0056b3",
+              }}
+            >
+              Запази промените
+            </button>
+          </form>
         </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">
-            Описание на услугата
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="location" className="form-label">
-            Локация на услугата
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-          />
-        </div>
-        {error && (
-          <div className="mb-3">
-            <p style={{ color: "red" }}>
-              There was an error processing your request.
-            </p>
-          </div>
-        )}
-        <button type="submit" className="btn btn-warning">
-          Запази промените
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

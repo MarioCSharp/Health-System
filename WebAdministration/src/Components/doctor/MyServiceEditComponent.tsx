@@ -1,4 +1,10 @@
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSave,
+  faEdit,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   serviceId: string;
@@ -6,7 +12,7 @@ interface Props {
 
 function MyServiceEditComponent({ serviceId }: Props) {
   const token = localStorage.getItem("token");
-  const [error, setError] = useState<boolean>();
+  const [error, setError] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [location, setLocation] = useState<string>("");
@@ -27,7 +33,6 @@ function MyServiceEditComponent({ serviceId }: Props) {
 
       if (response.ok) {
         const data = await response.json();
-
         setName(data.serviceName || "");
         setPrice(data.servicePrice || "");
         setLocation(data.serviceLocation || "");
@@ -45,7 +50,9 @@ function MyServiceEditComponent({ serviceId }: Props) {
     getService();
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     const formData = new FormData();
     formData.append("Id", serviceId);
     formData.append("ServiceName", name);
@@ -75,67 +82,77 @@ function MyServiceEditComponent({ serviceId }: Props) {
 
   return (
     <>
-      <h5>Редактиране на услуга #{serviceId}</h5>
-      <form onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="form-group">
-            <label htmlFor="serviceName">Име на услугата:</label>
-            <input
-              type="text"
-              id="serviceName"
-              className="form-control"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
+      <h4 className="mb-4">
+        <FontAwesomeIcon icon={faEdit} className="me-2" />
+        Редактиране на услуга #{serviceId}
+      </h4>
+      <form onSubmit={handleSubmit} className="shadow p-4 bg-light rounded">
+        <div className="mb-3">
+          <label htmlFor="serviceName" className="form-label">
+            Име на услугата:
+          </label>
+          <input
+            type="text"
+            id="serviceName"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Въведете име на услугата"
+          />
         </div>
 
-        <br></br>
-
-        <div className="row">
-          <div className="col-md-4 form-group">
-            <label htmlFor="servicePrice">Цена:</label>
+        <div className="row mb-3">
+          <div className="col-md-4">
+            <label htmlFor="servicePrice" className="form-label">
+              Цена:
+            </label>
             <input
               type="number"
               id="servicePrice"
               className="form-control"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
+              placeholder="Въведете цена"
             />
           </div>
-          <div className="col-md-8 form-group">
-            <label htmlFor="serviceLocation">Адрес:</label>
+          <div className="col-md-8">
+            <label htmlFor="serviceLocation" className="form-label">
+              Адрес:
+            </label>
             <input
               type="text"
               id="serviceLocation"
               className="form-control"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              placeholder="Въведете адрес"
             />
           </div>
         </div>
 
-        <br></br>
-
-        <div className="row">
-          <div className="form-group">
-            <label htmlFor="serviceDescription">Описание:</label>
-            <textarea
-              rows={3}
-              id="serviceDescription"
-              className="form-control"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+        <div className="mb-3">
+          <label htmlFor="serviceDescription" className="form-label">
+            Описание:
+          </label>
+          <textarea
+            rows={3}
+            id="serviceDescription"
+            className="form-control"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Въведете описание на услугата"
+          />
         </div>
-        <br></br>
+
         {error && (
-          <p className="text-danger">
+          <div className="alert alert-danger mt-3">
+            <FontAwesomeIcon icon={faExclamationTriangle} className="me-2" />
             Възникна грешка при редактиране на услугата!
-          </p>
+          </div>
         )}
-        <button type="submit" className="btn btn-primary mt-2">
+
+        <button type="submit" className="btn btn-success mt-3">
+          <FontAwesomeIcon icon={faSave} className="me-2" />
           Запази промените
         </button>
       </form>

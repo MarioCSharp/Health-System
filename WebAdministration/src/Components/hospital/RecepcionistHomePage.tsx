@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as signalR from "@microsoft/signalr";
 import RecepcionistChatComponent from "./RecepcionistChatComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faComments } from "@fortawesome/free-solid-svg-icons";
 
 interface Room {
   key: string;
@@ -137,30 +137,34 @@ const RecepcionistHomePage = () => {
       <h2 className="mt-4">Рецепция</h2>
       <div className="row">
         <div className="col-md-4">
-          <h4>Чат стаи</h4>
+          <h4 className="mb-4">
+            <FontAwesomeIcon icon={faComments} className="text-primary me-2" />
+            Чат стаи
+          </h4>
           <ul className="list-group">
             {rooms && rooms.length > 0 ? (
               rooms.map((room, index) => (
                 <li
                   key={index}
-                  className={`list-group-item ${
+                  className={`list-group-item d-flex justify-content-between align-items-center ${
                     selectedRoom === room ? "active" : ""
                   }`}
                   onClick={() => handleRoomClick(room)}
-                  style={{ cursor: "pointer" }}
+                  style={{
+                    cursor: "pointer",
+                    transition: "background-color 0.2s ease",
+                  }}
                 >
-                  <div className="d-flex justify-content-between align-items-center">
-                    <span>{room}</span>
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      className="text-danger"
-                      onClick={(e) => handleDeleteRoom(room, e)}
-                    />
-                  </div>
+                  <span>{room}</span>
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className="text-danger"
+                    onClick={(e) => handleDeleteRoom(room, e)}
+                  />
                 </li>
               ))
             ) : (
-              <li>Няма отворени стаи</li>
+              <li className="list-group-item">Няма отворени стаи</li>
             )}
           </ul>
         </div>
@@ -168,7 +172,9 @@ const RecepcionistHomePage = () => {
           {selectedRoom ? (
             <RecepcionistChatComponent roomName={selectedRoom} />
           ) : (
-            <div>Избери стая за да видиш съобщенията</div>
+            <div className="alert alert-info">
+              Избери стая за да видиш съобщенията
+            </div>
           )}
         </div>
       </div>

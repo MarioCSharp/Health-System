@@ -20,7 +20,7 @@ function AllNextAppointmentsList() {
         {
           method: "GET",
           headers: {
-            "Content-Type": "applicaiton/json",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -28,7 +28,6 @@ function AllNextAppointmentsList() {
 
       if (response.ok) {
         const data = await response.json();
-
         setAppointments(data.appointments);
       } else {
         throw new Error("There was an error loading your appointments");
@@ -45,33 +44,46 @@ function AllNextAppointmentsList() {
   }, []);
 
   if (error) {
-    <Navigate to={"not-found"}></Navigate>;
+    return <Navigate to={"not-found"} />;
   }
 
   return (
-    <div className="col-md-4 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Предстоящи часове</h3>
-        {appointments.length > 0 ? (
-          appointments.map((appointment) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={appointment.id}
-            >
-              <span>
-                {appointment.serviceName} | {appointment.patientName} |{" "}
-                {appointment.date}
-              </span>
+    <div className="col-md-8 mx-auto mb-4">
+      <div className="card shadow-sm">
+        <div className="card-header bg-primary text-white">
+          <h5 className="mb-0">
+            <i className="fas fa-calendar-alt me-2"></i> Всички предстоящи
+            часове
+          </h5>
+        </div>
+        <ul className="list-group list-group-flush">
+          {appointments.length > 0 ? (
+            appointments.map((appointment) => (
+              <li
+                className="list-group-item d-flex justify-content-between align-items-center"
+                key={appointment.id}
+              >
+                <div className="d-flex align-items-center">
+                  <i className="fas fa-user-md text-primary me-2"></i>
+                  <span>{appointment.patientName}</span>
+                </div>
+                <div className="d-flex align-items-center">
+                  <i className="fas fa-stethoscope text-info me-2"></i>
+                  <span>{appointment.serviceName}</span>
+                </div>
+                <div className="d-flex align-items-center">
+                  <i className="fas fa-clock text-secondary me-2"></i>
+                  <span>{appointment.date}</span>
+                </div>
+              </li>
+            ))
+          ) : (
+            <li className="list-group-item text-center p-3">
+              <p className="text-muted">No appointments found</p>
             </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No appointments found</div>
-            </div>
-          </div>
-        )}
-      </ul>
+          )}
+        </ul>
+      </div>
     </div>
   );
 }

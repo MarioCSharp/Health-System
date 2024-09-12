@@ -39,28 +39,6 @@ function Navigation() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto">
-              {role === "Doctor" && (
-                <>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link text-white"
-                      style={{ marginRight: "15px" }}
-                      href="/my-calendar"
-                    >
-                      Моят календар
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link text-white"
-                      style={{ marginRight: "15px" }}
-                      href="/laboratory/mine"
-                    >
-                      Моята лаборатория
-                    </a>
-                  </li>
-                </>
-              )}
               {(role === "Pharmacist" || role === "PharmacyOwner") && (
                 <>
                   <li className="nav-item">

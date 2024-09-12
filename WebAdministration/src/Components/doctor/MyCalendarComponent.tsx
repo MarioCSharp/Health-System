@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface Appointment {
   id: number;
@@ -33,7 +38,7 @@ function MyCalendarComponent() {
         const data = await response.json();
         setDoctorId(data.id);
       } else {
-        throw new Error("There was an error getting the doctorId");
+        throw new Error("Грешка при получаването на ID на лекаря.");
       }
     } catch (error) {
       console.log(error);
@@ -57,16 +62,14 @@ function MyCalendarComponent() {
 
       if (response.ok) {
         const data = await response.json();
-        // Sort appointments by time after parsing
         const sortedAppointments = data.appointments.sort(
           (a: Appointment, b: Appointment) =>
             moment(a.date, "DD/MM/YYYY HH:mm").unix() -
             moment(b.date, "DD/MM/YYYY HH:mm").unix()
         );
         setAppointments(sortedAppointments);
-        console.log("Fetched Appointments:", sortedAppointments);
       } else {
-        throw new Error("There was an error loading the appointments");
+        throw new Error("Грешка при зареждането на срещите.");
       }
     } catch (error) {
       console.log(error);
@@ -104,7 +107,7 @@ function MyCalendarComponent() {
   };
 
   const isSameDay = (day: moment.Moment, appointmentDateString: string) => {
-    const appointmentDate = moment(appointmentDateString, "DD/MM/YYYY HH:mm"); // Parse the date string using the correct format
+    const appointmentDate = moment(appointmentDateString, "DD/MM/YYYY HH:mm");
     return day.isSame(appointmentDate, "day");
   };
 
@@ -117,11 +120,12 @@ function MyCalendarComponent() {
       <div
         key={appointment.id}
         style={{
-          backgroundColor: "#f8f9fa", // Light grey background for the appointment box
-          border: "1px solid #ddd", // Light border for the appointment box
-          borderRadius: "4px", // Rounded corners
-          padding: "5px", // Padding inside the box
-          marginBottom: "5px", // Space between boxes
+          backgroundColor: "#f1f3f5",
+          border: "1px solid #dee2e6",
+          borderRadius: "6px",
+          padding: "8px",
+          marginBottom: "8px",
+          textAlign: "left",
         }}
       >
         <small>
@@ -132,8 +136,7 @@ function MyCalendarComponent() {
         <br />
         <small>
           {moment(appointment.date, "DD/MM/YYYY HH:mm").format("HH:mm")}
-        </small>{" "}
-        {/* Display the time */}
+        </small>
       </div>
     ));
   };
@@ -163,23 +166,23 @@ function MyCalendarComponent() {
       </Row>
       <Row className="mb-4">
         <Col className="text-left">
-          <Button variant="primary" onClick={handlePrevYear}>
-            Година назад
+          <Button variant="light" onClick={handlePrevYear}>
+            <FontAwesomeIcon icon={faChevronLeft} /> Година назад
           </Button>
-          <Button variant="primary" className="ml-2" onClick={handlePrevMonth}>
-            Месец назад
+          <Button variant="light" className="ml-2" onClick={handlePrevMonth}>
+            <FontAwesomeIcon icon={faChevronLeft} /> Месец назад
           </Button>
         </Col>
         <Col className="text-right">
-          <Button variant="primary" className="mr-2" onClick={handleNextMonth}>
-            Месец напред
+          <Button variant="light" className="mr-2" onClick={handleNextMonth}>
+            Месец напред <FontAwesomeIcon icon={faChevronRight} />
           </Button>
-          <Button variant="primary" onClick={handleNextYear}>
-            Година напред
+          <Button variant="light" onClick={handleNextYear}>
+            Година напред <FontAwesomeIcon icon={faChevronRight} />
           </Button>
         </Col>
       </Row>
-      <Table bordered>
+      <Table bordered hover className="text-center">
         <thead>
           <tr>
             <th>Неделя</th>
@@ -195,7 +198,7 @@ function MyCalendarComponent() {
           {renderCalendar().map((week, index) => (
             <tr key={index}>
               {week.map((day) => (
-                <td key={day.format("DD-MM-YYYY")} className="p-2">
+                <td key={day.format("DD-MM-YYYY")} className="p-3">
                   <div className="text-right">
                     <strong>{day.format("D")}</strong>
                   </div>
@@ -208,7 +211,7 @@ function MyCalendarComponent() {
       </Table>
       {error && (
         <div className="alert alert-danger" role="alert">
-          There was an error loading the appointments.
+          Грешка при зареждането на срещите.
         </div>
       )}
     </Container>

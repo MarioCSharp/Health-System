@@ -34,7 +34,7 @@ function LaboratoryResultsComponent() {
         const data = await response.json();
         setResults(data.results);
       } else {
-        throw new Error("There was an error loading the results");
+        throw new Error("Имаше грешка при зареждането на резултатите");
       }
     } catch (error) {
       console.log(error);
@@ -54,7 +54,7 @@ function LaboratoryResultsComponent() {
 
   const handleAddFile = async (resultId: number) => {
     if (!selectedFile) {
-      alert("Please select a file first.");
+      alert("Моля, първо изберете файл.");
       return;
     }
 
@@ -75,15 +75,15 @@ function LaboratoryResultsComponent() {
       );
 
       if (response.ok) {
-        alert("File uploaded successfully");
+        alert("Файлът беше качен успешно.");
         setSelectedFile(null); // Clear the file after successful upload
         setUploadingResultId(null);
       } else {
-        throw new Error("There was an error uploading the file");
+        throw new Error("Имаше грешка при качването на файла.");
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to upload the file. Please try again.");
+      alert("Неуспешно качване. Моля, опитайте отново.");
     }
   };
 
@@ -92,12 +92,14 @@ function LaboratoryResultsComponent() {
   };
 
   return (
-    <div className="col-md-4 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Лабораторни резултати</h3>
+    <div className="container mt-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h3 className="text-primary">Лабораторни резултати</h3>
         <button onClick={handleAddResults} className="btn btn-primary">
           Добави запис
         </button>
+      </div>
+      <ul className="list-group">
         {results.length > 0 ? (
           results.map((result) => (
             <li
@@ -110,13 +112,15 @@ function LaboratoryResultsComponent() {
               <div>
                 <input
                   type="file"
+                  className="form-control-file"
                   onChange={handleFileChange}
                   style={{
                     display: uploadingResultId === result.id ? "block" : "none",
+                    marginBottom: "8px",
                   }}
                 />
                 <button
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-outline-primary btn-sm"
                   style={{ marginRight: "2px" }}
                   onClick={() => {
                     setUploadingResultId(result.id);
@@ -137,8 +141,8 @@ function LaboratoryResultsComponent() {
           ))
         ) : (
           <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No results found</div>
+            <div className="alert alert-info" role="alert">
+              Няма намерени резултати.
             </div>
           </div>
         )}
