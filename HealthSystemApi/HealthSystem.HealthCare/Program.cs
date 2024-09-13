@@ -51,7 +51,6 @@ namespace HealthSystem.HealthCare
 
             app.UseAuthentication().UseAuthorization();
 
-
             app.MapControllers();
 
             app.Initialize();

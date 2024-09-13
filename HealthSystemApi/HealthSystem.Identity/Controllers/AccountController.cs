@@ -10,13 +10,10 @@ namespace HealthSystem.Identity.Controllers
     public class AccountController : ControllerBase
     {
         private IAccountService accountService;
-        private IAuthenticationService authenticationService;
 
-        public AccountController(IAccountService accountService,
-                                 IAuthenticationService authenticationService)
+        public AccountController(IAccountService accountService)
         {
             this.accountService = accountService;
-            this.authenticationService = authenticationService;
         }
 
         [HttpGet("GetAccountsWithNoRoles")]

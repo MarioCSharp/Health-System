@@ -27,15 +27,15 @@ interface Order {
 }
 
 enum OrderStatus {
-  Placed = "Поръчана",
-  Confirmed = "Потвърдена",
-  Processing = "В процес",
-  Shipped = "Изпратена",
-  Delivered = "Доставена",
-  Completed = "Завършена",
-  Canceled = "Отказана",
-  Returned = "Върната",
-  Refunded = "Възстановена",
+  Placed = "Placed",
+  Confirmed = "Confirmed",
+  Processing = "Processing",
+  Shipped = "Shipped",
+  Delivered = "Delivered",
+  Completed = "Completed",
+  Canceled = "Canceled",
+  Returned = "Returned",
+  Refunded = "Refunded",
 }
 
 function OrdersInMyPharmacyComponent() {
