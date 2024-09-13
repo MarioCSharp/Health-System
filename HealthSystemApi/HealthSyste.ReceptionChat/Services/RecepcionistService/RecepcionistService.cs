@@ -22,7 +22,7 @@ namespace HealthSyste.ReceptionChat.Services.RecepcionistService
                 return new List<RoomDisplayModel>();
             }
 
-            var doctorResponse = await httpClient.GetAsync($"http://localhost:5025/api/Recepcionist/GetHospitalId?userId={userId}");
+            var doctorResponse = await httpClient.GetAsync($"http://admins/api/Recepcionist/GetHospitalId?userId={userId}");
 
             if (!doctorResponse.IsSuccessStatusCode)
             {
