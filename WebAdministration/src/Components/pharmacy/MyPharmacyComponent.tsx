@@ -49,50 +49,48 @@ function MyPharmacyComponent() {
     setEditingPharmacy(pharmacy);
   };
 
-  const redirectToPharmacists = (pharmacyId: number) => {
-    navigate(`/pharmacists/${pharmacyId}`);
-  };
-
   return (
-    <div className="col-md-6 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Аптеки</h3>
-        {pharmacy ? (
-          <li
-            className="list-group-item d-flex justify-content-between align-items-center"
-            key={pharmacy.id}
-          >
-            <span>
-              {pharmacy.name} | {pharmacy.location}
-            </span>
-            <div>
-              <a
-                className="btn btn-primary btn-sm"
-                style={{ marginRight: "2px" }}
-                onClick={() => redirectToPharmacists(pharmacy.id)}
-              >
-                Фармацевти
-              </a>
-              <a
-                className="btn btn-warning btn-sm mr-2"
-                style={{ marginRight: "2px" }}
-                onClick={() => handleEdit(pharmacy)}
-              >
-                Редактирай
-              </a>
+    <div className="col-md-8 mx-auto mb-4">
+      <h3 className="text-center mb-4">Моята Аптека</h3>
+      {pharmacy ? (
+        <div className="card shadow-sm border-0 rounded-lg">
+          <div className="card-body">
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <h5 className="card-title">
+                  <i className="fas fa-clinic-medical text-primary mr-2"></i>
+                  {pharmacy.name}
+                </h5>
+                <p className="card-text text-muted mb-1">
+                  <i className="fas fa-map-marker-alt text-danger mr-2"></i>
+                  {pharmacy.location}
+                </p>
+                <p className="card-text text-muted mb-1">
+                  <i className="fas fa-phone-alt text-success mr-2"></i>
+                  {pharmacy.contactNumber}
+                </p>
+              </div>
+              <div>
+                <button
+                  className="btn btn-outline-warning btn-sm"
+                  onClick={() => handleEdit(pharmacy)}
+                >
+                  <i className="fas fa-edit mr-1"></i> Редактирай
+                </button>
+              </div>
             </div>
             {editingPharmacy && (
-              <PharmacyEditComponent pharmacy={editingPharmacy} />
+              <div className="mt-3">
+                <PharmacyEditComponent pharmacy={editingPharmacy} />
+              </div>
             )}
-          </li>
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No pharmacies found</div>
-            </div>
           </div>
-        )}
-      </ul>
+        </div>
+      ) : (
+        <div className="alert alert-info text-center">
+          <i className="fas fa-info-circle mr-2"></i> Няма намерена аптека
+        </div>
+      )}
     </div>
   );
 }

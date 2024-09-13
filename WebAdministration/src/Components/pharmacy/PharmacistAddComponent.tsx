@@ -34,7 +34,6 @@ function PharmacistAddComponent() {
 
       if (response.ok) {
         const data = await response.json();
-
         setUsers(data.users || []);
       } else {
         throw new Error(
@@ -52,7 +51,8 @@ function PharmacistAddComponent() {
     getUsersWithNoRoles();
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const form = new FormData();
     form.append("PharmacyId", pharmacyId!);
     form.append("Name", name);
@@ -79,67 +79,78 @@ function PharmacistAddComponent() {
   };
 
   return (
-    <div className="container">
-      <h2>Добавяне на фармацевт</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="userSelect" className="form-label">
-            Избери фармацевт
-          </label>
-          <select
-            id="userSelect"
-            className="form-control"
-            value={selectedUserId || ""}
-            onChange={(e) => setSelectedUserId(e.target.value)}
-            required
-          >
-            <option value="" disabled>
-              Избери потребител
-            </option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.fullName} - {user.email}
-              </option>
-            ))}
-          </select>
+    <div className="container mt-5">
+      <div className="card shadow-lg">
+        <div className="card-header bg-primary text-white text-center">
+          <h2>
+            <i className="fas fa-user-plus mr-2"></i> Добавяне на фармацевт
+          </h2>
         </div>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">
-            Име на фармацевт
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="userSelect" className="form-label">
+                <i className="fas fa-users mr-1 text-secondary"></i> Избери
+                фармацевт
+              </label>
+              <select
+                id="userSelect"
+                className="form-control"
+                value={selectedUserId || ""}
+                onChange={(e) => setSelectedUserId(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Избери потребител
+                </option>
+                {users.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.fullName} - {user.email}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">
+                <i className="fas fa-id-badge mr-1 text-secondary"></i> Име на
+                фармацевт
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                <i className="fas fa-envelope mr-1 text-secondary"></i> Имейл
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            {error && (
+              <div className="alert alert-danger">
+                <i className="fas fa-exclamation-triangle mr-2"></i> There was
+                an error processing your request.
+              </div>
+            )}
+            <div className="text-center">
+              <button type="submit" className="btn btn-success">
+                <i className="fas fa-save mr-1"></i> Добавяне
+              </button>
+            </div>
+          </form>
         </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Имейл
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        {error && (
-          <div className="mb-3">
-            <p style={{ color: "red" }}>
-              There was an error processing your request.
-            </p>
-          </div>
-        )}
-        <button type="submit" className="btn btn-warning">
-          Добавяне
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

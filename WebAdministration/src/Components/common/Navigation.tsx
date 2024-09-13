@@ -38,27 +38,6 @@ function Navigation() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto">
-              {(role === "Pharmacist" || role === "PharmacyOwner") && (
-                <>
-                  <li className="nav-item">
-                    <a className="nav-link text-white" href="/orders">
-                      Поръчки
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link text-white" href="/medications">
-                      Лекарства
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link text-white" href="/recipes">
-                      Електронна рецепта
-                    </a>
-                  </li>
-                </>
-              )}
-            </ul>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <a

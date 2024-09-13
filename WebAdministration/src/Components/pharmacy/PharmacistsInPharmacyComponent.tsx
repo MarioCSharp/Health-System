@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Pharmacist {
   id: number;
@@ -8,13 +8,39 @@ interface Pharmacist {
 }
 
 function PharmacistsInPharmacyComponent() {
-  const { pharmacyId } = useParams<{ pharmacyId: string }>();
   const [pharmacists, setPharmacists] = useState<Pharmacist[]>([]);
+  const [pharmacyId, setPharmacyId] = useState<string | null>(null);
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-  const getPharmacists = async () => {
+  // Fetch the pharmacy ID associated with the current user
+  const getMyPharmacyId = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5171/api/Pharmacy/GetMyPharmacyId`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setPharmacyId(data); // Set the pharmacy ID
+      } else {
+        throw new Error("Failed to retrieve pharmacy ID");
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  // Fetch pharmacists based on the pharmacy ID
+  const getPharmacists = async (pharmacyId: string) => {
     try {
       const response = await fetch(
         `http://localhost:5171/api/Pharmacist/AllInPharmacy?pharmacyId=${pharmacyId}`,
@@ -29,7 +55,6 @@ function PharmacistsInPharmacyComponent() {
 
       if (response.ok) {
         const data = await response.json();
-
         setPharmacists(data);
       } else {
         throw new Error("There was an error loading the pharmacists");
@@ -40,11 +65,25 @@ function PharmacistsInPharmacyComponent() {
   };
 
   useEffect(() => {
-    getPharmacists();
+    // Fetch the pharmacy ID when the component mounts
+    const fetchPharmacyIdAndPharmacists = async () => {
+      await getMyPharmacyId();
+    };
+
+    fetchPharmacyIdAndPharmacists();
   }, []);
 
+  useEffect(() => {
+    // Fetch the pharmacists once we have the pharmacy ID
+    if (pharmacyId) {
+      getPharmacists(pharmacyId);
+    }
+  }, [pharmacyId]);
+
   const redirectToAdd = () => {
-    navigate(`/pharmacist/add/${pharmacyId}`);
+    if (pharmacyId) {
+      navigate(`/pharmacist/add/${pharmacyId}`);
+    }
   };
 
   const handleDelete = async (pharmacistId: number) => {
@@ -61,7 +100,10 @@ function PharmacistsInPharmacyComponent() {
       );
 
       if (response.ok) {
-        getPharmacists();
+        // Refresh the list of pharmacists after deletion
+        if (pharmacyId) {
+          getPharmacists(pharmacyId);
+        }
       } else {
         throw new Error("There was an error deleting the pharmacy");
       }
@@ -71,45 +113,49 @@ function PharmacistsInPharmacyComponent() {
   };
 
   return (
-    <div className="col-md-4 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Фармацевти</h3>
-        {pharmacists.length > 0 ? (
-          pharmacists.map((pharmacist) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={pharmacist.id}
-            >
-              <p>
-                {pharmacist.name} | {pharmacist.email}
-              </p>
+    <div className="col-md-8 mx-auto mb-4">
+      <h3 className="text-center mb-4">
+        <i className="fas fa-user-nurse mr-2 text-primary"></i> Фармацевти
+      </h3>
+      {pharmacists.length > 0 ? (
+        pharmacists.map((pharmacist) => (
+          <div className="card shadow-sm mb-3" key={pharmacist.id}>
+            <div className="card-body d-flex justify-content-between align-items-center">
               <div>
-                <a
+                <h5 className="mb-1">
+                  <i className="fas fa-user text-info mr-2"></i>
+                  {pharmacist.name}
+                </h5>
+                <p className="text-muted mb-0">
+                  <i className="fas fa-envelope text-secondary mr-2"></i>
+                  {pharmacist.email}
+                </p>
+              </div>
+              <div>
+                <button
                   className="btn btn-danger btn-sm"
                   onClick={() => handleDelete(pharmacist.id)}
                 >
-                  Изтрий
-                </a>
+                  <i className="fas fa-trash-alt mr-1"></i> Изтрий
+                </button>
               </div>
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No pharmacists found</div>
             </div>
           </div>
-        )}
-        <li className="list-group-item">
-          <a
-            href=""
-            onClick={() => redirectToAdd()}
-            style={{ marginRight: "14px" }}
-          >
-            Добави фармацевт
-          </a>
-        </li>
-      </ul>
+        ))
+      ) : (
+        <div className="alert alert-info text-center">
+          <i className="fas fa-info-circle mr-2"></i> Няма намерени фармацевти
+        </div>
+      )}
+      <div className="text-center mt-4">
+        <button
+          className="btn btn-success"
+          onClick={redirectToAdd}
+          disabled={!pharmacyId} // Disable if pharmacy ID is not fetched yet
+        >
+          <i className="fas fa-plus-circle mr-1"></i> Добави фармацевт
+        </button>
+      </div>
     </div>
   );
 }
