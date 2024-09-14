@@ -15,9 +15,11 @@ namespace HealthSyste.ReceptionChat
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddTransient<IRecepcionistService, RecepcionistService>();
+            builder.Services.AddSignalR();
+
             builder.Services.AddSingleton<ChatHub>();
             builder.Services.AddHttpClient();
+            builder.Services.AddTransient<IRecepcionistService, RecepcionistService>();
 
             builder.WebHost.ConfigureKestrel(options =>
             {
@@ -26,8 +28,6 @@ namespace HealthSyste.ReceptionChat
             });
 
             builder.Services.AddTokenAuthentication(builder.Configuration);
-
-            builder.Services.AddSignalR();
 
             builder.Services.AddCors(options =>
             {

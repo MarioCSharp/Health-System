@@ -205,11 +205,16 @@ namespace HealthSystem.Admins.Services.DoctorService
 
         public async Task<DoctorDetailsModel> GetDetailsAsync(int id)
         {
-            var info = await context.DoctorsInfo.FindAsync(id);
+            var info = await context.DoctorsInfo.FirstOrDefaultAsync(x => x.DoctorId == id);
+
+            if (info is null)
+            {
+                return new DoctorDetailsModel();
+            }
 
             return new DoctorDetailsModel
             {
-                Id = info.Id,
+                Id = info.DoctorId,
                 FullName = info.FullName,
                 Specialization = info.Specialization,
                 ContactNumber = info.ContactNumber,

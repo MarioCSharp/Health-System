@@ -1,6 +1,5 @@
 ﻿using HealthSyste.ReceptionChat.Models;
 using HealthSystem.ReceptionChat.Hubs;
-using System.Net.Http;
 
 namespace HealthSyste.ReceptionChat.Services.RecepcionistService
 {
