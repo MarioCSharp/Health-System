@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.metrics import accuracy_score, classification_report
 import joblib
@@ -12,13 +12,8 @@ data = data.dropna()
 
 data['Симптоми'] = data['Симптоми'].str.split(', ')
 
-def subtract_symptoms(symptom_lists):
-    first = symptom_lists.iloc[0]
-    rest = set(sum(symptom_lists.iloc[1:], []))
-    return [symptom for symptom in first if symptom not in rest]
-
 data_grouped = data.groupby('Диагноза').agg({
-    'Симптоми': subtract_symptoms,
+    'Симптоми': 'first',  
     'Предотвратяване': 'first',
     'Лекар': 'first'
 }).reset_index()
@@ -41,7 +36,7 @@ y = data_grouped['Комбинирано']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+model = MultinomialNB()
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
