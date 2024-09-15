@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import joblib
 import pandas as pd
-import numpy as np
 
 model = joblib.load('symptoms_diagnosis_prevention_model.pkl')
 mlb_symptoms = joblib.load('mlb_symptoms.pkl')
@@ -11,50 +10,46 @@ le = joblib.load('label_encoder.pkl')
 app = FastAPI()
 
 class SymptomsRequest(BaseModel):
-    symptoms: list[str]
+    symptoms: str 
 
 class PredictionResponse(BaseModel):
     diagnosis: str
     prevention: str
-    probability: float
     doctorSpecialization: str
 
-@app.post("/predict", response_model=list[PredictionResponse])
+@app.post("/predict", response_model=PredictionResponse)
 async def predict_symptoms(request: SymptomsRequest):
-    try:
-        symptoms_input = mlb_symptoms.transform([request.symptoms])
-    except Exception as e:
-        raise HTTPException(status_code=400, detail="Invalid symptoms provided.")
+    symptoms_list = [symptom.strip() for symptom in request.symptoms.split(', ')]
 
-    input_encoded = pd.DataFrame(symptoms_input, columns=mlb_symptoms.classes_)
-    
-    X_columns = mlb_symptoms.classes_
-    for column in X_columns:
-        if column not in input_encoded.columns:
-            input_encoded[column] = 0
-    input_encoded = input_encoded[X_columns]
+    valid_symptoms = [symptom for symptom in symptoms_list if symptom in mlb_symptoms.classes_]
+
+    if not valid_symptoms:
+        raise HTTPException(status_code=400, detail="No valid symptoms found in the request.")
 
     try:
-        probabilities = model.predict_proba(input_encoded)[0]
+        symptoms_encoded = mlb_symptoms.transform([valid_symptoms])
+        symptoms_df = pd.DataFrame(symptoms_encoded, columns=mlb_symptoms.classes_)
 
-        top_n = 3  
-        top_n_indices = np.argsort(probabilities)[-top_n:][::-1]
-        top_n_predictions = le.inverse_transform(top_n_indices)
+        for col in model.feature_names_in_:
+            if col not in symptoms_df.columns:
+                symptoms_df[col] = 0
 
-        response = []
-        for idx, prediction in zip(top_n_indices, top_n_predictions):
-            diagnosis, prevention, doctorSpecialization = prediction.split('|')
-            response.append(PredictionResponse(
-                diagnosis=diagnosis,
-                prevention=prevention,
-                probability=probabilities[idx],
-                doctorSpecialization=doctorSpecialization
-            ))
+        symptoms_df = symptoms_df[model.feature_names_in_]
 
-        return response
+        prediction = model.predict(symptoms_df)[0]
+
+        combined_label = le.inverse_transform([prediction])[0]
+
+        diagnosis, prevention, doctor = combined_label.split('|')
+
+        return PredictionResponse(
+            diagnosis=diagnosis,
+            prevention=prevention,
+            doctorSpecialization=doctor
+        )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An error occurred during prediction.")
+        raise HTTPException(status_code=500, detail=f"Error in prediction: {e}")
 
 if __name__ == "__main__":
     import uvicorn
