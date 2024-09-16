@@ -50,6 +50,19 @@ async def predict_symptoms(request: SymptomsRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error in prediction: {e}")
+    
+@app.get("/columns")
+async def get_columns():
+    try:
+        symptoms_encoded = mlb_symptoms.transform([[]]) 
+        df = pd.DataFrame(symptoms_encoded, columns=mlb_symptoms.classes_)
+
+        columns_to_return = df.columns[2:-2].tolist()
+
+        return {"columns": columns_to_return}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving columns: {e}")
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,6 +1,7 @@
 ﻿using HealthProject.Models;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
@@ -31,7 +32,8 @@ namespace HealthProject.Services.DiagnosisService
 
             try
             {
-                var requestBody = new { symptoms = symptoms };
+                var symptomsString = string.Join(", ", symptoms);
+                var requestBody = new { symptoms = symptomsString };
                 var jsonContent = JsonConvert.SerializeObject(requestBody);
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
@@ -41,7 +43,7 @@ namespace HealthProject.Services.DiagnosisService
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
 
-                    var predictions = JsonConvert.DeserializeObject<List<PredictionResponse>>(responseContent);
+                    var prediction = JsonConvert.DeserializeObject<PredictionResponse>(responseContent);
 
                     var sb = new StringBuilder();
 
@@ -49,24 +51,16 @@ namespace HealthProject.Services.DiagnosisService
 
                     var neededDoctors = new Dictionary<string, int>();
 
-                    foreach (var prediction in predictions)
+                    sb.AppendLine($"---Прогноза---");
+                    sb.AppendLine($"Диагноза: {prediction.Diagnosis}\n Предпазване: {prediction.Prevention}\n");
+
+                    if (!neededDoctors.ContainsKey(prediction.DoctorSpecialization))
                     {
-                        if (prediction.Probability < 0.1)
-                        {
-                            continue;
-                        }
-
-                        sb.AppendLine($"---Прогноза {count++}---");
-                        sb.AppendLine($"Диагноза: {prediction.Diagnosis}\n Предпазване: {prediction.Prevention}\n Точност: {prediction.Probability * 100}%");
-
-                        if (!neededDoctors.ContainsKey(prediction.DoctorSpecialization))
-                        {
-                            neededDoctors[prediction.DoctorSpecialization] = 1;
-                        }
-                        else
-                        {
-                            neededDoctors[prediction.DoctorSpecialization]++; 
-                        }
+                        neededDoctors[prediction.DoctorSpecialization] = 1;
+                    }
+                    else
+                    {
+                        neededDoctors[prediction.DoctorSpecialization]++;
                     }
 
                     var recommendedDoctors = new List<DoctorModel>();
@@ -74,7 +68,7 @@ namespace HealthProject.Services.DiagnosisService
                     foreach (var doc in neededDoctors)
                     {
                         response = await _httpClient.GetAsync($"{_baseAddress}:5025/api/Doctor/GetTopDoctorsWithSpecialization?specialization={doc.Key}&top={doc.Value}");
-
+                        responseContent = await response.Content.ReadAsStringAsync();
                         if (!response.IsSuccessStatusCode)
                         {
                             continue;
@@ -102,6 +96,28 @@ namespace HealthProject.Services.DiagnosisService
             }
 
             return new PredictionModel();
+        }
+
+        public async Task<List<string>> GetSymptomsFromColumns()
+        {
+            CheckInternetConnection();
+
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_baseAddress}:8000/columns");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<Dictionary<string, List<string>>>();
+                    return result["columns"];
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching symptoms: {ex.Message}");
+            }
+
+            return new List<string>();
         }
 
         private void CheckInternetConnection()

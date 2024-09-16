@@ -1,86 +1,135 @@
-﻿using System.Collections.ObjectModel;
+﻿using HealthProject.Models;
+using HealthProject.Services.DiagnosisService;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using HealthProject.Models;
-using HealthProject.Services.DiagnosisService;
 
-namespace HealthProject.ViewModels
+public class DiagnosisViewModel : INotifyPropertyChanged
 {
-    public class DiagnosisViewModel : INotifyPropertyChanged
+    private readonly IDiagnosisService diagnosisService;
+    private string symptomsInput;
+    private string diagnosisResult;
+    private ObservableCollection<string> allSymptoms;  
+    private ObservableCollection<SymptomModel> filteredSymptoms;  
+    private ObservableCollection<string> selectedSymptoms;
+    private ObservableCollection<DoctorModel> recommendedDoctors;  
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public DiagnosisViewModel(IDiagnosisService diagnosisService)
     {
-        private readonly IDiagnosisService diagnosisService;
-        private string symptomsInput;
-        private string diagnosisResult; 
-        private ObservableCollection<DoctorModel> recommendedDoctors;
+        this.diagnosisService = diagnosisService;
+        allSymptoms = new ObservableCollection<string>();
+        filteredSymptoms = new ObservableCollection<SymptomModel>();
+        selectedSymptoms = new ObservableCollection<string>();
+        recommendedDoctors = new ObservableCollection<DoctorModel>();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        LoadAllSymptoms(); 
 
-        public DiagnosisViewModel(IDiagnosisService diagnosisService)
+        SubmitSymptomsAsyncCommand = new Command(async () => await SubmitSymptomsAsync());
+    }
+
+    public string SymptomsInput
+    {
+        get => symptomsInput;
+        set
         {
-            this.diagnosisService = diagnosisService;
-            RecommendedDoctors = new ObservableCollection<DoctorModel>();
-
-            SubmitSymptomsAsyncCommand = new Command(async () => await SubmitSymptomsAsync());
+            symptomsInput = value;
+            FilterSymptoms();  
+            OnPropertyChanged(nameof(SymptomsInput));
         }
+    }
 
-        public string SymptomsInput
+    public ObservableCollection<SymptomModel> FilteredSymptoms
+    {
+        get => filteredSymptoms;
+        set
         {
-            get => symptomsInput;
-            set
+            filteredSymptoms = value;
+            OnPropertyChanged(nameof(FilteredSymptoms));
+        }
+    }
+
+    public ObservableCollection<string> SelectedSymptoms
+    {
+        get => selectedSymptoms;
+        set
+        {
+            selectedSymptoms = value;
+            OnPropertyChanged(nameof(SelectedSymptoms));
+        }
+    }
+
+    public string DiagnosisResult
+    {
+        get => diagnosisResult;
+        set
+        {
+            diagnosisResult = value;
+            OnPropertyChanged(nameof(DiagnosisResult));
+        }
+    }
+
+    public ICommand SubmitSymptomsAsyncCommand { get; }
+
+    private async void LoadAllSymptoms()
+    {
+        try
+        {
+            var columns = await diagnosisService.GetSymptomsFromColumns();
+            foreach (var symptom in columns)
             {
-                symptomsInput = value;
-                OnPropertyChanged(nameof(SymptomsInput));
+                allSymptoms.Add(symptom);
             }
         }
-
-        public string DiagnosisResult
+        catch (Exception ex)
         {
-            get => diagnosisResult;
-            set
+            Console.WriteLine($"Error fetching symptoms: {ex.Message}");
+        }
+    }
+
+    private void FilterSymptoms()
+    {
+        if (!string.IsNullOrEmpty(SymptomsInput))
+        {
+            var query = SymptomsInput.ToLower();
+            var filtered = allSymptoms
+                           .Where(s => s.ToLower().Contains(query))
+                           .Take(10)
+                           .Select(s => new SymptomModel { Name = s, IsSelected = false }) 
+                           .ToList();
+
+            FilteredSymptoms.Clear();
+            foreach (var symptom in filtered)
             {
-                diagnosisResult = value;
-                OnPropertyChanged(nameof(DiagnosisResult));
+                FilteredSymptoms.Add(symptom);
             }
         }
+    }
 
-        public ObservableCollection<DoctorModel> RecommendedDoctors
+    private async Task SubmitSymptomsAsync()
+    {
+        var selectedSymptoms = FilteredSymptoms.Where(s => s.IsSelected)
+                                               .Select(s => s.Name)
+                                               .ToList();
+
+        if (selectedSymptoms.Any())
         {
-            get => recommendedDoctors;
-            set
-            {
-                recommendedDoctors = value;
-                OnPropertyChanged(nameof(RecommendedDoctors));
-            }
+            var prediction = await diagnosisService.GetPrediction(selectedSymptoms);
+
+            SymptomsInput = string.Join(", ", selectedSymptoms);
+            DiagnosisResult = prediction?.Prediction ?? "Error!";
+            recommendedDoctors = new ObservableCollection<DoctorModel>(prediction.RecommendedDoctors);
+
+            OnPropertyChanged(nameof(DiagnosisResult));
+            OnPropertyChanged(nameof(recommendedDoctors));
         }
 
-        public ICommand SubmitSymptomsAsyncCommand { get; }
+        FilteredSymptoms.Select(x => x.IsSelected = false);
+    }
 
-        private async Task SubmitSymptomsAsync()
-        {
-            if (!string.IsNullOrEmpty(SymptomsInput))
-            {
-                var symptomsList = SymptomsInput.Split(", ", StringSplitOptions.RemoveEmptyEntries)
-                                                .Select(s => s.Trim())
-                                                .ToList();
-
-                var prediction = await diagnosisService.GetPrediction(symptomsList);
-
-                SymptomsInput = string.Join(", ", symptomsList);
-                DiagnosisResult = prediction?.Prediction ?? "Error!";
-                RecommendedDoctors = new ObservableCollection<DoctorModel>(prediction.RecommendedDoctors.Where(x => x.Id != 0));
-
-                OnPropertyChanged(nameof(DiagnosisResult));  
-            }
-            else
-            {
-                SymptomsInput = "Please enter symptoms before submitting.";
-                DiagnosisResult = string.Empty; 
-            }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

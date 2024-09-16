@@ -1,34 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:HealthProject.ViewModels"
              x:Class="HealthProject.Views.DiagnosisPredictionPage"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
-
-    <ContentPage.Resources>
-        <Style x:Key="HeaderLabelStyle" TargetType="Label">
-            <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="FontSize" Value="18" />
-            <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
-        </Style>
-        <Style x:Key="NormalLabelStyle" TargetType="Label">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="TextColor" Value="{DynamicResource SecondaryTextColor}" />
-        </Style>
-        <Style x:Key="SubmitButtonStyle" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="{DynamicResource ButtonBackgroundColor}" />
-            <Setter Property="TextColor" Value="{DynamicResource ButtonTextColor}" />
-            <Setter Property="CornerRadius" Value="25" />
-            <Setter Property="Padding" Value="12,8" />
-            <Setter Property="FontSize" Value="16" />
-        </Style>
-        <Style x:Key="CardStyle" TargetType="Frame">
-            <Setter Property="HasShadow" Value="True" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="10" />
-            <Setter Property="BackgroundColor" Value="{DynamicResource CardBackgroundColor}" />
-        </Style>
-    </ContentPage.Resources>
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             Shell.NavBarIsVisible="True">
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="15">
@@ -39,22 +13,34 @@
                    BackgroundColor="{DynamicResource EntryBackgroundColor}"
                    PlaceholderColor="{DynamicResource EntryPlaceholderColor}" />
 
+            <CollectionView ItemsSource="{Binding FilteredSymptoms}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <ContentView>
+                            <StackLayout Orientation="Horizontal" Padding="10" VerticalOptions="Center">
+                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalOptions="Center" />
+                                <Label Text="{Binding Name}" Style="{StaticResource NormalLabelStyle}" VerticalOptions="Center" />
+                            </StackLayout>
+                        </ContentView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
             <Button Text="Изпрати"
                     Command="{Binding SubmitSymptomsAsyncCommand}"
                     Style="{StaticResource SubmitButtonStyle}"
                     HorizontalOptions="Center" />
 
             <Label Text="Прогноза:" Style="{StaticResource HeaderLabelStyle}" />
-            <Label Text="{Binding DiagnosisResult, Mode=TwoWay, FallbackValue='No result yet'}" 
+            <Label Text="{Binding DiagnosisResult, Mode=TwoWay, FallbackValue='No result yet'}"
                    Style="{StaticResource NormalLabelStyle}" />
 
-            <Label Text="Препоръчани специалисти:" Style="{StaticResource HeaderLabelStyle}" />
+            <Label Text="Препоръчани доктори:" Style="{StaticResource HeaderLabelStyle}" />
 
-            <!-- CollectionView for recommended doctors with EmptyView -->
             <CollectionView ItemsSource="{Binding RecommendedDoctors}">
                 <CollectionView.EmptyView>
-                    <Label Text="Няма препоръчани специалисти."
-                           Style="{StaticResource NormalLabelStyle}" 
+                    <Label Text="Няма препоръчани доктори."
+                           Style="{StaticResource NormalLabelStyle}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center" />
                 </CollectionView.EmptyView>
