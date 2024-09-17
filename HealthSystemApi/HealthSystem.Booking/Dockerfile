@@ -1,7 +1,18 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
+USER root  
 WORKDIR /app
 EXPOSE 80
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    fontconfig \
+    fonts-dejavu \
+    fonts-liberation \
+    && fc-cache -f -v \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+USER app  
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release

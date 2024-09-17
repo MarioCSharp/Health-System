@@ -6,8 +6,6 @@
 
         public string? PatientEGN { get; set; }
 
-        public byte[]? File { get; set; } 
-
         public string? PatientName { get; set; }
         public IFormFile FormFile { get; set; }
     }
