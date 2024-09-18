@@ -4,6 +4,9 @@ using System.Text;
 
 namespace HealthSystem.Documents.Infrastructure
 {
+    /// <summary>
+    /// Provides methods for encrypting and decrypting data using AES encryption.
+    /// </summary>
     public class EncryptionHelper
     {
         private static readonly byte[] key;
@@ -40,6 +43,11 @@ namespace HealthSystem.Documents.Infrastructure
             iv = Convert.FromBase64String(ivBase64);
         }
 
+        /// <summary>
+        /// Encrypts a plain text string using AES encryption.
+        /// </summary>
+        /// <param name="plainText">The plain text to encrypt.</param>
+        /// <returns>The encrypted text in base64 format.</returns>
         public static string Encrypt(string plainText)
         {
             if (string.IsNullOrEmpty(plainText)) return plainText;
@@ -63,6 +71,11 @@ namespace HealthSystem.Documents.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Decrypts an encrypted text string using AES encryption.
+        /// </summary>
+        /// <param name="encryptedText">The encrypted text in base64 format.</param>
+        /// <returns>The decrypted plain text.</returns>
         public static string Decrypt(string encryptedText)
         {
             if (string.IsNullOrEmpty(encryptedText)) return encryptedText;
@@ -82,6 +95,11 @@ namespace HealthSystem.Documents.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Encrypts a byte array using AES encryption.
+        /// </summary>
+        /// <param name="plainBytes">The byte array to encrypt.</param>
+        /// <returns>The encrypted byte array.</returns>
         public static byte[] Encrypt(byte[] plainBytes)
         {
             if (plainBytes == null || plainBytes.Length == 0) return plainBytes;
@@ -104,6 +122,11 @@ namespace HealthSystem.Documents.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Decrypts an encrypted byte array using AES encryption.
+        /// </summary>
+        /// <param name="encryptedBytes">The encrypted byte array.</param>
+        /// <returns>The decrypted byte array.</returns>
         public static byte[] Decrypt(byte[] encryptedBytes)
         {
             if (encryptedBytes == null || encryptedBytes.Length == 0) return encryptedBytes;
@@ -126,16 +149,26 @@ namespace HealthSystem.Documents.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Encrypts a <see cref="DateTime"/> object by converting it to an ISO 8601 string and then encrypting it.
+        /// </summary>
+        /// <param name="dateTime">The <see cref="DateTime"/> object to encrypt.</param>
+        /// <returns>The encrypted date time as a base64 string.</returns>
         public static string Encrypt(DateTime dateTime)
         {
-            string dateTimeString = dateTime.ToString("o"); 
-            return Encrypt(dateTimeString);  
+            string dateTimeString = dateTime.ToString("o");
+            return Encrypt(dateTimeString);
         }
 
+        /// <summary>
+        /// Decrypts an encrypted date time string and converts it back to a <see cref="DateTime"/> object.
+        /// </summary>
+        /// <param name="encryptedDateTime">The encrypted date time string.</param>
+        /// <returns>The decrypted <see cref="DateTime"/> object.</returns>
         public static DateTime DecryptToDateTime(string encryptedDateTime)
         {
-            string decryptedText = Decrypt(encryptedDateTime);  
-            return DateTime.Parse(decryptedText); 
+            string decryptedText = Decrypt(encryptedDateTime);
+            return DateTime.Parse(decryptedText);
         }
     }
 }

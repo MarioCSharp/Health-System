@@ -5,6 +5,10 @@ namespace HealthSystem.Booking.Infrastructure
 {
     public static class ApplicationBuilder
     {
+        /// <summary>
+        /// Initializes the application by setting up the necessary infrastructure.
+        /// </summary>
+        /// <param name="app">The application builder used to configure the app.</param>
         public static async void Initialize(this IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
@@ -13,6 +17,10 @@ namespace HealthSystem.Booking.Infrastructure
             MigrateDatabase(app);
         }
 
+        /// <summary>
+        /// Applies any pending database migrations.
+        /// </summary>
+        /// <param name="app">The application builder to access services and perform migrations.</param>
         public static void MigrateDatabase(IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())

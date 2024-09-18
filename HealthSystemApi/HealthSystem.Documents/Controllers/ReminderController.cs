@@ -12,16 +12,25 @@ namespace HealthSystem.Documents.Controllers
     {
         private IReminderService reminderService;
 
+        /// <summary>
+        /// Initializes a new instance of the ReminderController class.
+        /// </summary>
+        /// <param name="reminderService">The reminder service used for managing reminders.</param>
         public ReminderController(IReminderService reminderService)
         {
             this.reminderService = reminderService;
         }
 
+        /// <summary>
+        /// Adds a new reminder asynchronously.
+        /// </summary>
+        /// <param name="model">The reminder model containing the details to add.</param>
+        /// <returns>An IActionResult indicating the result of the operation.</returns>
         [HttpPost("Add")]
         [Authorize]
         public async Task<IActionResult> Add([FromForm] ReminderAddModel model)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return BadRequest(model);
             }
@@ -31,6 +40,11 @@ namespace HealthSystem.Documents.Controllers
             return result ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Removes a reminder asynchronously by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the reminder to remove.</param>
+        /// <returns>An IActionResult indicating the result of the operation.</returns>
         [HttpGet("Remove")]
         [Authorize]
         public async Task<IActionResult> Remove([FromQuery] int id)
@@ -40,6 +54,10 @@ namespace HealthSystem.Documents.Controllers
             return result ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Retrieves all reminders for the current user asynchronously.
+        /// </summary>
+        /// <returns>An IActionResult containing a list of reminders for the user.</returns>
         [HttpGet("AllByUser")]
         [Authorize]
         public async Task<IActionResult> AllByUser()

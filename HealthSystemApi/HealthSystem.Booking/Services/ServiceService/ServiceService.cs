@@ -10,6 +10,11 @@ namespace HealthSystem.Booking.Services.ServiceService
         private BookingDbContext context;
         private HttpClient httpClient;
 
+        /// <summary>
+        /// Initializes a new instance of the ServiceService class.
+        /// </summary>
+        /// <param name="context">The database context to interact with the services.</param>
+        /// <param name="httpClient">The HTTP client for making API calls.</param>
         public ServiceService(BookingDbContext context,
                               HttpClient httpClient)
         {
@@ -17,6 +22,11 @@ namespace HealthSystem.Booking.Services.ServiceService
             this.httpClient = httpClient;
         }
 
+        /// <summary>
+        /// Adds a new service asynchronously.
+        /// </summary>
+        /// <param name="model">The service model containing details for the new service.</param>
+        /// <returns>A task representing the asynchronous operation. The result is true if the service was added, false otherwise.</returns>
         public async Task<bool> AddAsync(ServiceAddModel model)
         {
             var service = new Service()
@@ -34,6 +44,11 @@ namespace HealthSystem.Booking.Services.ServiceService
             return await context.Services.ContainsAsync(service);
         }
 
+        /// <summary>
+        /// Retrieves all services for a doctor by their ID.
+        /// </summary>
+        /// <param name="id">The doctor's ID.</param>
+        /// <returns>A task representing the asynchronous operation. The result is the doctor's name and a list of services they offer.</returns>
         public async Task<(string, List<ServiceModel>)> AllByIdAsync(int id)
         {
             var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctor?id={id}");
@@ -53,6 +68,11 @@ namespace HealthSystem.Booking.Services.ServiceService
             return (doctorName, services);
         }
 
+        /// <summary>
+        /// Retrieves all appointments for a user by their user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A task representing the asynchronous operation. The result is a list of the user's appointments.</returns>
         public async Task<List<AppointmentModel>> AllByUserAsync(string userId)
         {
             return await context.Bookings
@@ -66,6 +86,11 @@ namespace HealthSystem.Booking.Services.ServiceService
                 }).ToListAsync();
         }
 
+        /// <summary>
+        /// Retrieves all services offered by a doctor based on their user ID.
+        /// </summary>
+        /// <param name="userId">The doctor's user ID.</param>
+        /// <returns>A task representing the asynchronous operation. The result is a list of services provided by the doctor.</returns>
         public async Task<List<ServiceModel>> AllByUserIdAsync(string userId)
         {
             var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
@@ -81,6 +106,12 @@ namespace HealthSystem.Booking.Services.ServiceService
                 }).ToListAsync();
         }
 
+        /// <summary>
+        /// Retrieves available hours for a specific service on a given date.
+        /// </summary>
+        /// <param name="date">The date to check for availability.</param>
+        /// <param name="serviceId">The ID of the service.</param>
+        /// <returns>A task representing the asynchronous operation. The result is a list of available appointment hours.</returns>
         public async Task<List<string>> AvailableHoursAsync(DateTime date, int serviceId)
         {
             var service = await context.Services.FindAsync(serviceId);
@@ -109,6 +140,11 @@ namespace HealthSystem.Booking.Services.ServiceService
             return allHours;
         }
 
+        /// <summary>
+        /// Books an appointment asynchronously.
+        /// </summary>
+        /// <param name="model">The model containing the booking details.</param>
+        /// <returns>A task representing the asynchronous operation. The result is true if the booking was successful, false otherwise.</returns>
         public async Task<bool> BookAsync(BookingModel model)
         {
             if (model.DoctorId == 0)
@@ -185,6 +221,11 @@ namespace HealthSystem.Booking.Services.ServiceService
             return true;
         }
 
+        /// <summary>
+        /// Deletes a service by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the service to delete.</param>
+        /// <returns>A task representing the asynchronous operation. The result is true if the service was deleted, false otherwise.</returns>
         public async Task<bool> Delete(int id)
         {
             var service = new Service() { Id = id };
@@ -197,11 +238,21 @@ namespace HealthSystem.Booking.Services.ServiceService
             return true;
         }
 
+        /// <summary>
+        /// Deletes all services related to a specific doctor.
+        /// </summary>
+        /// <param name="doctorId">The ID of the doctor.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task DeleteAllByDoctorId(int doctorId)
         {
             await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Services WHERE DoctorId = {doctorId}");
         }
 
+        /// <summary>
+        /// Retrieves details of a specific service by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the service.</param>
+        /// <returns>A task representing the asynchronous operation. The result is a service details model.</returns>
         public async Task<ServiceDetailsModel> DetailsAsync(int id)
         {
             var service = await context.Services.FindAsync(id);
@@ -222,6 +273,11 @@ namespace HealthSystem.Booking.Services.ServiceService
             };
         }
 
+        /// <summary>
+        /// Retrieves details for editing a service by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the service to edit.</param>
+        /// <returns>A task representing the asynchronous operation. The result is the service name, price, description, and location.</returns>
         public async Task<(string, decimal, string, string)> EditGET(int id)
         {
             var service = await context.Services.FindAsync(id);
@@ -234,6 +290,11 @@ namespace HealthSystem.Booking.Services.ServiceService
             return (service.Name ?? "", service.Price, service.Description ?? "", service.Location ?? "");
         }
 
+        /// <summary>
+        /// Updates a service based on the provided model.
+        /// </summary>
+        /// <param name="model">The service model containing updated details.</param>
+        /// <returns>A task representing the asynchronous operation. The result is true if the update was successful, false otherwise.</returns>
         public async Task<bool> EditPOST(ServiceEditModel model)
         {
             var service = await context.Services.FindAsync(model.Id);

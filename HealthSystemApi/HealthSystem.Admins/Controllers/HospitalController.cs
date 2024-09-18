@@ -13,11 +13,20 @@ namespace HealthSystem.Admins.Controllers
     {
         private IHospitalService hospitalService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HospitalController"/> class.
+        /// </summary>
+        /// <param name="hospitalService">The service for handling hospital-related operations.</param>
         public HospitalController(IHospitalService hospitalService)
         {
             this.hospitalService = hospitalService;
         }
 
+        /// <summary>
+        /// Adds a new hospital.
+        /// </summary>
+        /// <param name="model">The model containing information about the hospital to add.</param>
+        /// <returns>An IActionResult indicating the result of the operation.</returns>
         [HttpPost("Add")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Add([FromForm] HospitalAddModel model)
@@ -45,6 +54,11 @@ namespace HealthSystem.Admins.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Removes a hospital by ID.
+        /// </summary>
+        /// <param name="id">The ID of the hospital to remove.</param>
+        /// <returns>An IActionResult indicating the result of the operation.</returns>
         [HttpGet("Remove")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Remove([FromQuery] int id)
@@ -63,6 +77,10 @@ namespace HealthSystem.Admins.Controllers
             return Ok(new { Success = false });
         }
 
+        /// <summary>
+        /// Retrieves all hospitals.
+        /// </summary>
+        /// <returns>An IActionResult containing the list of hospitals.</returns>
         [HttpGet("All")]
         public async Task<IActionResult> All()
         {
@@ -71,6 +89,11 @@ namespace HealthSystem.Admins.Controllers
             return Ok(new { Hospitals = hospitals });
         }
 
+        /// <summary>
+        /// Retrieves details of a specific hospital.
+        /// </summary>
+        /// <param name="id">The ID of the hospital to get details for.</param>
+        /// <returns>An IActionResult containing the hospital's details.</returns>
         [HttpGet("Details")]
         public async Task<IActionResult> Details([FromQuery] int id)
         {
@@ -79,6 +102,11 @@ namespace HealthSystem.Admins.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Retrieves doctors associated with a specific hospital.
+        /// </summary>
+        /// <param name="id">The ID of the hospital to get doctors from.</param>
+        /// <returns>An IActionResult containing the list of doctors.</returns>
         [HttpGet("GetDoctors")]
         [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> GetDoctors([FromQuery] int id)
@@ -88,6 +116,11 @@ namespace HealthSystem.Admins.Controllers
             return Ok(new { Doctors = doctors });
         }
 
+        /// <summary>
+        /// Retrieves information about a specific hospital.
+        /// </summary>
+        /// <param name="hospitalId">The ID of the hospital to retrieve.</param>
+        /// <returns>An IActionResult containing the hospital's information.</returns>
         [HttpGet("GetHospital")]
         [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> GetHospital([FromQuery] int hospitalId)
@@ -97,6 +130,11 @@ namespace HealthSystem.Admins.Controllers
             return Ok(new { ContactNumber = hospital.ContactNumber, Location = hospital.Location, Name = hospital.HospitalName, UserId = hospital.UserId });
         }
 
+        /// <summary>
+        /// Edits information about a hospital.
+        /// </summary>
+        /// <param name="model">The model containing updated information about the hospital.</param>
+        /// <returns>An IActionResult indicating the result of the operation.</returns>
         [HttpPost("Edit")]
         [Authorize(Roles = "Administrator,Director")]
         public async Task<IActionResult> Edit([FromForm] HospitalEditModel model)
@@ -106,6 +144,11 @@ namespace HealthSystem.Admins.Controllers
             return Ok(new { Success = result });
         }
 
+        /// <summary>
+        /// Retrieves the hospital associated with the currently logged-in director using a token.
+        /// </summary>
+        /// <param name="token">The token used to identify the hospital.</param>
+        /// <returns>An IActionResult containing the hospital's information.</returns>
         [HttpGet("GetDirectorHospital")]
         [Authorize(Roles = "Director")]
         public async Task<IActionResult> GetDirectorHospital([FromQuery] string token)
@@ -115,6 +158,10 @@ namespace HealthSystem.Admins.Controllers
             return Ok(new { Hospital = hospital });
         }
 
+        /// <summary>
+        /// Retrieves the hospital ID associated with the currently logged-in director.
+        /// </summary>
+        /// <returns>An IActionResult containing the hospital ID.</returns>
         [HttpGet("GetDirectorHospitalId")]
         [Authorize(Roles = "Director")]
         public async Task<IActionResult> GetDirectorHospitalId()
