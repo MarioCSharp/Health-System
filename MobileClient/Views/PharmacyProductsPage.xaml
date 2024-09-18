@@ -50,27 +50,36 @@
             <Entry Placeholder="ЕГН" Text="{Binding EGN}" HorizontalOptions="FillAndExpand" />
         </HorizontalStackLayout>
 
-        <!-- Cart Section (Visibility Controlled) -->
         <StackLayout Grid.Row="1" IsVisible="{Binding IsOrderFormVisible}" Spacing="10" Padding="10" BackgroundColor="#F9F9F9">
             <CollectionView ItemsSource="{Binding UserCart.CartItems}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame Padding="10" Margin="5" BackgroundColor="#FFFFFF">
-                            <HorizontalStackLayout>
-                                <Image Source="{Binding ItemImage, Converter={StaticResource ByteArrayToImageSourceConverter}}" HeightRequest="50" WidthRequest="50" />
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding ItemName}" FontAttributes="Bold" />
+                            <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                                <Image Source="{Binding ItemImage, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
+                           HeightRequest="50" WidthRequest="50" 
+                           Grid.Column="0" />
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="5" Padding="10,0">
+                                    <Label Text="{Binding ItemName}" FontAttributes="Bold" 
+                               LineBreakMode="TailTruncation" 
+                               MaxLines="1" />
                                     <Label Text="{Binding ItemPrice, StringFormat='Price: {0:C}'}" />
                                     <Label Text="{Binding Quantity, StringFormat='Qty: {0}'}" />
                                 </VerticalStackLayout>
+
                                 <Button Text="Премахни"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=RemoveFromCartCommand}"
-                                        CommandParameter="{Binding Id}" />
-                            </HorizontalStackLayout>
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=RemoveFromCartCommand}"
+                            CommandParameter="{Binding Id}"
+                            Grid.Column="2"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center" />
+                            </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
             <Label Text="{Binding UserCart.TotalPrice, StringFormat='Общо: {0:C}'}" FontAttributes="Bold" HorizontalOptions="End" />
             <Entry Placeholder="Име" Text="{Binding UserName}" />
             <Entry Placeholder="Адрес за доставка" Text="{Binding UserLocation}" />

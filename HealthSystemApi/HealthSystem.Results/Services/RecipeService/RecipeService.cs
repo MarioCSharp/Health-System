@@ -39,7 +39,10 @@ namespace HealthSystem.Results.Services.RecipeService
 
         public async Task<IFormFile> GetLastRecipe(string EGN)
         {
-            var recipe = await context.IssuedRecipes.LastOrDefaultAsync(r => r.EGN == EGN);
+            var recipe = await context.IssuedRecipes
+                             .Where(r => r.EGN == EGN)
+                             .OrderByDescending(r => r.Id) 
+                             .LastOrDefaultAsync();
 
             if (recipe == null)
             {
@@ -48,14 +51,15 @@ namespace HealthSystem.Results.Services.RecipeService
 
             var stream = new MemoryStream(recipe.File);
 
-            var formFile = new FormFile(stream, 0, recipe.File.Length, "file", "Рецепта")
+            var formFile = new FormFile(stream, 0, recipe.File.Length, "file", "Рецепта.txt") 
             {
                 Headers = new HeaderDictionary(),
-                ContentType = "application/pdf"
+                ContentType = "text/plain" 
             };
 
             return formFile;
         }
+
 
         public async Task<IFormFile> GetRecipeFileAsync(int recipeId)
         {

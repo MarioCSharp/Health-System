@@ -55,7 +55,15 @@ namespace HealthSystem.Pharmacy.Controllers
         [Authorize]
         public async Task<IActionResult> GetOrderByEGN([FromQuery] string EGN, int userCartId)
         {
-            var result = await orderService.GetOrderByEGNAsync(EGN, userCartId);
+            var authHeader = Request.Headers["Authorization"].ToString();
+            var token = authHeader.StartsWith("Bearer ") ? authHeader.Substring("Bearer ".Length).Trim() : string.Empty;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
+
+            var result = await orderService.GetOrderByEGNAsync(EGN, userCartId, token);
 
             return result ? Ok(result) : BadRequest();
         }

@@ -1,4 +1,5 @@
-﻿using HealthSystem.Pharmacy.Data;
+﻿using Azure.Core;
+using HealthSystem.Pharmacy.Data;
 using HealthSystem.Pharmacy.Data.Enums;
 using HealthSystem.Pharmacy.Data.Models;
 using HealthSystem.Pharmacy.Models.Cart;
@@ -35,25 +36,30 @@ namespace HealthSystem.Pharmacy.Services.OrderService
             return true;
         }
 
-        public async Task<bool> GetOrderByEGNAsync(string egn, int cartId)
+        public async Task<bool> GetOrderByEGNAsync(string egn, int cartId, string token)
         {
             var cart = await context.UserCarts.FindAsync(cartId);
 
             if (cart is null)
             {
-                return false;
+                throw new Exception("No user cart found!");
             }
 
-            var doctorResponse = await httpClient.GetAsync($"http://results/api/Recipe/GeLastRecipe?EGN={egn}");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"http://results/api/Recipe/GeLastRecipe?EGN={egn}");
 
-            if (!doctorResponse.IsSuccessStatusCode)
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var recipeResponse = await httpClient.SendAsync(request);
+
+            if (!recipeResponse.IsSuccessStatusCode)
             {
-                return false;
+                var responseContent = await recipeResponse.Content.ReadAsStringAsync();
+                throw new Exception($"Failed fetching the doctor! Status: {recipeResponse.StatusCode}, Response: {responseContent}");
             }
 
-            var fileStream = await doctorResponse.Content.ReadAsStreamAsync();
-            var contentType = doctorResponse.Content.Headers.ContentType?.ToString();
-            var fileName = doctorResponse.Content.Headers.ContentDisposition?.FileName ?? "downloadedFile";
+            var fileStream = await recipeResponse.Content.ReadAsStreamAsync();
+            var contentType = recipeResponse.Content.Headers.ContentType?.ToString();
+            var fileName = recipeResponse.Content.Headers.ContentDisposition?.FileName ?? "downloadedFile";
 
             using (var reader = new StreamReader(fileStream))
             {
@@ -77,15 +83,23 @@ namespace HealthSystem.Pharmacy.Services.OrderService
 
                     foreach (var medication in meds)
                     {
-                        var cartItem = new CartItem()
-                        {
-                            MedicationId = medication.Id,
-                            UserCartId = cartId,
-                            Quantity = 1
-                        };
+                        var cartItem = await context.CartItems
+                        .FirstOrDefaultAsync(x => x.MedicationId == medication.Id && x.UserCartId == cartId);
 
-                        await context.CartItems.AddAsync(cartItem);
-                        await context.SaveChangesAsync();
+                        if (cartItem is null)
+                        {
+                            var newCartItem = new CartItem()
+                            {
+                                MedicationId = medication.Id,
+                                Quantity = 1,
+                                UserCartId = cartId
+                            };
+
+                            await context.CartItems.AddAsync(newCartItem);
+                            await context.SaveChangesAsync();
+
+                            return await context.CartItems.ContainsAsync(newCartItem);
+                        }
                     }
                 }
             }

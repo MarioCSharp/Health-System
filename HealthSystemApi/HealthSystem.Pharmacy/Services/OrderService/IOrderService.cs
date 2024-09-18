@@ -8,7 +8,7 @@ namespace HealthSystem.Pharmacy.Services.OrderService
 
         Task<List<OrderDisplayModel>> OrdersInPharmacyAsync(int pharmacyId);
 
-        Task<bool> GetOrderByEGNAsync(string egn, int cartId);
+        Task<bool> GetOrderByEGNAsync(string egn, int cartId, string token);
 
         Task<bool> ChangeStatus(int orderId, string status);
     }
