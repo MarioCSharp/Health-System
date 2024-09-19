@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlusCircle,
+  faPhone,
+  faMapMarkerAlt,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface User {
   id: string;
@@ -33,15 +40,12 @@ function PharmacyAddComponent() {
 
       if (response.ok) {
         const data = await response.json();
-
         setUsers(data.users || []);
       } else {
-        throw new Error(
-          "You are either not authorized or there is a problem in the system!"
-        );
+        throw new Error("Не сте оторизирани или има проблем в системата!");
       }
     } catch (error) {
-      console.log("There was an error", error);
+      console.log("Възникна грешка", error);
       setUsers([]);
       setError(true);
     }
@@ -52,7 +56,7 @@ function PharmacyAddComponent() {
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent the form from submitting and reloading the page.
+    e.preventDefault();
 
     const form = new FormData();
     form.append("PharmacyName", pharmacyName);
@@ -66,13 +70,13 @@ function PharmacyAddComponent() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: form, // No need to manually set Content-Type here.
+        body: form,
       });
 
       if (response.ok) {
-        navigate("/"); // Navigate back to the main page on success.
+        navigate("/");
       } else {
-        throw new Error("There was an error adding the pharmacy");
+        throw new Error("Възникна грешка при добавянето на аптеката");
       }
     } catch (error) {
       console.log(error);
@@ -81,16 +85,20 @@ function PharmacyAddComponent() {
   };
 
   return (
-    <div className="container">
-      <h2>Добавяне на аптека</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="container mt-5">
+      <h2 className="text-center mb-4">
+        <FontAwesomeIcon icon={faPlusCircle} className="me-2" />
+        Добавяне на аптека
+      </h2>
+      <form onSubmit={handleSubmit} className="bg-light p-4 rounded shadow">
         <div className="mb-3">
           <label htmlFor="userSelect" className="form-label">
+            <FontAwesomeIcon icon={faUser} className="me-2" />
             Избери управител на аптеката
           </label>
           <select
             id="userSelect"
-            className="form-control"
+            className="form-select"
             value={selectedUserId || ""}
             onChange={(e) => setSelectedUserId(e.target.value)}
             required
@@ -107,12 +115,14 @@ function PharmacyAddComponent() {
         </div>
         <div className="mb-3">
           <label htmlFor="pharmacyName" className="form-label">
+            <FontAwesomeIcon icon={faPlusCircle} className="me-2" />
             Име на аптеката
           </label>
           <input
             type="text"
             className="form-control"
             id="pharmacyName"
+            placeholder="Въведете име на аптеката"
             value={pharmacyName}
             onChange={(e) => setPharmacyName(e.target.value)}
             required
@@ -120,12 +130,14 @@ function PharmacyAddComponent() {
         </div>
         <div className="mb-3">
           <label htmlFor="contactNumber" className="form-label">
+            <FontAwesomeIcon icon={faPhone} className="me-2" />
             Номер за връзка
           </label>
           <input
             type="text"
             className="form-control"
             id="contactNumber"
+            placeholder="Въведете номер за връзка"
             value={contactNumber}
             onChange={(e) => setContactNumber(e.target.value)}
             required
@@ -133,27 +145,30 @@ function PharmacyAddComponent() {
         </div>
         <div className="mb-3">
           <label htmlFor="location" className="form-label">
+            <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" />
             Локация на аптеката
           </label>
           <input
             type="text"
             className="form-control"
             id="location"
+            placeholder="Въведете локация"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             required
           />
         </div>
         {error && (
-          <div className="mb-3">
-            <p style={{ color: "red" }}>
-              There was an error processing your request.
-            </p>
+          <div className="alert alert-danger" role="alert">
+            Възникна грешка при обработката на заявката.
           </div>
         )}
-        <button type="submit" className="btn btn-warning">
-          Добавяне
-        </button>
+        <div className="text-center">
+          <button type="submit" className="btn btn-warning btn-lg">
+            <FontAwesomeIcon icon={faPlusCircle} className="me-2" />
+            Добавяне
+          </button>
+        </div>
       </form>
     </div>
   );

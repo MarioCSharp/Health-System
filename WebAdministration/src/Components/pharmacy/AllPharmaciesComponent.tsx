@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import PharmacyEditComponent from "./PharmacyEditComponent";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash, faUserMd } from "@fortawesome/free-solid-svg-icons";
 
 interface Pharmacy {
   id: number;
@@ -30,7 +32,7 @@ function AllPharmaciesComponent() {
         const data = await response.json();
         setPharmacies(data);
       } else {
-        throw new Error("There was an error loading the pharmacies");
+        throw new Error("Възникна грешка при зареждането на аптеките");
       }
     } catch (error) {
       alert(error);
@@ -57,7 +59,7 @@ function AllPharmaciesComponent() {
       if (response.ok) {
         getPharmacies();
       } else {
-        throw new Error("There was an error deleting the pharmacy");
+        throw new Error("Възникна грешка при изтриването на аптеката");
       }
     } catch (error) {
       alert(error);
@@ -73,53 +75,56 @@ function AllPharmaciesComponent() {
   };
 
   return (
-    <div className="col-md-6 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Аптеки</h3>
+    <div className="container mt-4">
+      <h3 className="mb-4 text-center">Аптеки</h3>
+      <div className="row justify-content-center">
         {pharmacies.length > 0 ? (
-          pharmacies.map((pharmacy) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={pharmacy.id}
-            >
-              <span>
-                {pharmacy.name} | {pharmacy.location}
-              </span>
-              <div>
-                <a
-                  className="btn btn-primary btn-sm"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => redirectToPharmacists(pharmacy.id)}
-                >
-                  Фармацевти
-                </a>
-                <a
-                  className="btn btn-warning btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => handleEdit(pharmacy)}
-                >
-                  Редактирай
-                </a>
-                <a
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(pharmacy.id)}
-                >
-                  Изтрий
-                </a>
-              </div>
-              {editingPharmacy && (
-                <PharmacyEditComponent pharmacy={editingPharmacy} />
-              )}
-            </li>
-          ))
+          <ul className="list-group col-md-8">
+            {pharmacies.map((pharmacy) => (
+              <li
+                className="list-group-item d-flex justify-content-between align-items-center"
+                key={pharmacy.id}
+              >
+                <div>
+                  <strong>{pharmacy.name}</strong> | {pharmacy.location}
+                </div>
+                <div>
+                  <button
+                    className="btn btn-sm btn-primary me-2"
+                    onClick={() => redirectToPharmacists(pharmacy.id)}
+                  >
+                    <FontAwesomeIcon icon={faUserMd} className="me-1" />
+                    Фармацевти
+                  </button>
+                  <button
+                    className="btn btn-sm btn-warning me-2"
+                    onClick={() => handleEdit(pharmacy)}
+                  >
+                    <FontAwesomeIcon icon={faEdit} className="me-1" />
+                    Редактирай
+                  </button>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDelete(pharmacy.id)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} className="me-1" />
+                    Изтрий
+                  </button>
+                </div>
+                {editingPharmacy && editingPharmacy.id === pharmacy.id && (
+                  <PharmacyEditComponent pharmacy={editingPharmacy} />
+                )}
+              </li>
+            ))}
+          </ul>
         ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No pharmacies found</div>
+          <div className="col-md-8">
+            <div className="alert alert-info text-center" role="alert">
+              Няма намерени аптеки
             </div>
           </div>
         )}
-      </ul>
+      </div>
     </div>
   );
 }

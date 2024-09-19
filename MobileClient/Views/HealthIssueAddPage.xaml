@@ -44,7 +44,7 @@
             <Frame BackgroundColor="#FFFFFF" CornerRadius="10" Padding="20" HasShadow="True">
                 <StackLayout Spacing="20">
 
-                    <Label Text="Име на проблема:" Style="{StaticResource LabelStyle}" 
+                    <Label Text="Проблем:" Style="{StaticResource LabelStyle}" 
                            AutomationProperties.IsInAccessibleTree="True" 
                            AutomationProperties.Name="Hospital Name" />
                     <Entry x:Name="HospitalNameEntry" Placeholder="Въведате името на проблема" Style="{StaticResource EntryStyle}" 

@@ -103,7 +103,8 @@ function PastAppointmentsList() {
                       className="btn btn-info btn-sm me-2"
                       onClick={() => handlePrescriptionClick(appointment.id)}
                     >
-                      <i className="fas fa-file-medical me-1"></i> Издай лист
+                      <i className="fas fa-file-medical me-1"></i> Издай
+                      амбулаторен лист
                     </button>
                     <button
                       className="btn btn-warning btn-sm me-2"

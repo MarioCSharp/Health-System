@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 
 interface User {
   id: string;
@@ -30,10 +32,10 @@ function AllUsersComponent() {
         const data = await response.json();
         setUsers(data.users);
       } else {
-        throw new Error("There was an error getting all the users!");
+        throw new Error("Възникна проблем при зареждането на потребителите!");
       }
     } catch (error) {
-      console.log("There was an error", error);
+      console.log("Имаше грешка", error);
       setUsers([]);
       setError(true);
     }
@@ -52,37 +54,52 @@ function AllUsersComponent() {
   };
 
   return (
-    <div className="col-md-6 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Потребители</h3>
-        {users.length > 0 ? (
-          users.map((user) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={user.id}
-            >
-              <span>
-                {user.fullName} | {user.email}
+    <div className="container mt-4">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="card shadow-sm">
+            <div className="card-header bg-info text-white d-flex justify-content-between align-items-center">
+              <h4>
+                <FontAwesomeIcon icon={faUsers} className="me-2" />
+                Потребители
+              </h4>
+              <span className="badge bg-light text-info">
+                {users.length} потребители
               </span>
-              <div>
-                <a
-                  className="btn btn-primary btn-sm mr-2"
-                  style={{ marginRight: "2px" }}
-                  onClick={() => redirectToBooked(user.id)}
-                >
-                  Записани часове
-                </a>
-              </div>
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No users found</div>
+            </div>
+            <div className="card-body p-4">
+              {users.length > 0 ? (
+                <ul className="list-group">
+                  {users.map((user) => (
+                    <li
+                      className="list-group-item d-flex justify-content-between align-items-center"
+                      key={user.id}
+                    >
+                      <span>
+                        {user.fullName} | {user.email}
+                      </span>
+                      <button
+                        className="btn btn-sm btn-primary"
+                        onClick={() => redirectToBooked(user.id)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faCalendarCheck}
+                          className="me-1"
+                        />
+                        Записани часове
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="alert alert-warning text-center">
+                  Няма намерени потребители
+                </div>
+              )}
             </div>
           </div>
-        )}
-      </ul>
+        </div>
+      </div>
     </div>
   );
 }

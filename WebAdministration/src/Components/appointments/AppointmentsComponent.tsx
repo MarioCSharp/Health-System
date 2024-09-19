@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 interface Appointment {
   id: number;
@@ -54,32 +56,46 @@ function AppointmentsComponent() {
   }
 
   return (
-    <div className="col-md-4 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Записани часове на {userFullName}</h3>
-        {appointments && appointments.length > 0 ? (
-          appointments.map((appointment) => (
-            <li
-              className="list-group-item d-flex justify-content-between align-items-center"
-              key={appointment.id}
-            >
-              <span>
-                {appointment.date} | {appointment.serviceName} |{" "}
-                {appointment.name}
+    <div className="container mt-4">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="card shadow-sm">
+            <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+              <h4>
+                <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
+                Часове на {userFullName}
+              </h4>
+              <span className="badge bg-light text-primary">
+                {appointments.length} часове
               </span>
-              <div>
-                <a className="btn btn-danger btn-sm">Изтрий</a>
-              </div>
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No appointments found</div>
+            </div>
+            <div className="card-body p-4">
+              {appointments && appointments.length > 0 ? (
+                <ul className="list-group">
+                  {appointments.map((appointment) => (
+                    <li
+                      className="list-group-item d-flex justify-content-between align-items-center"
+                      key={appointment.id}
+                    >
+                      <span>
+                        {appointment.date} | {appointment.serviceName} |{" "}
+                        {appointment.name}
+                      </span>
+                      <button className="btn btn-sm btn-outline-danger">
+                        <FontAwesomeIcon icon={faTrashAlt} /> Изтрий
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="alert alert-info text-center">
+                  Няма намерени часове
+                </div>
+              )}
             </div>
           </div>
-        )}
-      </ul>
+        </div>
+      </div>
     </div>
   );
 }

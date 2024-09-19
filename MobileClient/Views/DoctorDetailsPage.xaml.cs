@@ -28,7 +28,7 @@ public partial class DoctorDetailsPage : ContentPage
 	{
 		InitializeComponent();
 
-        Title = "Детайли за доктор";
+        Title = "Доктор";
 
         this.serviceService = serviceService;
         this.authenticationService = authenticationService;

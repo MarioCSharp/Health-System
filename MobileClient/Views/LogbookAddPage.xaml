@@ -31,11 +31,11 @@
             </StackLayout>
 
             <StackLayout x:Name="BloodPressure" IsVisible="False">
-                <Label Text="Систоличен" />
+                <Label Text="Систолично" />
                 <Entry x:Name="SystolicInput" Keyboard="Numeric" />
-                <Label Text="Диастоличен" />
+                <Label Text="Диастолично" />
                 <Entry x:Name="DiastolicInput" Keyboard="Numeric" />
-                <Label Text="Пулсе" />
+                <Label Text="Пулс" />
                 <Entry x:Name="PulseInput" Keyboard="Numeric" />
                 <Label Text="Позиция" />
                 <Picker x:Name="PositionPicker">

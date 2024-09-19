@@ -38,6 +38,19 @@ enum OrderStatus {
   Refunded = "Refunded",
 }
 
+// Bulgarian translations for the OrderStatus enum
+const OrderStatusTranslations: { [key in OrderStatus]: string } = {
+  [OrderStatus.Placed]: "Поставена",
+  [OrderStatus.Confirmed]: "Потвърдена",
+  [OrderStatus.Processing]: "В обработка",
+  [OrderStatus.Shipped]: "Изпратена",
+  [OrderStatus.Delivered]: "Доставена",
+  [OrderStatus.Completed]: "Завършена",
+  [OrderStatus.Canceled]: "Отказана",
+  [OrderStatus.Returned]: "Върната",
+  [OrderStatus.Refunded]: "Възстановена",
+};
+
 function OrdersInMyPharmacyComponent() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [pharmacyId, setPharmacyId] = useState<number | null>(null);
@@ -180,7 +193,7 @@ function OrdersInMyPharmacyComponent() {
               <tr>
                 <td>{order.id}</td>
                 <td className={getStatusColor(order.status)}>
-                  {order.status}
+                  {OrderStatusTranslations[order.status]}
                   <div className="mt-2">
                     <select
                       className="form-select"
@@ -194,7 +207,7 @@ function OrdersInMyPharmacyComponent() {
                     >
                       {Object.values(OrderStatus).map((status) => (
                         <option key={`${order.id}-${status}`} value={status}>
-                          {status}
+                          {OrderStatusTranslations[status]}
                         </option>
                       ))}
                     </select>

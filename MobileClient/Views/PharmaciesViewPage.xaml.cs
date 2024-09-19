@@ -10,6 +10,8 @@ public partial class PharmaciesViewPage : ContentPage
 	{
 		InitializeComponent();
 
+		Title = "Аптеки";
+
 		BindingContext = this.viewModel = viewModel;	
 	}
 

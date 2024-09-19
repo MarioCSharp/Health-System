@@ -12,6 +12,8 @@ namespace HealthProject.Views
         {
             InitializeComponent();
 
+            Title = "Амбулаторни листове";
+
             BindingContext = this.viewModel = viewModel;
             this.saveFileService = new SaveFileService();
 

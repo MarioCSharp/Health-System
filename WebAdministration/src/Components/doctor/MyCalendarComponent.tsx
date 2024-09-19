@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import moment from "moment";
+import "moment/locale/bg"; // Import Bulgarian locale
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Set the locale to Bulgarian
+moment.locale("bg");
+
 interface Appointment {
   id: number;
-  date: string; // date is a string from the API
+  date: string;
   serviceName: string;
   name: string;
 }

@@ -8,15 +8,19 @@ namespace HealthProject.Views
         private MedicationScheduleViewModel viewModel;
         private DateTime currentDate;
         private DateTime selectedDate;
+        private readonly string[] bulgarianMonths = new[]
+        {
+            "Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"
+        };
 
         public MedicationSchedulePage(MedicationScheduleViewModel viewModel)
         {
             InitializeComponent();
-            Title = "График за лекарства";
+            Title = "График за прием лекарства";
             BindingContext = this.viewModel = viewModel;
 
             currentDate = DateTime.Today;
-            selectedDate = DateTime.Today; 
+            selectedDate = DateTime.Today;
             DisplayCalendar(currentDate);
         }
 
@@ -28,17 +32,19 @@ namespace HealthProject.Views
 
         private void DisplayCalendar(DateTime date)
         {
-            monthYearLabel.Text = date.ToString("MMMM yyyy", CultureInfo.InvariantCulture);
+            monthYearLabel.Text = $"{bulgarianMonths[date.Month - 1]} {date.Year}";
 
             calendarGrid.Children.Clear();
 
-            string[] daysOfWeek = new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+            string[] daysOfWeek = new[] { "Нед", "Пон", "Вто", "Сря", "Чет", "Пет", "Съб" };
             for (int i = 0; i < 7; i++)
             {
                 var dayLabel = new Label
                 {
                     Text = daysOfWeek[i],
-                    HorizontalOptions = LayoutOptions.Center
+                    HorizontalOptions = LayoutOptions.Center,
+                    TextColor = Color.FromHex("#FF6F61"),
+                    FontAttributes = FontAttributes.Bold
                 };
                 calendarGrid.Children.Add(dayLabel);
                 Grid.SetColumn(dayLabel, i);
@@ -58,7 +64,9 @@ namespace HealthProject.Views
                 Button dayButton = new Button
                 {
                     Text = day.ToString(),
-                    BackgroundColor = currentDay == selectedDate ? Colors.LightBlue : Colors.LightGray,
+                    BackgroundColor = currentDay == selectedDate ? Color.FromHex("#FF6F61") : Color.FromHex("#EFEFEF"),
+                    TextColor = currentDay == selectedDate ? Colors.White : Color.FromHex("#333333"),
+                    CornerRadius = 10,
                     CommandParameter = currentDay
                 };
 
@@ -87,7 +95,7 @@ namespace HealthProject.Views
             if (sender is Button button && button.CommandParameter is DateTime date)
             {
                 selectedDate = date;
-                DisplayCalendar(currentDate); 
+                DisplayCalendar(currentDate);
                 viewModel.OnDateSelected(date);
             }
         }

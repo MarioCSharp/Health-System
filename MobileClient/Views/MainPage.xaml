@@ -66,7 +66,7 @@
                 <!-- Medications Card -->
                 <Frame Style="{StaticResource CardStyle}">
                     <VerticalStackLayout>
-                        <Label Text="Следващи лекарства" Style="{StaticResource SectionTitleStyle}" />
+                        <Label Text="Лекарства" Style="{StaticResource SectionTitleStyle}" />
 
                         <CollectionView ItemsSource="{Binding ValidMedications}">
                             <CollectionView.ItemTemplate>
@@ -93,7 +93,7 @@
                 <!-- Appointments Card -->
                 <Frame Style="{StaticResource CardStyle}">
                     <VerticalStackLayout>
-                        <Label Text="Следващи записани часове" Style="{StaticResource SectionTitleStyle}" />
+                        <Label Text="Предстоящи часове" Style="{StaticResource SectionTitleStyle}" />
 
                         <CollectionView ItemsSource="{Binding Appointments}">
                             <CollectionView.ItemTemplate>

@@ -71,16 +71,16 @@
         Route="MyPrescriptionsPage"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Записи">
+    <FlyoutItem Title="Показатели">
         <ShellContent
-        Title="Записи"
+        Title="Показатели"
         ContentTemplate="{DataTemplate local:LogbookViewPage}"
         Route="LogbookViewPage"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Диагнозер предиктор">
+    <FlyoutItem Title="Диагностичен указател">
         <ShellContent
-        Title="Диагнозер предиктор"
+        Title="Диагностичен указател"
         ContentTemplate="{DataTemplate local:DiagnosisPredictionPage}"
         Route="DiagnosisPredictionPage"/>
     </FlyoutItem>

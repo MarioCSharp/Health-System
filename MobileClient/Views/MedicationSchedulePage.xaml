@@ -1,67 +1,79 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:HealthProject.ViewModels"
-             x:Class="HealthProject.Views.MedicationSchedulePage"
-             Title="Medication Schedule">
+             xmlns:local="clr-namespace:HealthProject.ViewModels"
+             x:Class="HealthProject.Views.MedicationSchedulePage">
 
     <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*">
-
-        <Grid x:Name="calendarNavigationGrid"
-              RowDefinitions="Auto"
-              ColumnDefinitions="Auto, *, Auto"
-              Grid.Row="0"
-              Padding="10">
-            <Button Text="Back" 
-                    HorizontalOptions="Start" 
+        <!-- Calendar Navigation -->
+        <FlexLayout Direction="Row" AlignItems="Center" JustifyContent="SpaceBetween" Padding="20,10"
+                    Grid.Row="0" BackgroundColor="#F9F9F9">
+            <Button Text="←" 
+                    HorizontalOptions="Start"
+                    BackgroundColor="#FF6F61"
+                    TextColor="White"
+                    CornerRadius="15"
+                    WidthRequest="50"
                     Clicked="OnPreviousMonthClicked" />
 
             <Label x:Name="monthYearLabel"
-                   Grid.Column="1"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    FontAttributes="Bold"
-                   FontSize="Large"
-                   Margin="0, 5"/>
+                   FontSize="22"
+                   TextColor="#FF6F61"
+                   Margin="0, 5" />
 
-            <Button Text=">" 
-                    Grid.Column="2"
+            <Button Text="→" 
                     HorizontalOptions="End" 
+                    BackgroundColor="#FF6F61"
+                    TextColor="White"
+                    CornerRadius="15"
+                    WidthRequest="50"
                     Clicked="OnNextMonthClicked" />
-        </Grid>
+        </FlexLayout>
 
+        <!-- Calendar Grid -->
         <Grid x:Name="calendarGrid"
               RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto"
               ColumnDefinitions="*, *, *, *, *, *, *"
               Grid.Row="1"
-              Padding="10">
+              Padding="10"
+              BackgroundColor="White"
+              Margin="10, 0">
         </Grid>
 
         <CollectionView Grid.Row="2"
                         ItemsSource="{Binding FilteredMedications}"
                         VerticalOptions="FillAndExpand"
-                        HorizontalOptions="FillAndExpand">
+                        HorizontalOptions="FillAndExpand"
+                        Margin="10">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" Margin="5" BorderColor="LightGray" CornerRadius="5">
-                        <StackLayout>
-                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="Medium"/>
-                            <Label Text="{Binding HealthIssueName}" FontAttributes="Italic"/>
-                            <Label>
-                                <Label.Text>
-                                    <MultiBinding StringFormat="Dose: {0} {1}">
-                                        <Binding Path="Dose" />
-                                        <Binding Path="Type" />
-                                    </MultiBinding>
-                                </Label.Text>
-                            </Label>
-                            <Label Text="{Binding StartDate, StringFormat='Start: {0:dd/MM/yyyy}'}" />
-                            <Label Text="{Binding EndDate, StringFormat='End: {0:dd/MM/yyyy}'}" />
-                            <Label Text="{Binding FormattedTimes}" />
+                    <Frame Padding="15" Margin="10" BorderColor="LightGray" CornerRadius="15" HasShadow="True" BackgroundColor="#F5F5F5">
+                        <StackLayout Spacing="5">
+                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="Medium" TextColor="#333" />
+                            <Label Text="{Binding HealthIssueName}" FontAttributes="Italic" FontSize="Small" TextColor="#777" />
+                            <StackLayout Orientation="Horizontal" Spacing="5">
+                                <Label Text="Доза: " FontAttributes="Bold" />
+                                <Label Text="{Binding Dose}" />
+                                <Label Text="{Binding Type}" />
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal" Spacing="5">
+                                <Label Text="Начало: " FontAttributes="Bold" />
+                                <Label Text="{Binding StartDate, StringFormat='{0:dd/MM/yyyy}'}" />
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal" Spacing="5">
+                                <Label Text="Край: " FontAttributes="Bold" />
+                                <Label Text="{Binding EndDate, StringFormat='{0:dd/MM/yyyy}'}" />
+                            </StackLayout>
+
+                            <Label Text="{Binding FormattedTimes}" TextColor="#999" />
                         </StackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
     </Grid>
 </ContentPage>
