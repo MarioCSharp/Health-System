@@ -4,11 +4,17 @@ using System.Text;
 
 namespace HealthSystem.HealthCare.Infrastructure
 {
+    /// <summary>
+    /// Provides methods for encrypting and decrypting text using AES encryption.
+    /// </summary>
     public class EncryptionHelper
     {
         private static readonly byte[] key;
         private static readonly byte[] iv;
 
+        /// <summary>
+        /// Static constructor to initialize encryption key and IV from environment variables.
+        /// </summary>
         static EncryptionHelper()
         {
             string envFilePath = Environment.GetEnvironmentVariable("ENCRYPTION_ENV_PATH")
@@ -47,6 +53,11 @@ namespace HealthSystem.HealthCare.Infrastructure
                 throw new InvalidOperationException("Invalid IV size. Must be 16 bytes.");
         }
 
+        /// <summary>
+        /// Encrypts the given plain text using AES encryption.
+        /// </summary>
+        /// <param name="plainText">The plain text to encrypt.</param>
+        /// <returns>The encrypted text encoded as a Base64 string.</returns>
         public static string Encrypt(string plainText)
         {
             if (string.IsNullOrEmpty(plainText)) return plainText;
@@ -55,8 +66,8 @@ namespace HealthSystem.HealthCare.Infrastructure
             {
                 aes.Key = key;
                 aes.IV = iv;
-                aes.Padding = PaddingMode.PKCS7;  
-                aes.Mode = CipherMode.CBC;     
+                aes.Padding = PaddingMode.PKCS7;
+                aes.Mode = CipherMode.CBC;
 
                 using (var encryptor = aes.CreateEncryptor(aes.Key, aes.IV))
                 using (var ms = new MemoryStream())
@@ -71,6 +82,11 @@ namespace HealthSystem.HealthCare.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Decrypts the given encrypted text using AES decryption.
+        /// </summary>
+        /// <param name="encryptedText">The encrypted text encoded as a Base64 string.</param>
+        /// <returns>The decrypted plain text.</returns>
         public static string Decrypt(string encryptedText)
         {
             if (string.IsNullOrEmpty(encryptedText)) return encryptedText;
@@ -79,8 +95,8 @@ namespace HealthSystem.HealthCare.Infrastructure
             {
                 aes.Key = key;
                 aes.IV = iv;
-                aes.Padding = PaddingMode.PKCS7;  
-                aes.Mode = CipherMode.CBC;    
+                aes.Padding = PaddingMode.PKCS7;
+                aes.Mode = CipherMode.CBC;
 
                 using (var decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
                 using (var ms = new MemoryStream(Convert.FromBase64String(encryptedText)))

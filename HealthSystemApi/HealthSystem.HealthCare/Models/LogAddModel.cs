@@ -26,8 +26,6 @@ namespace HealthSystem.HealthCare.Models
         [FromForm(Name = "UserId")]
         public string? UserId { get; set; }
 
-        [Required]
-        [FromForm(Name = "Date")]
         public DateTime Date { get; set; }
     }
 }

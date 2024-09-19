@@ -45,7 +45,6 @@ namespace HealthProject.Services.LogbookService
             form.Add(new StringContent(model.Type ?? ""), "Type");
             form.Add(new StringContent(model.Note ?? ""), "Note");
             form.Add(new StringContent(model.UserId ?? ""), "UserId");
-            form.Add(new StringContent(model.Date.ToString("dd/MM/yyyy HH:mm")), "Date");
 
             var response = await _httpClient.PostAsync($"{_baseAddress}:5115/api/Logbook/Add", form);
             response.EnsureSuccessStatusCode();
