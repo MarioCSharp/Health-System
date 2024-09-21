@@ -75,5 +75,12 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <!-- Centered Image -->
+        <Image Source="nothing_found.png"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               Grid.Row="2"
+               IsVisible="{Binding FilteredMedications.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
     </Grid>
 </ContentPage>

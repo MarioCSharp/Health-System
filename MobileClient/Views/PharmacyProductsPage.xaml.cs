@@ -28,6 +28,9 @@ public partial class PharmacyProductsPage : ContentPage, IQueryAttributable
     public PharmacyProductsPage(PharmacyProductsViewModel viewModel)
     {
         InitializeComponent();
+
+        Title = "Продукти";
+
         BindingContext = this.viewModel = viewModel;
     }
 

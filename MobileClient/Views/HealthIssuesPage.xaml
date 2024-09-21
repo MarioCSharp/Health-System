@@ -62,6 +62,13 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <Image Source="nothing_found.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Grid.Row="1"
+                   IsVisible="{Binding HealthIssues.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>

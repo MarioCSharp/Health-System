@@ -7,10 +7,13 @@
              Title="RemindersViewPage">
     <ContentPage.Content>
         <Grid>
-            <Label FontSize="32" 
-               FontAttributes="Bold"
-               Text="Напомняния"
-               HorizontalOptions="Center"/>
+            <Label Text="Напомняния"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   TextColor="#007ACC"
+                   Margin="20"/>
 
             <CollectionView ItemsSource="{Binding Reminders}" Margin="10, 70">
                 <CollectionView.ItemTemplate>
@@ -77,6 +80,12 @@
                     </Trigger>
                 </Button.Triggers>
             </Button>
+
+            <Image Source="nothing_found.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Grid.Row="2"
+                   IsVisible="{Binding Reminders.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

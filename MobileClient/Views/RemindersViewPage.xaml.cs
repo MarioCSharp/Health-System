@@ -9,6 +9,8 @@ public partial class RemindersViewPage : ContentPage
 	{
 		InitializeComponent();
 
+		Title = "Напомняния";
+
 		BindingContext = this.viewModel = viewModel;
 	}
 

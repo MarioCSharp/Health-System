@@ -5,12 +5,13 @@
              Title="Pharmacies"
              xmlns:local="clr-namespace:HealthProject.ViewModels">
     <VerticalStackLayout Padding="10">
-        <Label 
-            Text="Аптеки"
-            FontSize="24"
-            HorizontalOptions="Center"
-            VerticalOptions="Start"
-            Margin="0,10" />
+        <Label     Text="Аптеки"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   TextColor="#007ACC"
+                   Margin="20" />
 
         <CollectionView ItemsSource="{Binding Pharmacies}" SelectionMode="None"
                         VerticalOptions="FillAndExpand">
@@ -30,5 +31,11 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <Image Source="nothing_found.png"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               Grid.Row="2"
+               IsVisible="{Binding Pharmacies.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
     </VerticalStackLayout>
 </ContentPage>

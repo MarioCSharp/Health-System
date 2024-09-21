@@ -48,6 +48,12 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            
+            <Image Source="nothing_found.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Grid.Row="1"
+                   IsVisible="{Binding History.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

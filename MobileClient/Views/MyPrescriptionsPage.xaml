@@ -8,11 +8,15 @@
     <ContentPage.Content>
         <VerticalStackLayout Padding="10">
             <Label Text="Амбулаторни листове"
-                   FontSize="Large"
+                   FontSize="24"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center"/>
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   TextColor="#007ACC"
+                   Margin="20"/>
 
-            <CollectionView ItemsSource="{Binding Prescriptions}">
+            <CollectionView ItemsSource="{Binding Prescriptions}"
+                            IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BorderColor="LightGray"
@@ -39,6 +43,12 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <Image Source="nothing_found.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Grid.Row="2"
+                   IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

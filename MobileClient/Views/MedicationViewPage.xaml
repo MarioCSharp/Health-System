@@ -8,10 +8,13 @@
 
     <ContentPage.Content>
         <Grid>
-            <Label FontSize="32" 
+            <Label Text="Лекарства"
+                   FontSize="24"
                    FontAttributes="Bold"
-                   Text="Лекарства"
-                   HorizontalOptions="Center"/>
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   TextColor="#007ACC"
+                   Margin="20"/>
 
             <CollectionView ItemsSource="{Binding Medications}" Margin="10, 70">
                 <CollectionView.ItemTemplate>
@@ -82,6 +85,12 @@
                     </Trigger>
                 </Button.Triggers>
             </Button>
+
+            <Image Source="nothing_found.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Grid.Row="1"
+                   IsVisible="{Binding Medications.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

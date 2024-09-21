@@ -44,7 +44,7 @@ namespace HealthProject.ViewModels
             if (parameter is int id)
             {
                 await documentService.RemoveAsync(id);
-                await Shell.Current.GoToAsync($"//{nameof(DocumentViewPage)}");
+                LoadUserDocuments();
             }
         }
 

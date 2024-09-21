@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="/Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <local:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <local:IsCollectionEmptyConverter x:Key="IsCollectionEmptyConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
