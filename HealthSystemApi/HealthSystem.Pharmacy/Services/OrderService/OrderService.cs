@@ -1,25 +1,37 @@
-﻿using Azure.Core;
-using HealthSystem.Pharmacy.Data;
+﻿using HealthSystem.Pharmacy.Data;
 using HealthSystem.Pharmacy.Data.Enums;
 using HealthSystem.Pharmacy.Data.Models;
 using HealthSystem.Pharmacy.Models.Cart;
 using HealthSystem.Pharmacy.Models.Order;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http;
 
 namespace HealthSystem.Pharmacy.Services.OrderService
 {
+    /// <summary>
+    /// Service responsible for handling operations related to orders in the pharmacy system.
+    /// </summary>
     public class OrderService : IOrderService
     {
-        private PharmacyDbContext context;
-        private HttpClient httpClient;
+        private readonly PharmacyDbContext context;
+        private readonly HttpClient httpClient;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderService"/> class.
+        /// </summary>
+        /// <param name="context">The <see cref="PharmacyDbContext"/> used for database operations.</param>
+        /// <param name="httpClient">The <see cref="HttpClient"/> used for making HTTP requests.</param>
         public OrderService(PharmacyDbContext context, HttpClient httpClient)
         {
             this.context = context;
             this.httpClient = httpClient;
         }
 
+        /// <summary>
+        /// Changes the status of a specified order.
+        /// </summary>
+        /// <param name="orderId">The ID of the order to change the status of.</param>
+        /// <param name="status">The new status to assign to the order.</param>
+        /// <returns>A boolean value indicating whether the operation was successful.</returns>
         public async Task<bool> ChangeStatus(int orderId, string status)
         {
             var order = await context.Orders.FindAsync(orderId);
@@ -29,13 +41,19 @@ namespace HealthSystem.Pharmacy.Services.OrderService
                 return false;
             }
 
-            order.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), status, true); ;
-
+            order.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), status, true);
             await context.SaveChangesAsync();
 
             return true;
         }
 
+        /// <summary>
+        /// Retrieves an order based on the provided EGN (personal identification number) and adds the medications from the prescription to the user's cart.
+        /// </summary>
+        /// <param name="egn">The EGN of the patient.</param>
+        /// <param name="cartId">The ID of the user's cart.</param>
+        /// <param name="token">The authorization token for making external API requests.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         public async Task<bool> GetOrderByEGNAsync(string egn, int cartId, string token)
         {
             var cart = await context.UserCarts.FindAsync(cartId);
@@ -46,7 +64,6 @@ namespace HealthSystem.Pharmacy.Services.OrderService
             }
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"http://results/api/Recipe/GeLastRecipe?EGN={egn}");
-
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var recipeResponse = await httpClient.SendAsync(request);
@@ -58,22 +75,17 @@ namespace HealthSystem.Pharmacy.Services.OrderService
             }
 
             var fileStream = await recipeResponse.Content.ReadAsStreamAsync();
-            var contentType = recipeResponse.Content.Headers.ContentType?.ToString();
-            var fileName = recipeResponse.Content.Headers.ContentDisposition?.FileName ?? "downloadedFile";
-
             using (var reader = new StreamReader(fileStream))
             {
                 string line;
-
                 while ((line = await reader.ReadLineAsync()) != null)
                 {
                     var splitLine = line.Split('-');
-
                     var medicationName = splitLine[0];
 
                     var meds = await context.Medications
                         .Include(x => x.Pharmacy)
-                        .Where(x => x.MedicationName == medicationName && x.PharmacyId == cart.Id)
+                        .Where(x => x.MedicationName == medicationName && x.PharmacyId == cart.PharmacyId)
                         .ToListAsync();
 
                     if (meds is null)
@@ -84,7 +96,7 @@ namespace HealthSystem.Pharmacy.Services.OrderService
                     foreach (var medication in meds)
                     {
                         var cartItem = await context.CartItems
-                        .FirstOrDefaultAsync(x => x.MedicationId == medication.Id && x.UserCartId == cartId);
+                            .FirstOrDefaultAsync(x => x.MedicationId == medication.Id && x.UserCartId == cartId);
 
                         if (cartItem is null)
                         {
@@ -97,7 +109,6 @@ namespace HealthSystem.Pharmacy.Services.OrderService
 
                             await context.CartItems.AddAsync(newCartItem);
                             await context.SaveChangesAsync();
-
                             return await context.CartItems.ContainsAsync(newCartItem);
                         }
                     }
@@ -107,6 +118,11 @@ namespace HealthSystem.Pharmacy.Services.OrderService
             return true;
         }
 
+        /// <summary>
+        /// Retrieves a list of orders for a specific pharmacy.
+        /// </summary>
+        /// <param name="pharmacyId">The ID of the pharmacy.</param>
+        /// <returns>A list of <see cref="OrderDisplayModel"/> representing the orders in the pharmacy.</returns>
         public async Task<List<OrderDisplayModel>> OrdersInPharmacyAsync(int pharmacyId)
         {
             return await context.Orders
@@ -132,6 +148,12 @@ namespace HealthSystem.Pharmacy.Services.OrderService
                 }).ToListAsync();
         }
 
+        /// <summary>
+        /// Submits a new order based on the user's cart and details provided in the submission model.
+        /// </summary>
+        /// <param name="model">The <see cref="SubmitOrderModel"/> containing the order details.</param>
+        /// <param name="userId">The ID of the user placing the order.</param>
+        /// <returns>A boolean value indicating whether the operation was successful.</returns>
         public async Task<bool> SubmitOrderAsync(SubmitOrderModel model, string userId)
         {
             var userCart = await context.UserCarts
@@ -161,13 +183,10 @@ namespace HealthSystem.Pharmacy.Services.OrderService
                     return false;
                 }
 
-                var medicationId = item.MedicationId;
-                var quantity = item.Quantity;
-
                 var orderMedication = new OrderMedication
                 {
-                    MedicationId = medicationId,
-                    Quantity = quantity
+                    MedicationId = item.MedicationId,
+                    Quantity = item.Quantity
                 };
 
                 order.OrderMedications.Add(orderMedication);
@@ -183,6 +202,9 @@ namespace HealthSystem.Pharmacy.Services.OrderService
         }
     }
 
+    /// <summary>
+    /// Model for displaying recipe information.
+    /// </summary>
     public class RecipeDisplayModel
     {
         public int Id { get; set; }

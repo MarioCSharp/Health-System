@@ -6,17 +6,29 @@ using System.Security.Claims;
 
 namespace HealthSystem.Pharmacy.Controllers
 {
+    /// <summary>
+    /// API controller responsible for managing order operations in the pharmacy system.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         private IOrderService orderService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderController"/> class.
+        /// </summary>
+        /// <param name="orderService">The <see cref="IOrderService"/> responsible for order-related operations.</param>
         public OrderController(IOrderService orderService)
         {
             this.orderService = orderService;
         }
 
+        /// <summary>
+        /// Submits a new order for the current user.
+        /// </summary>
+        /// <param name="model">The <see cref="SubmitOrderModel"/> containing the order details.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the order submission.</returns>
         [HttpPost("SubmitOrder")]
         [Authorize]
         public async Task<IActionResult> SubmitOrder([FromForm] SubmitOrderModel model)
@@ -33,6 +45,11 @@ namespace HealthSystem.Pharmacy.Controllers
             return result ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Retrieves all orders in a specified pharmacy.
+        /// </summary>
+        /// <param name="pharmacyId">The ID of the pharmacy to retrieve orders for.</param>
+        /// <returns>An <see cref="IActionResult"/> containing the list of orders.</returns>
         [HttpGet("AllOrdersInPharmacy")]
         [Authorize(Roles = "PharmacyOwner,Pharmacist")]
         public async Task<IActionResult> AllOrdersInPharmacy([FromQuery] int pharmacyId)
@@ -42,6 +59,12 @@ namespace HealthSystem.Pharmacy.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Changes the status of a specified order.
+        /// </summary>
+        /// <param name="orderId">The ID of the order to change the status of.</param>
+        /// <param name="newStatus">The new status to set for the order.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the status change.</returns>
         [HttpGet("ChangeStatus")]
         [Authorize(Roles = "PharmacyOwner,Pharmacist")]
         public async Task<IActionResult> ChangeStatus([FromQuery] int orderId, string newStatus)
@@ -51,6 +74,12 @@ namespace HealthSystem.Pharmacy.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Retrieves an order by EGN (Personal Identification Number) and user cart ID.
+        /// </summary>
+        /// <param name="EGN">The EGN of the user to retrieve the order for.</param>
+        /// <param name="userCartId">The ID of the user's cart.</param>
+        /// <returns>An <see cref="IActionResult"/> containing the order details.</returns>
         [HttpGet("GetOrderByEGN")]
         [Authorize]
         public async Task<IActionResult> GetOrderByEGN([FromQuery] string EGN, int userCartId)

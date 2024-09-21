@@ -6,16 +6,29 @@ using System.Security.Claims;
 
 namespace HealthSystem.Pharmacy.Controllers
 {
+    /// <summary>
+    /// API controller responsible for managing pharmacy-related operations in the pharmacy system.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class PharmacyController : ControllerBase
     {
         private IPharmacyService pharmacyService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PharmacyController"/> class.
+        /// </summary>
+        /// <param name="pharmacyService">The <see cref="IPharmacyService"/> responsible for pharmacy operations.</param>
         public PharmacyController(IPharmacyService pharmacyService)
         {
             this.pharmacyService = pharmacyService;
         }
 
+        /// <summary>
+        /// Adds a new pharmacy.
+        /// </summary>
+        /// <param name="model">The <see cref="PharmacyAddModel"/> containing the details of the pharmacy to add.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the add operation.</returns>
         [HttpPost("Add")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Add([FromForm] PharmacyAddModel model)
@@ -38,6 +51,10 @@ namespace HealthSystem.Pharmacy.Controllers
             return result ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Retrieves all pharmacies.
+        /// </summary>
+        /// <returns>An <see cref="IActionResult"/> containing the list of all pharmacies.</returns>
         [HttpGet("All")]
         [Authorize]
         public async Task<IActionResult> All()
@@ -47,6 +64,11 @@ namespace HealthSystem.Pharmacy.Controllers
             return result is not null ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Retrieves the details of a specific pharmacy.
+        /// </summary>
+        /// <param name="id">The ID of the pharmacy to retrieve details for.</param>
+        /// <returns>An <see cref="IActionResult"/> containing the pharmacy details.</returns>
         [HttpGet("Details")]
         [Authorize]
         public async Task<IActionResult> Details([FromQuery] int id)
@@ -56,6 +78,11 @@ namespace HealthSystem.Pharmacy.Controllers
             return result is not null ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Deletes a specific pharmacy.
+        /// </summary>
+        /// <param name="id">The ID of the pharmacy to delete.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the delete operation.</returns>
         [HttpGet("Delete")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete([FromQuery] int id)
@@ -73,6 +100,11 @@ namespace HealthSystem.Pharmacy.Controllers
             return result ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Edits a specific pharmacy's details.
+        /// </summary>
+        /// <param name="model">The <see cref="PharmacyEditModel"/> containing the updated pharmacy details.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the edit operation.</returns>
         [HttpPost("Edit")]
         [Authorize(Roles = "Administrator,PharmacyOwner")]
         public async Task<IActionResult> Edit([FromForm] PharmacyEditModel model)
@@ -89,6 +121,10 @@ namespace HealthSystem.Pharmacy.Controllers
             return result ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Retrieves the pharmacy associated with the current pharmacy owner.
+        /// </summary>
+        /// <returns>An <see cref="IActionResult"/> containing the pharmacy details.</returns>
         [HttpGet("GetMyPharmacy")]
         [Authorize(Roles = "PharmacyOwner")]
         public async Task<IActionResult> GetMyPharmacy()
@@ -98,6 +134,10 @@ namespace HealthSystem.Pharmacy.Controllers
                 User.IsInRole("PharmacyOwner") ? "PharmacyOwner" : "Pharmacist"));
         }
 
+        /// <summary>
+        /// Retrieves the pharmacy ID associated with the current pharmacy owner or pharmacist.
+        /// </summary>
+        /// <returns>An <see cref="IActionResult"/> containing the pharmacy ID.</returns>
         [HttpGet("GetMyPharmacyId")]
         [Authorize(Roles = "PharmacyOwner,Pharmacist")]
         public async Task<IActionResult> GetMyPharmacyId()

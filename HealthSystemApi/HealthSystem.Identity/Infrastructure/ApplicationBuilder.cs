@@ -5,8 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystem.Identity.Infrastructure
 {
+    /// <summary>
+    /// Provides extension methods for initializing the application, including database migration and seeding of the Administrator role.
+    /// </summary>
     public static class ApplicationBuilder
     {
+        /// <summary>
+        /// Initializes the application by migrating the database and seeding the Administrator role.
+        /// </summary>
+        /// <param name="app">The application builder interface.</param>
         public static async void Initialize(this IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
@@ -15,6 +22,11 @@ namespace HealthSystem.Identity.Infrastructure
             MigrateDatabase(app);
             SeedAdministrator(services);
         }
+
+        /// <summary>
+        /// Applies pending migrations to the database if there are any.
+        /// </summary>
+        /// <param name="app">The application builder interface.</param>
         public static void MigrateDatabase(IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())
@@ -30,6 +42,10 @@ namespace HealthSystem.Identity.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Seeds the default roles including Administrator, Director, Doctor, and more into the application.
+        /// </summary>
+        /// <param name="services">The service provider for accessing application services like UserManager and RoleManager.</param>
         public static void SeedAdministrator(IServiceProvider services)
         {
             var userManager = services.GetRequiredService<UserManager<User>>();

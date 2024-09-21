@@ -11,9 +11,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 
-
 namespace HealthSystem.Identity.Controllers
 {
+    /// <summary>
+    /// Controller for handling authentication and user management operations.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase
@@ -24,10 +26,17 @@ namespace HealthSystem.Identity.Controllers
         private RoleManager<IdentityRole> roleManager;
         private IIdentityService authenticationService;
 
-        private string _secretKey = "MedCare?Authentication?Secret?Token";  // You shouldn`t store this here!
+        private string _secretKey = "MedCare?Authentication?Secret?Token";  // You shouldn't store this here!
         private string _issuer = "http://localhost:5166";
         private string _audience = "http://localhost:5166";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
+        /// </summary>
+        /// <param name="context">The Identity database context.</param>
+        /// <param name="userManager">The user manager to handle user operations.</param>
+        /// <param name="signInManager">The sign-in manager to handle login operations.</param>
+        /// <param name="authenticationService">The identity service to handle authentication.</param>
         public AuthenticationController(IdentityDbContext context,
                                         UserManager<User> userManager,
                                         SignInManager<User> signInManager,
@@ -39,6 +48,11 @@ namespace HealthSystem.Identity.Controllers
             this.authenticationService = authenticationService;
         }
 
+        /// <summary>
+        /// Registers a new user with the provided details.
+        /// </summary>
+        /// <param name="registerModel">The model containing registration details.</param>
+        /// <returns>Returns a JWT token if registration is successful.</returns>
         [HttpGet("Register")]
         public async Task<IActionResult> Register([FromQuery] RegisterModel registerModel)
         {
@@ -64,6 +78,11 @@ namespace HealthSystem.Identity.Controllers
             return BadRequest(result);
         }
 
+        /// <summary>
+        /// Logs in a user with the provided credentials.
+        /// </summary>
+        /// <param name="loginModel">The model containing login details.</param>
+        /// <returns>Returns a JWT token if login is successful.</returns>
         [HttpGet("Login")]
         public async Task<IActionResult> Login([FromQuery] LoginModel loginModel)
         {
@@ -84,6 +103,11 @@ namespace HealthSystem.Identity.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Logs in a user and returns their role if only one role is assigned.
+        /// </summary>
+        /// <param name="loginModel">The model containing login details.</param>
+        /// <returns>Returns a JWT token and the user's role if successful.</returns>
         [HttpGet("SuperLogin")]
         public async Task<IActionResult> SuperLogin([FromQuery] LoginModel loginModel)
         {
@@ -106,6 +130,10 @@ namespace HealthSystem.Identity.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Checks if the current user is authenticated.
+        /// </summary>
+        /// <returns>Returns true if the user is authenticated.</returns>
         [HttpGet("IsAuthenticated")]
         public async Task<IActionResult> IsAuthenticated()
         {
@@ -117,6 +145,10 @@ namespace HealthSystem.Identity.Controllers
             return Ok(new { IsAuthenticated = false });
         }
 
+        /// <summary>
+        /// Securely checks if the current user is authenticated.
+        /// </summary>
+        /// <returns>Returns true if the user is authenticated.</returns>
         [HttpGet("SecureIsAuthenticated")]
         public async Task<IActionResult> SecureIsAuthenticated()
         {
@@ -128,12 +160,21 @@ namespace HealthSystem.Identity.Controllers
             return Ok(new { IsAuthenticated = false });
         }
 
+        /// <summary>
+        /// Checks if the provided token belongs to an administrator.
+        /// </summary>
+        /// <param name="token">The JWT token to validate.</param>
+        /// <returns>Returns true if the token belongs to an administrator.</returns>
         [HttpGet("IsAdmin")]
         public async Task<IActionResult> IsAdmin([FromQuery] string token)
         {
             return Ok(await authenticationService.IsAdministrator(token));
         }
 
+        /// <summary>
+        /// Retrieves a list of all users, restricted to administrators.
+        /// </summary>
+        /// <returns>Returns a list of user display models.</returns>
         [HttpGet("GetAllUsers")]
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetAllUsers()
@@ -151,6 +192,11 @@ namespace HealthSystem.Identity.Controllers
             });
         }
 
+        /// <summary>
+        /// Retrieves the full name of a user based on their ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>Returns the user's full name, or "Unknown" if not found.</returns>
         [HttpGet("GetNameByUserId")]
         public async Task<IActionResult> GetNameByUserId([FromQuery] string userId)
         {
@@ -159,6 +205,12 @@ namespace HealthSystem.Identity.Controllers
             return Ok(user.FullName ?? "Unknown");
         }
 
+        /// <summary>
+        /// Adds a user to a specified role.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="role">The role to assign.</param>
+        /// <returns>Returns a success result if the operation is successful.</returns>
         [HttpGet("PutToRole")]
         [Authorize(Roles = "Administrator,Director,PharmacyOwner")]
         public async Task<IActionResult> PutToRole([FromQuery] string userId, string role)
@@ -184,6 +236,12 @@ namespace HealthSystem.Identity.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Removes a user from a specified role.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="role">The role to remove.</param>
+        /// <returns>Returns a success result if the operation is successful.</returns>
         [HttpGet("DeleteFromRole")]
         [Authorize(Roles = "Administrator,Director,PharmacyOwner")]
         public async Task<IActionResult> DeleteFromRole([FromQuery] string userId, string role)
@@ -195,6 +253,11 @@ namespace HealthSystem.Identity.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Generates a JWT token for the provided user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>Returns a JWT token as a string.</returns>
         private async Task<string> GenerateToken(string userId)
         {
             var tokenExpiration = DateTime.UtcNow.AddDays(7);
@@ -228,6 +291,11 @@ namespace HealthSystem.Identity.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        /// <summary>
+        /// Gets the expiration time of a JWT token.
+        /// </summary>
+        /// <param name="token">The JWT token to check.</param>
+        /// <returns>Returns the expiration time in ticks as a long value.</returns>
         private long GetTokenExpirationTime(string token)
         {
             var handler = new JwtSecurityTokenHandler();

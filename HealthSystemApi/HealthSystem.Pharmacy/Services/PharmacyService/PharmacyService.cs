@@ -4,17 +4,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystem.Pharmacy.Services.PharmacyService
 {
+    /// <summary>
+    /// Service responsible for managing pharmacy-related operations.
+    /// </summary>
     public class PharmacyService : IPharmacyService
     {
-        private PharmacyDbContext context;
-        private HttpClient httpClient;
+        private readonly PharmacyDbContext context;
+        private readonly HttpClient httpClient;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PharmacyService"/> class.
+        /// </summary>
+        /// <param name="context">The <see cref="PharmacyDbContext"/> used for database operations.</param>
+        /// <param name="httpClient">The <see cref="HttpClient"/> used for making HTTP requests.</param>
         public PharmacyService(PharmacyDbContext context, HttpClient httpClient)
         {
             this.context = context;
             this.httpClient = httpClient;
         }
 
+        /// <summary>
+        /// Adds a new pharmacy to the system.
+        /// </summary>
+        /// <param name="model">The <see cref="PharmacyAddModel"/> containing the pharmacy's details.</param>
+        /// <param name="token">The authorization token for making external API requests.</param>
+        /// <returns>A boolean value indicating whether the operation was successful.</returns>
         public async Task<bool> AddAsync(PharmacyAddModel model, string token)
         {
             var pharmacy = new Data.Models.Pharmacy()
@@ -25,6 +39,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
                 OwnerUserId = model.OwnerUserId
             };
 
+            // Assign the pharmacy owner role to the user
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
                 $"http://identity/api/Authentication/PutToRole?userId={model.OwnerUserId}&role=PharmacyOwner");
 
@@ -43,6 +58,10 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             return false;
         }
 
+        /// <summary>
+        /// Retrieves all pharmacies in the system.
+        /// </summary>
+        /// <returns>A list of <see cref="PharmacyModel"/> representing all pharmacies.</returns>
         public async Task<List<PharmacyModel>> AllAsync()
         {
             return await context.Pharmacies
@@ -55,6 +74,12 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
                 }).ToListAsync();
         }
 
+        /// <summary>
+        /// Deletes a pharmacy from the system.
+        /// </summary>
+        /// <param name="id">The ID of the pharmacy to delete.</param>
+        /// <param name="token">The authorization token for making external API requests.</param>
+        /// <returns>A boolean value indicating whether the operation was successful.</returns>
         public async Task<bool> DeleteAsync(int id, string token)
         {
             var pharmacy = await context.Pharmacies.FindAsync(id);
@@ -64,6 +89,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
                 return false;
             }
 
+            // Remove the pharmacy owner role from the user
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
                $"http://identity/api/Authentication/DeleteFromRole?userId={pharmacy.OwnerUserId}&role=PharmacyOwner");
 
@@ -73,6 +99,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
 
             if (response.IsSuccessStatusCode)
             {
+                // Delete related records
                 await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Medications WHERE PharmacyId = {id}");
                 await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Pharmacists WHERE PharmacyId = {id}");
                 await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM UserCarts WHERE PharmacyId = {id}");
@@ -86,6 +113,11 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             return false;
         }
 
+        /// <summary>
+        /// Retrieves detailed information about a specific pharmacy.
+        /// </summary>
+        /// <param name="id">The ID of the pharmacy to retrieve.</param>
+        /// <returns>A <see cref="PharmacyModel"/> containing the pharmacy's details.</returns>
         public async Task<PharmacyModel> DetailsAsync(int id)
         {
             var pharmacy = await context.Pharmacies.FindAsync(id);
@@ -104,6 +136,12 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             };
         }
 
+        /// <summary>
+        /// Edits an existing pharmacy's information.
+        /// </summary>
+        /// <param name="model">The <see cref="PharmacyEditModel"/> containing updated pharmacy details.</param>
+        /// <param name="userId">The ID of the user attempting to edit the pharmacy.</param>
+        /// <returns>A boolean value indicating whether the operation was successful.</returns>
         public async Task<bool> EditAsync(PharmacyEditModel model, string userId)
         {
             if (string.IsNullOrEmpty(userId))
@@ -118,6 +156,7 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
                 return false;
             }
 
+            // Check if the user has permission to edit the pharmacy
             if (pharmacy.OwnerUserId != userId && userId != "Administrator")
             {
                 return false;
@@ -131,6 +170,12 @@ namespace HealthSystem.Pharmacy.Services.PharmacyService
             return true;
         }
 
+        /// <summary>
+        /// Retrieves pharmacy information based on the user's ID and role.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="role">The role of the user.</param>
+        /// <returns>A <see cref="PharmacyModel"/> containing the pharmacy's details.</returns>
         public async Task<PharmacyModel> GetPharmacyByUserIdAsync(string userId, string role)
         {
             if (role == "PharmacyOwner")

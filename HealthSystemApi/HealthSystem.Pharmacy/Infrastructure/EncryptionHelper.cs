@@ -4,11 +4,17 @@ using DotNetEnv;
 
 namespace HealthSystem.Pharmacy.Infrastructure
 {
+    /// <summary>
+    /// Helper class for encrypting and decrypting data using AES.
+    /// </summary>
     public class EncryptionHelper
     {
         private static readonly byte[] key;
         private static readonly byte[] iv;
 
+        /// <summary>
+        /// Static constructor that initializes the encryption key and IV from environment variables.
+        /// </summary>
         static EncryptionHelper()
         {
             string envFilePath = Environment.GetEnvironmentVariable("ENCRYPTION_ENV_PATH")
@@ -40,6 +46,11 @@ namespace HealthSystem.Pharmacy.Infrastructure
             iv = Convert.FromBase64String(ivBase64);
         }
 
+        /// <summary>
+        /// Encrypts the specified plain text using AES encryption.
+        /// </summary>
+        /// <param name="plainText">The plain text to encrypt.</param>
+        /// <returns>The encrypted text in Base64 format, or the original text if it is null or empty.</returns>
         public static string Encrypt(string plainText)
         {
             if (string.IsNullOrEmpty(plainText)) return plainText;
@@ -63,6 +74,11 @@ namespace HealthSystem.Pharmacy.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Decrypts the specified encrypted text back to plain text using AES decryption.
+        /// </summary>
+        /// <param name="encryptedText">The encrypted text in Base64 format to decrypt.</param>
+        /// <returns>The decrypted plain text, or the original text if it is null or empty.</returns>
         public static string Decrypt(string encryptedText)
         {
             if (string.IsNullOrEmpty(encryptedText)) return encryptedText;

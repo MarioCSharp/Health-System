@@ -25,6 +25,7 @@
     <ProjectReference Include="..\HealthSystem.Documents\HealthSystem.Documents.csproj" />
     <ProjectReference Include="..\HealthSystem.HealthCare\HealthSystem.HealthCare.csproj" />
     <ProjectReference Include="..\HealthSystem.Identity\HealthSystem.Identity.csproj" />
+    <ProjectReference Include="..\HealthSystem.Pharmacy\HealthSystem.Pharmacy.csproj" />
   </ItemGroup>
 
   <ItemGroup>
