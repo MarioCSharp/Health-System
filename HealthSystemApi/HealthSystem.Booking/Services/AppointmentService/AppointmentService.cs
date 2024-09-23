@@ -8,18 +8,31 @@ using System.Linq;
 
 namespace HealthSystem.Booking.Services.AppointmentService
 {
+    /// <summary>
+    /// Service for managing appointments and related operations.
+    /// </summary>
     public class AppointmentService : IAppointmentService
     {
         private BookingDbContext context;
         private HttpClient httpClient;
 
-        public AppointmentService(BookingDbContext context,
-                                  HttpClient httpClient)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppointmentService"/> class.
+        /// </summary>
+        /// <param name="context">The database context for bookings and appointments.</param>
+        /// <param name="httpClient">The HTTP client used for external service requests.</param>
+        public AppointmentService(BookingDbContext context, HttpClient httpClient)
         {
             this.context = context;
             this.httpClient = httpClient;
         }
 
+        /// <summary>
+        /// Adds a comment to an appointment.
+        /// </summary>
+        /// <param name="model">The model containing the comment details.</param>
+        /// <param name="userId">The ID of the user (doctor) making the comment.</param>
+        /// <returns>A task representing the asynchronous operation, containing a boolean value indicating success or failure.</returns>
         public async Task<bool> AddComment(AppointmentCommentAddModel model, string userId)
         {
             var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
@@ -55,11 +68,21 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return await context.AppointmentComments.ContainsAsync(comment);
         }
 
+        /// <summary>
+        /// Deletes all appointments for a specified doctor.
+        /// </summary>
+        /// <param name="doctorId">The ID of the doctor whose appointments are to be deleted.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task DeleteAllByDoctorId(int doctorId)
         {
             await context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM Bookings WHERE DoctorId = {doctorId}");
         }
 
+        /// <summary>
+        /// Gets the details of an appointment by ID.
+        /// </summary>
+        /// <param name="id">The ID of the appointment.</param>
+        /// <returns>A task representing the asynchronous operation, containing an <see cref="AppointmentReturnModel"/> with the appointment details.</returns>
         public async Task<AppointmentReturnModel> GetAppointment(int id)
         {
             var app = await context.Bookings.FindAsync(id);
@@ -76,6 +99,11 @@ namespace HealthSystem.Booking.Services.AppointmentService
             };
         }
 
+        /// <summary>
+        /// Gets a list of appointments for a specified doctor.
+        /// </summary>
+        /// <param name="doctorId">The ID of the doctor whose appointments are to be retrieved.</param>
+        /// <returns>A task representing the asynchronous operation, containing the doctor's name and a list of appointments.</returns>
         public async Task<(string, List<BookingDisplayModel>)> GetDoctorAppointments(int doctorId)
         {
             var apps = await context.Bookings
@@ -103,6 +131,11 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return (doctorName ?? "", result);
         }
 
+        /// <summary>
+        /// Gets a list of upcoming appointments for a doctor by their user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the doctor (user).</param>
+        /// <returns>A task representing the asynchronous operation, containing a list of upcoming appointments.</returns>
         public async Task<List<AppointmentPatientModel>> GetNextAppointmentsByDoctorUserId(string userId)
         {
             var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
@@ -131,6 +164,11 @@ namespace HealthSystem.Booking.Services.AppointmentService
                 }).ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a list of past appointments for a doctor by their user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the doctor (user).</param>
+        /// <returns>A task representing the asynchronous operation, containing a list of past appointments.</returns>
         public async Task<List<AppointmentPatientModel>> GetPastAppointmentsByDoctorUserId(string userId)
         {
             var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
@@ -159,9 +197,13 @@ namespace HealthSystem.Booking.Services.AppointmentService
                 }).ToListAsync();
         }
 
+        /// <summary>
+        /// Gets a list of appointments for a user by their user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A task representing the asynchronous operation, containing the user's name and a list of their appointments.</returns>
         public async Task<(string, List<BookingDisplayModel>)> GetUserAppointments(string userId)
         {
-
             var apps = context.Bookings
                 .Where(x => x.UserId == userId)
                 .Include(x => x.Service);
@@ -189,6 +231,11 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return (userName, result);
         }
 
+        /// <summary>
+        /// Gets a list of prescriptions for a user by their user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A task representing the asynchronous operation, containing a list of prescription display models.</returns>
         public async Task<List<PrescriptionDisplayModel>> GetUserPrescriptions(string userId)
         {
             var appointments = await context.Bookings
@@ -216,6 +263,11 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return result;
         }
 
+        /// <summary>
+        /// Gets the next three appointments for a user by their user ID.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A task representing the asynchronous operation, containing a list of upcoming appointment models.</returns>
         public async Task<List<AppointmentModel>> GetUsersNextAppointments(string userId)
         {
             if (string.IsNullOrEmpty(userId))
@@ -237,6 +289,11 @@ namespace HealthSystem.Booking.Services.AppointmentService
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Checks if an appointment has an associated prescription.
+        /// </summary>
+        /// <param name="appointmentId">The ID of the appointment.</param>
+        /// <returns>A task representing the asynchronous operation, containing a boolean indicating if a prescription exists and the associated file.</returns>
         public async Task<(bool, IFormFile)> HasPrescriptionAsync(int appointmentId)
         {
             var appointment = await context.Bookings.FindAsync(appointmentId);
@@ -264,6 +321,12 @@ namespace HealthSystem.Booking.Services.AppointmentService
 
             return (true, formFile);
         }
+        /// <summary>
+        /// Generates a prescription file.
+        /// </summary>
+        /// <param name="model">The model for the creation.</param>
+        /// <param name="userId">The user which the prescription belongs to.</param>
+        /// <returns>Tupple which is (bool, IFormFile). The bool is saying if everything went ok and the file(if it was created).</returns>
 
         public async Task<(bool, IFormFile)> IssuePrescriptionAsync(PrescriptionModel model, string userId)
         {
@@ -383,6 +446,12 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return (true, file);
         }
 
+        /// <summary>
+        /// Removes an appointment by its ID, ensuring the user is the doctor assigned to the appointment.
+        /// </summary>
+        /// <param name="id">The ID of the appointment to remove.</param>
+        /// <param name="userId">The ID of the doctor (user) attempting to remove the appointment.</param>
+        /// <returns>A task representing the asynchronous operation, containing a boolean indicating success or failure.</returns>
         public async Task<bool> Remove(int id, string userId)
         {
             var doctorResponse = await httpClient.GetAsync($"http://admins/api/Doctor/GetDoctorByUserId?userId={userId}");
@@ -412,6 +481,11 @@ namespace HealthSystem.Booking.Services.AppointmentService
             return true;
         }
 
+        /// <summary>
+        /// Removes an appointment by its ID.
+        /// </summary>
+        /// <param name="appointmetId">The ID of the appointment to remove.</param>
+        /// <returns>A task representing the asynchronous operation, containing a boolean indicating success or failure.</returns>
         public async Task<bool> RemoveAppointment(int appointmetId)
         {
             var app = await context.Bookings.FindAsync(appointmetId);

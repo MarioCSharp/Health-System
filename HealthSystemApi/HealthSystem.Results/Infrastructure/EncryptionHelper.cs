@@ -4,11 +4,19 @@ using System.Text;
 
 namespace HealthSystem.Results.Infrastructure
 {
+    /// <summary>
+    /// Provides methods to encrypt and decrypt text and byte arrays using AES encryption.
+    /// </summary>
     public class EncryptionHelper
     {
         private static readonly byte[] key;
         private static readonly byte[] iv;
 
+        /// <summary>
+        /// Static constructor for <see cref="EncryptionHelper"/> that initializes the encryption key and IV from environment variables.
+        /// </summary>
+        /// <exception cref="FileNotFoundException">Thrown when the environment file is not found.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when the encryption key or IV is not found in the environment variables.</exception>
         static EncryptionHelper()
         {
             string envFilePath = Environment.GetEnvironmentVariable("ENCRYPTION_ENV_PATH")
@@ -40,6 +48,11 @@ namespace HealthSystem.Results.Infrastructure
             iv = Convert.FromBase64String(ivBase64);
         }
 
+        /// <summary>
+        /// Encrypts the specified plain text string.
+        /// </summary>
+        /// <param name="plainText">The plain text to be encrypted.</param>
+        /// <returns>The encrypted text in Base64 format.</returns>
         public static string Encrypt(string plainText)
         {
             if (string.IsNullOrEmpty(plainText)) return plainText;
@@ -63,6 +76,11 @@ namespace HealthSystem.Results.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Decrypts the specified encrypted text string.
+        /// </summary>
+        /// <param name="encryptedText">The encrypted text in Base64 format.</param>
+        /// <returns>The decrypted plain text string.</returns>
         public static string Decrypt(string encryptedText)
         {
             if (string.IsNullOrEmpty(encryptedText)) return encryptedText;
@@ -82,6 +100,11 @@ namespace HealthSystem.Results.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Encrypts the specified byte array.
+        /// </summary>
+        /// <param name="data">The byte array to be encrypted.</param>
+        /// <returns>The encrypted byte array.</returns>
         public static byte[] Encrypt(byte[] data)
         {
             if (data == null || data.Length == 0) return data;
@@ -104,6 +127,11 @@ namespace HealthSystem.Results.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Decrypts the specified encrypted byte array.
+        /// </summary>
+        /// <param name="encryptedData">The encrypted byte array.</param>
+        /// <returns>The decrypted byte array.</returns>
         public static byte[] Decrypt(byte[] encryptedData)
         {
             if (encryptedData == null || encryptedData.Length == 0) return encryptedData;

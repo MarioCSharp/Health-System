@@ -5,15 +5,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthSystem.Problems.Services.ProblemService
 {
+    /// <summary>
+    /// Service class for managing problem-related operations.
+    /// Implements the <see cref="IProblemService"/> interface.
+    /// </summary>
     public class ProblemService : IProblemService
     {
         private ProblemsDbContext context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProblemService"/> class.
+        /// </summary>
+        /// <param name="context">The database context for accessing problems and symptoms.</param>
         public ProblemService(ProblemsDbContext context)
         {
             this.context = context;
         }
 
+        /// <summary>
+        /// Adds a new problem to the database along with associated symptoms.
+        /// </summary>
+        /// <param name="problemAddModel">Model containing the details of the problem to add.</param>
+        /// <param name="symptoms">List of symptom IDs to associate with the problem.</param>
+        /// <param name="userId">ID of the user to whom the problem is associated (optional).</param>
+        /// <returns>A task that represents the asynchronous operation. 
+        /// The task result contains a boolean value indicating whether the problem was successfully added.</returns>
         public async Task<bool> AddAsync(ProblemAddModel problemAddModel, List<int> symptoms, string? userId)
         {
             var problem = new Problem()
@@ -40,6 +56,9 @@ namespace HealthSystem.Problems.Services.ProblemService
             return await context.Problems.ContainsAsync(problem);
         }
 
+        /// <summary>
+        /// Seeds the symptoms to the database.
+        /// </summary>
         public async Task AddSymptomsAsync()
         {
             if (await context.SymptomCategories.AnyAsync())
@@ -889,6 +908,11 @@ namespace HealthSystem.Problems.Services.ProblemService
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Retrieves the details of a problem by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the problem to retrieve details for.</param>
+        /// <returns>A task representing the asynchronous operation. The task result contains a <see cref="ProblemDetailsModel"/> with the problem details.</returns>
         public async Task<ProblemDetailsModel> DetailsAsync(int id)
         {
             var problem = await context.Problems
@@ -913,6 +937,12 @@ namespace HealthSystem.Problems.Services.ProblemService
             };
         }
 
+        /// <summary>
+        /// Edits an existing problem and updates its associated symptoms.
+        /// </summary>
+        /// <param name="problemEditModel">The model containing the updated problem details.</param>
+        /// <param name="symptoms">The list of symptom IDs to associate with the updated problem.</param>
+        /// <returns>A task representing the asynchronous operation. The task result is a boolean indicating whether the edit was successful.</returns>
         public async Task<bool> EditAsync(ProblemEditModel problemEditModel, List<int> symptoms)
         {
             var problem = await context.Problems
@@ -935,18 +965,38 @@ namespace HealthSystem.Problems.Services.ProblemService
             return true;
         }
 
+        /// <summary>
+        /// Loads all symptom categories along with their subcategories and symptoms for MAUI.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation. The task result contains a list of <see cref="SymptomCategoryDisplayModel"/> representing the categories and their associated subcategories and symptoms.</returns>
         public async Task<List<SymptomCategoryDisplayModel>> LoadCategoriesForMAUI()
         {
-            var categories = await context.SymptomCategories
-                    .Include(c => c.SubCategories)
-                        .ThenInclude(sc => sc.Symptoms)
-                    .ToListAsync();
+            return await context.SymptomCategories
+                .Select(category => new SymptomCategoryDisplayModel
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    SubCategories = category.SubCategories.Select(subCategory => new SymptomSubCategoryDisplayModel
+                    {
+                        Id = subCategory.Id,
+                        Name = subCategory.Name,
+                        Symptoms = subCategory.Symptoms.Select(symptom => new SymptomDisplayModel
+                        {
+                            Id = symptom.Id,
+                            Name = symptom.Name
+                        }).ToList()
+                    }).ToList()
+                }).ToListAsync();
+        }
 
-            var result = categories.Select(category => new SymptomCategoryDisplayModel
-            {
-                Id = category.Id,
-                Name = category.Name,
-                SubCategories = category.SubCategories.Select(subCategory => new SymptomSubCategoryDisplayModel
+        /// <summary>
+        /// Loads all symptom subcategories along with their associated symptoms for MAUI.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation. The task result contains a list of <see cref="SymptomSubCategoryDisplayModel"/> representing the subcategories and their associated symptoms.</returns>
+        public async Task<List<SymptomSubCategoryDisplayModel>> LoadSubCategoriesForMAUI()
+        {
+            return await context.SymptomSubCategories
+                .Select(subCategory => new SymptomSubCategoryDisplayModel
                 {
                     Id = subCategory.Id,
                     Name = subCategory.Name,
@@ -955,32 +1005,14 @@ namespace HealthSystem.Problems.Services.ProblemService
                         Id = symptom.Id,
                         Name = symptom.Name
                     }).ToList()
-                }).ToList()
-            }).ToList();
-
-            return result;
+                }).ToListAsync();
         }
 
-        public async Task<List<SymptomSubCategoryDisplayModel>> LoadSubCategoriesForMAUI()
-        {
-            var subCategories = await context.SymptomSubCategories
-                    .Include(c => c.Symptoms)
-                    .ToListAsync();
-
-            var result = subCategories.Select(subCategory => new SymptomSubCategoryDisplayModel
-            {
-                Id = subCategory.Id,
-                Name = subCategory.Name,
-                Symptoms = subCategory.Symptoms.Select(symptom => new SymptomDisplayModel
-                {
-                    Id = symptom.Id,
-                    Name = symptom.Name
-                }).ToList()
-            }).ToList();
-
-            return result;
-        }
-
+        /// <summary>
+        /// Removes a problem by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the problem to remove.</param>
+        /// <returns>A task representing the asynchronous operation. The task result is a boolean indicating whether the removal was successful.</returns>
         public async Task<bool> RemoveAsync(int id)
         {
             var problem = new Problem() { Id = id };
@@ -991,6 +1023,11 @@ namespace HealthSystem.Problems.Services.ProblemService
             return true;
         }
 
+        /// <summary>
+        /// Retrieves the list of problems associated with a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose problems are being retrieved (optional).</param>
+        /// <returns>A task representing the asynchronous operation. The task result contains a list of <see cref="ProblemDisplayModel"/> representing the user's problems.</returns>
         public async Task<List<ProblemDisplayModel>> UserProblemsAsync(string? userId)
         {
             var problems = await context.Problems.Where(x => x.UserId == userId).ToListAsync();
