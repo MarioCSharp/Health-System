@@ -7,14 +7,6 @@
              Title="RemindersViewPage">
     <ContentPage.Content>
         <Grid>
-            <Label Text="Напомняния"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Start"
-                   TextColor="#007ACC"
-                   Margin="20"/>
-
             <CollectionView ItemsSource="{Binding Reminders}" Margin="10, 70">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

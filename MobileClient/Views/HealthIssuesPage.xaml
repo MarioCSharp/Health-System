@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.HealthIssuesPage"
@@ -29,36 +28,42 @@
                             Margin="0,10,0,0">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.RightItems>
-                                <SwipeItems Mode="Reveal">
-                                    <SwipeItem Text="Delete" 
-                                               BackgroundColor="#FF3B30" 
-                                               Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteHealthIssueCommand}"
-                                               CommandParameter="{Binding Id}"
-                                               IconImageSource="delete_icon.png">
-                                    </SwipeItem>
-                                </SwipeItems>
-                            </SwipeView.RightItems>
-                            <Frame CornerRadius="15" 
-                                   BorderColor="#007ACC" 
-                                   Margin="0,5" 
-                                   Padding="15" 
-                                   HasShadow="True" 
-                                   BackgroundColor="White">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToHealthIssueDetailsCommand}"
-                                                          CommandParameter="{Binding Id}" />
-                                </Frame.GestureRecognizers>
-                                <StackLayout>
+                        <Frame CornerRadius="15" 
+                               BorderColor="#007ACC" 
+                               Margin="0,5" 
+                               Padding="15" 
+                               HasShadow="True" 
+                               BackgroundColor="White">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout Grid.Column="0">
                                     <Label Text="{Binding Name}" 
                                            FontSize="22" 
                                            FontAttributes="Bold"
                                            VerticalOptions="Center"
                                            TextColor="#333333"/>
                                 </StackLayout>
-                            </Frame>
-                        </SwipeView>
+
+                                <ImageButton Source="recycle_bin.png" 
+                                             BackgroundColor="Transparent"
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteHealthIssueCommand}"
+                                             CommandParameter="{Binding Id}"
+                                             HeightRequest="24"
+                                             WidthRequest="24"
+                                             HorizontalOptions="End"
+                                             VerticalOptions="Center"
+                                             Grid.Column="1"
+                                             Margin="10,0,0,0"/>
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToHealthIssueDetailsCommand}"
+                                                      CommandParameter="{Binding Id}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -68,7 +73,6 @@
                    VerticalOptions="Center"
                    Grid.Row="1"
                    IsVisible="{Binding HealthIssues.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
-
         </Grid>
     </ContentPage.Content>
 </ContentPage>

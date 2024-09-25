@@ -36,7 +36,7 @@
             </Grid.ColumnDefinitions>
 
             <Entry x:Name="myChatMessage"
-                   Placeholder="Type a message..."
+                   Placeholder="Напиши съобщение..."
                    FontSize="16"
                    PlaceholderColor="#aaaaaa"
                    BackgroundColor="#f2f2f2"
@@ -49,7 +49,7 @@
                    VerticalTextAlignment="Center" />
 
             <Button x:Name="sendButton"
-                    Text="Send"
+                    Text="Изпрати"
                     FontSize="16"
                     BackgroundColor="#007bff"
                     TextColor="White"

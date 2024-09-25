@@ -8,14 +8,6 @@
 
     <ContentPage.Content>
         <Grid>
-            <Label Text="Лекарства"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Start"
-                   TextColor="#007ACC"
-                   Margin="20"/>
-
             <CollectionView ItemsSource="{Binding Medications}" Margin="10, 70">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

@@ -6,12 +6,6 @@
              Title="LaboratoryPage">
     
     <VerticalStackLayout Padding="20">
-        <Label 
-            Text="Лабораторни резултати"
-            FontSize="24"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-
         <Entry 
             Placeholder="Потребителско ИД"
             Text="{Binding UserName}"

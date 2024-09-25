@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.ReceptionPage"
@@ -9,7 +8,6 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <!-- Define a subtle background for the frames -->
             <Color x:Key="FrameBackgroundColor">#FFFFFF</Color>
             <Style TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}" />
@@ -34,7 +32,6 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!-- Title -->
             <Label Grid.Row="0"
                    Text="Избери рецепция"
                    FontSize="28"
@@ -43,7 +40,6 @@
                    HorizontalOptions="Center" 
                    VerticalOptions="Center" />
 
-            <!-- Hospitals List -->
             <CollectionView Grid.Row="1"
                             ItemsSource="{Binding Hospitals}"
                             Margin="0,20,0,0"
@@ -58,7 +54,6 @@
                                    HasShadow="True"
                                    BackgroundColor="{StaticResource FrameBackgroundColor}">
                                 <StackLayout>
-                                    <!-- Hospital Name -->
                                     <Label Text="{Binding HospitalName}" 
                                            FontSize="24" 
                                            FontAttributes="Bold"
@@ -66,12 +61,26 @@
                                            HorizontalOptions="StartAndExpand"
                                            VerticalOptions="Center" />
 
-                                    <!-- Contact Reception Button -->
-                                    <Button Text="Свържи се с рецепция"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ConnectToReceptionChatCommand}"
-                                            CommandParameter="{Binding Id}"
-                                            HorizontalOptions="FillAndExpand"
-                                            VerticalOptions="Center" />
+                                    <HorizontalStackLayout HorizontalOptions="FillAndExpand"
+                                                           VerticalOptions="Center">
+                                        <Button Text="Свържи се с рецепция"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ConnectToReceptionChatCommand}"
+                                                CommandParameter="{Binding Id}"
+                                                HorizontalOptions="FillAndExpand"
+                                                VerticalOptions="Center"
+                                                BackgroundColor="#80b3ff"
+                                                WidthRequest="280"/>
+
+                                        <Button ImageSource="phone_call.png"
+                                                Clicked="OnCallReceptionClicked"
+                                                CommandParameter="{Binding PhoneNumber}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                WidthRequest="40" 
+                                                HeightRequest="40"
+                                                BackgroundColor="#80b3ff"
+                                                Padding="5"/>
+                                    </HorizontalStackLayout>
                                 </StackLayout>
                             </Frame>
                         </SwipeView>

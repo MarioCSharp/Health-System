@@ -7,14 +7,6 @@
 
     <ContentPage.Content>
         <VerticalStackLayout Padding="10">
-            <Label Text="Амбулаторни листове"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Start"
-                   TextColor="#007ACC"
-                   Margin="20"/>
-
             <CollectionView ItemsSource="{Binding Prescriptions}"
                             IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}">
                 <CollectionView.ItemTemplate>

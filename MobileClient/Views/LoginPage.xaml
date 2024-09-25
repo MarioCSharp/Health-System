@@ -34,8 +34,6 @@
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="25" VerticalOptions="CenterAndExpand">
-            <Label Text="Вписване" FontSize="30" HorizontalOptions="Center" TextColor="#007AFF" />
-
             <Image Source="logo.png" HeightRequest="100" HorizontalOptions="Center" Margin="0,20" />
 
             <Label Text="Имейл" />

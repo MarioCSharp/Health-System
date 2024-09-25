@@ -62,7 +62,8 @@ namespace HealthSystem.Admins.Services.HospitalService
         {
             Id = x.Id,
             HospitalName = x.Name,
-            Location = x.Location
+            Location = x.Location,
+            PhoneNumber = x.ContactNumber
         }).ToListAsync();
 
         /// <summary>
