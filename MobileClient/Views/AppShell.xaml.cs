@@ -1,13 +1,17 @@
-﻿using HealthProject.Services.AuthenticationService;
+﻿using System.Windows.Input;
+using HealthProject.Services.AuthenticationService;
 
 namespace HealthProject.Views
 {
     public partial class AppShell : Shell
     {
+        public ICommand LogoutCommand { get; }
 
         public AppShell(IAuthenticationService authenticationService)
         {
             InitializeComponent();
+
+            LogoutCommand = new Command(OnLogout);
 
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(HospitalDetailsPage), typeof(HospitalDetailsPage));
@@ -32,6 +36,13 @@ namespace HealthProject.Views
             Routing.RegisterRoute(nameof(ReceptionChatPage), typeof(ReceptionChatPage));
             Routing.RegisterRoute(nameof(RemindersAddPage), typeof(RemindersAddPage));
             Routing.RegisterRoute(nameof(PharmacyProductsPage), typeof(PharmacyProductsPage));
+        }
+
+        private async void OnLogout()
+        {
+            SecureStorage.Default.Remove("auth_token");
+
+            await Shell.Current.GoToAsync("//LoginPage");
         }
     }
 }

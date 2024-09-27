@@ -12,8 +12,8 @@ public class DiagnosisViewModel : INotifyPropertyChanged
     private ObservableCollection<string> allSymptoms;  
     private ObservableCollection<SymptomModel> filteredSymptoms;  
     private ObservableCollection<string> selectedSymptoms;
-    private ObservableCollection<DoctorModel> recommendedDoctors;  
-
+    private ObservableCollection<DoctorModel> recommendedDoctors;
+    private CancellationTokenSource _debounceTimer;
     public event PropertyChangedEventHandler PropertyChanged;
 
     public DiagnosisViewModel(IDiagnosisService diagnosisService)
@@ -35,8 +35,18 @@ public class DiagnosisViewModel : INotifyPropertyChanged
         set
         {
             symptomsInput = value;
-            FilterSymptoms();  
             OnPropertyChanged(nameof(SymptomsInput));
+
+            _debounceTimer?.Cancel();
+            _debounceTimer = new CancellationTokenSource();
+
+            Task.Delay(400, _debounceTimer.Token).ContinueWith(task =>
+            {
+                if (!task.IsCanceled)
+                {
+                    FilterSymptoms();
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
     }
 

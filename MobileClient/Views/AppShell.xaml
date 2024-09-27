@@ -125,4 +125,13 @@
                 Route="LoginPage"/>
         </Tab>
     </FlyoutItem>
+
+    <Shell.ToolbarItems>
+        <ToolbarItem
+        Text="Изход"
+        Command="{Binding LogoutCommand}"
+        IconImageSource="logout.png"
+        Order="Primary"
+        Priority="0" />
+    </Shell.ToolbarItems>
 </Shell>
