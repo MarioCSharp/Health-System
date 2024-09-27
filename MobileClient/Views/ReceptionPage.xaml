@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.ReceptionPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             Title="Hospitals"
              Shell.NavBarIsVisible="True"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
@@ -22,14 +21,28 @@
                 <Setter Property="FontSize" Value="Medium" />
                 <Setter Property="VerticalOptions" Value="Center" />
             </Style>
+            <Style x:Key="FooterButtonStyle" TargetType="Grid">
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="BackgroundColor" Value="#007AFF" />
+            </Style>
+            <Style x:Key="FooterLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="FooterImageStyle" TargetType="Image">
+                <Setter Property="HeightRequest" Value="25" />
+                <Setter Property="WidthRequest" Value="25" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid Padding="20">
+        <Grid Padding="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0"
@@ -42,8 +55,8 @@
 
             <CollectionView Grid.Row="1"
                             ItemsSource="{Binding Hospitals}"
-                            Margin="0,20,0,0"
-                            SelectionMode="None">
+                            Margin="10,20,10,0" 
+                SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
@@ -91,8 +104,56 @@
             <Image Source="nothing_found.png"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   Grid.Row="2"
                    IsVisible="{Binding Hospitals.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
+
+            <Grid Grid.Row="2" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid" Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMedicineButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRecordsButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDocumentsButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -118,8 +118,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Footer Grid -->
-        <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" ColumnSpacing="7" x:Name="FooterGrid">
+        <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -128,7 +127,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Footer Buttons -->
-            <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center">
+            <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
                     <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
                     <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
@@ -138,7 +137,7 @@
                 </Grid.GestureRecognizers>
             </Grid>
 
-            <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center">
+            <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
                     <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
                     <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
@@ -148,7 +147,7 @@
                 </Grid.GestureRecognizers>
             </Grid>
 
-            <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center">
+            <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
                     <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
                     <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
@@ -158,7 +157,7 @@
                 </Grid.GestureRecognizers>
             </Grid>
 
-            <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center">
+            <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
                     <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
                     <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
@@ -167,7 +166,6 @@
                     <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
                 </Grid.GestureRecognizers>
             </Grid>
-
         </Grid>
     </Grid>
 </ContentPage>

@@ -10,6 +10,7 @@ public partial class HomePage : ContentPage
 
     public ICommand OpenMapsCommand { get; }
 
+
     public HomePage(HomePageViewModel homePageViewModel)
     {
         InitializeComponent();
@@ -38,5 +39,25 @@ public partial class HomePage : ContentPage
         {
             await DisplayAlert("Грешка!", "Няма намерена локация", "OK");
         }
+    }
+
+    private async void OnMedicineButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(MedicationViewPage)}");
+    }
+
+    private async void OnRecordsButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(LogbookViewPage)}");
+    }
+
+    private async void OnDocumentsButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(DocumentViewPage)}");
+    }
+
+    private async void OnPredictorButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{nameof(DiagnosisPredictionPage)}");
     }
 }

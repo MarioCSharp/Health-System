@@ -3,49 +3,173 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HealthProject.Views.HomePage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
-             Title="Home"
              x:Name="RootPage"
-             Shell.NavBarIsVisible="True">
+             Shell.NavBarIsVisible="True"
+             BackgroundColor="#FAFAFA">
 
-    <ContentPage.Content>
-        <Grid Padding="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <ContentPage.Resources>
+        <Style x:Key="FooterButtonStyle" TargetType="Grid">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BackgroundColor" Value="#007AFF" />
+        </Style>
 
-            <CollectionView Grid.Row="1"
-                            ItemsSource="{Binding Hospitals}"
-                            Margin="0,10,0,0">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <Frame CornerRadius="15" 
-                                   BorderColor="#007ACC" 
-                                   Margin="0,5" 
-                                   Padding="15" 
-                                   HasShadow="True" 
-                                   BackgroundColor="#F9F9F9">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.NavigateToHospitalDetailCommand, Source={x:Reference RootPage}}"
-                                                          CommandParameter="{Binding Id}" />
-                                </Frame.GestureRecognizers>
-                                <StackLayout>
-                                    <Label Text="{Binding HospitalName}" 
-                                           FontSize="22" 
-                                           FontAttributes="Bold"
-                                           VerticalOptions="Center"
-                                           TextColor="#333333"/>
-                                    <Button Text="Навигация"
-                                            Command="{Binding Source={x:Reference RootPage}, Path=OpenMapsCommand}"
-                                            CommandParameter="{Binding Location}"
-                                            Margin="0,10,0,0"/>
-                                </StackLayout>
-                            </Frame>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+        <Style x:Key="FooterLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="FooterImageStyle" TargetType="Image">
+            <Setter Property="HeightRequest" Value="25" />
+            <Setter Property="WidthRequest" Value="25" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Main Content -->
+        <ScrollView Grid.Row="0" Padding="20,30">
+            <VerticalStackLayout Spacing="10">
+                <!-- Filter and Sort buttons -->
+                <VerticalStackLayout Spacing="10">
+                    <Button Text="Филтри"
+                            TextColor="#007ACC"
+                            BackgroundColor="White"
+                            FontSize="18"
+                            WidthRequest="140"
+                            HeightRequest="40"
+                            ImageSource="filter.png"
+                            Command="{Binding ToggleFilterCommand}" />
+
+                    <!-- Dropdown for Filter options -->
+                    <CollectionView IsVisible="{Binding IsFilterVisible}"
+                                    ItemsSource="{Binding FilterOptions}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedFilterOption}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}"
+                                       Padding="10,5"
+                                       FontSize="16"
+                                       TextColor="{Binding ., Converter={StaticResource SelectedItemToTextColorConverter}, ConverterParameter={Binding SelectedFilterOption}}"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Button Text="Подреждане"
+                            TextColor="#007ACC"
+                            BackgroundColor="White"
+                            FontSize="18"
+                            WidthRequest="180"
+                            HeightRequest="43"
+                            ImageSource="sort.png"
+                            Command="{Binding ToggleSortCommand}" />
+
+                    <!-- Dropdown for Sort options -->
+                    <CollectionView IsVisible="{Binding IsSortVisible}"
+                                    ItemsSource="{Binding SortOptions}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedSortOption}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}"
+                                       Padding="10,5"
+                                       FontSize="16"
+                                       TextColor="{Binding ., Converter={StaticResource SelectedItemToTextColorConverter}, ConverterParameter={Binding SelectedSortOption}}"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- Main Content with Hospitals -->
+                <CollectionView ItemsSource="{Binding Hospitals}"
+                                Margin="0,10,0,0">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <Frame CornerRadius="15"
+                                       BorderColor="#007ACC"
+                                       Margin="0,5"
+                                       Padding="15"
+                                       HasShadow="True"
+                                       BackgroundColor="#F9F9F9">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.NavigateToHospitalDetailCommand, Source={x:Reference RootPage}}"
+                                                              CommandParameter="{Binding Id}" />
+                                    </Frame.GestureRecognizers>
+                                    <StackLayout>
+                                        <Label Text="{Binding HospitalName}"
+                                               FontSize="22"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center"
+                                               TextColor="#333333"/>
+                                        <Button Text="Навигация"
+                                                BackgroundColor="#007ACC"
+                                                Command="{Binding Source={x:Reference RootPage}, Path=OpenMapsCommand}"
+                                                CommandParameter="{Binding Location}"
+                                                Margin="0,10,0,0"/>
+                                    </StackLayout>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Footer Grid -->
+        <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Footer Buttons -->
+            <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
+                </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnMedicineButtonClicked" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
+                </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnRecordsButtonClicked" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
+                </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnDocumentsButtonClicked" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
+                </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
+                </Grid.GestureRecognizers>
+            </Grid>
         </Grid>
-    </ContentPage.Content>
+    </Grid>
 </ContentPage>

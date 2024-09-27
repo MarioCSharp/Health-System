@@ -5,42 +5,115 @@
              Title="My Prescriptions"
              xmlns:local="clr-namespace:HealthProject.ViewModels">
 
+    <ContentPage.Resources>
+        <Style x:Key="FooterButtonStyle" TargetType="Grid">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BackgroundColor" Value="#007AFF" />
+        </Style>
+
+        <Style x:Key="FooterLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="FooterImageStyle" TargetType="Image">
+            <Setter Property="HeightRequest" Value="25" />
+            <Setter Property="WidthRequest" Value="25" />
+        </Style>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <VerticalStackLayout Padding="10">
-            <CollectionView ItemsSource="{Binding Prescriptions}"
-                            IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame BorderColor="LightGray"
-                               CornerRadius="5"
-                               Padding="10"
-                               Margin="5"
-                               HasShadow="True">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding DoctorName}"
-                                       FontSize="Medium"
-                                       FontAttributes="Bold" />
-                                <Label Text="{Binding Date}"
-                                       FontSize="Small"
-                                       TextColor="Gray"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                                <Button Text="Изтегли файл"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:MyPrescriptionsViewModel}}, Path=DownloadFileCommand}"
-                                        CommandParameter="{Binding File}"
-                                        HorizontalOptions="End"
-                                        BackgroundColor="#007AFF"
-                                        TextColor="White" />
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <VerticalStackLayout Padding="10" Grid.Row="0">
+                <CollectionView ItemsSource="{Binding Prescriptions}"
+                                IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="LightGray"
+                                   CornerRadius="5"
+                                   Padding="10"
+                                   Margin="5"
+                                   HasShadow="True">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding DoctorName}"
+                                           FontSize="Medium"
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding Date}"
+                                           FontSize="Small"
+                                           TextColor="Gray"/>
 
-            <Image Source="nothing_found.png"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Grid.Row="2"
-                   IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
-        </VerticalStackLayout>
+                                    <Button Text="Изтегли файл"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:MyPrescriptionsViewModel}}, Path=DownloadFileCommand}"
+                                            CommandParameter="{Binding File}"
+                                            HorizontalOptions="End"
+                                            BackgroundColor="#007AFF"
+                                            TextColor="White" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Image Source="nothing_found.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
+            </VerticalStackLayout>
+
+            <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMedicineButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRecordsButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDocumentsButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Grid>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

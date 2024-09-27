@@ -4,38 +4,109 @@
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              x:Class="HealthProject.Views.LaboratoryPage"
              Title="LaboratoryPage">
-    
-    <VerticalStackLayout Padding="20">
-        <Entry 
-            Placeholder="Потребителско ИД"
-            Text="{Binding UserName}"
-            VerticalOptions="Center" 
-            HorizontalOptions="FillAndExpand" />
 
-        <Entry 
-            Placeholder="Парола"
-            Text="{Binding Password}"
-            IsPassword="True"
-            VerticalOptions="Center" 
-            HorizontalOptions="FillAndExpand" />
+    <ContentPage.Resources>
+        <Style x:Key="FooterButtonStyle" TargetType="Grid">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BackgroundColor" Value="#007AFF" />
+        </Style>
 
-        <Button 
-            Text="Провери резултати"
-            Command="{Binding CheckResultsCommand}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Style x:Key="FooterLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
 
-        <Label 
-            Text="{Binding Message}"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"
-            IsVisible="{Binding IsMessageVisible}" />
+        <Style x:Key="FooterImageStyle" TargetType="Image">
+            <Setter Property="HeightRequest" Value="25" />
+            <Setter Property="WidthRequest" Value="25" />
+        </Style>
+    </ContentPage.Resources>
 
-        <Button 
-            Text="Изтегли файл"
-            Command="{Binding DownloadFileCommand}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center"
-            IsEnabled="{Binding IsMessageVisible}" />
-    </VerticalStackLayout>
+    <Grid>
+        <VerticalStackLayout Padding="20" VerticalOptions="FillAndExpand">
+            <Entry 
+                Placeholder="Потребителско ИД"
+                Text="{Binding UserName}"
+                VerticalOptions="Center" 
+                HorizontalOptions="FillAndExpand" />
+
+            <Entry 
+                Placeholder="Парола"
+                Text="{Binding Password}"
+                IsPassword="True"
+                VerticalOptions="Center" 
+                HorizontalOptions="FillAndExpand" />
+
+            <Button 
+                Text="Провери резултати"
+                Command="{Binding CheckResultsCommand}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+
+            <Label 
+                Text="{Binding Message}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                IsVisible="{Binding IsMessageVisible}" />
+
+            <Button 
+                Text="Изтегли файл"
+                Command="{Binding DownloadFileCommand}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center"
+                IsEnabled="{Binding IsMessageVisible}" />
+        </VerticalStackLayout>
+
+        <!-- Footer -->
+        <Grid BackgroundColor="#007AFF" HeightRequest="100" VerticalOptions="End" x:Name="FooterGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Footer Buttons -->
+            <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
+                </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnMedicineButtonClicked" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
+                </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnRecordsButtonClicked" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
+                </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnDocumentsButtonClicked" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
+                </VerticalStackLayout>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
+                </Grid.GestureRecognizers>
+            </Grid>
+        </Grid>
+    </Grid>
 </ContentPage>

@@ -4,6 +4,7 @@
              x:Class="HealthProject.Views.HealtIssueDetailsPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="HealtIssueDetailsPage">
+        
     <ContentPage.Resources>
         <Style x:Key="HeaderLabelStyle" TargetType="Label">
             <Setter Property="FontSize" Value="24" />

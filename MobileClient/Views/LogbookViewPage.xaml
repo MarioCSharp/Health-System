@@ -3,12 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              x:Class="HealthProject.Views.LogbookViewPage"
-             Title="Logbook"
              BackgroundColor="#fff">
+    <ContentPage.Resources>
 
+        <Style x:Key="FooterButtonStyle" TargetType="Grid">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BackgroundColor" Value="#007AFF" />
+        </Style>
+
+        <Style x:Key="FooterLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="FooterImageStyle" TargetType="Image">
+            <Setter Property="HeightRequest" Value="25" />
+            <Setter Property="WidthRequest" Value="25" />
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
-            <CollectionView ItemsSource="{Binding Logbook}" Margin="10, 70">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!-- For the logbook collection view -->
+                <RowDefinition Height="Auto" />
+                <!-- For the footer -->
+            </Grid.RowDefinitions>
+
+            <CollectionView ItemsSource="{Binding Logbook}" Margin="10, 90, 10, 0" Grid.Row="0">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame CornerRadius="10" 
@@ -55,6 +78,14 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
+            <!-- Centered Image for Empty State -->
+            <Image Source="nothing_found.png"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding Logbook.Count, Converter={StaticResource IsCollectionEmptyConverter}}" 
+                   Grid.Row="0" />
+
+            <!-- Floating Action Button -->
             <Button Text="＋" 
                     Command="{Binding RedirectToAdd}"
                     BackgroundColor="#007ACC"
@@ -64,8 +95,9 @@
                     WidthRequest="60"
                     HeightRequest="60"
                     HorizontalOptions="End"
-                    VerticalOptions="End"
-                    Margin="20">
+                    VerticalOptions="Start"
+                    Margin="20,20,20,0"
+                    Grid.Row="0">
                 <Button.Triggers>
                     <Trigger TargetType="Button" Property="IsPressed" Value="True">
                         <Setter Property="BackgroundColor" Value="#005999"/>
@@ -73,11 +105,56 @@
                 </Button.Triggers>
             </Button>
 
-            <Image Source="nothing_found.png"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Grid.Row="1"
-                   IsVisible="{Binding Logbook.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
+            <!-- Footer -->
+            <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Footer Buttons -->
+                <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMedicineButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRecordsButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDocumentsButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -4,48 +4,125 @@
              x:Class="HealthProject.Views.AppointmentHistoryPage"
              xmlns:local="clr-namespace:HealthProject.ViewModels"
              Title="AppointmentHistoryPage">
+    <ContentPage.Resources>
+        <Style x:Key="FooterButtonStyle" TargetType="Grid">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BackgroundColor" Value="#007AFF" />
+        </Style>
+
+        <Style x:Key="FooterLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="FooterImageStyle" TargetType="Image">
+            <Setter Property="HeightRequest" Value="25" />
+            <Setter Property="WidthRequest" Value="25" />
+        </Style>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <StackLayout>
-            <CollectionView ItemsSource="{Binding History}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <Frame CornerRadius="10" 
-                                   BorderColor="#007ACC" 
-                                   Margin="10" 
-                                   Padding="10" 
-                                   HasShadow="True" 
-                                   BackgroundColor="White">
-                                <StackLayout>
-                                    <Label Text="{Binding ServiceName}" 
-                                           FontSize="18" 
-                                           FontAttributes="Bold"
-                                           VerticalOptions="Center"
-                                           TextColor="Black"/>
-                                    <Label Text="{Binding DoctorName}" 
-                                           FontSize="16" 
-                                           VerticalOptions="Center"
-                                           TextColor="Gray"/>
-                                    <Label Text="{Binding Date}" 
-                                           FontSize="14" 
-                                           VerticalOptions="Center"
-                                           TextColor="Gray"/>
-                                    <Button Text="Добави оценка" 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:AppointmentHistoryViewModel}}, Path=AddRatingCommand}" 
-                                            CommandParameter="{Binding Id}" 
-                                            IsVisible="{Binding IsVisible}" />
-                                </StackLayout>
-                            </Frame>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            
-            <Image Source="nothing_found.png"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Grid.Row="1"
-                   IsVisible="{Binding History.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!-- This row will take the remaining space -->
+                <RowDefinition Height="Auto" />
+                <!-- This row will be for the footer -->
+            </Grid.RowDefinitions>
+
+            <StackLayout Grid.Row="0">
+                <CollectionView ItemsSource="{Binding History}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <Frame CornerRadius="10" 
+                                       BorderColor="#007ACC" 
+                                       Margin="10" 
+                                       Padding="10" 
+                                       HasShadow="True" 
+                                       BackgroundColor="White">
+                                    <StackLayout>
+                                        <Label Text="{Binding ServiceName}" 
+                                               FontSize="18" 
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center"
+                                               TextColor="Black"/>
+                                        <Label Text="{Binding DoctorName}" 
+                                               FontSize="16" 
+                                               VerticalOptions="Center"
+                                               TextColor="Gray"/>
+                                        <Label Text="{Binding Date}" 
+                                               FontSize="14" 
+                                               VerticalOptions="Center"
+                                               TextColor="Gray"/>
+                                        <Button Text="Добави оценка" 
+                                                BackgroundColor="#007ACC"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:AppointmentHistoryViewModel}}, Path=AddRatingCommand}" 
+                                                CommandParameter="{Binding Id}" 
+                                                IsVisible="{Binding IsVisible}" />
+                                    </StackLayout>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Image Source="nothing_found.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="{Binding History.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
+            </StackLayout>
+
+            <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Footer Buttons -->
+                <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMedicineButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRecordsButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDocumentsButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
+                        <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
+                    </VerticalStackLayout>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Grid>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

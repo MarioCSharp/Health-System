@@ -11,6 +11,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:BoolToColorConverter x:Key="BoolToColorConverter" />
             <local:IsCollectionEmptyConverter x:Key="IsCollectionEmptyConverter" />
+            <local:SelectedItemToTextColorConverter x:Key="SelectedItemToTextColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
