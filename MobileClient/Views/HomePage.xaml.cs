@@ -41,22 +41,22 @@ public partial class HomePage : ContentPage
         }
     }
 
-    private async void OnMedicineButtonClicked(object sender, EventArgs e)
+    private async void OnPharmaciesButtonClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{nameof(MedicationViewPage)}");
+        await Shell.Current.GoToAsync($"//{nameof(PharmaciesViewPage)}");
     }
 
-    private async void OnRecordsButtonClicked(object sender, EventArgs e)
+    private async void OnLaboratoryButtonClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{nameof(LogbookViewPage)}");
+        await Shell.Current.GoToAsync($"//{nameof(LaboratoryPage)}");
     }
 
-    private async void OnDocumentsButtonClicked(object sender, EventArgs e)
+    private async void OnHospitalsButtonClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{nameof(DocumentViewPage)}");
+        await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
     }
 
-    private async void OnPredictorButtonClicked(object sender, EventArgs e)
+    private async void OnDiagnosisButtonClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"//{nameof(DiagnosisPredictionPage)}");
     }

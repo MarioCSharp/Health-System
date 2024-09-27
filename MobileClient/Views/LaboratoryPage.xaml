@@ -70,41 +70,41 @@
             <!-- Footer Buttons -->
             <Grid Grid.Column="0" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                    <Image Source="pill.png" Style="{StaticResource FooterImageStyle}" />
-                    <Label Text="Лекарства" Style="{StaticResource FooterLabelStyle}" />
+                    <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Диагностичен указател" Style="{StaticResource FooterLabelStyle}" />
                 </VerticalStackLayout>
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnMedicineButtonClicked" />
+                    <TapGestureRecognizer Tapped="OnDiagnosisButtonClicked" />
                 </Grid.GestureRecognizers>
             </Grid>
 
             <Grid Grid.Column="1" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                    <Image Source="log.png" Style="{StaticResource FooterImageStyle}" />
-                    <Label Text="Записи" Style="{StaticResource FooterLabelStyle}" />
+                    <Image Source="hospital.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Клиники" Style="{StaticResource FooterLabelStyle}" />
                 </VerticalStackLayout>
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnRecordsButtonClicked" />
+                    <TapGestureRecognizer Tapped="OnHospitalsButtonClicked" />
                 </Grid.GestureRecognizers>
             </Grid>
 
             <Grid Grid.Column="2" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                    <Image Source="google_docs.png" Style="{StaticResource FooterImageStyle}" />
-                    <Label Text="Документи" Style="{StaticResource FooterLabelStyle}" />
+                    <Image Source="microscope.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Лаборатория" Style="{StaticResource FooterLabelStyle}" />
                 </VerticalStackLayout>
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnDocumentsButtonClicked" />
+                    <TapGestureRecognizer Tapped="OnLaboratoryButtonClicked" />
                 </Grid.GestureRecognizers>
             </Grid>
 
             <Grid Grid.Column="3" Style="{StaticResource FooterButtonStyle}" HorizontalOptions="Center" VerticalOptions="Center">
                 <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                    <Image Source="ml.png" Style="{StaticResource FooterImageStyle}" />
-                    <Label Text="Предиктор" Style="{StaticResource FooterLabelStyle}" />
+                    <Image Source="pharmacy.png" Style="{StaticResource FooterImageStyle}" />
+                    <Label Text="Аптеки" Style="{StaticResource FooterLabelStyle}" />
                 </VerticalStackLayout>
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnPredictorButtonClicked" />
+                    <TapGestureRecognizer Tapped="OnPharmaciesButtonClicked" />
                 </Grid.GestureRecognizers>
             </Grid>
         </Grid>
