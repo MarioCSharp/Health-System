@@ -7,131 +7,103 @@
     Shell.FlyoutBehavior="Flyout"
     Title="HealthProject">
 
-    <!-- Home Section -->
+    <!-- Customizing FlyoutItem with DataTemplate -->
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="15" HeightRequest="60">
+                <!-- Adjusted padding and height for a cleaner look -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1"/>
+                    <!-- Row for horizontal line -->
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Text for FlyoutItem (title) -->
+                <Label Text="{Binding Title}" FontSize="20" VerticalOptions="Center" />
+                <!-- Slightly reduced font size -->
+
+                <!-- Smaller arrow icon -->
+                <Image Source="arrow_right.png" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="End" WidthRequest="20" HeightRequest="20" />
+                <!-- Reduced size of arrow -->
+
+                <!-- Horizontal line under each item -->
+                <BoxView Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="LightGray" HeightRequest="1" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <!-- Menu Items -->
     <FlyoutItem Title="Начало">
-        <ShellContent
-            Title="Начало"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Route="MainPage" />
+        <ShellContent Title="Начало" ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Клиники">
-        <ShellContent
-            Title="Начало"
-            ContentTemplate="{DataTemplate local:HomePage}"
-            Route="HomePage"/>
+        <ShellContent Title="Клиники" ContentTemplate="{DataTemplate local:HomePage}" Route="HomePage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Здравни проблеми">
-        <ShellContent
-            Title="Здравни проблеми"
-            ContentTemplate="{DataTemplate local:HealthIssuesPage}"
-            Route="HealthIssuesPage"/>
+        <ShellContent Title="Здравни проблеми" ContentTemplate="{DataTemplate local:HealthIssuesPage}" Route="HealthIssuesPage" />
     </FlyoutItem>
-    
     <FlyoutItem Title="Симптоми">
-        <ShellContent
-            Title="Симптоми"
-            ContentTemplate="{DataTemplate local:ProblemsViewPage}"
-            Route="ProblemsViewPage"/>
+        <ShellContent Title="Симптоми" ContentTemplate="{DataTemplate local:ProblemsViewPage}" Route="ProblemsViewPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Документи">
-        <ShellContent
-        Title="Документи"
-        ContentTemplate="{DataTemplate local:DocumentViewPage}"
-        Route="DocumentViewPage"/>
+        <ShellContent Title="Документи" ContentTemplate="{DataTemplate local:DocumentViewPage}" Route="DocumentViewPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Медикаменти">
-        <ShellContent
-        Title="Медикаменти"
-        ContentTemplate="{DataTemplate local:MedicationViewPage}"
-        Route="MedicationViewPage"/>
+        <ShellContent Title="Медикаменти" ContentTemplate="{DataTemplate local:MedicationViewPage}" Route="MedicationViewPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="График за медикаменти">
-        <ShellContent
-        Title="График за медикаменти"
-        ContentTemplate="{DataTemplate local:MedicationSchedulePage}"
-        Route="MedicationSchedulePage"/>
+        <ShellContent Title="График за медикаменти" ContentTemplate="{DataTemplate local:MedicationSchedulePage}" Route="MedicationSchedulePage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Записани часове">
-        <ShellContent
-        Title="Записани часове"
-        ContentTemplate="{DataTemplate local:AppointmentHistoryPage}"
-        Route="AppointmentHistoryPage"/>
+        <ShellContent Title="Записани часове" ContentTemplate="{DataTemplate local:AppointmentHistoryPage}" Route="AppointmentHistoryPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Амбулаторни листове">
-        <ShellContent
-        Title="Амбулаторни листове"
-        ContentTemplate="{DataTemplate local:MyPrescriptionsPage}"
-        Route="MyPrescriptionsPage"/>
+        <ShellContent Title="Амбулаторни листове" ContentTemplate="{DataTemplate local:MyPrescriptionsPage}" Route="MyPrescriptionsPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Показатели">
-        <ShellContent
-        Title="Показатели"
-        ContentTemplate="{DataTemplate local:LogbookViewPage}"
-        Route="LogbookViewPage"/>
+        <ShellContent Title="Показатели" ContentTemplate="{DataTemplate local:LogbookViewPage}" Route="LogbookViewPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Диагностичен указател">
-        <ShellContent
-        Title="Диагностичен указател"
-        ContentTemplate="{DataTemplate local:DiagnosisPredictionPage}"
-        Route="DiagnosisPredictionPage"/>
+        <ShellContent Title="Диагностичен указател" ContentTemplate="{DataTemplate local:DiagnosisPredictionPage}" Route="DiagnosisPredictionPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Онлайн аптека">
-        <ShellContent
-        Title="Онлайн аптека"
-        ContentTemplate="{DataTemplate local:PharmaciesViewPage}"
-        Route="PharmaciesViewPage"/>
+        <ShellContent Title="Онлайн аптека" ContentTemplate="{DataTemplate local:PharmaciesViewPage}" Route="PharmaciesViewPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Рецепция">
-        <ShellContent
-        Title="Рецепция"
-        ContentTemplate="{DataTemplate local:ReceptionPage}"
-        Route="ReceptionPage"/>
+        <ShellContent Title="Рецепция" ContentTemplate="{DataTemplate local:ReceptionPage}" Route="ReceptionPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Лаборатория">
-        <ShellContent
-        Title="Лаборатория"
-        ContentTemplate="{DataTemplate local:LaboratoryPage}"
-        Route="LaboratoryPage"/>
+        <ShellContent Title="Лаборатория" ContentTemplate="{DataTemplate local:LaboratoryPage}" Route="LaboratoryPage" />
     </FlyoutItem>
-    
     <FlyoutItem Title="Напомняния">
-        <ShellContent
-        Title="Напомняния"
-        ContentTemplate="{DataTemplate local:RemindersViewPage}"
-        Route="RemindersViewPage"/>
+        <ShellContent Title="Напомняния" ContentTemplate="{DataTemplate local:RemindersViewPage}" Route="RemindersViewPage" />
     </FlyoutItem>
-
     <FlyoutItem Title="Автентикация">
         <Tab>
             <ShellContent
-                Title="Регистрация"
-                ContentTemplate="{DataTemplate local:RegisterPage}"
-                Route="RegisterPage"/>
+            Title="Регистрация"
+            ContentTemplate="{DataTemplate local:RegisterPage}"
+            Route="RegisterPage"/>
             <ShellContent
-                Title="Вписване"
-                ContentTemplate="{DataTemplate local:LoginPage}"
-                Route="LoginPage"/>
+            Title="Вписване"
+            ContentTemplate="{DataTemplate local:LoginPage}"
+            Route="LoginPage"/>
         </Tab>
     </FlyoutItem>
 
+    <!-- Logo in TitleView -->
+    <Shell.TitleView>
+        <Grid>
+            <Image Source="logo.png" HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+    </Shell.TitleView>
+
+    <!-- ToolbarItems -->
     <Shell.ToolbarItems>
-        <ToolbarItem
-        Text="Изход"
-        Command="{Binding LogoutCommand}"
-        IconImageSource="logout.png"
-        Order="Primary"
-        Priority="0" />
+        <ToolbarItem Text="Изход" Command="{Binding LogoutCommand}" IconImageSource="logout.png" Order="Primary" Priority="0" />
     </Shell.ToolbarItems>
 </Shell>
