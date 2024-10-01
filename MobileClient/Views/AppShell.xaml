@@ -95,14 +95,12 @@
         </Tab>
     </FlyoutItem>
 
-    <!-- Logo in TitleView -->
     <Shell.TitleView>
         <Grid>
             <Image Source="logo.png" HorizontalOptions="Center" VerticalOptions="Center" />
         </Grid>
     </Shell.TitleView>
 
-    <!-- ToolbarItems -->
     <Shell.ToolbarItems>
         <ToolbarItem Text="Изход" Command="{Binding LogoutCommand}" IconImageSource="logout.png" Order="Primary" Priority="0" />
     </Shell.ToolbarItems>
