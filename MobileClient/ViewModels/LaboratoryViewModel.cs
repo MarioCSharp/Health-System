@@ -43,7 +43,7 @@ namespace HealthProject.ViewModels
             IsMessageVisible = false;
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
             {
-                Message = "Моля въведете и потребителското ид и паролата!";
+                Message = "Моля въведете потребителско име и парола!";
                 IsMessageVisible = true;
                 return;
             }

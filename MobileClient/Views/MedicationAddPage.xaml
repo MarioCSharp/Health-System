@@ -47,7 +47,7 @@
             <Label Text="План на взимане" 
                    FontSize="18"
                    HorizontalOptions="Start" 
-                   VerticalOptions="CenterAndExpand" />
+                   VerticalOptions="CenterAndExpand"   Style="{StaticResource LabelStyle}"/>
 
             <Picker x:Name="FrequencyPicker" 
                     Title="Избери график"
@@ -118,7 +118,7 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </VerticalStackLayout>
-            
+
             <VerticalStackLayout x:Name="XYDaysIntakeView" IsVisible="False">
                 <Label Text="Честота на взимане" 
                        FontSize="14"
@@ -208,10 +208,10 @@
                 </VerticalStackLayout>
             </VerticalStackLayout>
 
-            <Label Text="Начална дата на приемане:" FontSize="Medium" />
+            <Label Text="Начална дата на приемане:" FontSize="Medium" Style="{StaticResource LabelStyle}" />
             <DatePicker Date="{Binding Medication.StartDate}" />
 
-            <Label Text="Крайна дата на приемане:" FontSize="Medium" />
+            <Label Text="Крайна дата на приемане:" FontSize="Medium"  Style="{StaticResource LabelStyle}"/>
             <DatePicker Date="{Binding Medication.EndDate}" />
 
             <Label Text="Бележки:" Style="{StaticResource LabelStyle}" />

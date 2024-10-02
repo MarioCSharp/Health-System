@@ -23,7 +23,30 @@
     </ContentPage.Resources>
 
     <Grid>
-        <ScrollView>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Title and + Button Row -->
+        <Label Text="Диагностичен указател"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               TextColor="#007ACC"
+               Grid.Row="0"
+               Grid.Column="0"
+               Margin="10,20,0,20"/>
+
+        <!-- Symptoms Input Form -->
+        <ScrollView Grid.Row="1" Grid.ColumnSpan="2">
             <StackLayout Padding="20" Spacing="15">
                 <Label Text="Въведете симптоми:" Style="{StaticResource HeaderLabelStyle}" />
 
@@ -78,7 +101,7 @@
         </ScrollView>
 
         <!-- Footer -->
-        <Grid BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid" VerticalOptions="End" Margin="0">
+        <Grid Grid.Row="2" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid" Grid.ColumnSpan="2" VerticalOptions="End">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

@@ -4,12 +4,20 @@
              x:Class="HealthProject.Views.MedicationSchedulePage">
 
     <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*">
+        <Label Text="График за лекарства"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               TextColor="#007ACC"
+               Grid.Row="0"
+               Margin="0,20,0,20"/>
         <!-- Calendar Navigation -->
         <FlexLayout Direction="Row" AlignItems="Center" JustifyContent="SpaceBetween" Padding="20,10"
                     Grid.Row="0" BackgroundColor="#F9F9F9">
             <Button Text="←" 
                     HorizontalOptions="Start"
-                    BackgroundColor="#FF6F61"
+                    BackgroundColor="#007ACC"
                     TextColor="White"
                     CornerRadius="15"
                     WidthRequest="50"
@@ -20,12 +28,12 @@
                    VerticalOptions="Center"
                    FontAttributes="Bold"
                    FontSize="22"
-                   TextColor="#FF6F61"
+                   TextColor="#007ACC"
                    Margin="0, 5" />
 
             <Button Text="→" 
                     HorizontalOptions="End" 
-                    BackgroundColor="#FF6F61"
+                    BackgroundColor="#007ACC"
                     TextColor="White"
                     CornerRadius="15"
                     WidthRequest="50"

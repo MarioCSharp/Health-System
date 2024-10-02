@@ -26,11 +26,23 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <VerticalStackLayout Padding="10" Grid.Row="0">
+            <!-- Title section -->
+            <Label Text="Амбулаторни листове"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   TextColor="#007ACC"
+                   Grid.Row="0"
+                   Margin="0,20,0,0"/>
+
+            <!-- Main content: Prescriptions list -->
+            <VerticalStackLayout Padding="10" Grid.Row="1">
                 <CollectionView ItemsSource="{Binding Prescriptions}"
                                 IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}">
                     <CollectionView.ItemTemplate>
@@ -66,7 +78,8 @@
                        IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
             </VerticalStackLayout>
 
-            <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
+            <!-- Footer buttons section -->
+            <Grid Grid.Row="2" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />

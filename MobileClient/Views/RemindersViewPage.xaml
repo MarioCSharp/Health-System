@@ -29,6 +29,15 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
+            <Label Text="Напомняния"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="#007ACC"
+                   Grid.Row="0"
+                   Margin="0,20,0,20"/>
+
             <CollectionView ItemsSource="{Binding Reminders}" Margin="10, 70" Grid.Row="0">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -88,7 +97,7 @@
                     HeightRequest="60"
                     HorizontalOptions="End"
                     VerticalOptions="Start"
-                    Margin="20,20,20,0"
+                    Margin="20,20,11,0"
                     Grid.Row="0">
                 <Button.Triggers>
                     <Trigger TargetType="Button" Property="IsPressed" Value="True">

@@ -24,26 +24,36 @@
 
     <ContentPage.Content>
         <Grid Padding="0">
-            <!-- Set Padding to 0 -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <!-- For the button -->
                 <RowDefinition Height="*" />
-                <!-- For the CollectionView and empty image -->
                 <RowDefinition Height="Auto" />
-                <!-- For the footer -->
             </Grid.RowDefinitions>
-
-            <Button Text="Добави здравен проблем" 
-                    Command="{Binding AddHealthIssueCommand}"
-                    HorizontalOptions="End"
-                    VerticalOptions="Center"
-                    Margin="0,0,0,20"
-                    BackgroundColor="#007ACC"
-                    TextColor="White"
-                    CornerRadius="10"
-                    HeightRequest="50"
-                    WidthRequest="220"/>
+            <Label Text="Здравни проблеми"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="#007ACC"
+                   Grid.Row="0"
+                   Margin="0,20,0,20"/>
+            <Button Text="＋" 
+            Command="{Binding AddHealthIssueCommand}" 
+            BackgroundColor="#007ACC"
+            TextColor="White"
+            FontSize="24"
+            CornerRadius="30"
+            WidthRequest="60"
+            HeightRequest="60"
+            HorizontalOptions="End"
+            VerticalOptions="Start"  
+            Margin="20,20,11,0">
+                <Button.Triggers>
+                    <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                        <Setter Property="BackgroundColor" Value="#005999"/>
+                    </Trigger>
+                </Button.Triggers>
+            </Button>
 
             <CollectionView Grid.Row="1"
                             ItemsSource="{Binding HealthIssues}"

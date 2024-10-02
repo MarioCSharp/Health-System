@@ -26,11 +26,23 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <CollectionView ItemsSource="{Binding Medications}" Margin="10, 90, 10, 0" Grid.Row="0">
+            <!-- Adjusted Label for Title at Top Center -->
+            <Label Text="Медикаменти"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   TextColor="#007ACC"
+                   Margin="0,15,0,10"
+                   Grid.Row="0"/>
+
+            <!-- List of Medications -->
+            <CollectionView ItemsSource="{Binding Medications}" Margin="10, 10, 10, 0" Grid.Row="1">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame CornerRadius="10" 
@@ -91,7 +103,7 @@
                     HeightRequest="60"
                     HorizontalOptions="End"
                     VerticalOptions="Start"
-                Margin="20,20,20,0">
+                    Margin="20,20,11,0">
                 <Button.Triggers>
                     <Trigger TargetType="Button" Property="IsPressed" Value="True">
                         <Setter Property="BackgroundColor" Value="#005999"/>
@@ -102,10 +114,11 @@
             <Image Source="nothing_found.png"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   Grid.Row="0"
+                   Grid.Row="1"
                    IsVisible="{Binding Medications.Count, Converter={StaticResource IsCollectionEmptyConverter}}" />
 
-            <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
+            <!-- Footer -->
+            <Grid Grid.Row="2" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />

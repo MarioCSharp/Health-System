@@ -24,9 +24,19 @@
     </ContentPage.Resources>
 
     <Grid>
-        <VerticalStackLayout Padding="20" VerticalOptions="FillAndExpand">
+        <!-- Top Label with bottom margin -->
+        <Label Text="Лаборатория"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               VerticalOptions="Start"
+               TextColor="#007ACC"
+               Margin="0,20,0,10"/>
+        <!-- Added bottom margin of 10 -->
+
+        <VerticalStackLayout Padding="50" VerticalOptions="FillAndExpand">
             <Entry 
-                Placeholder="Потребителско ИД"
+                Placeholder="Потребителско име"
                 Text="{Binding UserName}"
                 VerticalOptions="Center" 
                 HorizontalOptions="FillAndExpand" />

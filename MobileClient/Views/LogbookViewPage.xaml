@@ -6,6 +6,7 @@
              BackgroundColor="#fff">
     <ContentPage.Resources>
 
+        <!-- Styles for Footer buttons and elements -->
         <Style x:Key="FooterButtonStyle" TargetType="Grid">
             <Setter Property="Padding" Value="0" />
             <Setter Property="BackgroundColor" Value="#007AFF" />
@@ -22,16 +23,54 @@
             <Setter Property="WidthRequest" Value="25" />
         </Style>
     </ContentPage.Resources>
+
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <!-- For the logbook collection view -->
                 <RowDefinition Height="Auto" />
-                <!-- For the footer -->
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <CollectionView ItemsSource="{Binding Logbook}" Margin="10, 90, 10, 0" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Title section -->
+            <Label Text="Показатели"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="#007ACC"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   Margin="10,20,0,0"/>
+
+            <!-- Floating Action Button for adding new logbook entries -->
+            <Button Text="＋" 
+                    Command="{Binding RedirectToAdd}"
+                    BackgroundColor="#007ACC"
+                    TextColor="White"
+                    FontSize="24"
+                    CornerRadius="30"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Margin="0,20,10,0"
+                    Grid.Row="0"
+                    Grid.Column="1">
+                <Button.Triggers>
+                    <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                        <Setter Property="BackgroundColor" Value="#005999"/>
+                    </Trigger>
+                </Button.Triggers>
+            </Button>
+
+            <!-- Logbook CollectionView section -->
+            <CollectionView ItemsSource="{Binding Logbook}" Margin="10, 20, 10, 0" Grid.Row="1" Grid.ColumnSpan="2">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame CornerRadius="10" 
@@ -58,6 +97,7 @@
                                            TextColor="Gray"/>
                                 </StackLayout>
 
+                                <!-- Delete button -->
                                 <ImageButton Source="recycle_bin.png" 
                                              BackgroundColor="Transparent"
                                              Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
@@ -69,6 +109,8 @@
                                              Grid.Column="1"
                                              Margin="10,0,0,0"/>
                             </Grid>
+
+                            <!-- Gesture recognizer for tapping -->
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RedirectToEdit}"
                                                       CommandParameter="{Binding Id}" />
@@ -83,30 +125,11 @@
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    IsVisible="{Binding Logbook.Count, Converter={StaticResource IsCollectionEmptyConverter}}" 
-                   Grid.Row="0" />
+                   Grid.Row="1" 
+                   Grid.ColumnSpan="2" />
 
-            <!-- Floating Action Button -->
-            <Button Text="＋" 
-                    Command="{Binding RedirectToAdd}"
-                    BackgroundColor="#007ACC"
-                    TextColor="White"
-                    FontSize="24"
-                    CornerRadius="30"
-                    WidthRequest="60"
-                    HeightRequest="60"
-                    HorizontalOptions="End"
-                    VerticalOptions="Start"
-                    Margin="20,20,20,0"
-                    Grid.Row="0">
-                <Button.Triggers>
-                    <Trigger TargetType="Button" Property="IsPressed" Value="True">
-                        <Setter Property="BackgroundColor" Value="#005999"/>
-                    </Trigger>
-                </Button.Triggers>
-            </Button>
-
-            <!-- Footer -->
-            <Grid Grid.Row="1" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid">
+            <!-- Footer section -->
+            <Grid Grid.Row="2" BackgroundColor="#007AFF" HeightRequest="100" x:Name="FooterGrid" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />

@@ -24,7 +24,50 @@
     </ContentPage.Resources>
 
     <Grid>
-        <VerticalStackLayout Padding="10" VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Title and + Button Row -->
+        <Label Text="Аптеки"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               TextColor="#007ACC"
+               Grid.Row="0"
+               Grid.Column="0"
+               Margin="10,20,0,20"/>
+
+        <Button Text="＋"
+                Command="{Binding RedirectToAddPharmacy}"
+                BackgroundColor="#007ACC"
+                TextColor="White"
+                FontSize="24"
+                CornerRadius="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                Margin="0,20,10,20"
+                Grid.Row="0"
+                Grid.Column="1">
+            <Button.Triggers>
+                <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                    <Setter Property="BackgroundColor" Value="#005999"/>
+                </Trigger>
+            </Button.Triggers>
+        </Button>
+
+        <!-- Content with Pharmacies List -->
+        <VerticalStackLayout Padding="10" VerticalOptions="FillAndExpand" Grid.Row="1" Grid.ColumnSpan="2">
             <CollectionView ItemsSource="{Binding Pharmacies}" SelectionMode="None"
                             VerticalOptions="FillAndExpand">
                 <CollectionView.ItemTemplate>
@@ -51,7 +94,7 @@
         </VerticalStackLayout>
 
         <!-- Footer -->
-        <Grid BackgroundColor="#007AFF" HeightRequest="100" VerticalOptions="End" x:Name="FooterGrid">
+        <Grid BackgroundColor="#007AFF" HeightRequest="100" VerticalOptions="End" x:Name="FooterGrid" Grid.Row="2" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
