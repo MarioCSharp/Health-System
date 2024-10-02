@@ -60,6 +60,7 @@
 	  <None Remove="Platforms\Android\Resources\xml\file_paths.xml" />
 	  <None Remove="Resources\Images\arrow_right.png" />
 	  <None Remove="Resources\Images\hospital.png" />
+	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\logout.png" />
 	  <None Remove="Resources\Images\microscope.png" />
 	  <None Remove="Resources\Images\pharmacy.png" />
