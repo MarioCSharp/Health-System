@@ -151,7 +151,7 @@
                 <Entry x:Name="PeakFlowInput" Keyboard="Numeric" />
             </StackLayout>
 
-            <Button Text="Запиши" Clicked="Button_Clicked" />
+            <Button Text="Запиши" Clicked="Button_Clicked" Background="#007ACC" Margin="0,20,0,0" />
         </StackLayout>
     </ScrollView>
 </ContentPage>

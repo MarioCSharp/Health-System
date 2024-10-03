@@ -31,7 +31,6 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- Title section -->
             <Label Text="Амбулаторни листове"
                    FontSize="24"
                    FontAttributes="Bold"
@@ -41,36 +40,35 @@
                    Grid.Row="0"
                    Margin="0,20,0,0"/>
 
-            <!-- Main content: Prescriptions list -->
             <VerticalStackLayout Padding="10" Grid.Row="1">
-                <CollectionView ItemsSource="{Binding Prescriptions}"
-                                IsVisible="{Binding Prescriptions.Count, Converter={StaticResource IsCollectionEmptyConverter}}">
+                <CollectionView ItemsSource="{Binding Prescriptions}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame BorderColor="LightGray"
-                                   CornerRadius="5"
-                                   Padding="10"
-                                   Margin="5"
-                                   HasShadow="True">
+                   CornerRadius="5"
+                   Padding="10"
+                   Margin="5"
+                   HasShadow="True">
                                 <VerticalStackLayout>
                                     <Label Text="{Binding DoctorName}"
-                                           FontSize="Medium"
-                                           FontAttributes="Bold" />
+                           FontSize="Medium"
+                           FontAttributes="Bold" />
                                     <Label Text="{Binding Date}"
-                                           FontSize="Small"
-                                           TextColor="Gray"/>
+                           FontSize="Small"
+                           TextColor="Gray"/>
 
                                     <Button Text="Изтегли файл"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:MyPrescriptionsViewModel}}, Path=DownloadFileCommand}"
-                                            CommandParameter="{Binding File}"
-                                            HorizontalOptions="End"
-                                            BackgroundColor="#007AFF"
-                                            TextColor="White" />
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:MyPrescriptionsViewModel}}, Path=DownloadFileCommand}"
+                            CommandParameter="{Binding File}"
+                            HorizontalOptions="End"
+                            BackgroundColor="#007AFF"
+                            TextColor="White" />
                                 </VerticalStackLayout>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
 
                 <Image Source="nothing_found.png"
                        HorizontalOptions="Center"

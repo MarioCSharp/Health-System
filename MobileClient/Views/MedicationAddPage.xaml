@@ -30,19 +30,19 @@
             <Label Text="Добавяне на лекарство" 
                    FontSize="24"
                    HorizontalOptions="Center" 
-                   VerticalOptions="CenterAndExpand" />
+                   VerticalOptions="CenterAndExpand" Margin="0, 5, 0, 10"/>
 
             <Label Text="Име на лекарството:" Style="{StaticResource LabelStyle}" />
             <Entry Placeholder="Въведате името на лекарството" Style="{StaticResource EntryStyle}" 
-                   Text="{Binding Medication.Name}"  />
+                   Text="{Binding Medication.Name}"  Margin="0, 2, 0, 10"/>
 
             <Label Text="Доза на лекарството:" Style="{StaticResource LabelStyle}" />
             <Entry Placeholder="Въведате дозата на лекарството" Style="{StaticResource EntryStyle}" 
-                   Text="{Binding Medication.Dose}" />
+                   Text="{Binding Medication.Dose}" Margin="0, 2, 0, 10" />
 
             <Label Text="Вид на лекарството:" Style="{StaticResource LabelStyle}" />
             <Entry Placeholder="Въведате вида на лекарството" Style="{StaticResource EntryStyle}" 
-                   Text="{Binding Medication.Type}" />
+                   Text="{Binding Medication.Type}" Margin="0, 2, 0, 10"/>
 
             <Label Text="План на взимане" 
                    FontSize="18"
@@ -51,7 +51,7 @@
 
             <Picker x:Name="FrequencyPicker" 
                     Title="Избери график"
-                    SelectedIndexChanged="FrequencyPicker_SelectedIndexChanged">
+                    SelectedIndexChanged="FrequencyPicker_SelectedIndexChanged" Margin="0, 2, 0, 10">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>При необходимост</x:String>
@@ -209,20 +209,20 @@
             </VerticalStackLayout>
 
             <Label Text="Начална дата на приемане:" FontSize="Medium" Style="{StaticResource LabelStyle}" />
-            <DatePicker Date="{Binding Medication.StartDate}" />
+            <DatePicker Date="{Binding Medication.StartDate}" Margin="0, 2, 0, 10"/>
 
             <Label Text="Крайна дата на приемане:" FontSize="Medium"  Style="{StaticResource LabelStyle}"/>
-            <DatePicker Date="{Binding Medication.EndDate}" />
+            <DatePicker Date="{Binding Medication.EndDate}" Margin="0, 2, 0, 10"/>
 
             <Label Text="Бележки:" Style="{StaticResource LabelStyle}" />
             <Entry Placeholder="Бележки" Style="{StaticResource EntryStyle}" 
-                   Text="{Binding Medication.Notes}" />
+                   Text="{Binding Medication.Notes}" Margin="0, 2, 0, 10"/>
 
             <Button Text="Добавяне" Style="{StaticResource ButtonStyle}" 
                     Command="{Binding AddCommand}" 
                     Clicked="Button_Clicked"
                     AutomationProperties.IsInAccessibleTree="True" 
-                    AutomationProperties.Name="Add Hospital Button" />
+                    AutomationProperties.Name="Add Hospital Button" Margin="0, 20, 0, 0"/>
 
         </VerticalStackLayout>
     </ScrollView>

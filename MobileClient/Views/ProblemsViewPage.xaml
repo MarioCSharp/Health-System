@@ -31,7 +31,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Label Text="Проблеми"
+            <Label Text="Симптоми"
                    FontSize="24"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"

@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Input;
 using HealthProject.Models;
 using HealthProject.Services.AppointmentService;
 using HealthProject.Services.AuthenticationService;
-using System;
 using HealthProject.Views;
 
 namespace HealthProject.ViewModels

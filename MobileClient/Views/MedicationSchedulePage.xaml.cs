@@ -36,14 +36,14 @@ namespace HealthProject.Views
 
             calendarGrid.Children.Clear();
 
-            string[] daysOfWeek = new[] { "Нед", "Пон", "Вто", "Сря", "Чет", "Пет", "Съб" };
+            string[] daysOfWeek = new[] { "НД", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ" };
             for (int i = 0; i < 7; i++)
             {
                 var dayLabel = new Label
                 {
                     Text = daysOfWeek[i],
                     HorizontalOptions = LayoutOptions.Center,
-                    TextColor = Color.FromHex("#FF6F61"),
+                    TextColor = Color.FromHex("#007ACC"),
                     FontAttributes = FontAttributes.Bold
                 };
                 calendarGrid.Children.Add(dayLabel);
@@ -64,7 +64,7 @@ namespace HealthProject.Views
                 Button dayButton = new Button
                 {
                     Text = day.ToString(),
-                    BackgroundColor = currentDay == selectedDate ? Color.FromHex("#FF6F61") : Color.FromHex("#EFEFEF"),
+                    BackgroundColor = currentDay == selectedDate ? Color.FromHex("#007ACC") : Color.FromHex("#EFEFEF"),
                     TextColor = currentDay == selectedDate ? Colors.White : Color.FromHex("#333333"),
                     CornerRadius = 10,
                     CommandParameter = currentDay
