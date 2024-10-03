@@ -72,7 +72,6 @@ const PharmaciesComponent: React.FC = () => {
         throw new Error("There was an error deleting the pharmacy");
       }
 
-      // Refetch the updated list of pharmacies
       getPharmacies();
     } catch (error) {
       console.error("Error deleting pharmacy:", error);
@@ -82,10 +81,6 @@ const PharmaciesComponent: React.FC = () => {
 
   const handleEdit = (pharmacy: Pharmacy) => {
     setEditingPharmacy(pharmacy);
-  };
-
-  const redirectToPharmacists = (pharmacyId: number) => {
-    navigate(`/pharmacists/${pharmacyId}`);
   };
 
   const redirectToAddPharmacy = () => {
@@ -115,42 +110,45 @@ const PharmaciesComponent: React.FC = () => {
             <ul className="list-group list-group-flush">
               {pharmacies.map((pharmacy) => (
                 <li
-                  className="list-group-item d-flex justify-content-between align-items-center"
+                  className="list-group-item border-0 shadow-sm mb-2"
                   key={pharmacy.id}
                 >
-                  <div className="d-flex align-items-center">
-                    <FontAwesomeIcon
-                      icon={faMapMarkerAlt}
-                      className="text-primary me-3"
-                    />
-                    <span>
-                      <strong>{pharmacy.name}</strong>
-                      <br />
-                      <small className="text-muted">{pharmacy.location}</small>
-                    </span>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center">
+                      <FontAwesomeIcon
+                        icon={faMapMarkerAlt}
+                        className="text-primary me-3"
+                      />
+                      <span>
+                        <strong>{pharmacy.name}</strong>
+                        <br />
+                        <small className="text-muted">
+                          {pharmacy.location}
+                        </small>
+                      </span>
+                    </div>
+                    <div>
+                      <button
+                        className="btn btn-outline-warning btn-sm me-2"
+                        onClick={() => handleEdit(pharmacy)}
+                      >
+                        <FontAwesomeIcon icon={faEdit} /> Редактирай
+                      </button>
+                      <button
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => handleDelete(pharmacy.id)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} /> Изтрий
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <button
-                      className="btn btn-outline-primary btn-sm me-2"
-                      onClick={() => redirectToPharmacists(pharmacy.id)}
-                    >
-                      <FontAwesomeIcon icon={faUser} /> Фармацевти
-                    </button>
-                    <button
-                      className="btn btn-outline-warning btn-sm me-2"
-                      onClick={() => handleEdit(pharmacy)}
-                    >
-                      <FontAwesomeIcon icon={faEdit} /> Редактирай
-                    </button>
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => handleDelete(pharmacy.id)}
-                    >
-                      <FontAwesomeIcon icon={faTrash} /> Изтрий
-                    </button>
-                  </div>
+
                   {editingPharmacy && editingPharmacy.id === pharmacy.id && (
-                    <PharmacyEditComponent pharmacy={editingPharmacy} />
+                    <div className="mt-3">
+                      <div className="bg-light p-3 rounded">
+                        <PharmacyEditComponent pharmacy={editingPharmacy} />
+                      </div>
+                    </div>
                   )}
                 </li>
               ))}

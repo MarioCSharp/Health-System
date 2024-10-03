@@ -139,7 +139,7 @@ function HospitalsList() {
             <ul className="list-group list-group-flush">
               {hospitals.map((hospital) => (
                 <li
-                  className="list-group-item d-flex justify-content-between align-items-center border-0 shadow-sm mb-2"
+                  className="list-group-item border-0 shadow-sm mb-2"
                   key={hospital.id}
                 >
                   <div className="d-flex justify-content-between align-items-center">
@@ -166,15 +166,22 @@ function HospitalsList() {
                     </div>
                   </div>
 
+                  {/* Doctors section appears under hospital */}
                   {activeHospitalId === hospital.id && showDoctors && (
                     <div className="mt-3">
-                      <h5>Доктори в {hospital.hospitalName}</h5>
-                      <DoctorsDisplayPage hospitalId={hospital.id} />
+                      <div className="bg-light p-3 rounded">
+                        <h5>Доктори в {hospital.hospitalName}</h5>
+                        <DoctorsDisplayPage hospitalId={hospital.id} />
+                      </div>
                     </div>
                   )}
+
+                  {/* Edit section appears under hospital */}
                   {activeHospitalId === hospital.id && showEdit && (
                     <div className="mt-3">
-                      <HospitalEditComponent hospitalId={hospital.id} />
+                      <div className="bg-light p-3 rounded">
+                        <HospitalEditComponent hospitalId={hospital.id} />
+                      </div>
                     </div>
                   )}
                 </li>
@@ -198,7 +205,11 @@ function HospitalsList() {
             <FontAwesomeIcon icon={faList} /> Виж всички
           </button>
         </div>
-        {showAddHospital && <HospitalAddComponent />}
+        {showAddHospital && (
+          <div className="collapse show mt-3">
+            <HospitalAddComponent />
+          </div>
+        )}
       </div>
     </div>
   );
