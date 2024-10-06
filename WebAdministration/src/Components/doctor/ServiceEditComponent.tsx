@@ -10,7 +10,6 @@ const ServiceEditComponent: React.FC = () => {
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
 
   const getService = async () => {
@@ -93,72 +92,82 @@ const ServiceEditComponent: React.FC = () => {
   }
 
   return (
-    <div className="container">
-      <h2>Редактиране на услуга</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="serviceName" className="form-label">
-            Име на услугата
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="serviceName"
-            value={serviceName}
-            onChange={(e) => setServiceName(e.target.value)}
-            required
-          />
+    <div className="container mt-5">
+      <div className="card shadow-lg p-4">
+        <div className="card-header bg-primary text-white text-center">
+          <h3>
+            <i className="fas fa-edit me-2"></i> Редактиране на услуга
+          </h3>
         </div>
-        <div className="mb-3">
-          <label htmlFor="servicePrice" className="form-label">
-            Цена на услугата
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="servicePrice"
-            value={servicePrice}
-            onChange={(e) => setServicePrice(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="serviceDesciption" className="form-label">
-            Описание на услугата
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="serviceDesciption"
-            value={serviceDesciption}
-            onChange={(e) => setServiceDesciption(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="serviceLocation" className="form-label">
-            Локация на услугата
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="serviceLocation"
-            value={serviceLocation}
-            onChange={(e) => setServiceLocation(e.target.value)}
-            required
-          />
-        </div>
-        {error && (
-          <div className="mb-3">
-            <p style={{ color: "red" }}>
-              There was an error processing your request.
-            </p>
+        <form onSubmit={handleSubmit} className="p-3">
+          <div className="mb-4">
+            <label htmlFor="serviceName" className="form-label">
+              <i className="fas fa-briefcase me-2"></i> Име на услугата
+            </label>
+            <input
+              type="text"
+              className="form-control form-control-lg"
+              id="serviceName"
+              value={serviceName}
+              onChange={(e) => setServiceName(e.target.value)}
+              placeholder="Въведете името на услугата"
+              required
+            />
           </div>
-        )}
-        <button type="submit" className="btn btn-warning">
-          Запази промените
-        </button>
-      </form>
+          <div className="mb-4">
+            <label htmlFor="servicePrice" className="form-label">
+              <i className="fas fa-money-bill-wave me-2"></i> Цена на услугата
+            </label>
+            <input
+              type="number"
+              className="form-control form-control-lg"
+              id="servicePrice"
+              value={servicePrice}
+              onChange={(e) => setServicePrice(e.target.value)}
+              placeholder="Въведете цената на услугата"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="serviceDesciption" className="form-label">
+              <i className="fas fa-info-circle me-2"></i> Описание на услугата
+            </label>
+            <input
+              type="text"
+              className="form-control form-control-lg"
+              id="serviceDesciption"
+              value={serviceDesciption}
+              onChange={(e) => setServiceDesciption(e.target.value)}
+              placeholder="Въведете описание"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="serviceLocation" className="form-label">
+              <i className="fas fa-map-marker-alt me-2"></i> Локация на услугата
+            </label>
+            <input
+              type="text"
+              className="form-control form-control-lg"
+              id="serviceLocation"
+              value={serviceLocation}
+              onChange={(e) => setServiceLocation(e.target.value)}
+              placeholder="Въведете локацията"
+              required
+            />
+          </div>
+          {error && (
+            <div className="alert alert-danger">
+              Възникна грешка при обработката на вашата заявка.
+            </div>
+          )}
+          <div className="text-center">
+            <button type="submit" className="btn btn-warning btn-lg">
+              <i className="fas fa-save me-2"></i> Запази промените
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

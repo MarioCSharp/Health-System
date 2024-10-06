@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface Result {
   id: number;
@@ -94,9 +95,11 @@ function LaboratoryResultsComponent() {
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h3 className="text-primary">Лабораторни резултати</h3>
+        <h3 className="text-primary">
+          <i className="fas fa-vial me-2"></i> Лабораторни резултати
+        </h3>
         <button onClick={handleAddResults} className="btn btn-primary">
-          Добави запис
+          <i className="fas fa-plus me-2"></i> Добави запис
         </button>
       </div>
       <ul className="list-group">
@@ -107,34 +110,35 @@ function LaboratoryResultsComponent() {
               key={result.id}
             >
               <span>
+                <i className="fas fa-user me-2"></i>
                 {result.patientName} - {result.date}
               </span>
-              <div>
-                <input
-                  type="file"
-                  className="form-control-file"
-                  onChange={handleFileChange}
-                  style={{
-                    display: uploadingResultId === result.id ? "block" : "none",
-                    marginBottom: "8px",
-                  }}
-                />
+              <div className="text-end">
                 <button
-                  className="btn btn-outline-primary btn-sm"
-                  style={{ marginRight: "2px" }}
+                  className="btn btn-outline-primary btn-sm me-2"
                   onClick={() => {
-                    setUploadingResultId(result.id);
+                    setUploadingResultId(
+                      uploadingResultId === result.id ? null : result.id
+                    );
                   }}
                 >
-                  Добави файл
+                  <i className="fas fa-file-upload me-1"></i> Добави файл
                 </button>
+
                 {uploadingResultId === result.id && (
-                  <button
-                    className="btn btn-success btn-sm"
-                    onClick={() => handleAddFile(result.id)}
-                  >
-                    Качи файл
-                  </button>
+                  <div className="mt-2">
+                    <input
+                      type="file"
+                      className="form-control mb-2"
+                      onChange={handleFileChange}
+                    />
+                    <button
+                      className="btn btn-success btn-sm"
+                      onClick={() => handleAddFile(result.id)}
+                    >
+                      <i className="fas fa-upload me-1"></i> Качи файл
+                    </button>
+                  </div>
                 )}
               </div>
             </li>

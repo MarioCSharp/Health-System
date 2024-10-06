@@ -43,7 +43,6 @@ function LaboratoryAddComponent() {
 
         navigate(`/laboratory/mine`);
       } else {
-        // Handle server-side error
         const errorData = await response.json();
         alert(
           "Error: " + errorData.message ||
@@ -51,33 +50,42 @@ function LaboratoryAddComponent() {
         );
       }
     } catch (error) {
-      // Handle network or other errors
       console.error("Error:", error);
       alert("An unexpected error occurred. Please try again later.");
     }
   };
 
   return (
-    <div className="container">
-      <h2>Добавяне на доктор</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="patientName" className="form-label">
-            Име на пациента
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="patientName"
-            value={patientName}
-            onChange={(e) => setPatientName(e.target.value)}
-            required
-          />
+    <div className="container mt-5">
+      <div className="card shadow-lg p-4">
+        <div className="card-header bg-primary text-white text-center">
+          <h3>
+            <i className="fas fa-user-md me-2"></i> Добавяне на лабораторен
+            резултат
+          </h3>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Запази промените
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="p-3">
+          <div className="mb-4">
+            <label htmlFor="patientName" className="form-label">
+              <i className="fas fa-user me-2"></i>Име на пациента
+            </label>
+            <input
+              type="text"
+              className="form-control form-control-lg"
+              id="patientName"
+              value={patientName}
+              onChange={(e) => setPatientName(e.target.value)}
+              placeholder="Въведете името на пациента"
+              required
+            />
+          </div>
+          <div className="text-center">
+            <button type="submit" className="btn btn-primary btn-lg">
+              <i className="fas fa-save me-2"></i>Запази промените
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
