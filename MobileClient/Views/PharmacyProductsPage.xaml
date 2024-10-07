@@ -57,23 +57,23 @@
                         <Frame Padding="10" Margin="5" BackgroundColor="#FFFFFF">
                             <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
                                 <Image Source="{Binding ItemImage, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
-                           HeightRequest="50" WidthRequest="50" 
-                           Grid.Column="0" />
+                               HeightRequest="50" WidthRequest="50" 
+                               Grid.Column="0" />
 
                                 <VerticalStackLayout Grid.Column="1" Spacing="5" Padding="10,0">
                                     <Label Text="{Binding ItemName}" FontAttributes="Bold" 
-                               LineBreakMode="TailTruncation" 
-                               MaxLines="1" />
+                                   LineBreakMode="TailTruncation" 
+                                   MaxLines="1" />
                                     <Label Text="{Binding ItemPrice, StringFormat='Price: {0:C}'}" />
                                     <Label Text="{Binding Quantity, StringFormat='Qty: {0}'}" />
                                 </VerticalStackLayout>
 
                                 <Button Text="Премахни"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=RemoveFromCartCommand}"
-                            CommandParameter="{Binding Id}"
-                            Grid.Column="2"
-                            HorizontalOptions="End"
-                            VerticalOptions="Center" />
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=RemoveFromCartCommand}"
+                                CommandParameter="{Binding Id}"
+                                Grid.Column="2"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center" />
                             </Grid>
                         </Frame>
                     </DataTemplate>
@@ -81,11 +81,22 @@
             </CollectionView>
 
             <Label Text="{Binding UserCart.TotalPrice, StringFormat='Общо: {0:C}'}" FontAttributes="Bold" HorizontalOptions="End" />
+
+            <!-- Input fields for user details -->
             <Entry Placeholder="Име" Text="{Binding UserName}" />
             <Entry Placeholder="Адрес за доставка" Text="{Binding UserLocation}" />
             <Entry Placeholder="Телефонен номер" Text="{Binding UserPhoneNumber}" Keyboard="Telephone" />
+
+            <!-- Add the text and icon for "Наложен платеж" here, below the input fields -->
+            <HorizontalStackLayout Spacing="5" HorizontalOptions="Start" VerticalOptions="Center">
+                <Image Source="payment_method.png" HeightRequest="20" WidthRequest="20" />
+                <!-- Replace with your icon source -->
+                <Label Text="Наложен платеж" FontAttributes="Bold" FontSize="Medium" />
+            </HorizontalStackLayout>
+
             <Button Text="Завърши поръчка" Command="{Binding SubmitOrderCommand}" />
         </StackLayout>
+
 
         <!-- Product List -->
         <CollectionView Grid.Row="2" ItemsSource="{Binding PharmacyProducts}" Margin="0,20,0,0">
@@ -98,7 +109,7 @@
                             <Label Text="{Binding Price, StringFormat='Цена: {0:C}'}" FontSize="14" />
                             <Label Text="{Binding Quantity, StringFormat='Валидно количество: {0}'}" FontSize="14" />
                             <HorizontalStackLayout Spacing="15">
-                                <Entry Placeholder="Qty" Keyboard="Numeric" WidthRequest="50" Text="{Binding UserEnteredQuantity}" />
+                                <Entry Placeholder="Кол" Keyboard="Numeric" WidthRequest="50" Text="{Binding UserEnteredQuantity}" />
                                 <Button Text="➕ Добави в количка" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PharmacyProductsViewModel}}, Path=AddToCartCommand}" CommandParameter="{Binding AddToCartParameter}" />
                             </HorizontalStackLayout>
                         </VerticalStackLayout>

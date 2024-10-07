@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrashAlt,
-  faUserMd,
-  faCog,
   faClipboardList,
+  faCog,
 } from "@fortawesome/free-solid-svg-icons";
 
 interface Doctor {
@@ -100,20 +99,20 @@ const DoctorsDisplayPage: React.FC<DoctorsDisplayPageProps> = ({
               className="list-group-item d-flex justify-content-between align-items-center border-0 shadow-sm mb-2"
               key={doctor.id}
             >
-              <div className="d-flex flex-column">
+              <div className="d-flex flex-column flex-grow-1">
                 <span className="fw-bold">{doctor.fullName}</span>
                 <span>{doctor.email}</span>
                 <span className="text-muted">{doctor.specialization}</span>
               </div>
-              <div>
+              <div className="d-flex flex-wrap gap-2">
                 <button
-                  className="btn btn-primary btn-sm me-2"
+                  className="btn btn-primary btn-sm"
                   onClick={() => navigate(`/doctor/appointments/${doctor.id}`)}
                 >
                   <FontAwesomeIcon icon={faClipboardList} /> Часове
                 </button>
                 <button
-                  className="btn btn-warning btn-sm me-2"
+                  className="btn btn-warning btn-sm"
                   onClick={() => navigate(`/doctor/services/${doctor.id}`)}
                 >
                   <FontAwesomeIcon icon={faCog} /> Услуги

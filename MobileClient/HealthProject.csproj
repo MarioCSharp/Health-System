@@ -63,6 +63,7 @@
 	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Images\logout.png" />
 	  <None Remove="Resources\Images\microscope.png" />
+	  <None Remove="Resources\Images\payment-method.png" />
 	  <None Remove="Resources\Images\pharmacy.png" />
 	</ItemGroup>
 

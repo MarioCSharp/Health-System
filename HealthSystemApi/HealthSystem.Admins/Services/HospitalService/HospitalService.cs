@@ -2,6 +2,7 @@
 using HealthSystem.Admins.Data.Models;
 using HealthSystem.Admins.Models;
 using HealthSystem.Admins.Services.DoctorService;
+using HealthSystem.Admins.Services.RecepcionistService;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -11,14 +12,17 @@ namespace HealthSystem.Admins.Services.HospitalService
     {
         private AdminsDbContext context; // Database context for accessing hospital data
         private IDoctorService doctorService; // Service for managing doctors
+        private IRecepcionistService recepcionistService; // Service for managing doctors
         private HttpClient httpClient; // HTTP client for making external API calls
 
         public HospitalService(AdminsDbContext context,
                                IDoctorService doctorService,
+                               IRecepcionistService recepcionistService,
                                HttpClient httpClient)
         {
             this.context = context;
             this.doctorService = doctorService;
+            this.recepcionistService = recepcionistService; 
             this.httpClient = httpClient;
         }
 
@@ -226,9 +230,18 @@ namespace HealthSystem.Admins.Services.HospitalService
 
             // Get and remove associated doctors
             var doctors = await context.Doctors.Where(x => x.HospitalId == id).ToListAsync();
+
             foreach (var doctor in doctors)
             {
                 await doctorService.RemoveAsync(doctor.Id, hospital.OwnerId, token); // Remove each doctor
+            }
+
+            // Get and remove associated receptionists
+            var receptionists = await context.Recepcionists.Where(x => x.HospitalId == id).ToListAsync();
+
+            foreach (var recepcionist in receptionists)
+            {
+                await recepcionistService.Delete(recepcionist.Id, token); // Remove each receptionist
             }
 
             // Remove the hospital's director role from identity service

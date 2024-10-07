@@ -197,6 +197,7 @@ function HospitalsList() {
           <button
             className="btn btn-outline-info"
             onClick={() => setShowAddHospital(!showAddHospital)}
+            style={{ marginRight: "5px" }}
           >
             <FontAwesomeIcon icon={faList} />{" "}
             {showAddHospital ? "Скрий формата" : "Добави болница"}
