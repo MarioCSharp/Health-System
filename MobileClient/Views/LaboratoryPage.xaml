@@ -61,6 +61,7 @@
                 IsVisible="{Binding IsMessageVisible}" />
 
             <Button 
+                Margin="0,10,0,0"
                 Text="Изтегли файл"
                 Command="{Binding DownloadFileCommand}"
                 VerticalOptions="Center" 

@@ -116,6 +116,7 @@ function DoctorServicesComponent() {
                     <button
                       className="btn btn-warning btn-sm mr-2"
                       onClick={() => redirectToEdit(service.id)}
+                      style={{marginRight: "2px"}}
                     >
                       <FontAwesomeIcon icon={faEdit} className="mr-1" />
                       Редактирай
