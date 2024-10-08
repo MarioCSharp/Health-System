@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Home from "./Home";
 import NotFound from "./NotFound";
@@ -31,10 +36,17 @@ import AllPharmaciesComponent from "../pharmacy/AllPharmaciesComponent";
 import MedicationAddPage from "../pharmacy/MedicationAddPage";
 import MedicationsInPharmacyComponent from "../pharmacy/MedicationsInPharmacyComponent";
 import OrdersInMyPharmacyComponent from "../pharmacy/OrdersInMyPharmacyComponent";
+import BackButton from "./BackButtons";
 
-const App: React.FC = () => (
-  <Router>
-    <AuthProvider>
+const AppContent: React.FC = () => {
+  const location = useLocation();
+  const showBackButton =
+    location.pathname !== "/" && location.pathname !== "/login";
+
+  return (
+    <div>
+      {showBackButton && <BackButton />}
+
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<ProtectedRoute />}>
@@ -102,9 +114,16 @@ const App: React.FC = () => (
           />
           <Route path="/orders" element={<OrdersInMyPharmacyComponent />} />
         </Route>
-
         <Route path="*" element={<NotFound />} />
       </Routes>
+    </div>
+  );
+};
+
+const App: React.FC = () => (
+  <Router>
+    <AuthProvider>
+      <AppContent />
     </AuthProvider>
   </Router>
 );

@@ -68,51 +68,58 @@ function AllPastAppointmentsList() {
   };
 
   return (
-    <div className="col-md-7 mx-md-3 mb-4">
-      <ul className="list-group">
-        <h3>Минали часове</h3>
-        {appointments.length > 0 ? (
-          appointments.map((appointment) => (
-            <li
-              className="list-group-item d-flex flex-column"
-              key={appointment.id}
-            >
-              <div className="d-flex justify-content-between align-items-center">
-                <span>
-                  {appointment.serviceName} | {appointment.patientName} |{" "}
-                  {appointment.date}
-                </span>
-                <div>
-                  <button
-                    className="btn btn-primary btn-sm mr-2"
-                    onClick={() => handlePrescriptionClick(appointment.id)}
-                  >
-                    Издай амбулаторен лист
-                  </button>
-                  <button
-                    className="btn btn-primary btn-sm mr-2"
-                    onClick={() => handleFeedbackClick(appointment.id)}
-                  >
-                    Обратна връзка
-                  </button>
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh" }} // Full height to vertically center content
+    >
+      <div className="col-md-7 mx-md-3 mb-4">
+        <ul className="list-group">
+          <h3 className="text-center mb-4">Минали часове</h3>
+          {appointments.length > 0 ? (
+            appointments.map((appointment) => (
+              <li
+                className="list-group-item d-flex flex-column"
+                key={appointment.id}
+              >
+                <div className="d-flex justify-content-between align-items-center">
+                  <span>
+                    {appointment.serviceName} | {appointment.patientName} |{" "}
+                    {appointment.date}
+                  </span>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm mr-2"
+                      onClick={() => handlePrescriptionClick(appointment.id)}
+                    >
+                      Издай амбулаторен лист
+                    </button>
+                    <button
+                      className="btn btn-primary btn-sm mr-2"
+                      onClick={() => handleFeedbackClick(appointment.id)}
+                    >
+                      Обратна връзка
+                    </button>
+                  </div>
                 </div>
+                {selectedPrescriptionId === appointment.id && (
+                  <PrescriptionComponent
+                    appointmentId={String(appointment.id)}
+                  />
+                )}
+                {selectedFeedbackId === appointment.id && (
+                  <FeedbackComponent appointmentId={String(appointment.id)} />
+                )}
+              </li>
+            ))
+          ) : (
+            <div className="col-12">
+              <div className="card mb-3">
+                <div className="card-body p-2">No appointments found</div>
               </div>
-              {selectedPrescriptionId === appointment.id && (
-                <PrescriptionComponent appointmentId={String(appointment.id)} />
-              )}
-              {selectedFeedbackId === appointment.id && (
-                <FeedbackComponent appointmentId={String(appointment.id)} />
-              )}
-            </li>
-          ))
-        ) : (
-          <div className="col-12">
-            <div className="card mb-3">
-              <div className="card-body p-2">No appointments found</div>
             </div>
-          </div>
-        )}
-      </ul>
+          )}
+        </ul>
+      </div>
     </div>
   );
 }
