@@ -46,6 +46,7 @@ function Navigation() {
                   onClick={logout}
                   style={{ color: "white" }}
                 >
+                  <i className="fa-solid fa-arrow-right-from-bracket" style={{marginRight: "5px"}}></i>
                   Излизане
                 </a>
               </li>

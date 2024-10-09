@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PharmacyEditComponent from "./PharmacyEditComponent";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash, faUserMd } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface Pharmacy {
   id: number;
@@ -13,7 +13,7 @@ interface Pharmacy {
 
 function AllPharmaciesComponent() {
   const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
-  const [editingPharmacy, setEditingPharmacy] = useState<Pharmacy | null>(null);
+  const [editingPharmacyId, setEditingPharmacyId] = useState<number | null>(null);
   const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
@@ -66,12 +66,8 @@ function AllPharmaciesComponent() {
     }
   };
 
-  const handleEdit = (pharmacy: Pharmacy) => {
-    setEditingPharmacy(pharmacy);
-  };
-
-  const redirectToPharmacists = (pharmacyId: number) => {
-    navigate(`/pharmacists/${pharmacyId}`);
+  const handleEdit = (pharmacyId: number) => {
+    setEditingPharmacyId(editingPharmacyId === pharmacyId ? null : pharmacyId);
   };
 
   return (
@@ -82,37 +78,36 @@ function AllPharmaciesComponent() {
           <ul className="list-group col-md-8">
             {pharmacies.map((pharmacy) => (
               <li
-                className="list-group-item d-flex justify-content-between align-items-center"
+                className="list-group-item"
                 key={pharmacy.id}
               >
-                <div>
-                  <strong>{pharmacy.name}</strong> | {pharmacy.location}
+                <div className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{pharmacy.name}</strong> | {pharmacy.location}
+                  </div>
+                  <div>
+                    <button
+                      className="btn btn-sm btn-warning me-2"
+                      onClick={() => handleEdit(pharmacy.id)}
+                    >
+                      <FontAwesomeIcon icon={faEdit} className="me-1" />
+                      Редактирай
+                    </button>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => handleDelete(pharmacy.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} className="me-1" />
+                      Изтрий
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button
-                    className="btn btn-sm btn-primary me-2"
-                    onClick={() => redirectToPharmacists(pharmacy.id)}
-                  >
-                    <FontAwesomeIcon icon={faUserMd} className="me-1" />
-                    Фармацевти
-                  </button>
-                  <button
-                    className="btn btn-sm btn-warning me-2"
-                    onClick={() => handleEdit(pharmacy)}
-                  >
-                    <FontAwesomeIcon icon={faEdit} className="me-1" />
-                    Редактирай
-                  </button>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleDelete(pharmacy.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} className="me-1" />
-                    Изтрий
-                  </button>
-                </div>
-                {editingPharmacy && editingPharmacy.id === pharmacy.id && (
-                  <PharmacyEditComponent pharmacy={editingPharmacy} />
+
+                {/* Render the edit form directly under the selected pharmacy */}
+                {editingPharmacyId === pharmacy.id && (
+                  <div className="mt-3">
+                    <PharmacyEditComponent pharmacy={pharmacy} />
+                  </div>
                 )}
               </li>
             ))}
