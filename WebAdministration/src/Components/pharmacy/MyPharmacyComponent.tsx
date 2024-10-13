@@ -58,15 +58,15 @@ function MyPharmacyComponent() {
             <div className="d-flex justify-content-between align-items-center">
               <div>
                 <h5 className="card-title">
-                  <i className="fas fa-clinic-medical text-primary mr-2"></i>
+                  <i className="fas fa-clinic-medical text-primary mr-2" style={{marginRight: "9px"}}></i>
                   {pharmacy.name}
                 </h5>
                 <p className="card-text text-muted mb-1">
-                  <i className="fas fa-map-marker-alt text-danger mr-2"></i>
+                  <i className="fas fa-map-marker-alt text-danger mr-2" style={{marginRight: "20px"}}></i>
                   {pharmacy.location}
                 </p>
                 <p className="card-text text-muted mb-1">
-                  <i className="fas fa-phone-alt text-success mr-2"></i>
+                  <i className="fas fa-phone-alt text-success mr-2" style={{marginRight: "15px"}}></i>
                   {pharmacy.contactNumber}
                 </p>
               </div>

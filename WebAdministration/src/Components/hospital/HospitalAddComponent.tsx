@@ -161,7 +161,7 @@ function HospitalAddComponent() {
             </p>
           </div>
         )}
-        <button type="submit" className="btn btn-warning">
+        <button type="submit" className="btn btn-warning" style={{marginBottom: "15px"}}>
           Добавяне
         </button>
       </form>

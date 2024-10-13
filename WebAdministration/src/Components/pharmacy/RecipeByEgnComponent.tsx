@@ -87,7 +87,7 @@ const RecipeByEgnComponent: React.FC = () => {
               placeholder="Въведи ЕГН"
             />
           </div>
-          <div className="text-center">
+          <div className="text-center" style={{marginTop: "8px"}}>
             <button
               className="btn btn-primary"
               onClick={handleFetchRecipes}

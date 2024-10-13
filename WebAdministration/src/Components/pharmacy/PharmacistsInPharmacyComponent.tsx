@@ -123,11 +123,11 @@ function PharmacistsInPharmacyComponent() {
             <div className="card-body d-flex justify-content-between align-items-center">
               <div>
                 <h5 className="mb-1">
-                  <i className="fas fa-user text-info mr-2"></i>
+                  <i className="fas fa-user text-info mr-2" style={{marginRight: "8px"}}></i>
                   {pharmacist.name}
                 </h5>
                 <p className="text-muted mb-0">
-                  <i className="fas fa-envelope text-secondary mr-2"></i>
+                  <i className="fas fa-envelope text-secondary mr-2" style={{marginRight: "9px"}}></i>
                   {pharmacist.email}
                 </p>
               </div>
