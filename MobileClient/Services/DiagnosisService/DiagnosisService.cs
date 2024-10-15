@@ -52,7 +52,7 @@ namespace HealthProject.Services.DiagnosisService
                     var neededDoctors = new Dictionary<string, int>();
 
                     sb.AppendLine($"---Прогноза---");
-                    sb.AppendLine($"Диагноза: {prediction.Diagnosis}\n Предпазване: {prediction.Prevention}\n");
+                    sb.AppendLine($"Диагноза: {prediction.Diagnosis}\nПредпазване: {prediction.Prevention}\n");
 
                     if (!neededDoctors.ContainsKey(prediction.DoctorSpecialization))
                     {

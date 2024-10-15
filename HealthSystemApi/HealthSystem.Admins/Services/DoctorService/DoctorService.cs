@@ -325,13 +325,21 @@ namespace HealthSystem.Admins.Services.DoctorService
         public async Task<List<DoctorModel>> GetTopDoctorsWithSpecialization(string specialization, int top)
         {
             return await context.Doctors
-                    .Where(x => x.Specialization == specialization)
-                    .OrderBy(x => context.DoctorRatings.Where(y => y.DoctorId == x.Id).Sum(x => x.Rating) / context.DoctorRatings.Where(y => y.DoctorId == x.Id).Count())
+                    .Select(x => new
+                    {
+                        Doctor = x,
+                        AverageRating = context.DoctorRatings
+                            .Where(y => y.DoctorId == x.Id)
+                            .Any() ? context.DoctorRatings
+                                         .Where(y => y.DoctorId == x.Id)
+                                         .Average(y => y.Rating) : 0
+                    })
+                    .OrderByDescending(x => x.AverageRating)
                     .Select(x => new DoctorModel()
                     {
-                        Id = x.Id,
-                        FullName = x.FullName,
-                        Specialization = x.Specialization
+                        Id = x.Doctor.Id,
+                        FullName = x.Doctor.FullName,
+                        Specialization = x.Doctor.Specialization
                     })
                     .ToListAsync();
         }

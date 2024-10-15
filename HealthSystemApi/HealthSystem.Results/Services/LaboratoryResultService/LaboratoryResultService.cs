@@ -2,7 +2,6 @@
 using HealthSystem.Results.Data.Models;
 using HealthSystem.Results.Models;
 using Microsoft.EntityFrameworkCore;
-using IronBarCode;
 using System.Text;
 using QRCoder;
 
