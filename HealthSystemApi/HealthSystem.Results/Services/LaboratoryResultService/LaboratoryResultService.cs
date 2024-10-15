@@ -2,8 +2,9 @@
 using HealthSystem.Results.Data.Models;
 using HealthSystem.Results.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
+using IronBarCode;
 using System.Text;
+using QRCoder;
 
 namespace HealthSystem.Results.Services.LaboratoryResultService
 {
@@ -98,6 +99,8 @@ namespace HealthSystem.Results.Services.LaboratoryResultService
                 UserLogingPass = GeneratePassword(10)
             };
 
+            result.QR = await GenerateQRCode(result.UserLogingName, result.UserLogingPass);
+
             await context.LaboratoryResults.AddAsync(result);
             await context.SaveChangesAsync();
 
@@ -138,6 +141,25 @@ namespace HealthSystem.Results.Services.LaboratoryResultService
             }
 
             return password.ToString();
+        }
+
+        /// <summary>
+        /// Generates QR code for the laboratory result.
+        /// </summary>
+        /// <param name="id">The ID which the QR code will be generated based on.</param>
+        /// <param name="password">The password which the QR code will be generated based on.</param>
+        /// <returns>A randomly generated QR code.</returns>
+        
+        public async Task<byte[]> GenerateQRCode(string id, string password)
+        {
+            using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+            using (QRCodeData qrCodeData = qrGenerator.CreateQrCode($"http://localhost:5250/api/LaboratoryResult/GetResultDetails?code={id}-{password}", QRCodeGenerator.ECCLevel.Q))
+            using (PngByteQRCode qrCode = new PngByteQRCode(qrCodeData))
+            {
+                byte[] qrCodeImage = qrCode.GetGraphic(30);
+
+                return qrCodeImage;
+            }
         }
     }
 }

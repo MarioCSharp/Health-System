@@ -17,6 +17,8 @@ namespace HealthSystem.Results.Data.Models
 
         [Required]
         public string? UserLogingPass { get; set; }
+        [Required]
+        public byte[]? QR { get; set; }
 
         [Required]
         public string? PatientName { get; set; }
