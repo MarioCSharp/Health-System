@@ -82,5 +82,18 @@ namespace HealthSystem.Results.Controllers
 
             return Ok(new { Results = result });
         }
+
+        /// <summary>
+        /// Retrieves the QR code for a specific laboratory result.
+        /// </summary>
+        /// <returns>An <see cref="byte[]"/> containing the QR code image.</returns>
+        [HttpGet("GetQR")]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> GetQr([FromQuery] int id)
+        {
+            var qrCodeBytes = await laboratoryResultService.GetQrAsync(id);
+
+            return File(qrCodeBytes, "image/png");
+        }
     }
 }

@@ -164,7 +164,7 @@ const RecepcionistHomePage = () => {
                 </li>
               ))
             ) : (
-              <li className="list-group-item">Няма отворени стаи</li>
+              <li className="list-group-item">Няма активен час</li>
             )}
           </ul>
         </div>

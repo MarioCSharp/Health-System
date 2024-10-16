@@ -106,7 +106,7 @@ function ServiceAddComponent() {
             </div>
             <div className="mb-4">
               <label htmlFor="location" className="form-label fw-bold">
-                Локация на услугата
+                Кабинет
               </label>
               <input
                 type="text"

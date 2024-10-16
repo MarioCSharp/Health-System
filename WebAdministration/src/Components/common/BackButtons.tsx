@@ -26,8 +26,8 @@ const BackButton: React.FC = () => {
       onClick={goBack}
       style={{
         position: "absolute",
-        top: "100px",
-        left: "200px",
+        top: "70px",
+        left: "30px",
         cursor: "pointer",
         color: "#007bff",
         display: "flex",

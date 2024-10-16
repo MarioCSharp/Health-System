@@ -6,6 +6,7 @@ namespace HealthSystem.Results.Services.LaboratoryResultService
     {
         Task<(bool, string, string)> IssueResultAsync(IssueResultModel model, string userId);
         Task<byte[]> GetFileAsync(string id, string pass);
+        Task<byte[]> GetQrAsync(int id);
         Task<bool> AddFileAsync(int appointmentId, IFormFile file);
         Task<List<LaboratoryResultDisplayModel>> GetResults(string doctorUserId);
     }

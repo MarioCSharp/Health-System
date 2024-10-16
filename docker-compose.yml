@@ -21,15 +21,6 @@ services:
       - '5173:5173'  
     stdin_open: true
     tty: true
-    
-    fastapi:
-      build:
-        context: ./MachineLearningApi
-        dockerfile: Dockerfile
-      container_name: fastapi
-      ports:
-        - "8000:8000" 
-    
 
   receptionchat:
     build:

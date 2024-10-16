@@ -86,7 +86,7 @@ function PastAppointmentsList() {
         <div className="card shadow-sm">
           <div className="card-header bg-primary text-white">
             <h5 className="mb-0">
-              <i className="fas fa-history me-2"></i> Минали часове
+              <i className="fas fa-history me-2"></i> Прегледи
             </h5>
           </div>
           <ul className="list-group list-group-flush">

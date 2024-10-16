@@ -50,7 +50,7 @@ const DoctorHomePage: React.FC = () => {
                   } text-dark`}
                 >
                   <i className="fas fa-calendar-check fa-2x"></i>
-                  <div className="small">Следващи Прегледи</div>
+                  <div className="small">Предстоящи Прегледи</div>
                 </button>
               </div>
             </li>
@@ -63,7 +63,7 @@ const DoctorHomePage: React.FC = () => {
                   } text-dark`}
                 >
                   <i className="fas fa-calendar-times fa-2x"></i>
-                  <div className="small">Минали Прегледи</div>
+                  <div className="small">Прегледи</div>
                 </button>
               </div>
             </li>

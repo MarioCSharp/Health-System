@@ -92,6 +92,48 @@ function LaboratoryResultsComponent() {
     navigate(`/laboratory/add`);
   };
 
+  const handleDownloadQRCode = async (resultId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5250/api/LaboratoryResult/GetQR?id=${resultId}`, // Adjust API endpoint if needed
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.ok) {
+        // Convert byte[] to a blob (ensure the correct type is set)
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+  
+        // Ensure correct MIME type
+        const contentType = response.headers.get('Content-Type');
+        if (contentType !== 'image/png') {
+          throw new Error("Invalid file type. Expected PNG.");
+        }
+  
+        // Create a temporary anchor element to trigger the download
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `QRCode_Result_${resultId}.png`; // Set the filename for download
+        document.body.appendChild(a);
+        a.click(); // Programmatically click the anchor to trigger the download
+        a.remove(); // Remove the anchor after download
+        window.URL.revokeObjectURL(url); // Free up memory by revoking the object URL
+      } else {
+        throw new Error("Неуспешно сваляне на QR код.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Имаше проблем при свалянето на QR кода.");
+    }
+  };
+  
+
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -123,6 +165,13 @@ function LaboratoryResultsComponent() {
                   }}
                 >
                   <i className="fas fa-file-upload me-1"></i> Добави файл
+                </button>
+
+                <button
+                  className="btn btn-outline-primary btn-sm me-2"
+                  onClick={() => handleDownloadQRCode(result.id)} // Trigger QR code download
+                >
+                  <i className="fas fa-qrcode me-1"></i> Виж QR код
                 </button>
 
                 {uploadingResultId === result.id && (

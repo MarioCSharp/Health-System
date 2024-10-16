@@ -152,13 +152,32 @@ namespace HealthSystem.Results.Services.LaboratoryResultService
         public async Task<byte[]> GenerateQRCode(string id, string password)
         {
             using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
-            using (QRCodeData qrCodeData = qrGenerator.CreateQrCode($"http://localhost:5250/api/LaboratoryResult/GetResultDetails?code={id}-{password}", QRCodeGenerator.ECCLevel.Q))
+            using (QRCodeData qrCodeData = qrGenerator.CreateQrCode($"http://localhost:5173/check_results?code={id}-{password}", QRCodeGenerator.ECCLevel.Q))
             using (PngByteQRCode qrCode = new PngByteQRCode(qrCodeData))
             {
                 byte[] qrCodeImage = qrCode.GetGraphic(30);
 
                 return qrCodeImage;
             }
+        }
+
+        /// <summary>
+        /// Gets the QR code for the id and password.
+        /// </summary>
+        /// <param name="id">The ID which the QR code will be generated based on.</param>
+        /// <param name="password">The password which the QR code will be generated based on.</param>
+        /// <returns>A randomly generated QR code.</returns>
+
+        public async Task<byte[]> GetQrAsync(int id)
+        {
+            var labRes = await context.LaboratoryResults.FindAsync(id);
+
+            if (labRes == null)
+            {
+                throw new InvalidOperationException($"No lab result found for id {id}.");
+            }
+
+            return labRes.QR ?? new byte[0];
         }
     }
 }
