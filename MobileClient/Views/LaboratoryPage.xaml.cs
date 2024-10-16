@@ -32,4 +32,16 @@ public partial class LaboratoryPage : ContentPage
     {
         await Shell.Current.GoToAsync($"//{nameof(DiagnosisPredictionPage)}");
     }
+
+    //private async void OnOpenCameraButtonClicked(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        await OpenCameraAsync();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        await DisplayAlert("Error", ex.Message, "OK");
+    //    }
+    //}
 }

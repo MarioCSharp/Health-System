@@ -80,6 +80,7 @@
 		<PackageReference Include="Plugin.LocalNotification" Version="10.1.8" />
 		<PackageReference Include="Syncfusion.Maui.Calendar" Version="26.2.8" />
 		<PackageReference Include="Syncfusion.Maui.Inputs" Version="26.2.10" />
+		<PackageReference Include="ZXing.Net.Maui" Version="0.4.0" />
 	</ItemGroup>
 	
 	<ItemGroup>

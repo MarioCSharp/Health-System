@@ -18,6 +18,7 @@ using Plugin.LocalNotification;
 using HealthProject.Services.LaboratoryService;
 using HealthProject.Services.ReminderService;
 using HealthProject.Services.PharmacyService;
+using ZXing.Net.Maui;
 
 namespace HealthProject
 {
