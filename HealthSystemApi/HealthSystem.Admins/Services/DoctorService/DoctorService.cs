@@ -325,6 +325,7 @@ namespace HealthSystem.Admins.Services.DoctorService
         public async Task<List<DoctorModel>> GetTopDoctorsWithSpecialization(string specialization, int top)
         {
             return await context.Doctors
+                    .Where(x => x.Specialization.ToLower() == specialization.ToLower())
                     .Select(x => new
                     {
                         Doctor = x,

@@ -80,6 +80,16 @@ public class DiagnosisViewModel : INotifyPropertyChanged
         }
     }
 
+    public ObservableCollection<DoctorModel> RecommendedDoctors
+    {
+        get => recommendedDoctors;
+        set
+        {
+            recommendedDoctors = value;
+            OnPropertyChanged(nameof(RecommendedDoctors));
+        }
+    }
+
     public ICommand SubmitSymptomsAsyncCommand { get; }
 
     private async void LoadAllSymptoms()
@@ -128,8 +138,9 @@ public class DiagnosisViewModel : INotifyPropertyChanged
             var prediction = await diagnosisService.GetPrediction(selectedSymptoms);
 
             SymptomsInput = string.Join(", ", selectedSymptoms);
-            DiagnosisResult = prediction?.Prediction ?? "Error!";
-            recommendedDoctors = new ObservableCollection<DoctorModel>(prediction.RecommendedDoctors);
+            DiagnosisResult = prediction?.Prediction ?? "Грешка!";
+
+            RecommendedDoctors = new ObservableCollection<DoctorModel>(prediction.RecommendedDoctors);
 
             OnPropertyChanged(nameof(DiagnosisResult));
             OnPropertyChanged(nameof(recommendedDoctors));
